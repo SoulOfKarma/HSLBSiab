@@ -7,24 +7,37 @@
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 
-
 export default [
-  {
-    url: '/',
-    name: 'Home',
-    slug: 'home',
-    icon: 'HomeIcon'
-  },
-  {
-    url: '/page2',
-    name: 'Page 2',
-    slug: 'page2',
-    icon: 'FileIcon'
-  },
-  {
-    url: '/formulario',
-    name: 'Formulario',
-    slug: 'formulario',
-    icon: 'FileIcon'
-  }
-]
+    {
+        url: "/home",
+        name: "Inicio",
+        slug: "Inicio",
+        icon: "HomeIcon"
+    },
+    {
+        url: "/materialNuevo",
+        name: "Ingreso Material",
+        slug: "IngresoMaterial",
+        icon: "HomeIcon"
+    },
+    {
+        url: null,
+        name: "Entrega de Material",
+        slug: "entregadematerial",
+        icon: "HomeIcon",
+        submenu: [
+            {
+                url: "/entregaMaterial",
+                name: "Entrega de Material Sin Solicitud",
+                slug: "entregamaterialsinsolicitud",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/listadoSolicitudes",
+                name: "Listado Solicitudes",
+                slug: "listadosolicitudes",
+                icon: "HomeIcon"
+            }
+        ]
+    }
+];

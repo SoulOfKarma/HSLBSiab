@@ -9,15 +9,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Users extends Authenticatable implements JWTSubject
 {
+    use Notifiable;
+
     protected $fillable = [
         'id', 'run','correo_usuario', 'nombre_usuario', 'apellido_usuario', 'anexo',
         'password',
        
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = ['password','remember_token'];
 
-    public function getJWTIndentifier(){
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
     public function getJWTCustomClaims(){

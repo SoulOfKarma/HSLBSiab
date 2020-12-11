@@ -58,6 +58,23 @@ class LoginController extends Controller
         return response()->json(compact('token'));
     }
 
+    public function adminPr(Request $request)
+  {
+    $run = str_replace('.', '', $request->input('rut'));
+    $run = strtoupper($run);
+    $salida = DB::table('tbl_permiso_usuarios')
+      ->where('run_usuario', '=', $run)
+      ->get(['run_usuario', 'permiso_usuario', 'estado_login']);
+    foreach ($salida as $p) {
+      if ($p->estado_login == 1) {
+        $request->session()->put('login', '1');
+        $request->session()->put('run_usuario', $request->input('rut'));
+        $request->session()->put('permiso_usuario', $p->permiso_usuario);
+      }
+    }
+    return $salida;
+  }
+
     public function salir(Request $request){
         $request->session()->forget('login');
         $request->session()->forget('run_usuario');

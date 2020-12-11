@@ -303,8 +303,10 @@ export default {
             router.push("/pages/login").catch(err => {});
         }
 
-        if (aux2 == 2) {
-            console.log("Acceso Correcto Usuario");
+        var aux2 = sessionStorage.getItem("permiso_usuario");
+
+        if (aux2 == 1) {
+            console.log("Acceso Correcto");
             this.navMenuItems = navMenuItems;
         } else {
             router.push("/pages/login").catch(err => {});

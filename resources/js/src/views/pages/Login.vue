@@ -30,7 +30,9 @@
                             <div class="p-8 login-tabs-container">
                                 <div class="vx-card__title mb-4">
                                     <h4 class="mb-4">Inicio de Sesion</h4>
-                                    <p>Bienvenido A SGTRRFF</p>
+                                    <p>
+                                        Bienvenido al sistema de Bodega de RRFF
+                                    </p>
                                 </div>
 
                                 <div>
@@ -89,6 +91,10 @@
 </template>
 
 <script>
+import axios from "axios";
+import router from "../../router";
+import { validate, clean, format } from "rut.js";
+
 export default {
     data() {
         return {
@@ -126,7 +132,7 @@ export default {
                     var permiso_usuario = "";
                     await axios
                         .post(this.localVal + "/api/Login/GetUsers", {
-                            run: this.run,
+                            rut: this.run,
                             password: this.password
                         })
                         .then(function(response) {
@@ -134,15 +140,11 @@ export default {
                                 if (response.data != 1) {
                                     sessionStorage.setItem(
                                         "nombre",
-                                        response.data[0].nombre
+                                        response.data[0].nombre_usuario
                                     );
                                     sessionStorage.setItem(
                                         "apellido",
-                                        response.data[0].apellido
-                                    );
-                                    sessionStorage.setItem(
-                                        "idServicio",
-                                        response.data[0].id_servicio
+                                        response.data[0].apellido_usuario
                                     );
                                     sessionStorage.setItem(
                                         "run",
@@ -151,10 +153,6 @@ export default {
                                     sessionStorage.setItem(
                                         "id",
                                         response.data[0].id
-                                    );
-                                    sessionStorage.setItem(
-                                        "api_token",
-                                        response.data[0].api_token
                                     );
                                     sw = 1;
                                 }
@@ -177,7 +175,7 @@ export default {
                     if (sw == 1) {
                         await axios
                             .post(this.localVal + "/api/Login/getpr", {
-                                run: this.run,
+                                rut: this.run,
                                 password: this.password
                             })
                             .then(function(response2) {
@@ -193,24 +191,7 @@ export default {
                                         ) {
                                             pr = 3;
                                         }
-                                        if (
-                                            response2.data[0].permiso_usuario ==
-                                            2
-                                        ) {
-                                            pr = 4;
-                                        }
-                                        if (
-                                            response2.data[0].permiso_usuario ==
-                                            3
-                                        ) {
-                                            pr = 5;
-                                        }
-                                        if (
-                                            response2.data[0].permiso_usuario ==
-                                            4
-                                        ) {
-                                            pr = 6;
-                                        }
+
                                         //router.push('/home');
                                         //pr = 3;
                                     } else {
@@ -235,21 +216,16 @@ export default {
                     }
                     if (pr == 3) {
                         //localStorage.setItem('run',response2.data[0].permiso_usuario);
-                        router.push("/agenteView/HomeAgente");
-                    }
-                    if (pr == 4 || pr == 6) {
-                        console.log("Usuario");
-                        //localStorage.setItem('run',response2.data[0].permiso_usuario);
                         router.push("/home");
-                    }
-                    if (pr == 5) {
-                        console.log("Trabajador");
-                        router.push("/HomeTrabajador");
                     } else {
                         this.val_run = true;
                     }
                 }
             }
+        },
+        formatear_run() {
+            this.run = format(this.run);
+            this.val_run = !validate(this.run);
         }
     }
 };
