@@ -41,28 +41,6 @@
                     <div class="vx-row mb-12"></div>
                 </vx-card>
             </div>
-            <!-- Hora y Fecha -->
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="3. Asignar Hora y Fecha">
-                    <div class="vx-row mb-12">
-                        <div class="vx-col w-1/2 mt-5"></div>
-                    </div>
-                </vx-card>
-            </div>
-            <!-- Informacion del problema -->
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="4. Problema a Resolver">
-                    <div class="vx-row mb-12">
-                        <div class="vx-col w-full mt-5"></div>
-                    </div>
-                </vx-card>
-            </div>
-            <!-- Enviar o Limpiar Formulario -->
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col sm:w-2/3 w-full ml-auto"></div>
-                </div>
-            </div>
         </vs-row>
     </div>
 </template>

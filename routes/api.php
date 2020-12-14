@@ -23,5 +23,7 @@ Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@
 Route::post('/auth/login','LoginController@login');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-    /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
+    Route::get('/Bodega/GetUbicaciones', ['middleware' => 'cors', 'uses' => 'MaterialUbicacionesController@getAll']);
+    Route::get('/Bodega/GetServicios', ['middleware' => 'cors', 'uses' => 'MaterialServiciosController@getAll']);
+    Route::get('/Bodega/GetMedidas', ['middleware' => 'cors', 'uses' => 'MaterialMedidasController@getAll']);
 });
