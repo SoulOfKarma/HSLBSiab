@@ -61,24 +61,47 @@
                         </div>
                     </div>
                     <div class="vx-row mb-4">
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/3 mt-5">
                             <h6>1.3 Seleccione Material a Ingresar</h6>
                             <br />
-                            <vs-input
-                                class="inputx w-full"
-                                v-model="valor"
-                            ></vs-input>
+                            <v-select
+                                taggable
+                                v-model="seleccionMaterial"
+                                placeholder="Material"
+                                class="w-full select-large"
+                                label="descripcion_material"
+                                :options="listadoMaterial"
+                                @input="filtroSegunMaterial"
+                            ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
-                            <h6>1.4 Seleccione Medida</h6>
+                            <h6>1.4 Seleccione Tipo de Material</h6>
                             <br />
-                            <vs-input
-                                class="inputx w-full"
-                                v-model="cantidad"
-                            />
+                            <v-select
+                                taggable
+                                v-model="seleccionTipoMaterial"
+                                placeholder="Tipo Material"
+                                class="w-full select-large"
+                                label="descripcion_tipo_material"
+                                :options="listadoTipoMaterial"
+                                @input="CrearValidarTipoMaterial()"
+                            ></v-select>
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
-                            <h6>Medida</h6>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>1.5 Ingrese Medidas</h6>
+                            <br />
+                            <v-select
+                                taggable
+                                v-model="seleccionCantEsp"
+                                placeholder="Cantidad Esp."
+                                class="w-full select-large"
+                                label="descripcion_cantidad_especifica"
+                                :options="listadoCantEsp"
+                                @input="crearValidarCantEsp"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6>Tipo Medida</h6>
                             <br />
                             <v-select
                                 v-model="seleccionMedidas"
@@ -91,7 +114,7 @@
                     </div>
                     <div class="vx-row mb-4">
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.5 Ingrese Cantidad</h6>
+                            <h6>1.6 Ingrese Cantidad</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
@@ -99,7 +122,7 @@
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.6 Ingrese Valor del Material</h6>
+                            <h6>1.7 Ingrese Valor del Material</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
@@ -110,6 +133,96 @@
                 </vx-card>
             </div>
         </vs-row>
+        <vs-popup
+            classContent="pop-Crear"
+            title="Guardar Nuevo Material?"
+            :active.sync="popActiveMaterial"
+        >
+            <vs-input class="inputx mb-3" v-model="desMaterial" hidden />
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarMaterial(desMaterial)"
+                        >
+                            Guardar
+                        </vs-button>
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popActiveMaterial = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="pop-CrearTipo"
+            title="Guardar Nuevo Tipo de Material?"
+            :active.sync="popActiveTMaterial"
+        >
+            <vs-input class="inputx mb-3" v-model="desTipoMaterial" hidden />
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarTipoMaterial(desTipoMaterial)"
+                        >
+                            Guardar
+                        </vs-button>
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popActiveTMaterial = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="pop-CrearTipo"
+            title="Guardar Nuevo Tipo de Material?"
+            :active.sync="popActiveCantidadEsp"
+        >
+            <vs-input class="inputx mb-3" v-model="desCantEsp" hidden />
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarCantidadEspecifica(desCantEsp)"
+                        >
+                            Guardar
+                        </vs-button>
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popActiveCantidadEsp = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -165,14 +278,36 @@ export default {
                 id: 0,
                 descripcion_medidas: "CC"
             },
+            seleccionMaterial: {
+                id: 0,
+                descripcion_material: "Seleccione Material"
+            },
+            seleccionTipoMaterial: {
+                id: 0,
+                descripcion_tipo_material: "Selecione Tipo Material"
+            },
+            seleccionCantEsp: {
+                id: 0,
+                descripcion_cantidad_especifica: "400"
+            },
             listadoUbicacion: [],
             listadoUbicacionData: [],
             listadoServicio: [],
             listadoServicioData: [],
             listadoMedidas: [],
             listadoMedidasData: [],
+            listadoMaterial: [],
+            listadoMaterialData: [],
+            listadoTipoMaterial: [],
+            listadoTipoMaterialData: [],
+            listadoCantEsp: [],
+            listadoCantEspData: [],
             cantidad: 0,
             valor: 0,
+            desMaterial: "",
+            desTipoMaterial: "",
+            desCantEsp: "",
+            idMaterial: 0,
             medida: "cc",
             nombre:
                 sessionStorage.getItem("nombre") +
@@ -180,7 +315,9 @@ export default {
                 sessionStorage.getItem("apellido"),
             run: sessionStorage.getItem("run"),
             localVal: process.env.MIX_APP_URL,
-            componentKey: 0
+            popActiveMaterial: false,
+            popActiveTMaterial: false,
+            popActiveCantidadEsp: false
         };
     },
     methods: {
@@ -225,6 +362,126 @@ export default {
                 this.listadoServicio = b;
             }
         },
+        filtroSegunMaterial() {
+            try {
+                if (
+                    this.seleccionMaterial.id == 0 ||
+                    this.seleccionMaterial.id == null
+                ) {
+                    if (
+                        this.seleccionMaterial.descripcion_material ===
+                            undefined ||
+                        this.seleccionMaterial.descripcion_material === "" ||
+                        this.seleccionMaterial.descripcion_material === null
+                    ) {
+                        this.desMaterial = this.seleccionMaterial;
+                        this.popActiveMaterial = true;
+                    } else {
+                        this.desMaterial = this.seleccionMaterial.descripcion_material;
+                        this.popActiveMaterial = true;
+                    }
+                } else {
+                    let idGen = this.seleccionMaterial.id;
+                    let c = this.listadoTipoMaterialData;
+                    let b = [];
+                    let a = 0;
+                    c.forEach((value, index) => {
+                        a = value.id_material;
+                        if (a == idGen) {
+                            b.push(value);
+                        }
+                    });
+                    this.listadoTipoMaterial = b;
+                    this.seleccionTipoMaterial.id = 0;
+                    this.seleccionTipoMaterial.descripcion_tipo_material =
+                        "Seleccione Tipo";
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        CrearValidarTipoMaterial() {
+            try {
+                if (
+                    this.seleccionTipoMaterial.id == 0 ||
+                    this.seleccionTipoMaterial.id == null
+                ) {
+                    if (
+                        this.seleccionTipoMaterial.descripcion_tipo_material ===
+                            undefined ||
+                        this.seleccionTipoMaterial.descripcion_tipo_material ===
+                            null ||
+                        this.seleccionTipoMaterial.descripcion_tipo_material ==
+                            ""
+                    ) {
+                        if (
+                            this.seleccionMaterial.id == 0 ||
+                            this.seleccionMaterial.id == null
+                        ) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Debe Seleccionar Material",
+                                text:
+                                    "Debe estar Seleccionado Para asociar el nuevo tipo de material",
+                                color: "warning",
+                                position: "top-right"
+                            });
+                        } else {
+                            console.log(this.seleccionMaterial);
+                            this.idMaterial = this.seleccionMaterial.id;
+                            this.desTipoMaterial = this.seleccionTipoMaterial;
+                            this.popActiveTMaterial = true;
+                        }
+                    } else {
+                        if (
+                            this.seleccionMaterial.id == 0 ||
+                            this.seleccionMaterial.id == null
+                        ) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Debe Seleccionar Material",
+                                text:
+                                    "Debe estar Seleccionado Para asociar el nuevo tipo de material",
+                                color: "warning",
+                                position: "top-right"
+                            });
+                        } else {
+                            console.log(this.seleccionMaterial.id);
+                            this.idMaterial = this.seleccionMaterial.id;
+                            this.desTipoMaterial = this.seleccionTipoMaterial.descripcion_tipo_material;
+                            this.popActiveTMaterial = true;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        crearValidarCantEsp() {
+            try {
+                if (
+                    this.seleccionCantEsp.id == 0 ||
+                    this.seleccionCantEsp.id == null
+                ) {
+                    if (
+                        this.seleccionCantEsp
+                            .descripcion_cantidad_especifica === undefined ||
+                        this.seleccionCantEsp
+                            .descripcion_cantidad_especifica === null ||
+                        this.seleccionCantEsp.descripcion_cantidad_especifica ==
+                            ""
+                    ) {
+                        this.desCantEsp = this.seleccionCantEsp;
+                        this.popActiveCantidadEsp = true;
+                    } else {
+                        this.desCantEsp = this.seleccionCantEsp.descripcion_cantidad_especifica;
+                        this.popActiveCantidadEsp = true;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
         cargarUbicaciones() {
             axios
                 .get(this.localVal + "/api/Bodega/GetUbicaciones", {
@@ -263,12 +520,164 @@ export default {
                     this.listadoMedidas = res.data;
                     this.listadoMedidasData = res.data;
                 });
+        },
+        cargarMaterial() {
+            axios
+                .get(this.localVal + "/api/Bodega/GetMaterial", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoMaterial = res.data;
+                    this.listadoMaterialData = res.data;
+                });
+        },
+        cargarTipoMaterial() {
+            axios
+                .get(this.localVal + "/api/Bodega/GetTipoMaterial", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTipoMaterial = res.data;
+                    this.listadoTipoMaterialData = res.data;
+                });
+        },
+        cargarCantidadEspecifica() {
+            axios
+                .get(this.localVal + "/api/Bodega/GetCantEsp", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoCantEsp = res.data;
+                    this.listadoCantEspData = res.data;
+                });
+        },
+        guardarMaterial(valor) {
+            let material = {
+                descripcion_material: valor
+            };
+
+            axios
+                .post(this.localVal + "/api/Bodega/PostMaterial", material, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    if (res.data == true) {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: " Material Agregado Correctamente",
+                            text: "Se Recargara Listado",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.cargarMaterial();
+                        this.popActiveMaterial = false;
+                    } else {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error Al Guardar Tipo Material",
+                            text:
+                                "Intente Nuevamente o Consulte con el Administrador",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
+        guardarTipoMaterial(valor) {
+            let material = {
+                descripcion_tipo_material: valor,
+                id_material: this.idMaterial
+            };
+
+            axios
+                .post(
+                    this.localVal + "/api/Bodega/PostTipoMaterial",
+                    material,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(res => {
+                    if (res.data == true) {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Tipo Material Agregado Correctamente",
+                            text: "Se Recargara Listado",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.cargarTipoMaterial();
+                        this.popActiveTMaterial = false;
+                    } else {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error Al Guardar Material",
+                            text:
+                                "Intente Nuevamente o Consulte con el Administrador",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
+        guardarCantidadEspecifica(valor) {
+            let material = {
+                descripcion_cantidad_especifica: valor
+            };
+
+            axios
+                .post(this.localVal + "/api/Bodega/PostCantEsp", material, {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    if (res.data == true) {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Cantidad Especifica Agregada Correctamente",
+                            text: "Se Recargara Listado",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.cargarCantidadEspecifica();
+                        this.popActiveTMaterial = false;
+                    } else {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error Al Guardar Material",
+                            text:
+                                "Intente Nuevamente o Consulte con el Administrador",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
         }
     },
     created() {
         this.cargarUbicaciones();
         this.cargarServicios();
         this.cargarMedidas();
+        this.cargarMaterial();
+        this.cargarTipoMaterial();
+        this.cargarCantidadEspecifica();
     }
 };
 </script>
