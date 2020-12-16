@@ -14,22 +14,17 @@ export default [
         slug: "Inicio",
         icon: "HomeIcon"
     },
-    {
-        url: "/materialNuevo",
-        name: "Ingreso Material",
-        slug: "IngresoMaterial",
-        icon: "HomeIcon"
-    },
+
     {
         url: null,
-        name: "Entrega de Material",
+        name: "Material",
         slug: "entregadematerial",
         icon: "HomeIcon",
         submenu: [
             {
-                url: "/entregaMaterial",
-                name: "Entrega de Material Sin Solicitud",
-                slug: "entregamaterialsinsolicitud",
+                url: "/materialNuevo",
+                name: "Ingreso Material",
+                slug: "IngresoMaterial",
                 icon: "HomeIcon"
             },
             {

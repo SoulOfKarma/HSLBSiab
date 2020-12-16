@@ -88,7 +88,7 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/5 mt-5">
-                            <h6>1.5 Ingrese Medidas</h6>
+                            <h6>1.5 Ingrese Contenido</h6>
                             <br />
                             <v-select
                                 taggable
@@ -113,12 +113,22 @@
                         </div>
                     </div>
                     <div class="vx-row mb-4">
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/3 mt-5">
                             <h6>1.6 Ingrese Cantidad</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
                                 v-model="cantidad"
+                                @input="CalcTotal"
+                            />
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6>Total I.</h6>
+                            <br />
+                            <vs-input
+                                disabled
+                                class="inputx w-full"
+                                v-model="total"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
@@ -128,6 +138,24 @@
                                 class="inputx w-full"
                                 v-model="valor"
                             ></vs-input>
+                        </div>
+                    </div>
+                    <div class="vx-row mb-4">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                class="fixedHeight w-full"
+                                @click="volver"
+                                color="primary"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                class="fixedHeight w-full"
+                                @click="guardarMaterialNuevo"
+                                color="success"
+                                >Guardar</vs-button
+                            >
                         </div>
                     </div>
                 </vx-card>
@@ -173,7 +201,7 @@
                 <div class="vx-row">
                     <div class="vx-col sm:w-full w-full">
                         <vs-button
-                            color="warning"
+                            color="success"
                             type="filled"
                             class="w-full m-2"
                             @click="guardarTipoMaterial(desTipoMaterial)"
@@ -275,8 +303,8 @@ export default {
                 descripcion_servicio: "Seleccione Servicio"
             },
             seleccionMedidas: {
-                id: 0,
-                descripcion_medidas: "CC"
+                id: 8,
+                descripcion_medidas: "UN"
             },
             seleccionMaterial: {
                 id: 0,
@@ -304,6 +332,7 @@ export default {
             listadoCantEspData: [],
             cantidad: 0,
             valor: 0,
+            total: 0.0,
             desMaterial: "",
             desTipoMaterial: "",
             desCantEsp: "",
@@ -392,9 +421,10 @@ export default {
                         }
                     });
                     this.listadoTipoMaterial = b;
-                    this.seleccionTipoMaterial.id = 0;
-                    this.seleccionTipoMaterial.descripcion_tipo_material =
-                        "Seleccione Tipo";
+                    this.seleccionTipoMaterial = {
+                        id: 0,
+                        descripcion_tipo_material: ""
+                    };
                 }
             } catch (error) {
                 console.log(error);
@@ -657,7 +687,7 @@ export default {
                             position: "top-right"
                         });
                         this.cargarCantidadEspecifica();
-                        this.popActiveTMaterial = false;
+                        this.popActiveCantidadEsp = false;
                     } else {
                         this.$vs.notify({
                             time: 3000,
@@ -669,6 +699,141 @@ export default {
                         });
                     }
                 });
+        },
+        guardarMaterialNuevo() {
+            try {
+                if (
+                    this.seleccionUbicacion.id == 0 ||
+                    this.seleccionUbicacion.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error ",
+                        text: "Debe Seleccionar una Ubicacion",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionServicio.id == 0 ||
+                    this.seleccionServicio.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text: "Debe Seleccionar un Servicio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionMedidas.id == 0 ||
+                    this.seleccionMedidas.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error",
+                        text:
+                            "Intente Nuevamente o Consulte con el Administrador",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
+            console.log("Si funciona :V");
+        },
+        volver() {
+            router.back();
+        },
+        CalcTotal() {
+            try {
+                if (
+                    this.seleccionMaterial.id == 0 ||
+                    this.seleccionMaterial.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error ",
+                        text:
+                            "Debe Seleccionar Algun Material para calcular la cantidad",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionTipoMaterial.id == 0 ||
+                    this.seleccionTipoMaterial.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error ",
+                        text:
+                            "Debe Seleccionar el Tipo de Material para calcular la cantidad",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionCantEsp.id == 0 ||
+                    this.seleccionCantEsp.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error ",
+                        text: "Debe Seleccionar Algun Contenido",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionMedidas.id == 0 ||
+                    this.seleccionMedidas.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error ",
+                        text: "Alguna Medida",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    if (this.seleccionMedidas.id == 1) {
+                        console.log("CC");
+                    } else if (this.seleccionMedidas.id == 2) {
+                        console.log("MM");
+                    } else if (this.seleccionMedidas.id == 3) {
+                        console.log("PULG");
+                    } else if (this.seleccionMedidas.id == 4) {
+                        console.log("CM");
+                    } else if (this.seleccionMedidas.id == 5) {
+                        console.log("KG");
+                    } else if (this.seleccionMedidas.id == 6) {
+                        console.log("GR");
+                    } else if (this.seleccionMedidas.id == 7) {
+                        console.log("ROLLO");
+                    } else if (this.seleccionMedidas.id == 8) {
+                        console.log("UN");
+                    } else if (this.seleccionMedidas.id == 9) {
+                        console.log("TIRA");
+                    } else if (this.seleccionMedidas.id == 10) {
+                        console.log("SACO");
+                    } else if (this.seleccionMedidas.id == 11) {
+                        console.log("ML");
+                    } else if (this.seleccionMedidas.id == 12) {
+                        console.log("M2");
+                    } else if (this.seleccionMedidas.id == 13) {
+                        console.log("M3");
+                    } else if (this.seleccionMedidas.id == 14) {
+                        console.log("LT");
+                    } else if (this.seleccionMedidas.id == 15) {
+                        console.log("TAMBOR");
+                    } else if (this.seleccionMedidas.id == 16) {
+                        console.log("BOLSA");
+                    } else if (this.seleccionMedidas.id == 17) {
+                        console.log("GALON");
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     created() {
