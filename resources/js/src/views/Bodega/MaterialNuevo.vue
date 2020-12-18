@@ -87,7 +87,7 @@
                                 @input="CrearValidarTipoMaterial()"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/6 mt-5">
                             <h6>1.5 Ingrese Contenido</h6>
                             <br />
                             <v-select
@@ -120,6 +120,7 @@
                                 class="inputx w-full"
                                 v-model="cantidad"
                                 @input="CalcTotal"
+                                :step="0.5"
                             />
                         </div>
                         <div class="vx-col w-1/8 mt-5">
@@ -129,14 +130,48 @@
                                 disabled
                                 class="inputx w-full"
                                 v-model="total"
+                                :step="0.5"
                             />
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/3 mt-5">
                             <h6>1.7 Ingrese Valor del Material</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
                                 v-model="valor"
+                                @input="valorTotal"
+                                :step="0.5"
+                            ></vs-input>
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6>Total Valor.</h6>
+                            <br />
+                            <vs-input
+                                disabled
+                                class="inputx w-full"
+                                v-model="totalValor"
+                                :step="0.5"
+                            />
+                        </div>
+                    </div>
+                    <div class="vx-row mb-4">
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.8 Seleccione Tipo Documento</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionDocumento"
+                                placeholder="Documento"
+                                class="w-full select-large"
+                                label="descripcion_documento"
+                                :options="listadoDocumentoAsociado"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.9 Ingrese N° Documento</h6>
+                            <br />
+                            <vs-input
+                                class="inputx w-full"
+                                v-model="ndocumento"
                             ></vs-input>
                         </div>
                     </div>
@@ -318,6 +353,10 @@ export default {
                 id: 0,
                 descripcion_cantidad_especifica: "400"
             },
+            seleccionDocumento: {
+                id: 0,
+                descripcion_documento: "Seleccione Documento"
+            },
             listadoUbicacion: [],
             listadoUbicacionData: [],
             listadoServicio: [],
@@ -330,14 +369,17 @@ export default {
             listadoTipoMaterialData: [],
             listadoCantEsp: [],
             listadoCantEspData: [],
+            listadoDocumentoAsociado: [],
             cantidad: 0,
             valor: 0,
-            total: 0.0,
+            total: 0,
+            totalValor: 0,
             desMaterial: "",
             desTipoMaterial: "",
             desCantEsp: "",
             idMaterial: 0,
             medida: "cc",
+            ndocumento: "",
             nombre:
                 sessionStorage.getItem("nombre") +
                 " " +
@@ -577,6 +619,18 @@ export default {
                     this.listadoTipoMaterialData = res.data;
                 });
         },
+        cargarDocumentoAsociado() {
+            axios
+                .get(this.localVal + "/api/Bodega/GetDocumentos", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoDocumentoAsociado = res.data;
+                });
+        },
         cargarCantidadEspecifica() {
             axios
                 .get(this.localVal + "/api/Bodega/GetCantEsp", {
@@ -687,6 +741,11 @@ export default {
                             position: "top-right"
                         });
                         this.cargarCantidadEspecifica();
+                        this.seleccionCantEsp = {
+                            id: 0,
+                            descripcion_cantidad_especifica:
+                                "Seleccione Cantidad Especifica"
+                        };
                         this.popActiveCantidadEsp = false;
                     } else {
                         this.$vs.notify({
@@ -703,24 +762,37 @@ export default {
         guardarMaterialNuevo() {
             try {
                 if (
-                    this.seleccionUbicacion.id == 0 ||
-                    this.seleccionUbicacion.id == null
+                    this.seleccionMaterial.id == 0 ||
+                    this.seleccionMaterial.id == null
                 ) {
                     this.$vs.notify({
                         time: 3000,
                         title: "Error ",
-                        text: "Debe Seleccionar una Ubicacion",
+                        text:
+                            "Debe Seleccionar Algun Material para calcular la cantidad",
                         color: "danger",
                         position: "top-right"
                     });
                 } else if (
-                    this.seleccionServicio.id == 0 ||
-                    this.seleccionServicio.id == null
+                    this.seleccionTipoMaterial.id == 0 ||
+                    this.seleccionTipoMaterial.id == null
                 ) {
                     this.$vs.notify({
                         time: 3000,
-                        title: "Error",
-                        text: "Debe Seleccionar un Servicio",
+                        title: "Error ",
+                        text:
+                            "Debe Seleccionar el Tipo de Material para calcular la cantidad",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionCantEsp.id == 0 ||
+                    this.seleccionCantEsp.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error ",
+                        text: "Debe Seleccionar Algun Contenido",
                         color: "danger",
                         position: "top-right"
                     });
@@ -730,18 +802,86 @@ export default {
                 ) {
                     this.$vs.notify({
                         time: 3000,
-                        title: "Error",
-                        text:
-                            "Intente Nuevamente o Consulte con el Administrador",
+                        title: "Error ",
+                        text: "Debe seleccionar Alguna Medida",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionUbicacion.id == 0 ||
+                    this.seleccionUbicacion.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error ",
+                        text: "Debe seleccionar alguna ubicacion",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionServicio.id == 0 ||
+                    this.seleccionServicio.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error ",
+                        text: "Debe seleccionar algun servicio",
                         color: "danger",
                         position: "top-right"
                     });
                 } else {
+                    let data = {
+                        id_ubicaciones: this.seleccionUbicacion.id,
+                        id_servicios: this.seleccionServicio.id,
+                        id_material_ing: this.seleccionMaterial.id,
+                        id_material_tipo: this.seleccionTipoMaterial.id,
+                        id_cant_esp: this.seleccionCantEsp.id,
+                        id_material_medida: this.seleccionMedidas.id,
+                        material_cantidad: this.cantidad,
+                        material_valor: this.valor,
+                        id_documento: this.seleccionDocumento.id,
+                        n_documento: this.ndocumento
+                    };
+
+                    const inventario = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Bodega/PostInventario",
+                            inventario,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            if (res.data == true) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title:
+                                        "Inventario Registrado Correctamente",
+                                    text: "Se vaciaran campos",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                            } else {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error Al Guardar Inventario",
+                                    text:
+                                        "Intente Nuevamente o Consulte con el Administrador",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
                 }
             } catch (error) {
-                console.log(error.message);
+                console.log(error);
             }
-            console.log("Si funciona :V");
         },
         volver() {
             router.back();
@@ -797,28 +937,364 @@ export default {
                 } else {
                     if (this.seleccionMedidas.id == 1) {
                         console.log("CC");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+                                let res =
+                                    (parseFloat(val) / 1000) * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 2) {
                         console.log("MM");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+                                let res =
+                                    (parseFloat(val) / 1000) * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 3) {
                         console.log("PULG");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res =
+                                    parseFloat(val) * 0.0254 * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 4) {
                         console.log("CM");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res =
+                                    (parseFloat(val) / 100) * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 5) {
                         console.log("KG");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res = parseFloat(val) * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 6) {
                         console.log("GR");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res =
+                                    (parseFloat(val) / 1000) * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 7) {
                         console.log("ROLLO");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+                                let res = parseFloat(val) * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 8) {
                         console.log("UN");
+                        this.total = this.cantidad;
                     } else if (this.seleccionMedidas.id == 9) {
                         console.log("TIRA");
+                        this.total = this.cantidad * 6;
                     } else if (this.seleccionMedidas.id == 10) {
                         console.log("SACO");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res = parseFloat(val) * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 11) {
                         console.log("ML");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res =
+                                    (parseFloat(val) / 1000) * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 12) {
                         console.log("M2");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res =
+                                    parseFloat(val) * 0.0254 * this.cantidad;
+
+                                this.total = res;
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 13) {
                         console.log("M3");
                     } else if (this.seleccionMedidas.id == 14) {
@@ -829,11 +1305,17 @@ export default {
                         console.log("BOLSA");
                     } else if (this.seleccionMedidas.id == 17) {
                         console.log("GALON");
+                    } else if (this.seleccionMedidas.id == 18) {
+                        console.log("CAJA");
                     }
                 }
             } catch (error) {
                 console.log(error);
             }
+        },
+        valorTotal() {
+            let total = this.valor * this.cantidad;
+            this.totalValor = total;
         }
     },
     created() {
@@ -843,6 +1325,7 @@ export default {
         this.cargarMaterial();
         this.cargarTipoMaterial();
         this.cargarCantidadEspecifica();
+        this.cargarDocumentoAsociado();
     }
 };
 </script>

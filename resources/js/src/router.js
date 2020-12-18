@@ -55,6 +55,12 @@ const router = new Router({
                     path: "/materialNuevo",
                     name: "materialnuevo",
                     component: () => import("./views/Bodega/MaterialNuevo.vue")
+                },
+                {
+                    path: "/stockMaterialIngresado",
+                    name: "stock",
+                    component: () =>
+                        import("./views/Bodega/StockMaterialIngresado.vue")
                 }
             ]
         },
