@@ -10,6 +10,7 @@ class MaterialInventarios extends Model
         'id_ubicaciones','id_servicios',
         'id_material_ing','id_material_tipo',
         'id_cant_esp','id_material_medida',
-        'material_cantidad','material_valor'
+        'material_cantidad','material_valor','material_cantidad_calculada',
+        'id_documento','n_documento'
     ];
 }

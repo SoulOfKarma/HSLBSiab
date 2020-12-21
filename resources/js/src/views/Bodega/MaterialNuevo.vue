@@ -124,7 +124,7 @@
                             />
                         </div>
                         <div class="vx-col w-1/8 mt-5">
-                            <h6>Total I.</h6>
+                            <h6>Total Segun Medida.</h6>
                             <br />
                             <vs-input
                                 disabled
@@ -373,6 +373,7 @@ export default {
             cantidad: 0,
             valor: 0,
             total: 0,
+            totalMaterial: 0,
             totalValor: 0,
             desMaterial: "",
             desTipoMaterial: "",
@@ -582,7 +583,7 @@ export default {
         },
         cargarMedidas() {
             axios
-                .get(this.localVal + "/api/Bodega/GetMedidas", {
+                .get(this.localVal + "/api/Bodega/GetMedidasFiltradas", {
                     headers: {
                         Authorization:
                             `Bearer ` + sessionStorage.getItem("token")
@@ -839,6 +840,7 @@ export default {
                         id_material_medida: this.seleccionMedidas.id,
                         material_cantidad: this.cantidad,
                         material_valor: this.valor,
+                        material_cantidad_calculada: this.totalMaterial,
                         id_documento: this.seleccionDocumento.id,
                         n_documento: this.ndocumento
                     };
@@ -964,7 +966,8 @@ export default {
                                 let res =
                                     (parseFloat(val) / 1000) * this.cantidad;
 
-                                this.total = res;
+                                this.total = res.toFixed(2) + " Litros";
+                                this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -999,7 +1002,8 @@ export default {
                                 let res =
                                     (parseFloat(val) / 1000) * this.cantidad;
 
-                                this.total = res;
+                                this.total = res.toFixed(2) + " Metros";
+                                this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1035,7 +1039,8 @@ export default {
                                 let res =
                                     parseFloat(val) * 0.0254 * this.cantidad;
 
-                                this.total = res;
+                                this.total = res.toFixed(2) + " Metros";
+                                this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1071,7 +1076,8 @@ export default {
                                 let res =
                                     (parseFloat(val) / 100) * this.cantidad;
 
-                                this.total = res;
+                                this.total = res.toFixed(2) + " Metros";
+                                this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1106,7 +1112,8 @@ export default {
 
                                 let res = parseFloat(val) * this.cantidad;
 
-                                this.total = res;
+                                this.total = res.toFixed(2) + " Kilos";
+                                this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1142,7 +1149,9 @@ export default {
                                 let res =
                                     (parseFloat(val) / 1000) * this.cantidad;
 
-                                this.total = res;
+                                this.total =
+                                    res.toFixed(2).toFixed(2) + " Kilos";
+                                this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1176,7 +1185,8 @@ export default {
                                 );
                                 let res = parseFloat(val) * this.cantidad;
 
-                                this.total = res;
+                                this.total = res.toFixed(2) + " Kilos";
+                                this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1184,10 +1194,15 @@ export default {
                         }
                     } else if (this.seleccionMedidas.id == 8) {
                         console.log("UN");
-                        this.total = this.cantidad;
+                        this.total = this.cantidad + " Unidades";
+                        this.totalMaterial = parseFloat(this.cantidad).toFixed(
+                            2
+                        );
                     } else if (this.seleccionMedidas.id == 9) {
                         console.log("TIRA");
-                        this.total = this.cantidad * 6;
+                        let res = this.cantidad * 6;
+                        this.total = res;
+                        this.totalMaterial = this.res.toFixed(2);
                     } else if (this.seleccionMedidas.id == 10) {
                         console.log("SACO");
                         try {
@@ -1217,7 +1232,8 @@ export default {
 
                                 let res = parseFloat(val) * this.cantidad;
 
-                                this.total = res;
+                                this.total = res.toFixed(2) + " Kilos";
+                                this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1253,7 +1269,8 @@ export default {
                                 let res =
                                     (parseFloat(val) / 1000) * this.cantidad;
 
-                                this.total = res;
+                                this.total = res.toFixed(2) + " Litros";
+                                this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1288,8 +1305,8 @@ export default {
 
                                 let res =
                                     parseFloat(val) * 0.0254 * this.cantidad;
-
-                                this.total = res;
+                                res = res.toFixed(2);
+                                this.total = res.toFixed(2);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1299,14 +1316,221 @@ export default {
                         console.log("M3");
                     } else if (this.seleccionMedidas.id == 14) {
                         console.log("LT");
+
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res = parseFloat(val) * this.cantidad;
+
+                                this.total = res.toFixed(2) + " Litros";
+                                this.totalMaterial = res.toFixed(2);
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 15) {
                         console.log("TAMBOR");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res = parseFloat(val) * this.cantidad;
+
+                                this.total = res.toFixed(2) + " Litros";
+                                this.totalMaterial = res.toFixed(2);
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 16) {
                         console.log("BOLSA");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res = parseFloat(val) * this.cantidad;
+
+                                this.total = res.toFixed(2) + " Kilos";
+                                this.totalMaterial = res.toFixed(2);
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 17) {
                         console.log("GALON");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+                                let res = parseFloat(val) * 3.78541;
+                                res = res * this.cantidad;
+
+                                this.total = res.toFixed(2) + " Litros";
+                                this.totalMaterial = res.toFixed(2);
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 18) {
                         console.log("CAJA");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res = parseFloat(val) * this.cantidad;
+
+                                this.total = res.toFixed(2) + " Unidades";
+                                this.totalMaterial = res.toFixed(2);
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
+                    } else if (this.seleccionMedidas.id == 20) {
+                        console.log("PLANCHA");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                this.$vs.notify({
+                                    time: 3000,
+                                    title: "Error ",
+                                    text:
+                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                                this.total = 0;
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+
+                                let res = parseFloat(val) * this.cantidad;
+
+                                this.total = res.toFixed(2) + " Metros";
+                                this.totalMaterial = res.toFixed(2);
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     }
                 }
             } catch (error) {

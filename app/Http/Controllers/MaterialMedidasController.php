@@ -12,4 +12,17 @@ class MaterialMedidasController extends Controller
         $get_all = material_medidas::all();
         return $get_all;
     }
+
+    public function filtroMedidas(){
+        try {
+            $data = [12,13];
+            $get_all = material_medidas::select('material_medidas.*')
+            ->whereNotIn('id',$data)
+            ->get();
+            return $get_all;
+            
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
 }
