@@ -1185,7 +1185,7 @@ export default {
                                 );
                                 let res = parseFloat(val) * this.cantidad;
 
-                                this.total = res.toFixed(2) + " Kilos";
+                                this.total = res.toFixed(2) + " Metros";
                                 this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
@@ -1201,7 +1201,7 @@ export default {
                     } else if (this.seleccionMedidas.id == 9) {
                         console.log("TIRA");
                         let res = this.cantidad * 6;
-                        this.total = res;
+                        this.total = res + " Metros";
                         this.totalMaterial = this.res.toFixed(2);
                     } else if (this.seleccionMedidas.id == 10) {
                         console.log("SACO");
@@ -1427,34 +1427,11 @@ export default {
                         console.log("GALON");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
-                            if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
-                            ) {
-                                this.$vs.notify({
-                                    time: 3000,
-                                    title: "Error ",
-                                    text:
-                                        "Debe seleccionar o ingresar un numero en el contenido",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                                this.total = 0;
-                            } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-                                let res = parseFloat(val) * 3.78541;
-                                res = res * this.cantidad;
 
-                                this.total = res.toFixed(2) + " Litros";
-                                this.totalMaterial = res.toFixed(2);
-                            }
+                            let res = this.cantidad * 3.78541;
+
+                            this.total = res.toFixed(2) + " Litros";
+                            this.totalMaterial = res.toFixed(2);
                         } catch (error) {
                             console.log("Orror");
                             console.log(error);

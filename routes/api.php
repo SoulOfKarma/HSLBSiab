@@ -32,6 +32,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Bodega/GetTipoMaterial', ['middleware' => 'cors', 'uses' => 'MaterialTipoController@getAll']);
     Route::get('/Bodega/GetCantEsp', ['middleware' => 'cors', 'uses' => 'MaterialCantidadesEspecificasController@getAll']);
     Route::get('/Bodega/GetInventario', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@getAll']);
+    Route::get('/Bodega/GetStock', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@getListadoStock']);
+    Route::get('/Bodega/GetTotalStock', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@getStockTotal']);
     Route::get('/Bodega/GetDocumentos', ['middleware' => 'cors', 'uses' => 'DocumentosAsociadosController@getAll']);
     //Posts 
     Route::post('/Bodega/PostMaterial', ['middleware' => 'cors', 'uses' => 'MaterialIngresadoController@PostMaterial']);

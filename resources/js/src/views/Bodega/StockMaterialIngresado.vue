@@ -5,6 +5,66 @@
                 Agente:
                 {{ nombre }} - {{ run }}
             </vs-alert>
+            <vs-table :data="listadoStock" search max-items="5" pagination>
+                <template slot="thead">
+                    <vs-th>ID</vs-th>
+                    <vs-th>Ubicacion</vs-th>
+                    <vs-th>Servicio</vs-th>
+                    <vs-th>Material</vs-th>
+                    <vs-th>Tipo Material</vs-th>
+                    <vs-th>Contenido</vs-th>
+                    <vs-th>Medida</vs-th>
+                    <vs-th>Cantidad</vs-th>
+                    <vs-th>Valor</vs-th>
+                    <vs-th>Tipo Documento</vs-th>
+                    <vs-th>N° Documento</vs-th>
+                </template>
+
+                <template slot-scope="{ data }">
+                    <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                        <vs-td :data="data[indextr].id">
+                            {{ data[indextr].id }}
+                        </vs-td>
+
+                        <vs-td :data="data[indextr].descripcion_ubicacion">
+                            {{ data[indextr].descripcion_ubicacion }}
+                        </vs-td>
+
+                        <vs-td :data="data[indextr].descripcion_servicio">
+                            {{ data[indextr].descripcion_servicio }}
+                        </vs-td>
+
+                        <vs-td :data="data[indextr].descripcion_material">
+                            {{ data[indextr].descripcion_material }}
+                        </vs-td>
+                        <vs-td :data="data[indextr].descripcion_tipo_material">
+                            {{ data[indextr].descripcion_tipo_material }}
+                        </vs-td>
+                        <vs-td
+                            :data="
+                                data[indextr].descripcion_cantidad_especifica
+                            "
+                        >
+                            {{ data[indextr].descripcion_cantidad_especifica }}
+                        </vs-td>
+                        <vs-td :data="data[indextr].descripcion_medidas">
+                            {{ data[indextr].descripcion_medidas }}
+                        </vs-td>
+                        <vs-td :data="data[indextr].material_cantidad">
+                            {{ data[indextr].material_cantidad }}
+                        </vs-td>
+                        <vs-td :data="data[indextr].material_valor">
+                            ${{ data[indextr].material_valor }}
+                        </vs-td>
+                        <vs-td :data="data[indextr].descripcion_documento">
+                            {{ data[indextr].descripcion_documento }}
+                        </vs-td>
+                        <vs-td :data="data[indextr].n_documento">
+                            {{ data[indextr].n_documento }}
+                        </vs-td>
+                    </vs-tr>
+                </template>
+            </vs-table>
         </vx-card>
     </div>
 </template>
@@ -47,12 +107,31 @@ export default {
     },
     data() {
         return {
+            listadoStock: [],
             nombre:
                 sessionStorage.getItem("nombre") +
                 " " +
                 sessionStorage.getItem("apellido"),
-            run: sessionStorage.getItem("run")
+            run: sessionStorage.getItem("run"),
+            localVal: process.env.MIX_APP_URL
         };
+    },
+    methods: {
+        cargarStock() {
+            axios
+                .get(this.localVal + "/api/Bodega/GetStock", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoStock = res.data;
+                });
+        }
+    },
+    created() {
+        this.cargarStock();
     }
 };
 </script>

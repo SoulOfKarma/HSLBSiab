@@ -34,6 +34,12 @@ export default [
                 icon: "HomeIcon"
             },
             {
+                url: "/stockTotal",
+                name: "Stock Total",
+                slug: "Stock",
+                icon: "HomeIcon"
+            },
+            {
                 url: "/listadoSolicitudes",
                 name: "Listado Solicitudes",
                 slug: "listadosolicitudes",
