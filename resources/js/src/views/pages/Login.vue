@@ -130,12 +130,10 @@ export default {
                     var sw = 0;
                     var pr = 0;
                     var permiso_usuario = "";
+                    let objeto = { rut: this.run, password: this.password };
                     await axios
-                        .post(this.localVal + "/api/Login/GetUsers", {
-                            rut: this.run,
-                            password: this.password
-                        })
-                        .then(function(response) {
+                        .post(this.localVal + "/api/Login/GetUsers", objeto)
+                        .then(response => {
                             if (response.data.length > 0) {
                                 if (response.data != 1) {
                                     sessionStorage.setItem(
@@ -171,7 +169,9 @@ export default {
                                 "token",
                                 response.data.token
                             );
-                        });
+                        })
+                        .catch(error => console.log(error));
+                    console.log(sw);
                     if (sw == 1) {
                         await axios
                             .post(this.localVal + "/api/Login/getpr", {
@@ -230,22 +230,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss">
-#page-login {
-    .social-login-buttons {
-        .bg-facebook {
-            background-color: #1551b1;
-        }
-        .bg-twitter {
-            background-color: #00aaff;
-        }
-        .bg-google {
-            background-color: #4285f4;
-        }
-        .bg-github {
-            background-color: #333;
-        }
-    }
-}
-</style>

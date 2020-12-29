@@ -236,7 +236,7 @@
                 <div class="vx-row">
                     <div class="vx-col sm:w-full w-full">
                         <vs-button
-                            color="success"
+                            color="warning"
                             type="filled"
                             class="w-full m-2"
                             @click="guardarTipoMaterial(desTipoMaterial)"

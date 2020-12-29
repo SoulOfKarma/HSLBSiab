@@ -17,9 +17,9 @@ use Illuminate\Http\Request;
     return $request->user();
 }); */
 
-Route::post('/Login/Salir', ['middleware' => 'cors', 'uses' => 'LoginController@salir']);
-Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
-Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);
+Route::post('/Login/Salir', 'LoginController@salir');
+Route::post('/Login/GetUsers', 'LoginController@getUsuarios');
+Route::post('/Login/getpr', 'LoginController@adminPr');
 Route::post('/auth/login','LoginController@login');
 
 Route::group(['middleware' => ['jwt.verify']], function() {

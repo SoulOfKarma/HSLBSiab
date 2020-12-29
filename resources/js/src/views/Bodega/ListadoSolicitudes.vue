@@ -5,6 +5,49 @@
                 Agente:
                 {{ nombre }} - {{ run }}
             </vs-alert>
+
+            <vs-table search :data="listadoTickets" max-items="15" pagination>
+                <template slot="thead">
+                    <vs-th>N° Solicitud</vs-th>
+                    <vs-th>Persona Solicitante</vs-th>
+                    <vs-th>Titulo</vs-th>
+                    <vs-th>Descripcion</vs-th>
+                    <vs-th>Estado</vs-th>
+                    <vs-th>Opciones</vs-th>
+                </template>
+
+                <template slot-scope="{ data }">
+                    <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                        <vs-td :data="data[indextr].id">{{
+                            data[indextr].nticket
+                        }}</vs-td>
+
+                        <vs-td :data="data[indextr].id_user">{{
+                            data[indextr].nombre + " " + data[indextr].apellido
+                        }}</vs-td>
+
+                        <vs-td :data="data[indextr].tituloP">{{
+                            data[indextr].tituloP
+                        }}</vs-td>
+
+                        <vs-td
+                            :data="data[indextr].descripcionP"
+                            v-html="data[indextr].descripcionP"
+                            >{{ data[indextr].descripcionP }}</vs-td
+                        >
+                        <vs-td :data="data[indextr].descripcionP">{{
+                            data[indextr].descripcionEstado
+                        }}</vs-td>
+                        <vs-td :data="data[indextr].id">
+                            <info-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="informacionGeneral(data[indextr].id)"
+                            ></info-icon
+                        ></vs-td>
+                    </vs-tr>
+                </template>
+            </vs-table>
         </vx-card>
     </div>
 </template>
@@ -51,8 +94,63 @@ export default {
                 sessionStorage.getItem("nombre") +
                 " " +
                 sessionStorage.getItem("apellido"),
-            run: sessionStorage.getItem("run")
+            run: sessionStorage.getItem("run"),
+            localVal: process.env.MIX_APP_URL,
+            externalVal: process.env.MIX_APP_URL_EXTERNA,
+            listadoTickets: []
         };
+    },
+    methods: {
+        informacionGeneral(id) {
+            console.log(id);
+        },
+        cargarSolicitudesExternas() {
+            axios
+                .get(this.externalVal + "/api/Agente/ticketsAll", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token_externo")
+                    }
+                })
+                .then(res => {
+                    this.listadoTickets = res.data;
+                });
+        },
+        cargarTokenExterno() {
+            let objeto = { run: "18499714-2", password: "1849" };
+            axios
+                .post(this.externalVal + "/api/auth/login", objeto)
+                .then(res => {
+                    sessionStorage.setItem("token_externo", res.data.token);
+                })
+                .catch(error => console.log(error));
+            this.cargarSolicitudesExternas();
+        },
+        validarTokenExterno() {
+            let tokenexterno = sessionStorage.getItem("token_externo");
+            if (tokenexterno == null || tokenexterno == "") {
+                console.log("Solicitar Nuevo token");
+                this.cargarTokenExterno();
+            } else {
+                axios
+                    .post(this.externalVal + "/api/auth/check", {
+                        token: sessionStorage.getItem("token_externo") !== ""
+                    })
+                    .then(res => {
+                        let validador = res.data.success;
+                        if (validador == true) {
+                            console.log("Se cargara Listado");
+                            this.cargarSolicitudesExternas();
+                        } else {
+                            console.log("Se pedira token nuevo");
+                            this.cargarTokenExterno();
+                        }
+                    });
+            }
+        }
+    },
+    created() {
+        this.validarTokenExterno();
     }
 };
 </script>
