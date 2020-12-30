@@ -23,6 +23,17 @@ class MaterialInventariosController extends Controller
         
     }
 
+    public function TraerMaterial($id){
+        try {
+            $get_all = MaterialInventarios::select('material_inventarios.*')
+            ->where('material_inventarios.id', $id)
+            ->get();
+          return $get_all;
+        }catch (\Throwable $th){
+            return false;
+        }
+    }
+
     public function getListadoStock(){
         $get_all = MaterialInventarios::select('material_inventarios.id','material_inventarios.n_documento','material_ubicaciones.descripcion_ubicacion','material_servicios.descripcion_servicio',
         'material_ingresados.descripcion_material','material_tipos.descripcion_tipo_material','material_cantidades_especificas.descripcion_cantidad_especifica',

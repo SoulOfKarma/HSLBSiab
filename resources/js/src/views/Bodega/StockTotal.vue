@@ -41,7 +41,6 @@
                     <vs-th>Tipo Material</vs-th>
                     <vs-th>Total Unidades Stock</vs-th>
                     <vs-th>Total Medida Calculada</vs-th>
-                    <vs-th>Opciones</vs-th>
                 </template>
 
                 <template slot-scope="{ data }">
@@ -62,13 +61,6 @@
                         </vs-td>
                         <vs-td :data="data[indextr].total_cal">
                             {{ data[indextr].total_cal }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].id">
-                            <info-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="informacionGeneral(data[indextr].id)"
-                            ></info-icon>
                         </vs-td>
                     </vs-tr>
                 </template>

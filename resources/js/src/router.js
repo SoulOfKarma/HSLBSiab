@@ -66,6 +66,18 @@ const router = new Router({
                     path: "/stockTotal",
                     name: "stockTotal",
                     component: () => import("./views/Bodega/StockTotal.vue")
+                },
+                {
+                    path: "/seguimientoMaterial/:id",
+                    name: "seguimientoMaterial",
+                    component: () =>
+                        import("./views/Bodega/SeguimientoMaterial.vue")
+                },
+                {
+                    path: "/modificarMaterial/:id",
+                    name: "modificarMaterial",
+                    component: () =>
+                        import("./views/Bodega/ModificarMaterialIngresado.vue")
                 }
             ]
         },

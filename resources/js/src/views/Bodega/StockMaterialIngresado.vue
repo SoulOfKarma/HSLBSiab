@@ -98,6 +98,11 @@
                                 class="custom-class"
                                 @click="informacionGeneral(data[indextr].id)"
                             ></info-icon>
+                            <plus-circle-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="modificarMaterial(data[indextr].id)"
+                            ></plus-circle-icon>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -187,8 +192,21 @@ export default {
         };
     },
     methods: {
+        modificarMaterial(id) {
+            this.$router.push({
+                name: "modificarMaterial",
+                params: {
+                    id: `${id}`
+                }
+            });
+        },
         informacionGeneral(id) {
-            console.log(id);
+            this.$router.push({
+                name: "seguimientoMaterial",
+                params: {
+                    id: `${id}`
+                }
+            });
         },
         cargarStock() {
             axios
