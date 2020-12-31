@@ -102,7 +102,12 @@ export default {
     },
     methods: {
         informacionGeneral(id) {
-            console.log(id);
+            this.$router.push({
+                name: "entregaMaterialNSolicitud",
+                params: {
+                    id: `${id}`
+                }
+            });
         },
         cargarSolicitudesExternas() {
             axios
