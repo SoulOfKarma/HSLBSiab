@@ -108,8 +108,10 @@
                             <vs-input
                                 disabled
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.ubicacion"
+                                placeholder=""
+                                v-model="
+                                    materialSeleccion.descripcion_ubicacion
+                                "
                             />
                             <br />
                         </div>
@@ -119,8 +121,8 @@
                             <vs-input
                                 disabled
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.servicio"
+                                placeholder=""
+                                v-model="materialSeleccion.descripcion_servicio"
                             />
                             <br />
                         </div>
@@ -130,8 +132,8 @@
                             <vs-input
                                 disabled
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.material"
+                                placeholder=""
+                                v-model="materialSeleccion.descripcion_material"
                             />
                             <br />
                         </div>
@@ -141,8 +143,10 @@
                             <vs-input
                                 disabled
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.tipo_material"
+                                placeholder=""
+                                v-model="
+                                    materialSeleccion.descripcion_tipo_material
+                                "
                             />
                             <br />
                         </div>
@@ -152,8 +156,10 @@
                             <vs-input
                                 disabled
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.contenido"
+                                placeholder=""
+                                v-model="
+                                    materialSeleccion.descripcion_cantidad_especifica
+                                "
                             />
                             <br />
                         </div>
@@ -163,8 +169,8 @@
                             <vs-input
                                 disabled
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.medida"
+                                placeholder=""
+                                v-model="materialSeleccion.descripcion_medidas"
                             />
                             <br />
                         </div>
@@ -173,8 +179,9 @@
                             <br />
                             <vs-input
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.cantidad"
+                                placeholder="0"
+                                v-model="materialSeleccion.material_cantidad"
+                                @keypress="isNumber($event)"
                             />
                             <br />
                         </div>
@@ -184,8 +191,8 @@
                             <vs-input
                                 disabled
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.valor"
+                                placeholder=""
+                                v-model="materialSeleccion.material_valor"
                             />
                             <br />
                         </div>
@@ -195,8 +202,10 @@
                             <vs-input
                                 disabled
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.documento"
+                                placeholder=""
+                                v-model="
+                                    materialSeleccion.descripcion_documento
+                                "
                             />
                             <br />
                         </div>
@@ -206,8 +215,8 @@
                             <vs-input
                                 disabled
                                 class="inputx w-full"
-                                placeholder="Disabled"
-                                v-model="materialSeleccion.ndocumento"
+                                placeholder=""
+                                v-model="materialSeleccion.n_documento"
                             />
                             <br />
                         </div>
@@ -216,8 +225,8 @@
                                 class="w-full"
                                 color="primary"
                                 type="filled"
-                                @click="volver"
-                                >Volver</vs-button
+                                @click="AgregarItemListado"
+                                >Agregar Item Al Listado</vs-button
                             >
                         </div>
                     </div>
@@ -292,17 +301,19 @@ export default {
             run: sessionStorage.getItem("run"),
             materialSeleccion: {
                 id: 0,
-                id_ubicaciones: "",
-                id_servicios: "",
-                id_material_ing: "",
-                id_material_tipo: "",
-                id_cant_esp: "",
-                id_material_medida: "",
-                material_cantidad: "",
-                material_valor: "",
-                id_documento: "",
+                descripcion_ubicacion: "",
+                descripcion_servicio: "",
+                descripcion_material: "",
+                descripcion_tipo_material: "",
+                descripcion_cantidad_especifica: "",
+                descripcion_medidas: "",
+                material_cantidad: 1,
+                material_valor: 0,
+                descripcion_documento: "",
                 n_documento: ""
             },
+            valCantidad: 0,
+            valCanFinal: 0,
             listadoInventario: [],
             listadoInventarioData: [],
 
@@ -310,32 +321,58 @@ export default {
         };
     },
     methods: {
-        handleSelected() {
-            console.log(this.selected);
-            this.materialSeleccion.id = this.selected.id;
-            this.materialSeleccion.id_ubicaciones = this.selected.id_ubicaciones;
-            this.materialSeleccion.id_servicios = this.selected.id_servicios;
-            this.materialSeleccion.id_material_ing = this.selected.id_material_ing;
-            this.materialSeleccion.id_material_tipo = this.selected.id_material_tipo;
-            this.materialSeleccion.id_cant_esp = this.selected.id_cant_esp;
-            this.materialSeleccion.id_material_medida = this.selected.id_material_medida;
-            this.materialSeleccion.material_cantidad = this.selected.material_cantidad;
-            this.materialSeleccion.material_valor = this.selected.material_valor;
-            this.materialSeleccion.id_documento = this.selected.id_documento;
-            this.materialSeleccion.n_documento = this.selected.n_documento;
+        validarCantidad(evt) {
+            if (this.valCantidad < this.materialSeleccion.material_cantidad) {
+                this.materialSeleccion.material_cantidad = 1;
+            } else {
+                this.valCanFinal = this.materialSeleccion.material_cantidad;
+            }
+        },
+        AgregarItemListado() {
+            console.log("ola");
+        },
+        handleSelected(tr) {
+            this.materialSeleccion.id = tr.id;
+            this.materialSeleccion.descripcion_ubicacion =
+                tr.descripcion_ubicacion;
+            this.materialSeleccion.descripcion_servicio =
+                tr.descripcion_servicio;
+            this.materialSeleccion.descripcion_material =
+                tr.descripcion_material;
+            this.materialSeleccion.descripcion_tipo_material =
+                tr.descripcion_tipo_material;
+            this.materialSeleccion.descripcion_cantidad_especifica =
+                tr.descripcion_cantidad_especifica;
+            this.materialSeleccion.descripcion_medidas = tr.descripcion_medidas;
+            this.materialSeleccion.material_cantidad = tr.material_cantidad;
+            this.materialSeleccion.material_valor = tr.material_valor;
+            this.materialSeleccion.descripcion_documento =
+                tr.descripcion_documento;
+            this.materialSeleccion.n_documento = tr.n_documento;
+            this.valCantidad = tr.material_cantidad;
         },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
             if (
-                charCode > 31 &&
-                (charCode < 48 || charCode > 57) &&
-                charCode !== 46
+                (charCode > 31 &&
+                    (charCode < 48 || charCode > 57) &&
+                    charCode !== 46) ||
+                this.valCantidad < this.materialSeleccion.material_cantidad
             ) {
+                console.log(this.materialSeleccion.material_cantidad);
                 evt.preventDefault();
+                this.materialSeleccion.material_cantidad = 1;
             } else {
+                this.valCanFinal = this.materialSeleccion.material_cantidad;
                 return true;
             }
+
+            /*  if (this.valCantidad < this.materialSeleccion.material_cantidad) {
+                this.materialSeleccion.material_cantidad = 0;
+            } else {
+                this.valCanFinal = this.materialSeleccion.material_cantidad;
+            } */
         },
         volver() {
             router.back();

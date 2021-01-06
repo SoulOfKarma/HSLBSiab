@@ -1560,6 +1560,7 @@ export default {
                     b.push(value);
                 }
             });
+
             this.seleccionUbicacion.id = b[0].id;
             this.seleccionUbicacion.descripcion_ubicacion =
                 b[0].descripcion_ubicacion;

@@ -215,13 +215,17 @@ export default {
         cargarMaterial() {
             let id = this.$route.params.id;
             axios
-                .get(this.localVal + `/api/Bodega/TraerMaterial/${id}`, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
+                .get(
+                    this.localVal + `/api/Bodega/TraerMaterialEspecifico/${id}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
                     }
-                })
+                )
                 .then(res => {
+                    console.log(res.data);
                     this.materialSeleccion.id = res.data[0].id;
                     this.materialSeleccion.ubicacion =
                         res.data[0].descripcion_ubicacion;
