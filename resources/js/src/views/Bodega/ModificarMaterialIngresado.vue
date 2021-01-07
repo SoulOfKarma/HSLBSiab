@@ -400,6 +400,7 @@ export default {
         popActiveTMaterial: false,
         popActiveCantidadEsp: false
     }),
+    computed: {},
     methods: {
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
@@ -909,6 +910,7 @@ export default {
                     this.seleccionMaterial.id == 0 ||
                     this.seleccionMaterial.id == null
                 ) {
+                    console.log(this.seleccionMaterial);
                     this.$vs.notify({
                         time: 3000,
                         title: "Error ",
@@ -1549,108 +1551,114 @@ export default {
             this.totalValor = total;
         },
         cargarDataEspecifica(listado) {
-            console.log(listado);
-            var idGen = listado[0].id_ubicaciones;
-            let c = this.listadoUbicacionData;
-            let b = [];
-            let a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGen) {
-                    b.push(value);
-                }
-            });
+            setTimeout(() => {
+                console.log(listado);
+                var idGen = listado[0].id_ubicaciones;
+                let c = this.listadoUbicacionData;
+                let b = [];
+                let a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGen) {
+                        b.push(value);
+                    }
+                });
 
-            this.seleccionUbicacion.id = b[0].id;
-            this.seleccionUbicacion.descripcion_ubicacion =
-                b[0].descripcion_ubicacion;
+                this.seleccionUbicacion.id = b[0].id;
+                this.seleccionUbicacion.descripcion_ubicacion =
+                    b[0].descripcion_ubicacion;
 
-            idGen = listado[0].id_servicios;
-            c = this.listadoServicioData;
-            b = [];
-            a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGen) {
-                    b.push(value);
-                }
-            });
-            this.seleccionServicio.id = b[0].id;
-            this.seleccionServicio.descripcion_servicio =
-                b[0].descripcion_servicio;
+                idGen = listado[0].id_servicios;
+                c = this.listadoServicioData;
+                b = [];
+                a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGen) {
+                        b.push(value);
+                    }
+                });
 
-            idGen = listado[0].id_material_ing;
-            c = this.listadoMaterialData;
-            b = [];
-            a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGen) {
-                    b.push(value);
-                }
-            });
-            this.seleccionMaterial.id = b[0].id_material_ing;
-            this.seleccionMaterial.id = b[0].descripcion_material;
+                this.seleccionServicio.id = b[0].id;
+                this.seleccionServicio.descripcion_servicio =
+                    b[0].descripcion_servicio;
 
-            idGen = listado[0].id_material_tipo;
-            c = this.listadoTipoMaterialData;
-            b = [];
-            a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGen) {
-                    b.push(value);
-                }
-            });
-            this.seleccionTipoMaterial.id = b[0].id;
-            this.seleccionTipoMaterial.descripcion_tipo_material =
-                b[0].descripcion_tipo_material;
+                idGen = listado[0].id_material_ing;
 
-            idGen = listado[0].id_cant_esp;
-            c = this.listadoCantEspData;
-            b = [];
-            a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGen) {
-                    b.push(value);
-                }
-            });
-            this.seleccionCantEsp.id = b[0].id;
-            this.seleccionCantEsp.descripcion_cantidad_especifica =
-                b[0].descripcion_cantidad_especifica;
+                c = this.listadoMaterialData;
+                b = [];
+                a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGen) {
+                        b.push(value);
+                    }
+                });
 
-            idGen = listado[0].id_material_medida;
-            c = this.listadoMedidasData;
-            b = [];
-            a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGen) {
-                    b.push(value);
-                }
-            });
-            this.seleccionMedidas.id = b[0].id;
-            this.seleccionMedidas.descripcion_medidas =
-                b[0].descripcion_medidas;
+                this.seleccionMaterial.id = listado[0].id_material_ing;
+                this.seleccionMaterial.descripcion_material =
+                    b[0].descripcion_material;
 
-            this.cantidad = listado[0].material_cantidad;
-            this.valor = listado[0].material_valor;
-            this.ndocumento = listado[0].n_documento;
+                idGen = listado[0].id_material_tipo;
+                c = this.listadoTipoMaterialData;
+                b = [];
+                a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGen) {
+                        b.push(value);
+                    }
+                });
+                this.seleccionTipoMaterial.id = b[0].id;
+                this.seleccionTipoMaterial.descripcion_tipo_material =
+                    b[0].descripcion_tipo_material;
 
-            idGen = listado[0].id_documento;
-            c = this.listadoDocumentoAsociado;
-            b = [];
-            a = 0;
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == idGen) {
-                    b.push(value);
-                }
-            });
-            this.seleccionDocumento.id = b[0].id;
-            this.seleccionDocumento.descripcion_documento =
-                b[0].descripcion_documento;
+                idGen = listado[0].id_cant_esp;
+                c = this.listadoCantEspData;
+                b = [];
+                a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGen) {
+                        b.push(value);
+                    }
+                });
+                this.seleccionCantEsp.id = b[0].id;
+                this.seleccionCantEsp.descripcion_cantidad_especifica =
+                    b[0].descripcion_cantidad_especifica;
+
+                idGen = listado[0].id_material_medida;
+                c = this.listadoMedidasData;
+                b = [];
+                a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGen) {
+                        b.push(value);
+                    }
+                });
+                this.seleccionMedidas.id = b[0].id;
+                this.seleccionMedidas.descripcion_medidas =
+                    b[0].descripcion_medidas;
+
+                this.cantidad = listado[0].material_cantidad;
+                this.valor = listado[0].material_valor;
+                this.ndocumento = listado[0].n_documento;
+
+                idGen = listado[0].id_documento;
+                c = this.listadoDocumentoAsociado;
+                b = [];
+                a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == idGen) {
+                        b.push(value);
+                    }
+                });
+                this.seleccionDocumento.id = b[0].id;
+                this.seleccionDocumento.descripcion_documento =
+                    b[0].descripcion_documento;
+            }, 2000);
         }
     },
     created() {

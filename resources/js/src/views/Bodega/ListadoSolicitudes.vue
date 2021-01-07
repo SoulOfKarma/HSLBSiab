@@ -6,48 +6,60 @@
                 {{ nombre }} - {{ run }}
             </vs-alert>
 
-            <vs-table search :data="listadoTickets" max-items="15" pagination>
-                <template slot="thead">
-                    <vs-th>N° Solicitud</vs-th>
-                    <vs-th>Persona Solicitante</vs-th>
-                    <vs-th>Titulo</vs-th>
-                    <vs-th>Descripcion</vs-th>
-                    <vs-th>Estado</vs-th>
-                    <vs-th>Opciones</vs-th>
+            <div class="vx-row mb-12">
+                <div class="vx-col w-1/2 mt-5"></div>
+                <div class="vx-col w-1/4 mt-5"></div>
+                <div class="vx-col w-1/4 mt-5">
+                    <h6>Buscar</h6>
+                    <br />
+                    <vs-input
+                        id="basicInput"
+                        placeholder="Ej. 5"
+                        v-model="searchTerm"
+                        class="w-full"
+                    />
+                </div>
+            </div>
+
+            <vue-good-table
+                :columns="columns"
+                :rows="listadoTickets"
+                :search-options="{
+                    enabled: true,
+                    externalQuery: searchTerm
+                }"
+                :pagination-options="{
+                    enabled: true,
+                    perPage: pageLength
+                }"
+            >
+                <template slot="table-row" slot-scope="props">
+                    <!-- Column: Name -->
+                    <span
+                        v-if="props.column.field === 'fullName'"
+                        class="text-nowrap"
+                    >
+                    </span>
+                    <!-- Column: Descripcion -->
+                    <span v-if="props.column.field == 'descripcionP'">
+                        <span v-html="props.row.descripcionP"></span>
+                    </span>
+
+                    <!-- Column: Action -->
+                    <span v-else-if="props.column.field === 'action'">
+                        <info-icon
+                            size="1.5x"
+                            class="custom-class"
+                            @click="informacionGeneral(props.row.id)"
+                        ></info-icon>
+                    </span>
+
+                    <!-- Column: Common -->
+                    <span v-else>
+                        {{ props.formattedRow[props.column.field] }}
+                    </span>
                 </template>
-
-                <template slot-scope="{ data }">
-                    <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                        <vs-td :data="data[indextr].id">{{
-                            data[indextr].nticket
-                        }}</vs-td>
-
-                        <vs-td :data="data[indextr].id_user">{{
-                            data[indextr].nombre + " " + data[indextr].apellido
-                        }}</vs-td>
-
-                        <vs-td :data="data[indextr].tituloP">{{
-                            data[indextr].tituloP
-                        }}</vs-td>
-
-                        <vs-td
-                            :data="data[indextr].descripcionP"
-                            v-html="data[indextr].descripcionP"
-                            >{{ data[indextr].descripcionP }}</vs-td
-                        >
-                        <vs-td :data="data[indextr].descripcionP">{{
-                            data[indextr].descripcionEstado
-                        }}</vs-td>
-                        <vs-td :data="data[indextr].id">
-                            <info-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="informacionGeneral(data[indextr].id)"
-                            ></info-icon
-                        ></vs-td>
-                    </vs-tr>
-                </template>
-            </vs-table>
+            </vue-good-table>
         </vx-card>
     </div>
 </template>
@@ -66,6 +78,21 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
 import Vuesax from "vuesax";
+// import the styles
+import "vue-good-table/dist/vue-good-table.css";
+import {
+    BAvatar,
+    BBadge,
+    BPagination,
+    BFormSelect,
+    BDropdown,
+    BDropdownItem
+} from "bootstrap-vue";
+import { BFormInput, BRow, BCol, BFormGroup } from "bootstrap-vue";
+import { VueGoodTable } from "vue-good-table";
+import VueGoodTablePlugin from "vue-good-table";
+
+Vue.use(VueGoodTablePlugin);
 
 Vue.use(Vuesax, {
     theme: {
@@ -86,7 +113,20 @@ export default {
         Trash2Icon,
         UploadIcon,
         CornerDownRightIcon,
-        quillEditor
+        quillEditor,
+        VueGoodTable,
+        BAvatar,
+        BBadge,
+        BPagination,
+        BFormGroup,
+        BFormInput,
+        BFormSelect,
+        BDropdown,
+        BDropdownItem,
+        BFormInput,
+        BFormGroup,
+        BRow,
+        BCol
     },
     data() {
         return {
@@ -97,7 +137,37 @@ export default {
             run: sessionStorage.getItem("run"),
             localVal: process.env.MIX_APP_URL,
             externalVal: process.env.MIX_APP_URL_EXTERNA,
-            listadoTickets: []
+            listadoTickets: [],
+            pageLength: 10,
+            dir: false,
+            searchTerm: "",
+            columns: [
+                {
+                    label: "Numero Solicitud",
+                    field: "nticket"
+                },
+                {
+                    label: "Persona Solicitante",
+                    field: "nombre"
+                },
+                {
+                    label: "Titulo",
+                    field: "tituloP"
+                },
+                {
+                    label: "Descripcion Problema",
+                    field: "descripcionP",
+                    html: true
+                },
+                {
+                    label: "Estado",
+                    field: "descripcionEstado"
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ]
         };
     },
     methods: {

@@ -341,7 +341,7 @@ export default {
                     field: "n_documento"
                 },
                 {
-                    label: "Action",
+                    label: "Opciones",
                     field: "action"
                 }
             ],

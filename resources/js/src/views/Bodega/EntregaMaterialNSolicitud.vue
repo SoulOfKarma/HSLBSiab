@@ -7,97 +7,43 @@
                         Entrega Material - Agente:
                         {{ nombre }} - {{ run }}
                     </vs-alert>
-                    <vs-table
-                        :data="listadoInventario"
-                        search
-                        max-items="15"
-                        pagination
-                        v-model="selected"
-                        @selected="handleSelected"
-                    >
-                        <template slot="thead">
-                            <vs-th>ID</vs-th>
-                            <vs-th>Ubicacion</vs-th>
-                            <vs-th>Servicio</vs-th>
-                            <vs-th>Material</vs-th>
-                            <vs-th>Tipo Material</vs-th>
-                            <vs-th>Contenido</vs-th>
-                            <vs-th>Medida</vs-th>
-                            <vs-th>Cantidad</vs-th>
-                            <vs-th>Valor</vs-th>
-                            <vs-th>Tipo Documento</vs-th>
-                            <vs-th>N° Documento</vs-th>
-                        </template>
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/2 mt-5"></div>
+                        <div class="vx-col w-1/4 mt-5"></div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>Buscar</h6>
+                            <vs-input
+                                id="basicInput"
+                                placeholder="Ej. 5"
+                                v-model="searchTerm"
+                                class="w-full"
+                                @keyup.enter="buscarPorId()"
+                            />
+                        </div>
+                    </div>
 
-                        <template slot-scope="{ data }">
-                            <vs-tr
-                                :data="tr"
-                                :key="indextr"
-                                v-for="(tr, indextr) in data"
-                            >
-                                <vs-td :data="data[indextr].id">
-                                    {{ data[indextr].id }}
-                                </vs-td>
-
-                                <vs-td
-                                    :data="data[indextr].descripcion_ubicacion"
-                                >
-                                    {{ data[indextr].descripcion_ubicacion }}
-                                </vs-td>
-
-                                <vs-td
-                                    :data="data[indextr].descripcion_servicio"
-                                >
-                                    {{ data[indextr].descripcion_servicio }}
-                                </vs-td>
-
-                                <vs-td
-                                    :data="data[indextr].descripcion_material"
-                                >
-                                    {{ data[indextr].descripcion_material }}
-                                </vs-td>
-                                <vs-td
-                                    :data="
-                                        data[indextr].descripcion_tipo_material
-                                    "
-                                >
-                                    {{
-                                        data[indextr].descripcion_tipo_material
-                                    }}
-                                </vs-td>
-                                <vs-td
-                                    :data="
-                                        data[indextr]
-                                            .descripcion_cantidad_especifica
-                                    "
-                                >
-                                    {{
-                                        data[indextr]
-                                            .descripcion_cantidad_especifica
-                                    }}
-                                </vs-td>
-                                <vs-td
-                                    :data="data[indextr].descripcion_medidas"
-                                >
-                                    {{ data[indextr].descripcion_medidas }}
-                                </vs-td>
-                                <vs-td :data="data[indextr].material_cantidad">
-                                    {{ data[indextr].material_cantidad }}
-                                </vs-td>
-                                <vs-td :data="data[indextr].material_valor">
-                                    ${{ data[indextr].material_valor }}
-                                </vs-td>
-                                <vs-td
-                                    :data="data[indextr].descripcion_documento"
-                                >
-                                    {{ data[indextr].descripcion_documento }}
-                                </vs-td>
-                                <vs-td :data="data[indextr].n_documento">
-                                    {{ data[indextr].n_documento }}
-                                </vs-td>
-                            </vs-tr>
-                        </template>
-                    </vs-table>
+                    <vue-good-table
+                        :columns="columns"
+                        :rows="listadoInventario"
+                        :search-options="{
+                            enabled: true,
+                            externalQuery: searchTerm
+                        }"
+                        :pagination-options="{
+                            enabled: true,
+                            perPage: pageLength
+                        }"
+                        @on-row-click="onRowClick"
+                    ></vue-good-table>
+                    <div class="vx-col w-full mt-5">
+                        <vs-button
+                            class="w-full"
+                            color="primary"
+                            type="filled"
+                            @click="volver"
+                            >Volver a la Pagina anterior</vs-button
+                        >
+                    </div>
                 </vx-card>
                 <br />
                 <vx-card>
@@ -223,12 +169,51 @@
                         <div class="vx-col w-full mt-5">
                             <vs-button
                                 class="w-full"
-                                color="primary"
+                                color="warning"
                                 type="filled"
                                 @click="AgregarItemListado"
                                 >Agregar Item Al Listado</vs-button
                             >
                         </div>
+                    </div>
+                </vx-card>
+                <vx-card>
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/2 mt-5"></div>
+                        <div class="vx-col w-1/4 mt-5"></div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>Buscar</h6>
+                            <vs-input
+                                id="basicInput"
+                                placeholder="Ej. 5"
+                                v-model="busqueda"
+                                class="w-full"
+                                @keyup.enter="buscarPorIdAsignados()"
+                            />
+                        </div>
+                    </div>
+
+                    <vue-good-table
+                        :columns="colAsigMat"
+                        :rows="listadoAsignarInventario"
+                        :search-options="{
+                            enabled: true,
+                            externalQuery: busqueda
+                        }"
+                        :pagination-options="{
+                            enabled: true,
+                            perPage: pageLength
+                        }"
+                        @on-row-click="rowClick"
+                    ></vue-good-table>
+                    <div class="vx-col w-full mt-5">
+                        <vs-button
+                            class="w-full"
+                            color="success"
+                            type="filled"
+                            @click="AgregarItemListado"
+                            >Asignar Materiales A la Solicitud</vs-button
+                        >
                     </div>
                 </vx-card>
                 <br />
@@ -252,6 +237,22 @@ import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
 import Vuesax from "vuesax";
 import vSelect from "vue-select";
+import {
+    BAvatar,
+    BBadge,
+    BPagination,
+    BFormSelect,
+    BDropdown,
+    BDropdownItem
+} from "bootstrap-vue";
+import { BFormInput, BRow, BCol, BFormGroup } from "bootstrap-vue";
+import { VueGoodTable } from "vue-good-table";
+import VueGoodTablePlugin from "vue-good-table";
+
+// import the styles
+import "vue-good-table/dist/vue-good-table.css";
+
+Vue.use(VueGoodTablePlugin);
 
 Vue.use(Vuesax, {
     theme: {
@@ -273,10 +274,120 @@ export default {
         UploadIcon,
         CornerDownRightIcon,
         quillEditor,
-        "v-select": vSelect
+        "v-select": vSelect,
+        VueGoodTable,
+        BAvatar,
+        BBadge,
+        BPagination,
+        BFormGroup,
+        BFormInput,
+        BFormSelect,
+        BDropdown,
+        BDropdownItem,
+        BFormInput,
+        BFormGroup,
+        BRow,
+        BCol
     },
     data() {
         return {
+            pageLength: 10,
+            dir: false,
+            searchTerm: "",
+            columns: [
+                {
+                    label: "ID",
+                    field: "id",
+                    type: "number"
+                },
+                {
+                    label: "Ubicacion",
+                    field: "descripcion_ubicacion"
+                },
+                {
+                    label: "Servicio",
+                    field: "descripcion_servicio"
+                },
+                {
+                    label: "Material",
+                    field: "descripcion_material"
+                },
+                {
+                    label: "Tipo Material",
+                    field: "descripcion_tipo_material"
+                },
+                {
+                    label: "Contenido",
+                    field: "descripcion_cantidad_especifica"
+                },
+                {
+                    label: "Medida",
+                    field: "descripcion_medidas"
+                },
+                {
+                    label: "Cantidad",
+                    field: "material_cantidad"
+                },
+                {
+                    label: "Valor",
+                    field: "material_valor"
+                },
+                {
+                    label: "Tipo Documento",
+                    field: "descripcion_documento"
+                },
+                {
+                    label: "N° Documento",
+                    field: "n_documento"
+                }
+            ],
+            colAsigMat: [
+                {
+                    label: "ID",
+                    field: "id",
+                    type: "number"
+                },
+                {
+                    label: "Ubicacion",
+                    field: "descripcion_ubicacion"
+                },
+                {
+                    label: "Servicio",
+                    field: "descripcion_servicio"
+                },
+                {
+                    label: "Material",
+                    field: "descripcion_material"
+                },
+                {
+                    label: "Tipo Material",
+                    field: "descripcion_tipo_material"
+                },
+                {
+                    label: "Contenido",
+                    field: "descripcion_cantidad_especifica"
+                },
+                {
+                    label: "Medida",
+                    field: "descripcion_medidas"
+                },
+                {
+                    label: "Cantidad",
+                    field: "material_cantidad"
+                },
+                {
+                    label: "Valor",
+                    field: "material_valor"
+                },
+                {
+                    label: "Tipo Documento",
+                    field: "descripcion_documento"
+                },
+                {
+                    label: "N° Documento",
+                    field: "n_documento"
+                }
+            ],
             editorOption: {
                 modules: {
                     toolbar: [
@@ -312,15 +423,50 @@ export default {
                 descripcion_documento: "",
                 n_documento: ""
             },
+            busqueda: "",
             valCantidad: 0,
             valCanFinal: 0,
             listadoInventario: [],
             listadoInventarioData: [],
-
+            listadoTipoMaterial: [],
+            listadoTipoMaterialData: [],
+            listadoAsignarInventario: [],
             localVal: process.env.MIX_APP_URL
         };
     },
     methods: {
+        buscarPorId() {
+            try {
+                let c = this.listadoTipoMaterialData;
+                let b = [];
+                let a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == this.searchTerm) {
+                        b.push(value);
+                    }
+                });
+                this.searchTerm = b[0].descripcion_tipo_material;
+            } catch (error) {
+                console.log("No Existe Material Activo Registrado");
+            }
+        },
+        buscarPorIdAsignados() {
+            try {
+                let c = this.listadoTipoMaterialData;
+                let b = [];
+                let a = 0;
+                c.forEach((value, index) => {
+                    a = value.id;
+                    if (a == this.busqueda) {
+                        b.push(value);
+                    }
+                });
+                this.busqueda = b[0].descripcion_tipo_material;
+            } catch (error) {
+                console.log("No Existe Material Activo Registrado");
+            }
+        },
         validarCantidad(evt) {
             if (this.valCantidad < this.materialSeleccion.material_cantidad) {
                 this.materialSeleccion.material_cantidad = 1;
@@ -329,27 +475,79 @@ export default {
             }
         },
         AgregarItemListado() {
-            console.log("ola");
+            try {
+                let d = 0;
+                let c = this.listadoAsignarInventario;
+                let b = [];
+                let a = 0;
+                let count = 0;
+                if (c.length == [] || c.length == "" || c.length == 0) {
+                    count = 0;
+                } else {
+                    count = c.length;
+                }
+                c.push([]);
+                if (count == 0) {
+                    b.push([this.materialSeleccion]);
+                } else {
+                    c.forEach((value, index) => {
+                        if (count == index) {
+                            b.push([this.materialSeleccion]);
+                        } else {
+                            b.push(value);
+                        }
+                    });
+                }
+
+                this.listadoAsignarInventario = b;
+            } catch (error) {
+                console.log(error);
+            }
         },
-        handleSelected(tr) {
-            this.materialSeleccion.id = tr.id;
+
+        onRowClick(params) {
+            this.materialSeleccion.id = params.row.id;
             this.materialSeleccion.descripcion_ubicacion =
-                tr.descripcion_ubicacion;
+                params.row.descripcion_ubicacion;
             this.materialSeleccion.descripcion_servicio =
-                tr.descripcion_servicio;
+                params.row.descripcion_servicio;
             this.materialSeleccion.descripcion_material =
-                tr.descripcion_material;
+                params.row.descripcion_material;
             this.materialSeleccion.descripcion_tipo_material =
-                tr.descripcion_tipo_material;
+                params.row.descripcion_tipo_material;
             this.materialSeleccion.descripcion_cantidad_especifica =
-                tr.descripcion_cantidad_especifica;
-            this.materialSeleccion.descripcion_medidas = tr.descripcion_medidas;
-            this.materialSeleccion.material_cantidad = tr.material_cantidad;
-            this.materialSeleccion.material_valor = tr.material_valor;
+                params.row.descripcion_cantidad_especifica;
+            this.materialSeleccion.descripcion_medidas =
+                params.row.descripcion_medidas;
+            this.materialSeleccion.material_cantidad =
+                params.row.material_cantidad;
+            this.materialSeleccion.material_valor = params.row.material_valor;
             this.materialSeleccion.descripcion_documento =
-                tr.descripcion_documento;
-            this.materialSeleccion.n_documento = tr.n_documento;
-            this.valCantidad = tr.material_cantidad;
+                params.row.descripcion_documento;
+            this.materialSeleccion.n_documento = params.row.n_documento;
+            this.valCantidad = params.row.material_cantidad;
+        },
+        rowClick(params) {
+            this.materialSeleccion.id = params.row.id;
+            this.materialSeleccion.descripcion_ubicacion =
+                params.row.descripcion_ubicacion;
+            this.materialSeleccion.descripcion_servicio =
+                params.row.descripcion_servicio;
+            this.materialSeleccion.descripcion_material =
+                params.row.descripcion_material;
+            this.materialSeleccion.descripcion_tipo_material =
+                params.row.descripcion_tipo_material;
+            this.materialSeleccion.descripcion_cantidad_especifica =
+                params.row.descripcion_cantidad_especifica;
+            this.materialSeleccion.descripcion_medidas =
+                params.row.descripcion_medidas;
+            this.materialSeleccion.material_cantidad =
+                params.row.material_cantidad;
+            this.materialSeleccion.material_valor = params.row.material_valor;
+            this.materialSeleccion.descripcion_documento =
+                params.row.descripcion_documento;
+            this.materialSeleccion.n_documento = params.row.n_documento;
+            this.valCantidad = params.row.material_cantidad;
         },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
@@ -390,10 +588,24 @@ export default {
                     this.listadoInventario = res.data;
                     this.listadoInventarioData = res.data;
                 });
+        },
+        cargarTipoMaterial() {
+            axios
+                .get(this.localVal + "/api/Bodega/GetTipoMaterial", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoTipoMaterial = res.data;
+                    this.listadoTipoMaterialData = res.data;
+                });
         }
     },
     created() {
         this.cargarInventarioDisponible();
+        this.cargarTipoMaterial();
     }
 };
 </script>
