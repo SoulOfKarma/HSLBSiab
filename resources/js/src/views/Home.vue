@@ -52,6 +52,7 @@ export default {
     },
     data() {
         return {
+            externalVal: process.env.MIX_APP_URL_EXTERNA,
             timelineData: [
                 {
                     color: "danger",

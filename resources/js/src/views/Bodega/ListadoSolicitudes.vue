@@ -22,6 +22,7 @@
             </div>
 
             <vue-good-table
+                :key="componentKey"
                 :columns="columns"
                 :rows="listadoTickets"
                 :search-options="{
@@ -130,6 +131,7 @@ export default {
     },
     data() {
         return {
+            componentKey: 0,
             nombre:
                 sessionStorage.getItem("nombre") +
                 " " +
@@ -137,7 +139,15 @@ export default {
             run: sessionStorage.getItem("run"),
             localVal: process.env.MIX_APP_URL,
             externalVal: process.env.MIX_APP_URL_EXTERNA,
-            listadoTickets: [],
+            listadoTickets: [
+                {
+                    nticket: 0,
+                    nombre: "",
+                    titulop: "",
+                    descripcionp: "",
+                    descripcionEstado: ""
+                }
+            ],
             pageLength: 10,
             dir: false,
             searchTerm: "",
@@ -171,6 +181,9 @@ export default {
         };
     },
     methods: {
+        forceRerender() {
+            this.componentKey += 1;
+        },
         informacionGeneral(id) {
             this.$router.push({
                 name: "entregaMaterialNSolicitud",
@@ -199,7 +212,9 @@ export default {
                     sessionStorage.setItem("token_externo", res.data.token);
                 })
                 .catch(error => console.log(error));
-            this.cargarSolicitudesExternas();
+            setTimeout(() => {
+                this.cargarSolicitudesExternas();
+            }, 2000);
         },
         validarTokenExterno() {
             let tokenexterno = sessionStorage.getItem("token_externo");

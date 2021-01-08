@@ -55,9 +55,7 @@
                                 disabled
                                 class="inputx w-full"
                                 placeholder=""
-                                v-model="
-                                    materialSeleccion.descripcion_ubicacion
-                                "
+                                v-model="descripcion_ubicacion"
                             />
                             <br />
                         </div>
@@ -68,7 +66,7 @@
                                 disabled
                                 class="inputx w-full"
                                 placeholder=""
-                                v-model="materialSeleccion.descripcion_servicio"
+                                v-model="descripcion_servicio"
                             />
                             <br />
                         </div>
@@ -79,7 +77,7 @@
                                 disabled
                                 class="inputx w-full"
                                 placeholder=""
-                                v-model="materialSeleccion.descripcion_material"
+                                v-model="descripcion_material"
                             />
                             <br />
                         </div>
@@ -90,9 +88,7 @@
                                 disabled
                                 class="inputx w-full"
                                 placeholder=""
-                                v-model="
-                                    materialSeleccion.descripcion_tipo_material
-                                "
+                                v-model="descripcion_tipo_material"
                             />
                             <br />
                         </div>
@@ -103,9 +99,7 @@
                                 disabled
                                 class="inputx w-full"
                                 placeholder=""
-                                v-model="
-                                    materialSeleccion.descripcion_cantidad_especifica
-                                "
+                                v-model="descripcion_cantidad_especifica"
                             />
                             <br />
                         </div>
@@ -116,7 +110,7 @@
                                 disabled
                                 class="inputx w-full"
                                 placeholder=""
-                                v-model="materialSeleccion.descripcion_medidas"
+                                v-model="descripcion_medidas"
                             />
                             <br />
                         </div>
@@ -126,7 +120,7 @@
                             <vs-input
                                 class="inputx w-full"
                                 placeholder="0"
-                                v-model="materialSeleccion.material_cantidad"
+                                v-model="material_cantidad"
                                 @keypress="isNumber($event)"
                             />
                             <br />
@@ -138,7 +132,7 @@
                                 disabled
                                 class="inputx w-full"
                                 placeholder=""
-                                v-model="materialSeleccion.material_valor"
+                                v-model="material_valor"
                             />
                             <br />
                         </div>
@@ -149,9 +143,7 @@
                                 disabled
                                 class="inputx w-full"
                                 placeholder=""
-                                v-model="
-                                    materialSeleccion.descripcion_documento
-                                "
+                                v-model="descripcion_documento"
                             />
                             <br />
                         </div>
@@ -162,7 +154,7 @@
                                 disabled
                                 class="inputx w-full"
                                 placeholder=""
-                                v-model="materialSeleccion.n_documento"
+                                v-model="n_documento"
                             />
                             <br />
                         </div>
@@ -173,45 +165,41 @@
                                 type="filled"
                                 @click="AgregarItemListado"
                                 >Agregar Item Al Listado</vs-button
-                            >
+                            ><br />
                         </div>
                     </div>
                 </vx-card>
                 <vx-card>
-                    <div class="vx-row mb-12">
-                        <div class="vx-col w-1/2 mt-5"></div>
-                        <div class="vx-col w-1/4 mt-5"></div>
-                        <div class="vx-col w-1/4 mt-5">
-                            <h6>Buscar</h6>
-                            <vs-input
-                                id="basicInput"
-                                placeholder="Ej. 5"
-                                v-model="busqueda"
-                                class="w-full"
-                                @keyup.enter="buscarPorIdAsignados()"
-                            />
-                        </div>
-                    </div>
-
                     <vue-good-table
                         :columns="colAsigMat"
                         :rows="listadoAsignarInventario"
-                        :search-options="{
-                            enabled: true,
-                            externalQuery: busqueda
-                        }"
-                        :pagination-options="{
-                            enabled: true,
-                            perPage: pageLength
-                        }"
                         @on-row-click="rowClick"
-                    ></vue-good-table>
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+
+                            <!-- Column: Action -->
+                            <span v-else-if="props.column.field === 'action'">
+                                <trash-2-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="quitarItem(props.row.id)"
+                                ></trash-2-icon>
+                            </span>
+
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template></vue-good-table
+                    >
                     <div class="vx-col w-full mt-5">
-                        <vs-button
-                            class="w-full"
-                            color="success"
-                            type="filled"
-                            @click="AgregarItemListado"
+                        <vs-button class="w-full" color="success" type="filled"
                             >Asignar Materiales A la Solicitud</vs-button
                         >
                     </div>
@@ -386,6 +374,10 @@ export default {
                 {
                     label: "N° Documento",
                     field: "n_documento"
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
                 }
             ],
             editorOption: {
@@ -423,6 +415,17 @@ export default {
                 descripcion_documento: "",
                 n_documento: ""
             },
+            id: 0,
+            descripcion_ubicacion: "",
+            descripcion_servicio: "",
+            descripcion_material: "",
+            descripcion_tipo_material: "",
+            descripcion_cantidad_especifica: "",
+            descripcion_medidas: "",
+            material_cantidad: 1,
+            material_valor: 0,
+            descripcion_documento: "",
+            n_documento: "",
             busqueda: "",
             valCantidad: 0,
             valCanFinal: 0,
@@ -431,10 +434,15 @@ export default {
             listadoTipoMaterial: [],
             listadoTipoMaterialData: [],
             listadoAsignarInventario: [],
+            listadoAsignarInventarioData: [],
             localVal: process.env.MIX_APP_URL
         };
     },
     methods: {
+        quitarItem(id) {
+            console.log(id);
+            console.log(this.listadoInventarioData);
+        },
         buscarPorId() {
             try {
                 let c = this.listadoTipoMaterialData;
@@ -476,77 +484,82 @@ export default {
         },
         AgregarItemListado() {
             try {
-                let d = 0;
+                let d = this.listadoInventarioData;
+                let e = [];
+                let f = 0;
                 let c = this.listadoAsignarInventario;
                 let b = [];
                 let a = 0;
-                let count = 0;
-                if (c.length == [] || c.length == "" || c.length == 0) {
-                    count = 0;
-                } else {
-                    count = c.length;
-                }
-                c.push([]);
-                if (count == 0) {
-                    b.push([this.materialSeleccion]);
-                } else {
+                let obj = {
+                    id: this.id,
+                    descripcion_ubicacion: this.descripcion_ubicacion,
+                    descripcion_servicio: this.descripcion_servicio,
+                    descripcion_material: this.descripcion_material,
+                    descripcion_tipo_material: this.descripcion_tipo_material,
+                    descripcion_cantidad_especifica: this
+                        .descripcion_cantidad_especifica,
+                    descripcion_medidas: this.descripcion_medidas,
+                    material_cantidad: this.material_cantidad,
+                    material_valor: this.material_valor,
+                    descripcion_documento: this.descripcion_documento,
+                    n_documento: this.n_documento
+                };
+                d.forEach((value, index) => {
+                    f = obj.id;
+                    if (f == value.id) {
+                        this.listadoInventario.splice(index, 1);
+                        console.log(d);
+                        value.material_cantidad =
+                            value.material_cantidad - obj.material_cantidad;
+                        this.listadoInventario.splice(index, 0, value);
+                    }
+                });
+
+                if (c.length > 0) {
                     c.forEach((value, index) => {
-                        if (count == index) {
-                            b.push([this.materialSeleccion]);
-                        } else {
-                            b.push(value);
+                        a = obj.id;
+                        if (a == value.id) {
+                            this.listadoAsignarInventario.splice(index);
                         }
                     });
                 }
 
-                this.listadoAsignarInventario = b;
+                this.listadoAsignarInventario.push(obj);
             } catch (error) {
                 console.log(error);
             }
         },
 
         onRowClick(params) {
-            this.materialSeleccion.id = params.row.id;
-            this.materialSeleccion.descripcion_ubicacion =
-                params.row.descripcion_ubicacion;
-            this.materialSeleccion.descripcion_servicio =
-                params.row.descripcion_servicio;
-            this.materialSeleccion.descripcion_material =
-                params.row.descripcion_material;
-            this.materialSeleccion.descripcion_tipo_material =
+            this.id = params.row.id;
+            this.descripcion_ubicacion = params.row.descripcion_ubicacion;
+            this.descripcion_servicio = params.row.descripcion_servicio;
+            this.descripcion_material = params.row.descripcion_material;
+            this.descripcion_tipo_material =
                 params.row.descripcion_tipo_material;
-            this.materialSeleccion.descripcion_cantidad_especifica =
+            this.descripcion_cantidad_especifica =
                 params.row.descripcion_cantidad_especifica;
-            this.materialSeleccion.descripcion_medidas =
-                params.row.descripcion_medidas;
-            this.materialSeleccion.material_cantidad =
-                params.row.material_cantidad;
-            this.materialSeleccion.material_valor = params.row.material_valor;
-            this.materialSeleccion.descripcion_documento =
-                params.row.descripcion_documento;
-            this.materialSeleccion.n_documento = params.row.n_documento;
+            this.descripcion_medidas = params.row.descripcion_medidas;
+            this.material_cantidad = params.row.material_cantidad;
+            this.material_valor = params.row.material_valor;
+            this.descripcion_documento = params.row.descripcion_documento;
+            this.n_documento = params.row.n_documento;
             this.valCantidad = params.row.material_cantidad;
         },
         rowClick(params) {
-            this.materialSeleccion.id = params.row.id;
-            this.materialSeleccion.descripcion_ubicacion =
-                params.row.descripcion_ubicacion;
-            this.materialSeleccion.descripcion_servicio =
-                params.row.descripcion_servicio;
-            this.materialSeleccion.descripcion_material =
-                params.row.descripcion_material;
-            this.materialSeleccion.descripcion_tipo_material =
+            this.id = params.row.id;
+            this.descripcion_ubicacion = params.row.descripcion_ubicacion;
+            this.descripcion_servicio = params.row.descripcion_servicio;
+            this.descripcion_material = params.row.descripcion_material;
+            this.descripcion_tipo_material =
                 params.row.descripcion_tipo_material;
-            this.materialSeleccion.descripcion_cantidad_especifica =
+            this.descripcion_cantidad_especifica =
                 params.row.descripcion_cantidad_especifica;
-            this.materialSeleccion.descripcion_medidas =
-                params.row.descripcion_medidas;
-            this.materialSeleccion.material_cantidad =
-                params.row.material_cantidad;
-            this.materialSeleccion.material_valor = params.row.material_valor;
-            this.materialSeleccion.descripcion_documento =
-                params.row.descripcion_documento;
-            this.materialSeleccion.n_documento = params.row.n_documento;
+            this.descripcion_medidas = params.row.descripcion_medidas;
+            this.material_cantidad = params.row.material_cantidad;
+            this.material_valor = params.row.material_valor;
+            this.descripcion_documento = params.row.descripcion_documento;
+            this.n_documento = params.row.n_documento;
             this.valCantidad = params.row.material_cantidad;
         },
         isNumber: function(evt) {
@@ -556,13 +569,12 @@ export default {
                 (charCode > 31 &&
                     (charCode < 48 || charCode > 57) &&
                     charCode !== 46) ||
-                this.valCantidad < this.materialSeleccion.material_cantidad
+                this.valCantidad < this.material_cantidad
             ) {
-                console.log(this.materialSeleccion.material_cantidad);
                 evt.preventDefault();
-                this.materialSeleccion.material_cantidad = 1;
+                this.material_cantidad = 1;
             } else {
-                this.valCanFinal = this.materialSeleccion.material_cantidad;
+                this.valCanFinal = this.material_cantidad;
                 return true;
             }
 

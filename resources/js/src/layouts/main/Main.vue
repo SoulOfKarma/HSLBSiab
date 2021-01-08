@@ -168,6 +168,7 @@ import TheNavbarVertical from "@/layouts/components/navbar/TheNavbarVertical.vue
 import TheFooter from "@/layouts/components/TheFooter.vue";
 import themeConfig from "@/../themeConfig.js";
 import VNavMenu from "@/layouts/components/vertical-nav-menu/VerticalNavMenu.vue";
+import axios from "axios";
 
 export default {
     components: {
@@ -180,6 +181,7 @@ export default {
     },
     data() {
         return {
+            externalVal: process.env.MIX_APP_URL_EXTERNA,
             footerType: themeConfig.footerType || "static",
             hideScrollToTop: themeConfig.hideScrollToTop,
             isNavbarDark: false,
@@ -289,9 +291,19 @@ export default {
         },
         toggleHideScrollToTop(val) {
             this.hideScrollToTop = val;
+        },
+        cargarTokenExterno() {
+            let objeto = { run: "18499714-2", password: "1849" };
+            axios
+                .post(this.externalVal + "/api/auth/login", objeto)
+                .then(res => {
+                    sessionStorage.setItem("token_externo", res.data.token);
+                })
+                .catch(error => console.log(error));
         }
     },
     created() {
+        this.cargarTokenExterno();
         var aux = sessionStorage.getItem("run");
 
         if (aux == null) {
