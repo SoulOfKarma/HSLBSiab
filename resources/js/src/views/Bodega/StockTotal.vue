@@ -84,6 +84,21 @@ import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
 import Vuesax from "vuesax";
 import vSelect from "vue-select";
+import {
+    BAvatar,
+    BBadge,
+    BPagination,
+    BFormSelect,
+    BDropdown,
+    BDropdownItem
+} from "bootstrap-vue";
+import { BFormInput, BRow, BCol, BFormGroup } from "bootstrap-vue";
+import { VueGoodTable } from "vue-good-table";
+import VueGoodTablePlugin from "vue-good-table";
+// import the styles
+import "vue-good-table/dist/vue-good-table.css";
+
+Vue.use(VueGoodTablePlugin);
 
 Vue.use(Vuesax, {
     theme: {
@@ -105,7 +120,20 @@ export default {
         UploadIcon,
         CornerDownRightIcon,
         quillEditor,
-        vSelect
+        vSelect,
+        VueGoodTable,
+        BAvatar,
+        BBadge,
+        BPagination,
+        BFormGroup,
+        BFormInput,
+        BFormSelect,
+        BDropdown,
+        BDropdownItem,
+        BFormInput,
+        BFormGroup,
+        BRow,
+        BCol
     },
     data() {
         return {

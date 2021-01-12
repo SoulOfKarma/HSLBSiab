@@ -163,17 +163,17 @@
                                 class="w-full"
                                 color="warning"
                                 type="filled"
-                                @click="AgregarItemListado"
+                                @click="AddList()"
                                 >Agregar Item Al Listado</vs-button
                             ><br />
                         </div>
                     </div>
                 </vx-card>
                 <vx-card>
+                    <!-- @on-row-click="rowClick" -->
                     <vue-good-table
                         :columns="colAsigMat"
                         :rows="listadoAsignarInventario"
-                        @on-row-click="rowClick"
                     >
                         <template slot="table-row" slot-scope="props">
                             <!-- Column: Name -->
@@ -225,6 +225,7 @@ import { quillEditor } from "vue-quill-editor";
 import Vue from "vue";
 import Vuesax from "vuesax";
 import vSelect from "vue-select";
+var _ = require("lodash");
 import {
     BAvatar,
     BBadge,
@@ -435,13 +436,46 @@ export default {
             listadoTipoMaterialData: [],
             listadoAsignarInventario: [],
             listadoAsignarInventarioData: [],
-            localVal: process.env.MIX_APP_URL
+            localVal: process.env.MIX_APP_URL,
+            val: 0
         };
     },
     methods: {
         quitarItem(id) {
-            console.log(id);
-            console.log(this.listadoInventarioData);
+            try {
+                var d = this.listadoInventario;
+                let e = [];
+                let f = 0;
+                let c = this.listadoAsignarInventario;
+                let b = [];
+                let a = 0;
+                let vars = 0;
+
+                c.forEach((value, index) => {
+                    a = id;
+                    if (a === value.id) {
+                        vars = parseInt(value.material_cantidad);
+                    }
+                });
+                d.forEach((value, index) => {
+                    f = id;
+                    if (f === value.id) {
+                        d.splice(index, 1);
+                        value.material_cantidad =
+                            parseInt(value.material_cantidad) + parseInt(vars);
+
+                        d.splice(index, 0, value);
+                    }
+                });
+                c.forEach((value, index) => {
+                    a = id;
+                    if (a === value.id) {
+                        this.listadoAsignarInventario.splice(index, 1);
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
         },
         buscarPorId() {
             try {
@@ -482,14 +516,20 @@ export default {
                 this.valCanFinal = this.materialSeleccion.material_cantidad;
             }
         },
-        AgregarItemListado() {
+
+        AddList() {
             try {
-                let d = this.listadoInventarioData;
+                //var d = Array.from(this.listadoInventarioData);
+                //let d = Object.assign({}, this.listadoInventarioData);
+                //let clonar = _.clone(this.listadoInventarioData);
+                var d = this.listadoInventarioData;
                 let e = [];
                 let f = 0;
                 let c = this.listadoAsignarInventario;
                 let b = [];
                 let a = 0;
+                this.val = 0;
+
                 let obj = {
                     id: this.id,
                     descripcion_ubicacion: this.descripcion_ubicacion,
@@ -504,21 +544,48 @@ export default {
                     descripcion_documento: this.descripcion_documento,
                     n_documento: this.n_documento
                 };
-                d.forEach((value, index) => {
-                    f = obj.id;
-                    if (f == value.id) {
-                        this.listadoInventario.splice(index, 1);
-                        console.log(d);
-                        value.material_cantidad =
-                            value.material_cantidad - obj.material_cantidad;
-                        this.listadoInventario.splice(index, 0, value);
-                    }
-                });
 
                 if (c.length > 0) {
                     c.forEach((value, index) => {
                         a = obj.id;
-                        if (a == value.id) {
+                        if (a === value.id) {
+                            this.val = value.material_cantidad;
+                        }
+                    });
+                }
+
+                if (c.length === 0) {
+                    d.forEach((value, index) => {
+                        f = obj.id;
+                        if (f === value.id) {
+                            d.splice(index, 1);
+
+                            value.material_cantidad =
+                                value.material_cantidad - obj.material_cantidad;
+                            d.splice(index, 0, value);
+                        }
+                    });
+                } else {
+                    d.forEach((value, index) => {
+                        f = obj.id;
+                        if (f === value.id) {
+                            d.splice(index, 1);
+                            value.material_cantidad =
+                                parseInt(value.material_cantidad) +
+                                parseInt(this.val);
+                            value.material_cantidad =
+                                value.material_cantidad - obj.material_cantidad;
+                            d.splice(index, 0, value);
+                        }
+                    });
+                }
+
+                this.listadoInventario = d;
+
+                if (c.length > 0) {
+                    c.forEach((value, index) => {
+                        a = obj.id;
+                        if (a === value.id) {
                             this.listadoAsignarInventario.splice(index);
                         }
                     });
