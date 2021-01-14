@@ -31,40 +31,37 @@
                     >
                 </div>
             </vs-prompt>
-            <vs-table :data="listadoStock" search max-items="15" pagination>
-                <template slot="header">
+
+            <!-- @on-row-click="rowClick" -->
+            <div class="vx-row mb-12">
+                <div class="vx-col w-1/2 mt-5">
                     <vs-button @click="activePrompt = true">Exportar</vs-button>
-                </template>
-                <template slot="thead">
-                    <vs-th>ID</vs-th>
-                    <vs-th>Material</vs-th>
-                    <vs-th>Tipo Material</vs-th>
-                    <vs-th>Total Unidades Stock</vs-th>
-                    <vs-th>Total Medida Calculada</vs-th>
-                </template>
+                </div>
+                <div class="vx-col w-1/4 mt-5"></div>
+                <div class="vx-col w-1/4 mt-5">
+                    <h6>Buscar:</h6>
+                    <vs-input
+                        id="basicInput"
+                        placeholder=""
+                        v-model="searchTerm"
+                        class="w-full"
+                    />
+                </div>
+            </div>
 
-                <template slot-scope="{ data }">
-                    <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                        <vs-td :data="data[indextr].id">
-                            {{ data[indextr].id }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].descripcion_material">
-                            {{ data[indextr].descripcion_material }}
-                        </vs-td>
-
-                        <vs-td :data="data[indextr].descripcion_tipo_material">
-                            {{ data[indextr].descripcion_tipo_material }}
-                        </vs-td>
-
-                        <vs-td :data="data[indextr].total">
-                            {{ data[indextr].total }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].total_cal">
-                            {{ data[indextr].total_cal }}
-                        </vs-td>
-                    </vs-tr>
-                </template>
-            </vs-table>
+            <vue-good-table
+                :columns="columns"
+                :rows="listadoStock"
+                :search-options="{
+                    enabled: true,
+                    externalQuery: searchTerm
+                }"
+                :pagination-options="{
+                    enabled: true,
+                    perPage: pageLength
+                }"
+            >
+            </vue-good-table>
         </vx-card>
     </div>
 </template>
@@ -137,6 +134,9 @@ export default {
     },
     data() {
         return {
+            pageLength: 10,
+            dir: false,
+            searchTerm: "",
             fileName: "",
             formats: ["xlsx", "csv", "txt"],
             cellAutoWidth: true,
@@ -154,6 +154,31 @@ export default {
                 "descripcion_tipo_material",
                 "total",
                 "total_cal"
+            ],
+            columns: [
+                {
+                    label: "ID",
+                    field: "id",
+                    type: "number"
+                },
+                {
+                    label: "Material",
+                    field: "descripcion_material"
+                },
+                {
+                    label: "Tipo Material",
+                    field: "descripcion_tipo_material"
+                },
+                {
+                    label: "Total Unidades Stock",
+                    field: "total",
+                    type: "number"
+                },
+                {
+                    label: "Total Medida Calculada",
+                    field: "total_cal",
+                    type: "number"
+                }
             ],
             activePrompt: false,
             listadoStock: [],

@@ -225,7 +225,6 @@ export default {
                     }
                 )
                 .then(res => {
-                    console.log(res.data);
                     this.materialSeleccion.id = res.data[0].id;
                     this.materialSeleccion.ubicacion =
                         res.data[0].descripcion_ubicacion;

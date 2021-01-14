@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\MaterialInventarios;
+use Illuminate\Support\Facades\Log;
 
 class MaterialInventariosController extends Controller
 {
@@ -31,6 +32,19 @@ class MaterialInventariosController extends Controller
           return $get_all;
         }catch (\Throwable $th){
             return false;
+        }
+    }
+
+    public function PostAsignarMaterial(Request $request){
+        try {
+            $userInput = $request->all();
+            foreach($userInput as $e => $req ){                         
+                MaterialInventarios::where('id',$req['id'])
+              ->update(['material_cantidad' => $req['material_cantidad']]);
+            }
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
         }
     }
 

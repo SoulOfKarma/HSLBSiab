@@ -120,11 +120,12 @@
             </vs-table> -->
             <!-- search input -->
             <div class="vx-row mb-12">
-                <div class="vx-col w-1/2 mt-5"></div>
+                <div class="vx-col w-1/2 mt-5">
+                    <vs-button @click="activePrompt = true">Exportar</vs-button>
+                </div>
                 <div class="vx-col w-1/4 mt-5"></div>
                 <div class="vx-col w-1/4 mt-5">
-                    <h6>Buscar</h6>
-                    <br />
+                    <h6>Buscar:</h6>
                     <vs-input
                         id="basicInput"
                         placeholder="Ej. 5"

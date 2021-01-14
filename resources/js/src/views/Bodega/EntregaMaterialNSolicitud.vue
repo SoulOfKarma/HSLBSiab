@@ -122,6 +122,7 @@
                                 placeholder="0"
                                 v-model="material_cantidad"
                                 @keypress="isNumber($event)"
+                                @keyup="validarCantidad()"
                             />
                             <br />
                         </div>
@@ -199,7 +200,11 @@
                         </template></vue-good-table
                     >
                     <div class="vx-col w-full mt-5">
-                        <vs-button class="w-full" color="success" type="filled"
+                        <vs-button
+                            class="w-full"
+                            color="success"
+                            type="filled"
+                            @click="AsignarMaterialOT()"
                             >Asignar Materiales A la Solicitud</vs-button
                         >
                     </div>
@@ -436,8 +441,10 @@ export default {
             listadoTipoMaterialData: [],
             listadoAsignarInventario: [],
             listadoAsignarInventarioData: [],
+            externalVal: process.env.MIX_APP_URL_EXTERNA,
             localVal: process.env.MIX_APP_URL,
-            val: 0
+            val: 0,
+            validador: false
         };
     },
     methods: {
@@ -509,12 +516,31 @@ export default {
                 console.log("No Existe Material Activo Registrado");
             }
         },
-        validarCantidad(evt) {
-            if (this.valCantidad < this.materialSeleccion.material_cantidad) {
-                this.materialSeleccion.material_cantidad = 1;
-            } else {
-                this.valCanFinal = this.materialSeleccion.material_cantidad;
-            }
+        validarCantidad() {
+            let c = this.listadoInventario;
+            let b = [];
+            let a = 0;
+            c.forEach((value, index) => {
+                a = this.id;
+                if (a === value.id) {
+                    if (
+                        this.material_cantidad <= 0 ||
+                        this.material_cantidad > value.material_cantidad
+                    ) {
+                        this.$vs.notify({
+                            time: 3000,
+                            title: "Error de Cantidad",
+                            text:
+                                "La cantidad es Menor o Superior de las existencias actuales",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                        this.validador = false;
+                    } else {
+                        this.validador = true;
+                    }
+                }
+            });
         },
 
         AddList() {
@@ -522,81 +548,215 @@ export default {
                 //var d = Array.from(this.listadoInventarioData);
                 //let d = Object.assign({}, this.listadoInventarioData);
                 //let clonar = _.clone(this.listadoInventarioData);
-                var d = this.listadoInventarioData;
-                let e = [];
-                let f = 0;
-                let c = this.listadoAsignarInventario;
-                let b = [];
-                let a = 0;
-                this.val = 0;
 
-                let obj = {
-                    id: this.id,
-                    descripcion_ubicacion: this.descripcion_ubicacion,
-                    descripcion_servicio: this.descripcion_servicio,
-                    descripcion_material: this.descripcion_material,
-                    descripcion_tipo_material: this.descripcion_tipo_material,
-                    descripcion_cantidad_especifica: this
-                        .descripcion_cantidad_especifica,
-                    descripcion_medidas: this.descripcion_medidas,
-                    material_cantidad: this.material_cantidad,
-                    material_valor: this.material_valor,
-                    descripcion_documento: this.descripcion_documento,
-                    n_documento: this.n_documento
-                };
+                if (this.validador) {
+                    var d = this.listadoInventarioData;
+                    let e = [];
+                    let f = 0;
+                    let c = this.listadoAsignarInventario;
+                    let b = [];
+                    let a = 0;
+                    this.val = 0;
 
-                if (c.length > 0) {
-                    c.forEach((value, index) => {
-                        a = obj.id;
-                        if (a === value.id) {
-                            this.val = value.material_cantidad;
-                        }
-                    });
-                }
+                    let obj = {
+                        id: this.id,
+                        descripcion_ubicacion: this.descripcion_ubicacion,
+                        descripcion_servicio: this.descripcion_servicio,
+                        descripcion_material: this.descripcion_material,
+                        descripcion_tipo_material: this
+                            .descripcion_tipo_material,
+                        descripcion_cantidad_especifica: this
+                            .descripcion_cantidad_especifica,
+                        descripcion_medidas: this.descripcion_medidas,
+                        material_cantidad: this.material_cantidad,
+                        material_valor: this.material_valor,
+                        descripcion_documento: this.descripcion_documento,
+                        n_documento: this.n_documento
+                    };
 
-                if (c.length === 0) {
-                    d.forEach((value, index) => {
-                        f = obj.id;
-                        if (f === value.id) {
-                            d.splice(index, 1);
+                    if (c.length > 0) {
+                        c.forEach((value, index) => {
+                            a = obj.id;
+                            if (a === value.id) {
+                                this.val = value.material_cantidad;
+                            }
+                        });
+                    }
 
-                            value.material_cantidad =
-                                value.material_cantidad - obj.material_cantidad;
-                            d.splice(index, 0, value);
-                        }
-                    });
+                    if (c.length === 0) {
+                        d.forEach((value, index) => {
+                            f = obj.id;
+                            if (f === value.id) {
+                                d.splice(index, 1);
+
+                                value.material_cantidad =
+                                    value.material_cantidad -
+                                    obj.material_cantidad;
+                                d.splice(index, 0, value);
+                            }
+                        });
+                    } else {
+                        d.forEach((value, index) => {
+                            f = obj.id;
+                            if (f === value.id) {
+                                d.splice(index, 1);
+                                value.material_cantidad =
+                                    parseInt(value.material_cantidad) +
+                                    parseInt(this.val);
+                                value.material_cantidad =
+                                    value.material_cantidad -
+                                    obj.material_cantidad;
+                                d.splice(index, 0, value);
+                            }
+                        });
+                    }
+
+                    this.listadoInventario = d;
+
+                    if (c.length > 0) {
+                        c.forEach((value, index) => {
+                            a = obj.id;
+                            if (a === value.id) {
+                                this.listadoAsignarInventario.splice(index);
+                            }
+                        });
+                    }
+
+                    this.listadoAsignarInventario.push(obj);
+                    this.validador = false;
                 } else {
-                    d.forEach((value, index) => {
-                        f = obj.id;
-                        if (f === value.id) {
-                            d.splice(index, 1);
-                            value.material_cantidad =
-                                parseInt(value.material_cantidad) +
-                                parseInt(this.val);
-                            value.material_cantidad =
-                                value.material_cantidad - obj.material_cantidad;
-                            d.splice(index, 0, value);
-                        }
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Error de Cantidad",
+                        text:
+                            "La cantidad es Menor o Superior de las existencias actuales",
+                        color: "danger",
+                        position: "top-right"
                     });
                 }
-
-                this.listadoInventario = d;
-
-                if (c.length > 0) {
-                    c.forEach((value, index) => {
-                        a = obj.id;
-                        if (a === value.id) {
-                            this.listadoAsignarInventario.splice(index);
-                        }
-                    });
-                }
-
-                this.listadoAsignarInventario.push(obj);
             } catch (error) {
                 console.log(error);
             }
         },
+        AsignarMaterialOT() {
+            //Calculo A modificar
+            let idUser = sessionStorage.getItem("id");
+            let idExt = this.$route.params.id;
+            let c = this.listadoAsignarInventario;
+            let d = this.listadoInventario;
+            let b = [];
+            let list = "";
+            c.forEach((value, index) => {
+                d.forEach((val, ind) => {
+                    if (value.id == val.id) {
+                        list =
+                            list +
+                            "<li>" +
+                            value.descripcion_material +
+                            " " +
+                            value.descripcion_tipo_material +
+                            " - " +
+                            value.material_cantidad +
+                            " " +
+                            value.descripcion_medidas +
+                            "</li>";
+                        value.idOT = idExt;
+                        b.push(val);
+                    }
+                });
+            });
 
+            list =
+                "Se ha asignado el siguiente material para la OT solicitada " +
+                "<br> " +
+                "<ul>" +
+                list +
+                "</ul>";
+            const inventario = b;
+            const seguimiento = c;
+            axios
+                .all([
+                    axios.post(
+                        this.localVal + "/api/Bodega/PostAsignarMaterial",
+                        inventario,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    ),
+                    axios.post(
+                        this.localVal +
+                            `/api/Bodega/PostSeguimientoMaterial/${idUser}`,
+                        seguimiento,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                ])
+                .then(
+                    axios.spread((res1, res2) => {
+                        console.log(res2);
+                        if (res1.data == true) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Material Asignado a la OT",
+                                text: "Se retornara al menu anterior",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.seguimientoExternoOT(list);
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error Al Asignar Material a la OT",
+                                text:
+                                    "Intente Nuevamente o Consulte con el Administrador",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    })
+                );
+        },
+        seguimientoExternoOT(list) {
+            try {
+                let idExt = this.$route.params.id;
+                let uidExt = this.$route.params.uuid;
+
+                let data = {
+                    uuid: uidExt,
+                    id_user: 74,
+                    id_solicitud: idExt,
+                    descripcionSeguimiento: list
+                };
+
+                const inventario = data;
+
+                axios
+                    .post(
+                        this.externalVal + "/api/seguimientoExternoBodega",
+                        inventario,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` +
+                                    sessionStorage.getItem("token_externo")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoAsignarInventario = [];
+                        router.back();
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         onRowClick(params) {
             this.id = params.row.id;
             this.descripcion_ubicacion = params.row.descripcion_ubicacion;
@@ -654,7 +814,6 @@ export default {
         volver() {
             router.back();
         },
-
         cargarInventarioDisponible() {
             axios
                 .get(this.localVal + "/api/Bodega/GetStock", {

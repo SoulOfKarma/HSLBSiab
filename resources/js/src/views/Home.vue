@@ -22,7 +22,7 @@
                     <p
                         class="xl:w-3/4 lg:w-4/5 md:w-2/3 w-4/5 mx-auto text-white"
                     >
-                        Sistema de Gestion de Tickets de RRFF-
+                        Sistema de Inventario RRFF -
                         <strong>Hospital San Juan de Dios</strong>.
                     </p>
                 </vx-card>
@@ -59,7 +59,7 @@ export default {
                     icon: "UsersIcon",
                     title: "Inicio",
                     desc:
-                        "Encontrarás el acceso a la pantalla de Inicio, el menu de los supervisores y administradores y los calendarios de turnos de los ascensoristas y central telefonica"
+                        "Encontrarás el acceso a la pantalla de Inicio y Al menu de Ingreso del Inventario, Stock disponible de RRFF y Asignacion de Material a las OT En el Menu de la izquierda"
                 }
             ]
         };

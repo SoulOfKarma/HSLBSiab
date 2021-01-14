@@ -43,4 +43,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Bodega/PostTipoMaterial', ['middleware' => 'cors', 'uses' => 'MaterialTipoController@PostTipoMaterial']);
     Route::post('/Bodega/PostCantEsp', ['middleware' => 'cors', 'uses' => 'MaterialCantidadesEspecificasController@PostCantEsp']);
     Route::post('/Bodega/PostInventario', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@createInventario']);
+    Route::post('/Bodega/PostAsignarMaterial', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@PostAsignarMaterial']);
+    Route::post('/Bodega/PostSeguimientoMaterial/{idUser}', ['middleware' => 'cors', 'uses' => 'SeguimientoMaterialesController@PostSeguimientoMaterial']);
 });

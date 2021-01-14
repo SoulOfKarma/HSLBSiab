@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\seguimientoMateriales;
+use Illuminate\Support\Facades\Log;
 use DB;
 
 class SeguimientoMaterialesController extends Controller
@@ -16,5 +17,23 @@ class SeguimientoMaterialesController extends Controller
         ->get();
 
         return $get_all;
+    }
+
+    public function PostSeguimientoMaterial(Request $request,$idUser){
+        try {
+            $lista = $request->all();
+            log::info("Ka");
+            foreach($lista as $e => $req ){       
+                $data = ["id_usuario" => $idUser,"id_material" => $req["id"], "descripcion_seguimiento" => "Se ha asignado el material a la OT ".''.$req["idOT"].''.", Se utilizaron ".''.$req["material_cantidad"] .''. " " .''.$req["descripcion_medidas"]];
+                log::info($data);
+                seguimientoMateriales::create($data);
+            }
+            log::info("123455");
+          return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+          
     }
 }

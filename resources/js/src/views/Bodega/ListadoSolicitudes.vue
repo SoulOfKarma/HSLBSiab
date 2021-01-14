@@ -51,7 +51,9 @@
                         <info-icon
                             size="1.5x"
                             class="custom-class"
-                            @click="informacionGeneral(props.row.id)"
+                            @click="
+                                informacionGeneral(props.row.id, props.row.uuid)
+                            "
                         ></info-icon>
                     </span>
 
@@ -184,11 +186,12 @@ export default {
         forceRerender() {
             this.componentKey += 1;
         },
-        informacionGeneral(id) {
+        informacionGeneral(id, uuid, id_user) {
             this.$router.push({
                 name: "entregaMaterialNSolicitud",
                 params: {
-                    id: `${id}`
+                    id: `${id}`,
+                    uuid: `${uuid}`
                 }
             });
         },
@@ -201,7 +204,15 @@ export default {
                     }
                 })
                 .then(res => {
-                    this.listadoTickets = res.data;
+                    let a = 0;
+                    let b = [];
+                    let c = res.data;
+
+                    c.forEach((value, index) => {
+                        value.nombre = value.nombre + " " + value.apellido;
+                        b.push(value);
+                    });
+                    this.listadoTickets = b;
                 });
         },
         cargarTokenExterno() {
