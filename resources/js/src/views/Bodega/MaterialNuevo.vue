@@ -1214,10 +1214,34 @@ export default {
                             2
                         );
                     } else if (this.seleccionMedidas.id == 9) {
-                        console.log("TIRA");
-                        let res = this.cantidad * 6;
-                        this.total = res + " Metros";
-                        this.totalMaterial = this.res.toFixed(2);
+                        try {
+                            console.log("TIRA");
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                let res = this.cantidad * 6;
+                                this.total = res + " Metros";
+                                this.totalMaterial = this.res.toFixed(2);
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+                                let res = parseFloat(val) * this.cantidad;
+
+                                this.total = res.toFixed(2) + " Metros";
+                                this.totalMaterial = res.toFixed(2);
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     } else if (this.seleccionMedidas.id == 10) {
                         console.log("SACO");
                         try {
@@ -1480,8 +1504,8 @@ export default {
 
                                 let res = parseFloat(val) * this.cantidad;
 
-                                this.total = res.toFixed(2) + " Unidades";
-                                this.totalMaterial = res.toFixed(2);
+                                this.total = res + " Unidades";
+                                this.totalMaterial = res;
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1519,6 +1543,42 @@ export default {
                                 this.total = res.toFixed(2) + " Metros";
                                 this.totalMaterial = res.toFixed(2);
                             }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
+                    } else if (this.seleccionMedidas.id == 21) {
+                        console.log("METRO");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+
+                            let val = Number.parseFloat(
+                                this.seleccionCantEsp
+                                    .descripcion_cantidad_especifica
+                            );
+
+                            this.total = this.cantidad + " Metros";
+                            this.totalMaterial = parseFloat(
+                                this.cantidad
+                            ).toFixed(2);
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
+                    } else if (this.seleccionMedidas.id == 22) {
+                        console.log("PAR");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+
+                            let val = Number.parseFloat(
+                                this.seleccionCantEsp
+                                    .descripcion_cantidad_especifica
+                            );
+
+                            this.total = this.cantidad + " Pares";
+                            this.totalMaterial = parseFloat(
+                                this.cantidad
+                            ).toFixed(2);
                         } catch (error) {
                             console.log("Orror");
                             console.log(error);
