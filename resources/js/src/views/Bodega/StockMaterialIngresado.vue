@@ -361,7 +361,8 @@ export default {
                 "Cantidad",
                 "Valor",
                 "Tipo Documento",
-                "N° Documento"
+                "N° Documento",
+                "Fecha Registro"
             ],
             headerVal: [
                 "id",
@@ -374,7 +375,8 @@ export default {
                 "material_cantidad",
                 "material_valor",
                 "descripcion_documento",
-                "n_documento"
+                "n_documento",
+                "created"
             ],
             activePrompt: false,
             listadoStock: [],

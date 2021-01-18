@@ -71,7 +71,7 @@ class MaterialInventariosController extends Controller
     public function getListadoStock(){
         $get_all = MaterialInventarios::select('material_inventarios.id','material_inventarios.n_documento','material_ubicaciones.descripcion_ubicacion','material_servicios.descripcion_servicio',
         'material_ingresados.descripcion_material','material_tipos.descripcion_tipo_material','material_cantidades_especificas.descripcion_cantidad_especifica',
-        'material_medidas.descripcion_medidas','documento_asociados.descripcion_documento','material_inventarios.material_cantidad','material_inventarios.material_valor')
+        'material_medidas.descripcion_medidas','documento_asociados.descripcion_documento','material_inventarios.material_cantidad','material_inventarios.material_valor',DB::raw("DATE_FORMAT(material_inventarios.created_at,'%d/%m/%Y') as created"))
         ->join('material_ubicaciones', 'material_inventarios.id_ubicaciones','=','material_ubicaciones.id')
         ->join('material_servicios', 'material_inventarios.id_servicios','=','material_servicios.id')
         ->join('material_ingresados', 'material_inventarios.id_material_ing','=','material_ingresados.id')

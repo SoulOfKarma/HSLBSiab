@@ -395,6 +395,29 @@ export default {
         };
     },
     methods: {
+        limpiar() {
+            this.seleccionMedidas = {
+                id: 8,
+                descripcion_medidas: "UN"
+            };
+            this.seleccionMaterial = {
+                id: 0,
+                descripcion_material: "Seleccione Material"
+            };
+            this.seleccionTipoMaterial = {
+                id: 0,
+                descripcion_tipo_material: "Selecione Tipo Material"
+            };
+            this.seleccionCantEsp = {
+                id: 3,
+                descripcion_cantidad_especifica: "N/A"
+            };
+            this.cantidad = 0;
+            this.valor = 0;
+            this.total = 0;
+            this.totalMaterial = 0;
+            this.totalValor = 0;
+        },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
@@ -683,6 +706,14 @@ export default {
                         });
                         this.cargarMaterial();
                         this.popActiveMaterial = false;
+                        this.seleccionMedidas = {
+                            id: 8,
+                            descripcion_medidas: "UN"
+                        };
+                        this.seleccionMaterial = {
+                            id: 0,
+                            descripcion_material: "Seleccione Material"
+                        };
                     } else {
                         this.$vs.notify({
                             time: 3000,
@@ -723,6 +754,15 @@ export default {
                         });
                         this.cargarTipoMaterial();
                         this.popActiveTMaterial = false;
+                        this.seleccionTipoMaterial = {
+                            id: 0,
+                            descripcion_tipo_material: "Selecione Tipo Material"
+                        };
+
+                        this.seleccionMaterial = {
+                            id: 0,
+                            descripcion_material: "Seleccione Material"
+                        };
                     } else {
                         this.$vs.notify({
                             time: 3000,
@@ -884,6 +924,7 @@ export default {
                                     color: "success",
                                     position: "top-right"
                                 });
+                                this.limpiar();
                             } else {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1227,7 +1268,7 @@ export default {
                             ) {
                                 let res = this.cantidad * 6;
                                 this.total = res + " Metros";
-                                this.totalMaterial = this.res.toFixed(2);
+                                this.totalMaterial = Math.round(res.toFixed(2));
                             } else {
                                 let val = Number.parseFloat(
                                     this.seleccionCantEsp
@@ -1236,7 +1277,11 @@ export default {
                                 let res = parseFloat(val) * this.cantidad;
 
                                 this.total = res.toFixed(2) + " Metros";
-                                this.totalMaterial = res.toFixed(2);
+                                let valor = res.toFixed(2);
+
+                                valor = Math.round(valor);
+
+                                this.totalMaterial = Math.round(valor);
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1466,11 +1511,28 @@ export default {
                         console.log("GALON");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                let res = this.cantidad * 3.78541;
 
-                            let res = this.cantidad * 3.78541;
-
-                            this.total = res.toFixed(2) + " Litros";
-                            this.totalMaterial = res.toFixed(2);
+                                this.total = res.toFixed(2) + " Litros";
+                                this.totalMaterial = res.toFixed(2);
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+                                let res = val * 3.78541;
+                                res = res * this.cantidad;
+                                this.total = res.toFixed(2) + " Litros";
+                                this.totalMaterial = res.toFixed(2);
+                            }
                         } catch (error) {
                             console.log("Orror");
                             console.log(error);
@@ -1502,7 +1564,9 @@ export default {
                                         .descripcion_cantidad_especifica
                                 );
 
-                                let res = parseFloat(val) * this.cantidad;
+                                let res = Math.round(
+                                    parseFloat(val) * this.cantidad
+                                );
 
                                 this.total = res + " Unidades";
                                 this.totalMaterial = res;
@@ -1583,6 +1647,32 @@ export default {
                             console.log("Orror");
                             console.log(error);
                         }
+                    } else if (this.seleccionMedidas.id == 23) {
+                        console.log("CARRETE");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                let res = parseFloat(this.cantidad);
+
+                                this.total = res.toFixed(2) + " Carretes";
+                                this.totalMaterial = res.toFixed(2);
+                            } else {
+                                let res = parseFloat(this.cantidad);
+
+                                this.total = res.toFixed(2) + " Carretes";
+                                this.totalMaterial = res.toFixed(2);
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
                     }
                 }
             } catch (error) {
@@ -1591,7 +1681,7 @@ export default {
         },
         valorTotal() {
             let total = this.valor * this.cantidad;
-            this.totalValor = total;
+            this.totalValor = Math.round(total);
         }
     },
     created() {
