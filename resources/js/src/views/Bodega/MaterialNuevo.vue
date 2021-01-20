@@ -1372,25 +1372,20 @@ export default {
                                     )
                                 )
                             ) {
-                                this.$vs.notify({
-                                    time: 3000,
-                                    title: "Error ",
-                                    text:
-                                        "Debe seleccionar o ingresar un numero en el contenido",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                                this.total = 0;
+                                let res = this.cantidad;
+                                res = res;
+                                this.total = res + " Metros Cuadrados";
+                                this.totalMaterial = res;
                             } else {
                                 let val = Number.parseFloat(
                                     this.seleccionCantEsp
                                         .descripcion_cantidad_especifica
                                 );
 
-                                let res =
-                                    parseFloat(val) * 0.0254 * this.cantidad;
+                                let res = parseFloat(val) * this.cantidad;
                                 res = res.toFixed(2);
-                                this.total = res.toFixed(2);
+                                this.total = res + " Metros Cuadrados";
+                                this.totalMaterial = res;
                             }
                         } catch (error) {
                             console.log("Orror");
@@ -1667,6 +1662,36 @@ export default {
                                 let res = parseFloat(this.cantidad);
 
                                 this.total = res.toFixed(2) + " Carretes";
+                                this.totalMaterial = res.toFixed(2);
+                            }
+                        } catch (error) {
+                            console.log("Orror");
+                            console.log(error);
+                        }
+                    } else if (this.seleccionMedidas.id == 24) {
+                        console.log("TINETA");
+                        try {
+                            //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
+                            if (
+                                Number.isNaN(
+                                    Number.parseFloat(
+                                        this.seleccionCantEsp
+                                            .descripcion_cantidad_especifica
+                                    )
+                                )
+                            ) {
+                                let res = this.cantidad * 15.14164;
+
+                                this.total = res.toFixed(2) + " Litros";
+                                this.totalMaterial = res.toFixed(2);
+                            } else {
+                                let val = Number.parseFloat(
+                                    this.seleccionCantEsp
+                                        .descripcion_cantidad_especifica
+                                );
+                                let res = val * 15.14164;
+                                res = res * this.cantidad;
+                                this.total = res.toFixed(2) + " Litros";
                                 this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {

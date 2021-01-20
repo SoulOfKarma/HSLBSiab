@@ -15,7 +15,7 @@ class MaterialMedidasController extends Controller
 
     public function filtroMedidas(){
         try {
-            $data = [12,13];
+            $data = [13];
             $get_all = material_medidas::select('material_medidas.*')
             ->whereNotIn('id',$data)
             ->get();
