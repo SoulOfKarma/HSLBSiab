@@ -144,17 +144,10 @@ export default {
             headerTitle: [
                 "ID",
                 "Material",
-                "Tipo Material",
                 "Total Unidades Stock",
                 "Total Medida Calculada"
             ],
-            headerVal: [
-                "id",
-                "descripcion_material",
-                "descripcion_tipo_material",
-                "total",
-                "total_cal"
-            ],
+            headerVal: ["id", "descripcion_material", "total", "total_cal"],
             columns: [
                 {
                     label: "ID",
@@ -164,10 +157,6 @@ export default {
                 {
                     label: "Material",
                     field: "descripcion_material"
-                },
-                {
-                    label: "Tipo Material",
-                    field: "descripcion_tipo_material"
                 },
                 {
                     label: "Total Unidades Stock",
@@ -298,8 +287,6 @@ export default {
                         let objeto = {
                             id: count,
                             descripcion_material: value.descripcion_material,
-                            descripcion_tipo_material:
-                                value.descripcion_tipo_material,
                             total: value.total + " " + medidaFija,
                             total_cal: value.total_cal + " " + tipoMedida
                         };

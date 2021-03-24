@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MaterialTipos extends Migration
+class CreateMaterialCubiculosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class MaterialTipos extends Migration
      */
     public function up()
     {
-        Schema::create('material_tipos', function (Blueprint $table) {
-
+        Schema::create('material_cubiculos', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion_tipo_material');
-            $table->bigInteger('id_material')->unsigned();
-            $table->foreign('id_material')->references('id')->on('material_ingresados');
+            $table->string('descripcion_cubiculo');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class MaterialTipos extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('material_tipos');
+        Schema::dropIfExists('material_cubiculos');
     }
 }

@@ -310,12 +310,12 @@ export default {
                     field: "descripcion_servicio"
                 },
                 {
-                    label: "Material",
-                    field: "descripcion_material"
+                    label: "Cubiculo",
+                    field: "descripcion_cubiculo"
                 },
                 {
-                    label: "Tipo Material",
-                    field: "descripcion_tipo_material"
+                    label: "Material",
+                    field: "descripcion_material"
                 },
                 {
                     label: "Contenido",
@@ -354,8 +354,8 @@ export default {
                 "ID",
                 "Ubicacion",
                 "Servicio",
+                "Cubiculo",
                 "Material",
-                "Tipo Material",
                 "Contenido",
                 "Medida",
                 "Cantidad",
@@ -368,8 +368,8 @@ export default {
                 "id",
                 "descripcion_ubicacion",
                 "descripcion_servicio",
+                "descripcion_cubiculo",
                 "descripcion_material",
-                "descripcion_tipo_material",
                 "descripcion_cantidad_especifica",
                 "descripcion_medidas",
                 "material_cantidad",
@@ -496,19 +496,6 @@ export default {
                 })
                 .then(res => {
                     this.listadoStock = res.data;
-                });
-        },
-        cargarTipoMaterial() {
-            axios
-                .get(this.localVal + "/api/Bodega/GetTipoMaterial", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoTipoMaterial = res.data;
-                    this.listadoTipoMaterialData = res.data;
                 });
         },
         exportToExcel() {
