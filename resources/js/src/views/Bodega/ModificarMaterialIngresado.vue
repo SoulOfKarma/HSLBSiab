@@ -8,7 +8,7 @@
                         {{ nombre }} - {{ run }}
                     </vs-alert>
                     <div class="vx-row mb-12">
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/3 mt-5">
                             <h6>1.1 - Ubicacion</h6>
                             <br />
                             <v-select
@@ -22,7 +22,7 @@
                             </v-select>
                             <br />
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/3 mt-5">
                             <h6>1.2 - Servicio</h6>
                             <br />
                             <v-select
@@ -36,8 +36,22 @@
                             </v-select>
                             <br />
                         </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>1.3 Seleccione Cubiculo</h6>
+                            <br />
+                            <v-select
+                                taggable
+                                v-model="seleccionCubiculo"
+                                placeholder="Cubiculo"
+                                class="w-full select-large"
+                                label="descripcion_cubiculo"
+                                :options="listadoCubiculo"
+                                @input="popNuevoCubiculo"
+                            >
+                            </v-select>
+                        </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.3 - Material</h6>
+                            <h6>1.4 - Material</h6>
                             <br />
                             <v-select
                                 taggable
@@ -47,20 +61,6 @@
                                 label="descripcion_material"
                                 :options="listadoMaterial"
                                 @input="filtroSegunMaterial"
-                            ></v-select>
-                            <br />
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>1.4 - Tipo Material</h6>
-                            <br />
-                            <v-select
-                                taggable
-                                v-model="seleccionTipoMaterial"
-                                placeholder="Tipo Material"
-                                class="w-full select-large"
-                                label="descripcion_tipo_material"
-                                :options="listadoTipoMaterial"
-                                @input="CrearValidarTipoMaterial()"
                             ></v-select>
                             <br />
                         </div>
@@ -218,39 +218,10 @@
                 </div>
             </div>
         </vs-popup>
+
         <vs-popup
             classContent="pop-CrearTipo"
-            title="Guardar Nuevo Tipo de Material?"
-            :active.sync="popActiveTMaterial"
-        >
-            <vs-input class="inputx mb-3" v-model="desTipoMaterial" hidden />
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col sm:w-full w-full">
-                        <vs-button
-                            color="warning"
-                            type="filled"
-                            class="w-full m-2"
-                            @click="guardarTipoMaterial(desTipoMaterial)"
-                        >
-                            Guardar
-                        </vs-button>
-                    </div>
-                    <div class="vx-col sm:w-full w-full">
-                        <vs-button
-                            class="w-full m-2"
-                            @click="popActiveTMaterial = false"
-                            color="primary"
-                            type="filled"
-                            >Volver</vs-button
-                        >
-                    </div>
-                </div>
-            </div>
-        </vs-popup>
-        <vs-popup
-            classContent="pop-CrearTipo"
-            title="Guardar Nuevo Tipo de Material?"
+            title="Guardar Cantidad Especifica?"
             :active.sync="popActiveCantidadEsp"
         >
             <vs-input class="inputx mb-3" v-model="desCantEsp" hidden />
@@ -270,6 +241,36 @@
                         <vs-button
                             class="w-full m-2"
                             @click="popActiveCantidadEsp = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="pop-CrearTipo"
+            title="Guardar Nuevo Cubiculo?"
+            :active.sync="popActiveCubiculo"
+        >
+            <vs-input class="inputx mb-3" v-model="desCubiculo" hidden />
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarCubiculo(desCubiculo)"
+                        >
+                            Guardar
+                        </vs-button>
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popActiveCubiculo = false"
                             color="primary"
                             type="filled"
                             >Volver</vs-button
@@ -359,9 +360,9 @@ export default {
             id: 0,
             descripcion_material: "Seleccione Material"
         },
-        seleccionTipoMaterial: {
+        seleccionCubiculo: {
             id: 0,
-            descripcion_tipo_material: "Selecione Tipo Material"
+            descripcion_cubiculo: "Seleccione Cubiculo"
         },
         seleccionCantEsp: {
             id: 0,
@@ -371,6 +372,7 @@ export default {
             id: 0,
             descripcion_documento: "Seleccione Documento"
         },
+        listadoCubiculo: [],
         listadoUbicacion: [],
         listadoUbicacionData: [],
         listadoServicio: [],
@@ -390,18 +392,45 @@ export default {
         totalMaterial: 0,
         totalValor: 0,
         desMaterial: "",
-        desTipoMaterial: "",
+        desCubiculo: "",
         desCantEsp: "",
         idMaterial: 0,
         medida: "cc",
         ndocumento: "",
         localVal: process.env.MIX_APP_URL,
         popActiveMaterial: false,
-        popActiveTMaterial: false,
+        popActiveCubiculo: false,
         popActiveCantidadEsp: false
     }),
     computed: {},
     methods: {
+        limpiar() {
+            this.seleccionMedidas = {
+                id: 8,
+                descripcion_medidas: "UN"
+            };
+            this.seleccionMaterial = {
+                id: 0,
+                descripcion_material: "Seleccione Material"
+            };
+            this.seleccionTipoMaterial = {
+                id: 0,
+                descripcion_tipo_material: "Selecione Tipo Material"
+            };
+            this.seleccionCantEsp = {
+                id: 3,
+                descripcion_cantidad_especifica: "N/A"
+            };
+            this.seleccionCubiculo = {
+                id: 0,
+                descripcion_cubiculo: "Seleccione Cubiculo"
+            };
+            this.cantidad = 0;
+            this.valor = 0;
+            this.total = 0;
+            this.totalMaterial = 0;
+            this.totalValor = 0;
+        },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
@@ -448,18 +477,6 @@ export default {
                 this.$vs.notify({
                     time: 3000,
                     title: " Material no seleccionado o con error",
-                    text: "Seleccionela nuevamente",
-                    color: "danger",
-                    position: "top-right"
-                });
-            } else if (
-                this.seleccionTipoMaterial.id == 0 ||
-                this.seleccionTipoMaterial.id == null ||
-                null
-            ) {
-                this.$vs.notify({
-                    time: 3000,
-                    title: " Tipo Material Agregado Correctamente",
                     text: "Seleccionela nuevamente",
                     color: "danger",
                     position: "top-right"
@@ -533,11 +550,13 @@ export default {
                     position: "top-right"
                 });
             } else {
+                let id = this.$route.params.id;
                 let data = {
+                    id: id,
                     id_ubicaciones: this.seleccionUbicacion.id,
                     id_servicios: this.seleccionServicio.id,
+                    id_cubiculo: this.seleccionCubiculo.id,
                     id_material_ing: this.seleccionMaterial.id,
-                    id_material_tipo: this.seleccionTipoMaterial.id,
                     id_cant_esp: this.seleccionCantEsp.id,
                     id_material_medida: this.seleccionMedidas.id,
                     material_cantidad: this.cantidad,
@@ -551,7 +570,7 @@ export default {
 
                 axios
                     .post(
-                        this.localVal + "/api/Bodega/PostInventario",
+                        this.localVal + "/api/Bodega/PutInventario",
                         inventario,
                         {
                             headers: {
@@ -564,7 +583,7 @@ export default {
                         if (res.data == true) {
                             this.$vs.notify({
                                 time: 3000,
-                                title: "Inventario Registrado Correctamente",
+                                title: "Inventario Modificado Correctamente",
                                 text: "Se vaciaran campos",
                                 color: "success",
                                 position: "top-right"
@@ -573,7 +592,7 @@ export default {
                         } else {
                             this.$vs.notify({
                                 time: 3000,
-                                title: "Error Al Guardar Inventario",
+                                title: "Error Al Modificar Inventario",
                                 text:
                                     "Intente Nuevamente o Consulte con el Administrador",
                                 color: "danger",
@@ -625,6 +644,84 @@ export default {
                 this.listadoServicio = b;
             }
         },
+        popNuevoCubiculo() {
+            try {
+                if (
+                    this.seleccionCubiculo.id == null ||
+                    this.seleccionCubiculo.id == 0
+                ) {
+                    if (
+                        this.seleccionCubiculo.descripcion_cubiculo ===
+                            undefined ||
+                        this.seleccionCubiculo.descripcion_cubiculo === "" ||
+                        this.seleccionCubiculo.descripcion_cubiculo === null
+                    ) {
+                        this.desCubiculo = this.seleccionCubiculo;
+                        this.popActiveCubiculo = true;
+                    } else {
+                        this.desCubiculo = this.seleccionCubiculo.descripcion_cubiculo;
+                        this.popActiveCubiculo = true;
+                    }
+                } /* else {
+                    var idGen = this.seleccionCubiculo.id;
+                    let c = this.listadoCubiculo;
+                    let b = [];
+                    let a = 0;
+                    c.forEach((value, index) => {
+                        a = value.id;
+                        if (a == idGen) {
+                            b.push(value);
+                        }
+                    });
+                    this.seleccionCubiculo = b;
+                } */
+            } catch (error) {
+                console.log("Error al tratar de filtrar el cubiculo");
+            }
+        },
+        guardarCubiculo(desCub) {
+            try {
+                let data = {
+                    descripcion_cubiculo: desCub
+                };
+
+                axios
+                    .post(this.localVal + "/api/Bodega/PostCubiculo", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Cubiculo Agregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargarCubiculos();
+                            this.popActiveCubiculo = false;
+                            this.seleccionCubiculo = {
+                                id: 0,
+                                descripcion_cubiculo: ""
+                            };
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error Al Guardar cubiculo",
+                                text:
+                                    "Intente Nuevamente o Consulte con el Administrador",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log("Hubo un error al tratar de guardar el Cubiculo");
+            }
+        },
         filtroSegunMaterial() {
             try {
                 if (
@@ -643,82 +740,9 @@ export default {
                         this.desMaterial = this.seleccionMaterial.descripcion_material;
                         this.popActiveMaterial = true;
                     }
-                } else {
-                    let idGen = this.seleccionMaterial.id;
-                    let c = this.listadoTipoMaterialData;
-                    let b = [];
-                    let a = 0;
-                    c.forEach((value, index) => {
-                        a = value.id_material;
-                        if (a == idGen) {
-                            b.push(value);
-                        }
-                    });
-                    this.listadoTipoMaterial = b;
-                    this.seleccionTipoMaterial = {
-                        id: 0,
-                        descripcion_tipo_material: ""
-                    };
                 }
             } catch (error) {
-                console.log(error);
-            }
-        },
-        CrearValidarTipoMaterial() {
-            try {
-                if (
-                    this.seleccionTipoMaterial.id == 0 ||
-                    this.seleccionTipoMaterial.id == null
-                ) {
-                    if (
-                        this.seleccionTipoMaterial.descripcion_tipo_material ===
-                            undefined ||
-                        this.seleccionTipoMaterial.descripcion_tipo_material ===
-                            null ||
-                        this.seleccionTipoMaterial.descripcion_tipo_material ==
-                            ""
-                    ) {
-                        if (
-                            this.seleccionMaterial.id == 0 ||
-                            this.seleccionMaterial.id == null
-                        ) {
-                            this.$vs.notify({
-                                time: 3000,
-                                title: "Debe Seleccionar Material",
-                                text:
-                                    "Debe estar Seleccionado Para asociar el nuevo tipo de material",
-                                color: "warning",
-                                position: "top-right"
-                            });
-                        } else {
-                            console.log(this.seleccionMaterial);
-                            this.idMaterial = this.seleccionMaterial.id;
-                            this.desTipoMaterial = this.seleccionTipoMaterial;
-                            this.popActiveTMaterial = true;
-                        }
-                    } else {
-                        if (
-                            this.seleccionMaterial.id == 0 ||
-                            this.seleccionMaterial.id == null
-                        ) {
-                            this.$vs.notify({
-                                time: 3000,
-                                title: "Debe Seleccionar Material",
-                                text:
-                                    "Debe estar Seleccionado Para asociar el nuevo tipo de material",
-                                color: "warning",
-                                position: "top-right"
-                            });
-                        } else {
-                            console.log(this.seleccionMaterial.id);
-                            this.idMaterial = this.seleccionMaterial.id;
-                            this.desTipoMaterial = this.seleccionTipoMaterial.descripcion_tipo_material;
-                            this.popActiveTMaterial = true;
-                        }
-                    }
-                }
-            } catch (error) {
-                console.log(error);
+                console.log("Error al filtrar Materiales");
             }
         },
         crearValidarCantEsp() {
@@ -798,19 +822,6 @@ export default {
                     this.listadoMaterialData = res.data;
                 });
         },
-        cargarTipoMaterial() {
-            axios
-                .get(this.localVal + "/api/Bodega/GetTipoMaterial", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoTipoMaterial = res.data;
-                    this.listadoTipoMaterialData = res.data;
-                });
-        },
         cargarDocumentoAsociado() {
             axios
                 .get(this.localVal + "/api/Bodega/GetDocumentos", {
@@ -863,46 +874,6 @@ export default {
                         this.$vs.notify({
                             time: 3000,
                             title: "Error Al Guardar Tipo Material",
-                            text:
-                                "Intente Nuevamente o Consulte con el Administrador",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    }
-                });
-        },
-        guardarTipoMaterial(valor) {
-            let material = {
-                descripcion_tipo_material: valor,
-                id_material: this.idMaterial
-            };
-
-            axios
-                .post(
-                    this.localVal + "/api/Bodega/PostTipoMaterial",
-                    material,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    }
-                )
-                .then(res => {
-                    if (res.data == true) {
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Tipo Material Agregado Correctamente",
-                            text: "Se Recargara Listado",
-                            color: "success",
-                            position: "top-right"
-                        });
-                        this.cargarTipoMaterial();
-                        this.popActiveTMaterial = false;
-                    } else {
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Error Al Guardar Material",
                             text:
                                 "Intente Nuevamente o Consulte con el Administrador",
                             color: "danger",
@@ -1779,8 +1750,9 @@ export default {
                 this.seleccionMaterial.descripcion_material =
                     b[0].descripcion_material;
 
-                idGen = listado[0].id_material_tipo;
-                c = this.listadoTipoMaterialData;
+                idGen = listado[0].id_cubiculo;
+
+                c = this.listadoCubiculo;
                 b = [];
                 a = 0;
                 c.forEach((value, index) => {
@@ -1789,9 +1761,10 @@ export default {
                         b.push(value);
                     }
                 });
-                this.seleccionTipoMaterial.id = b[0].id;
-                this.seleccionTipoMaterial.descripcion_tipo_material =
-                    b[0].descripcion_tipo_material;
+
+                this.seleccionCubiculo.id = b[0].id;
+                this.seleccionCubiculo.descripcion_cubiculo =
+                    b[0].descripcion_cubiculo;
 
                 idGen = listado[0].id_cant_esp;
                 c = this.listadoCantEspData;
@@ -1839,6 +1812,18 @@ export default {
                 this.seleccionDocumento.descripcion_documento =
                     b[0].descripcion_documento;
             }, 2000);
+        },
+        cargarCubiculos() {
+            axios
+                .get(this.localVal + "/api/Bodega/GetCubiculos", {
+                    headers: {
+                        Authorization:
+                            `Bearer ` + sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    this.listadoCubiculo = res.data;
+                });
         }
     },
     created() {
@@ -1846,10 +1831,10 @@ export default {
         this.cargarServicios();
         this.cargarMedidas();
         this.cargarMaterial();
-        this.cargarTipoMaterial();
         this.cargarCantidadEspecifica();
         this.cargarDocumentoAsociado();
         this.cargarMaterialEspecifico();
+        this.cargarCubiculos();
     }
 };
 </script>

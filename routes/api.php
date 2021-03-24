@@ -45,4 +45,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Bodega/PostInventario', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@createInventario']);
     Route::post('/Bodega/PostAsignarMaterial', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@PostAsignarMaterial']);
     Route::post('/Bodega/PostSeguimientoMaterial/{idUser}', ['middleware' => 'cors', 'uses' => 'SeguimientoMaterialesController@PostSeguimientoMaterial']);
+
+    //Post Como Put
+    Route::post('/Bodega/PutInventario', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@PutInventario']);
 });

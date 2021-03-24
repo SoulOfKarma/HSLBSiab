@@ -24,6 +24,20 @@ class MaterialInventariosController extends Controller
         
     }
 
+    public function PutInventario(Request $request){
+       try {
+           MaterialInventarios::where('id', $request->id)
+           ->update(['id_ubicaciones' => $request->id_ubicaciones,'id_servicios' => $request->id_servicios,
+           'id_cubiculo' => $request->id_cubiculo,'id_material_ing' => $request->id_material_ing,'id_cant_esp' => $request->id_cant_esp,
+           'id_material_medida' => $request->id_material_medida,'material_cantidad' => $request->material_cantidad,'material_valor' => $request->material_valor,
+           'material_cantidad_calculada' => $request->material_cantidad_calculada,'id_documento' => $request->id_documento,'n_documento' => $request->n_documento]);
+           return true;
+       } catch (\Throwable $th) {
+           log::info($th);
+           return false;
+       }
+    }
+
     public function TraerMaterial($id){
         try {
             $get_all = MaterialInventarios::select('material_inventarios.*')

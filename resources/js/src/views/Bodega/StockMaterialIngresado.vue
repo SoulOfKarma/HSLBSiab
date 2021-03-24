@@ -168,11 +168,11 @@
                             class="custom-class"
                             @click="modificarMaterial(props.row.id)"
                         ></plus-circle-icon>
-                        <archive-icon
+                        <!-- <archive-icon
                             size="1.5x"
                             class="custom-class"
                             @click="generarBarCode(props.row.id)"
-                        ></archive-icon>
+                        ></archive-icon> -->
                     </span>
 
                     <!-- Column: Common -->
@@ -534,7 +534,6 @@ export default {
     },
     created() {
         this.cargarStock();
-        this.cargarTipoMaterial();
     }
 };
 </script>
