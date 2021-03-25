@@ -263,6 +263,77 @@
         </vs-popup>
         <vs-popup
             classContent="pop-CrearTipo"
+            title="Guardar Nuevo Servicio?"
+            :active.sync="popActiveServicio"
+        >
+            <vs-input class="inputx mb-3" v-model="desServicio" hidden />
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <h6>Seleccione Ubicacion</h6>
+                        <br />
+                        <v-select
+                            v-model="seleccionUbicacionG"
+                            placeholder="Ubicacion"
+                            class="w-full select-large"
+                            label="descripcion_ubicacion"
+                            :options="listadoUbicacion"
+                        >
+                        </v-select>
+                        <br />
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarServicio(desServicio)"
+                        >
+                            Guardar
+                        </vs-button>
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popActiveServicio = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="pop-CrearTipo"
+            title="Guardar Nuevo Ubicacion?"
+            :active.sync="popActiveUbicacion"
+        >
+            <vs-input class="inputx mb-3" v-model="desUbicacion" hidden />
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            color="warning"
+                            type="filled"
+                            class="w-full m-2"
+                            @click="guardarUbicacion(desUbicacion)"
+                        >
+                            Guardar
+                        </vs-button>
+                    </div>
+                    <div class="vx-col sm:w-full w-full">
+                        <vs-button
+                            class="w-full m-2"
+                            @click="popActiveUbicacion = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="pop-CrearTipo"
             title="Guardar Cantidad Especifica?"
             :active.sync="popActiveCantidadEsp"
         >
@@ -342,6 +413,10 @@ export default {
                 id: 0,
                 descripcion_ubicacion: "Seleccione Ubicacion"
             },
+            seleccionUbicacionG: {
+                id: 0,
+                descripcion_ubicacion: "Seleccione Ubicacion"
+            },
             seleccionServicio: {
                 id: 0,
                 descripcion_servicio: "Seleccione Servicio"
@@ -381,6 +456,8 @@ export default {
             totalValor: 0,
             desMaterial: "",
             desCubiculo: "",
+            desServicio: "",
+            desUbicacion: "",
             desCantEsp: "",
             idMaterial: 0,
             medida: "cc",
@@ -393,7 +470,9 @@ export default {
             localVal: process.env.MIX_APP_URL,
             popActiveMaterial: false,
             popActiveCubiculo: false,
-            popActiveCantidadEsp: false
+            popActiveCantidadEsp: false,
+            popActiveServicio: false,
+            popActiveUbicacion: false
         };
     },
     methods: {
@@ -438,44 +517,167 @@ export default {
             }
         },
         filtroSegunServicio() {
-            if (this.seleccionServicio == null || this.seleccionServicio == 0) {
-                this.listadoUbicacion = this.listadoUbicacionData;
-                this.listadoServicio = this.listadoServicioData;
-            } else {
-                let idGen = this.seleccionServicio.id_material_ubicacion;
-                let c = this.listadoUbicacionData;
-                let b = [];
-                let a = 0;
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGen) {
-                        b.push(value);
+            try {
+                if (
+                    this.seleccionServicio.id == null ||
+                    this.seleccionServicio.id == 0
+                ) {
+                    if (
+                        this.seleccionServicio.descripcion_servicio ===
+                            undefined ||
+                        this.seleccionServicio === "" ||
+                        this.seleccionServicio === null
+                    ) {
+                        this.desServicio = this.seleccionServicio;
+                        this.popActiveServicio = true;
+                    } else {
+                        this.desServicio = this.seleccionServicio.descripcion_servicio;
+                        this.popActiveServicio = true;
                     }
-                });
-                this.seleccionUbicacion.id = b[0].id;
-                this.seleccionUbicacion.descripcion_ubicacion =
-                    b[0].descripcion_ubicacion;
+                } else {
+                    let idGen = this.seleccionServicio.id_material_ubicacion;
+                    let c = this.listadoUbicacionData;
+                    let b = [];
+                    let a = 0;
+                    c.forEach((value, index) => {
+                        a = value.id;
+                        if (a == idGen) {
+                            b.push(value);
+                        }
+                    });
+                    this.seleccionUbicacion.id = b[0].id;
+                    this.seleccionUbicacion.descripcion_ubicacion =
+                        b[0].descripcion_ubicacion;
+                }
+            } catch (error) {}
+        },
+        //Guardar Servicio
+        guardarServicio(desSer) {
+            try {
+                let data = {
+                    id_material_ubicacion: this.seleccionUbicacionG.id,
+                    descripcion_servicio: desSer
+                };
+
+                axios
+                    .post(this.localVal + "/api/Bodega/PostServicio", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Servicio Agregado Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargarServicios();
+                            this.popActiveServicio = false;
+                            this.seleccionServicio = {
+                                id: 0,
+                                descripcion_servicio: ""
+                            };
+                            this.seleccionUbicacion = {
+                                id: 0,
+                                descripcion_ubicacion: ""
+                            };
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error Al Guardar Servicio",
+                                text:
+                                    "Intente Nuevamente o Consulte con el Administrador",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log("Hubo un error al tratar de guardar el servicio");
             }
         },
         filtroSegunUbicacion() {
-            if (
-                this.seleccionUbicacion == null ||
-                this.seleccionUbicacion == 0
-            ) {
-                this.listadoUbicacion = this.listadoUbicacionData;
-                this.listadoServicio = this.listadoServicioData;
-            } else {
-                var idGen = this.seleccionUbicacion.id;
-                let c = this.listadoServicioData;
-                let b = [];
-                let a = 0;
-                c.forEach((value, index) => {
-                    a = value.id_material_ubicacion;
-                    if (a == idGen) {
-                        b.push(value);
+            try {
+                if (
+                    this.seleccionUbicacion.id == null ||
+                    this.seleccionUbicacion.id == 0
+                ) {
+                    if (
+                        this.seleccionUbicacion.descripcion_ubicacion ===
+                            undefined ||
+                        this.seleccionUbicacion.descripcion_ubicacion === "" ||
+                        this.seleccionUbicacion.descripcion_ubicacion === null
+                    ) {
+                        this.desUbicacion = this.seleccionUbicacion;
+                        this.popActiveUbicacion = true;
+                    } else {
+                        this.desUbicacion = this.seleccionUbicacion.descripcion_ubicacion;
+                        this.popActiveUbicacion = true;
                     }
-                });
-                this.listadoServicio = b;
+                } else {
+                    var idGen = this.seleccionUbicacion.id;
+                    let c = this.listadoServicioData;
+                    let b = [];
+                    let a = 0;
+                    c.forEach((value, index) => {
+                        a = value.id_material_ubicacion;
+                        if (a == idGen) {
+                            b.push(value);
+                        }
+                    });
+                    this.listadoServicio = b;
+                }
+            } catch (error) {
+                console.log(
+                    "Hubo un error al tratar de abrir el Pop de nueva ubicacion"
+                );
+            }
+        },
+        guardarUbicacion(desUbi) {
+            try {
+                let data = {
+                    descripcion_ubicacion: desUbi
+                };
+
+                axios
+                    .post(this.localVal + "/api/Bodega/PostUbicacion", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        if (res.data == true) {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Ubicacion Agregada Correctamente",
+                                text: "Se Recargara Listado",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.cargarUbicaciones();
+                            this.popActiveUbicacion = false;
+                            this.seleccionUbicacion = {
+                                id: 0,
+                                descripcion_ubicacion: ""
+                            };
+                        } else {
+                            this.$vs.notify({
+                                time: 3000,
+                                title: "Error Al Guardar Ubicacion",
+                                text:
+                                    "Intente Nuevamente o Consulte con el Administrador",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log("Hubo un error al tratar de guardar la ubicacion");
             }
         },
         popNuevoCubiculo() {

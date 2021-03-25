@@ -41,6 +41,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     //Posts 
     Route::post('/Bodega/PostMaterial', ['middleware' => 'cors', 'uses' => 'MaterialIngresadoController@PostMaterial']);
     Route::post('/Bodega/PostCubiculo', ['middleware' => 'cors', 'uses' => 'MaterialCubiculosController@PostCubiculo']);
+    Route::post('/Bodega/PostServicio', ['middleware' => 'cors', 'uses' => 'MaterialServiciosController@PostServicio']);
+    Route::post('/Bodega/PostUbicacion', ['middleware' => 'cors', 'uses' => 'MaterialUbicacionesController@PostUbicacion']);
     Route::post('/Bodega/PostCantEsp', ['middleware' => 'cors', 'uses' => 'MaterialCantidadesEspecificasController@PostCantEsp']);
     Route::post('/Bodega/PostInventario', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@createInventario']);
     Route::post('/Bodega/PostAsignarMaterial', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@PostAsignarMaterial']);
