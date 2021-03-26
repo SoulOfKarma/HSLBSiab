@@ -8,7 +8,7 @@
                         {{ nombre }} - {{ run }}
                     </vs-alert>
                     <div class="vx-row mb-12">
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.1 - Ubicacion</h6>
                             <br />
                             <v-select
@@ -22,22 +22,8 @@
                             </v-select>
                             <br />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>1.2 - Servicio</h6>
-                            <br />
-                            <v-select
-                                v-model="seleccionServicio"
-                                placeholder="Servicio"
-                                class="w-full select-large"
-                                label="descripcion_servicio"
-                                :options="listadoServicio"
-                                @input="filtroSegunServicio"
-                            >
-                            </v-select>
-                            <br />
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>1.3 Seleccione Cubiculo</h6>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.2 Seleccione Cubiculo</h6>
                             <br />
                             <v-select
                                 taggable
@@ -50,8 +36,8 @@
                             >
                             </v-select>
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>1.4 - Material</h6>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>1.3 - Material</h6>
                             <br />
                             <v-select
                                 taggable
@@ -64,33 +50,9 @@
                             ></v-select>
                             <br />
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>1.5 - Contenido</h6>
-                            <br />
-                            <v-select
-                                taggable
-                                v-model="seleccionCantEsp"
-                                placeholder="Cantidad Esp."
-                                class="w-full select-large"
-                                label="descripcion_cantidad_especifica"
-                                :options="listadoCantEsp"
-                                @input="crearValidarCantEsp"
-                            ></v-select>
-                            <br />
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>1.6 - Medida</h6>
-                            <br />
-                            <v-select
-                                v-model="seleccionMedidas"
-                                placeholder="Medidas"
-                                class="w-full select-large"
-                                label="descripcion_medidas"
-                                :options="listadoMedidas"
-                            />
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>1.7 - Cantidad</h6>
+
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>1.4 - Cantidad</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
@@ -101,8 +63,19 @@
                             />
                             <br />
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>1.8 - Valor</h6>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>1.5 - Medida</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionMedidas"
+                                placeholder="Medidas"
+                                class="w-full select-large"
+                                label="descripcion_medidas"
+                                :options="listadoMedidas"
+                            />
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>1.6 - Valor</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
@@ -134,7 +107,7 @@
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.9 - Documento</h6>
+                            <h6>1.7 - Documento</h6>
                             <br />
                             <v-select
                                 v-model="seleccionDocumento"
@@ -146,7 +119,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.10 - N° Documento</h6>
+                            <h6>1.8 - N° Documento</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
@@ -219,7 +192,7 @@
             </div>
         </vs-popup>
 
-        <vs-popup
+        <!--  <vs-popup
             classContent="pop-CrearTipo"
             title="Guardar Cantidad Especifica?"
             :active.sync="popActiveCantidadEsp"
@@ -248,7 +221,7 @@
                     </div>
                 </div>
             </div>
-        </vs-popup>
+        </vs-popup> -->
         <vs-popup
             classContent="pop-CrearTipo"
             title="Guardar Nuevo Cubiculo?"
@@ -333,10 +306,10 @@ export default {
         materialSeleccion: {
             id: 0,
             id_ubicaciones: "",
-            id_servicios: "",
+            //id_servicios: "",
             id_material_ing: "",
             id_material_tipo: "",
-            id_cant_esp: "",
+            //id_cant_esp: "",
             id_material_medida: "",
             material_cantidad: "",
             material_valor: "",
@@ -348,10 +321,10 @@ export default {
             id: 0,
             descripcion_ubicacion: "Seleccione Ubicacion"
         },
-        seleccionServicio: {
+        /*         seleccionServicio: {
             id: 0,
             descripcion_servicio: "Seleccione Servicio"
-        },
+        }, */
         seleccionMedidas: {
             id: 8,
             descripcion_medidas: "UN"
@@ -364,10 +337,10 @@ export default {
             id: 0,
             descripcion_cubiculo: "Seleccione Cubiculo"
         },
-        seleccionCantEsp: {
+        /*         seleccionCantEsp: {
             id: 0,
             descripcion_cantidad_especifica: "400"
-        },
+        }, */
         seleccionDocumento: {
             id: 0,
             descripcion_documento: "Seleccione Documento"
@@ -375,16 +348,16 @@ export default {
         listadoCubiculo: [],
         listadoUbicacion: [],
         listadoUbicacionData: [],
-        listadoServicio: [],
-        listadoServicioData: [],
+        /*         listadoServicio: [],
+        listadoServicioData: [], */
         listadoMedidas: [],
         listadoMedidasData: [],
         listadoMaterial: [],
         listadoMaterialData: [],
         listadoTipoMaterial: [],
         listadoTipoMaterialData: [],
-        listadoCantEsp: [],
-        listadoCantEspData: [],
+        /*         listadoCantEsp: [],
+        listadoCantEspData: [], */
         listadoDocumentoAsociado: [],
         cantidad: 0,
         valor: 0,
@@ -393,14 +366,14 @@ export default {
         totalValor: 0,
         desMaterial: "",
         desCubiculo: "",
-        desCantEsp: "",
+        /*         desCantEsp: "", */
         idMaterial: 0,
         medida: "cc",
         ndocumento: "",
         localVal: process.env.MIX_APP_URL,
         popActiveMaterial: false,
-        popActiveCubiculo: false,
-        popActiveCantidadEsp: false
+        popActiveCubiculo: false
+        /* popActiveCantidadEsp: false */
     }),
     computed: {},
     methods: {
@@ -417,10 +390,10 @@ export default {
                 id: 0,
                 descripcion_tipo_material: "Selecione Tipo Material"
             };
-            this.seleccionCantEsp = {
+            /* this.seleccionCantEsp = {
                 id: 3,
                 descripcion_cantidad_especifica: "N/A"
-            };
+            }; */
             this.seleccionCubiculo = {
                 id: 0,
                 descripcion_cubiculo: "Seleccione Cubiculo"
@@ -460,17 +433,6 @@ export default {
                     position: "top-right"
                 });
             } else if (
-                this.seleccionServicio.id == 0 ||
-                this.seleccionServicio.id == null
-            ) {
-                this.$vs.notify({
-                    time: 3000,
-                    title: " Servicio no seleccionado o con error",
-                    text: "Seleccionela nuevamente",
-                    color: "danger",
-                    position: "top-right"
-                });
-            } else if (
                 this.seleccionMaterial.id == 0 ||
                 this.seleccionMaterial.id == null
             ) {
@@ -478,17 +440,6 @@ export default {
                     time: 3000,
                     title: " Material no seleccionado o con error",
                     text: "Seleccionela nuevamente",
-                    color: "danger",
-                    position: "top-right"
-                });
-            } else if (
-                this.seleccionCantEsp.id == 0 ||
-                this.seleccionCantEsp.id == null
-            ) {
-                this.$vs.notify({
-                    time: 3000,
-                    title: " Contenido no seleccionado o con error",
-                    text: "Seleccionelo nuevamente",
                     color: "danger",
                     position: "top-right"
                 });
@@ -554,10 +505,10 @@ export default {
                 let data = {
                     id: id,
                     id_ubicaciones: this.seleccionUbicacion.id,
-                    id_servicios: this.seleccionServicio.id,
+                    //id_servicios: this.seleccionServicio.id,
                     id_cubiculo: this.seleccionCubiculo.id,
                     id_material_ing: this.seleccionMaterial.id,
-                    id_cant_esp: this.seleccionCantEsp.id,
+                    //id_cant_esp: this.seleccionCantEsp.id,
                     id_material_medida: this.seleccionMedidas.id,
                     material_cantidad: this.cantidad,
                     material_valor: this.valor,
@@ -603,7 +554,7 @@ export default {
             }
         },
 
-        filtroSegunServicio() {
+        /* filtroSegunServicio() {
             if (this.seleccionServicio == null || this.seleccionServicio == 0) {
                 this.listadoUbicacion = this.listadoUbicacionData;
                 this.listadoServicio = this.listadoServicioData;
@@ -622,7 +573,7 @@ export default {
                 this.seleccionUbicacion.descripcion_ubicacion =
                     b[0].descripcion_ubicacion;
             }
-        },
+        }, */
         filtroSegunUbicacion() {
             if (
                 this.seleccionUbicacion == null ||
@@ -745,7 +696,7 @@ export default {
                 console.log("Error al filtrar Materiales");
             }
         },
-        crearValidarCantEsp() {
+        /* crearValidarCantEsp() {
             try {
                 if (
                     this.seleccionCantEsp.id == 0 ||
@@ -769,7 +720,7 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-        },
+        }, */
         cargarUbicaciones() {
             axios
                 .get(this.localVal + "/api/Bodega/GetUbicaciones", {
@@ -783,7 +734,7 @@ export default {
                     this.listadoUbicacionData = res.data;
                 });
         },
-        cargarServicios() {
+        /* cargarServicios() {
             axios
                 .get(this.localVal + "/api/Bodega/GetServicios", {
                     headers: {
@@ -795,7 +746,7 @@ export default {
                     this.listadoServicio = res.data;
                     this.listadoServicioData = res.data;
                 });
-        },
+        }, */
         cargarMedidas() {
             axios
                 .get(this.localVal + "/api/Bodega/GetMedidasFiltradas", {
@@ -834,7 +785,7 @@ export default {
                     this.listadoDocumentoAsociado = res.data;
                 });
         },
-        cargarCantidadEspecifica() {
+        /* cargarCantidadEspecifica() {
             axios
                 .get(this.localVal + "/api/Bodega/GetCantEsp", {
                     headers: {
@@ -846,7 +797,7 @@ export default {
                     this.listadoCantEsp = res.data;
                     this.listadoCantEspData = res.data;
                 });
-        },
+        }, */
         guardarMaterial(valor) {
             let material = {
                 descripcion_material: valor
@@ -882,7 +833,7 @@ export default {
                     }
                 });
         },
-        guardarCantidadEspecifica(valor) {
+        /* guardarCantidadEspecifica(valor) {
             let material = {
                 descripcion_cantidad_especifica: valor
             };
@@ -921,7 +872,7 @@ export default {
                         });
                     }
                 });
-        },
+        }, */
         CalcTotal() {
             try {
                 if (
@@ -933,29 +884,6 @@ export default {
                         title: "Error ",
                         text:
                             "Debe Seleccionar Algun Material para calcular la cantidad",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (
-                    this.seleccionTipoMaterial.id == 0 ||
-                    this.seleccionTipoMaterial.id == null
-                ) {
-                    this.$vs.notify({
-                        time: 3000,
-                        title: "Error ",
-                        text:
-                            "Debe Seleccionar el Tipo de Material para calcular la cantidad",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (
-                    this.seleccionCantEsp.id == 0 ||
-                    this.seleccionCantEsp.id == null
-                ) {
-                    this.$vs.notify({
-                        time: 3000,
-                        title: "Error ",
-                        text: "Debe Seleccionar Algun Contenido",
                         color: "danger",
                         position: "top-right"
                     });
@@ -976,84 +904,59 @@ export default {
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
                                     title: "Error ",
                                     text:
-                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                        "Debe ingresar un numero en el contenido",
                                     color: "danger",
                                     position: "top-right"
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-                                let res =
-                                    (parseFloat(val) / 1000) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Litros";
-                                this.totalMaterial = res.toFixed(2);
+                                let res = this.cantidad * 0.001;
+                                this.total = res + " Litros";
+                                this.totalMaterial = res;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Hubo un error al caculos los centimetros cubicos"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 2) {
                         console.log("MM");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
                                     title: "Error ",
                                     text:
-                                        "Debe seleccionar o ingresar un numero en el contenido",
+                                        "Debe ingresar un numero en el contenido",
                                     color: "danger",
                                     position: "top-right"
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-                                let res =
-                                    (parseFloat(val) / 1000) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Metros";
-                                this.totalMaterial = res.toFixed(2);
+                                let res = this.cantidad * 0.001;
+                                this.total = res + " Metros";
+                                this.totalMaterial = res;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Hubo un error al intentar calcular los milimetros a Metros"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 3) {
                         console.log("PULG");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1065,32 +968,21 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res =
-                                    parseFloat(val) * 0.0254 * this.cantidad;
-
+                                let res = this.cantidad * 0.0254;
                                 this.total = res.toFixed(2) + " Metros";
                                 this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Fallo al calcular las pulgadas a metros"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 4) {
                         console.log("CM");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1102,32 +994,21 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res =
-                                    (parseFloat(val) / 100) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Metros";
-                                this.totalMaterial = res.toFixed(2);
+                                let res = this.cantidad * 0.01;
+                                this.total = res + " Metros";
+                                this.totalMaterial = res;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al intentar calcular los centimetros a Metros"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 5) {
                         console.log("KG");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1139,31 +1020,20 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res = parseFloat(val) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Kilos";
-                                this.totalMaterial = res.toFixed(2);
+                                this.total = this.cantidad + " Kilos";
+                                this.totalMaterial = this.cantidad;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al intentar calcular los kilogramos"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 6) {
                         console.log("GR");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1175,33 +1045,21 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res =
-                                    (parseFloat(val) / 1000) * this.cantidad;
-
-                                this.total =
-                                    res.toFixed(2).toFixed(2) + " Kilos";
-                                this.totalMaterial = res.toFixed(2);
+                                let res = this.cantidad * 0.001;
+                                this.total = res + " Kilos";
+                                this.totalMaterial = res;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al intentar calcular los gramos a kilos"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 7) {
                         console.log("ROLLO");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1213,18 +1071,13 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-                                let res = parseFloat(val) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Metros";
-                                this.totalMaterial = res.toFixed(2);
+                                this.total = this.cantidad + " Metros";
+                                this.totalMaterial = this.cantidad;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al intentar calcular rollo a metro"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 8) {
                         console.log("UN");
@@ -1237,45 +1090,31 @@ export default {
                             console.log("TIRA");
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 let res = this.cantidad * 6;
                                 this.total = res + " Metros";
                                 this.totalMaterial = Math.round(res.toFixed(2));
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-                                let res = parseFloat(val) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Metros";
-                                let valor = res.toFixed(2);
+                                let res = this.cantidad * 6;
+                                this.total = res + " Metros";
+                                let valor = res;
 
                                 valor = Math.round(valor);
 
                                 this.totalMaterial = Math.round(valor);
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al tratar de calcular tira a metros"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 10) {
                         console.log("SACO");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1287,31 +1126,20 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res = parseFloat(val) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Kilos";
-                                this.totalMaterial = res.toFixed(2);
+                                this.total = this.cantidad + " Saco";
+                                this.totalMaterial = this.cantidad;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al tratar de calcular los sacos"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 11) {
                         console.log("ML");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1323,51 +1151,34 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res =
-                                    (parseFloat(val) / 1000) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Litros";
-                                this.totalMaterial = res.toFixed(2);
+                                let res = this.cantidad * 0.001;
+                                this.total = res + " Litros";
+                                this.totalMaterial = res;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al calcular mililitros a litros"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 12) {
                         console.log("M2");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 let res = this.cantidad;
-                                res = res;
                                 this.total = res + " Metros Cuadrados";
                                 this.totalMaterial = res;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res = parseFloat(val) * this.cantidad;
-                                res = res.toFixed(2);
+                                let res = this.cantidad.toFixed(2);
                                 this.total = res + " Metros Cuadrados";
                                 this.totalMaterial = res;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al tratar de calcular los metros cuadrados"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 13) {
                         console.log("M3");
@@ -1377,12 +1188,7 @@ export default {
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1394,31 +1200,20 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res = parseFloat(val) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Litros";
-                                this.totalMaterial = res.toFixed(2);
+                                this.total = this.cantidad + " Litros";
+                                this.totalMaterial = this.cantidad;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al tratar de calcular los litros"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 15) {
                         console.log("TAMBOR");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1430,31 +1225,20 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res = parseFloat(val) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Litros";
-                                this.totalMaterial = res.toFixed(2);
+                                this.total = this.cantidad + " Tambores";
+                                this.totalMaterial = this.cantidad;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al tratar de calcular los tambores"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 16) {
                         console.log("BOLSA");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1466,61 +1250,39 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res = parseFloat(val) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Kilos";
-                                this.totalMaterial = res.toFixed(2);
+                                this.total = this.cantidad + " Bolsas";
+                                this.totalMaterial = this.cantidad;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log("Error al tratar de calcular la bolsa");
                         }
                     } else if (this.seleccionMedidas.id == 17) {
                         console.log("GALON");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 let res = this.cantidad * 3.78541;
 
                                 this.total = res.toFixed(2) + " Litros";
                                 this.totalMaterial = res.toFixed(2);
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-                                let res = val * 3.78541;
-                                res = res * this.cantidad;
+                                let res = this.cantidad * 3.78541;
                                 this.total = res.toFixed(2) + " Litros";
                                 this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al tratar de calcular los galones a litros"
+                            );
                         }
                     } else if (this.seleccionMedidas.id == 18) {
                         console.log("CAJA");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1532,33 +1294,18 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res = Math.round(
-                                    parseFloat(val) * this.cantidad
-                                );
-
-                                this.total = res + " Unidades";
-                                this.totalMaterial = res;
+                                this.total = this.cantidad + " Cajas";
+                                this.totalMaterial = this.cantidad;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log("Error al calcular las cajas");
                         }
                     } else if (this.seleccionMedidas.id == 20) {
                         console.log("PLANCHA");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 this.$vs.notify({
                                     time: 3000,
@@ -1570,67 +1317,41 @@ export default {
                                 });
                                 this.total = 0;
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-
-                                let res = parseFloat(val) * this.cantidad;
-
-                                this.total = res.toFixed(2) + " Metros";
-                                this.totalMaterial = res.toFixed(2);
+                                this.total = this.cantidad + " Plancha";
+                                this.totalMaterial = this.cantidad;
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log("Error al calcular las planchas");
                         }
                     } else if (this.seleccionMedidas.id == 21) {
                         console.log("METRO");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
 
-                            let val = Number.parseFloat(
-                                this.seleccionCantEsp
-                                    .descripcion_cantidad_especifica
-                            );
-
                             this.total = this.cantidad + " Metros";
                             this.totalMaterial = parseFloat(
                                 this.cantidad
                             ).toFixed(2);
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log("Error al calcular los metros");
                         }
                     } else if (this.seleccionMedidas.id == 22) {
                         console.log("PAR");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
-
-                            let val = Number.parseFloat(
-                                this.seleccionCantEsp
-                                    .descripcion_cantidad_especifica
-                            );
-
                             this.total = this.cantidad + " Pares";
                             this.totalMaterial = parseFloat(
                                 this.cantidad
                             ).toFixed(2);
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log("Error al calcular los pares");
                         }
                     } else if (this.seleccionMedidas.id == 23) {
                         console.log("CARRETE");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 let res = parseFloat(this.cantidad);
 
@@ -1643,38 +1364,28 @@ export default {
                                 this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log("Error al calcular los carretes");
                         }
                     } else if (this.seleccionMedidas.id == 24) {
                         console.log("TINETA");
                         try {
                             //let val = parseFloat(this.seleccionCantEsp.descripcion_cantidad_especifica);
                             if (
-                                Number.isNaN(
-                                    Number.parseFloat(
-                                        this.seleccionCantEsp
-                                            .descripcion_cantidad_especifica
-                                    )
-                                )
+                                Number.isNaN(Number.parseFloat(this.cantidad))
                             ) {
                                 let res = this.cantidad * 15.14164;
 
                                 this.total = res.toFixed(2) + " Litros";
                                 this.totalMaterial = res.toFixed(2);
                             } else {
-                                let val = Number.parseFloat(
-                                    this.seleccionCantEsp
-                                        .descripcion_cantidad_especifica
-                                );
-                                let res = val * 15.14164;
-                                res = res * this.cantidad;
+                                let res = this.cantidad * 15.14164;
                                 this.total = res.toFixed(2) + " Litros";
                                 this.totalMaterial = res.toFixed(2);
                             }
                         } catch (error) {
-                            console.log("Orror");
-                            console.log(error);
+                            console.log(
+                                "Error al calcular la cantidad de tinetas a ingresar"
+                            );
                         }
                     }
                 }
@@ -1719,7 +1430,7 @@ export default {
                 this.seleccionUbicacion.descripcion_ubicacion =
                     b[0].descripcion_ubicacion;
 
-                idGen = listado[0].id_servicios;
+                /* idGen = listado[0].id_servicios;
                 c = this.listadoServicioData;
                 b = [];
                 a = 0;
@@ -1732,7 +1443,7 @@ export default {
 
                 this.seleccionServicio.id = b[0].id;
                 this.seleccionServicio.descripcion_servicio =
-                    b[0].descripcion_servicio;
+                    b[0].descripcion_servicio; */
 
                 idGen = listado[0].id_material_ing;
 
@@ -1766,7 +1477,7 @@ export default {
                 this.seleccionCubiculo.descripcion_cubiculo =
                     b[0].descripcion_cubiculo;
 
-                idGen = listado[0].id_cant_esp;
+                /* idGen = listado[0].id_cant_esp;
                 c = this.listadoCantEspData;
                 b = [];
                 a = 0;
@@ -1779,7 +1490,7 @@ export default {
                 this.seleccionCantEsp.id = b[0].id;
                 this.seleccionCantEsp.descripcion_cantidad_especifica =
                     b[0].descripcion_cantidad_especifica;
-
+ */
                 idGen = listado[0].id_material_medida;
                 c = this.listadoMedidasData;
                 b = [];
@@ -1828,10 +1539,10 @@ export default {
     },
     created() {
         this.cargarUbicaciones();
-        this.cargarServicios();
+        /*         this.cargarServicios(); */
         this.cargarMedidas();
         this.cargarMaterial();
-        this.cargarCantidadEspecifica();
+        /*         this.cargarCantidadEspecifica(); */
         this.cargarDocumentoAsociado();
         this.cargarMaterialEspecifico();
         this.cargarCubiculos();

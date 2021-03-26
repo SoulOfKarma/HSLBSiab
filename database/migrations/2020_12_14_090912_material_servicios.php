@@ -17,8 +17,6 @@ class MaterialServicios extends Migration
 
             $table->id();
             $table->string('descripcion_servicio');
-            $table->bigInteger('id_material_ubicacion')->unsigned();
-            $table->foreign('id_material_ubicacion')->references('id')->on('material_ubicaciones');
             $table->timestamps();
         });
     }

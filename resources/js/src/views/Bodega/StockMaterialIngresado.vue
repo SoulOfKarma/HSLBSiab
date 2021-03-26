@@ -306,20 +306,12 @@ export default {
                     field: "descripcion_ubicacion"
                 },
                 {
-                    label: "Servicio",
-                    field: "descripcion_servicio"
-                },
-                {
                     label: "Cubiculo",
                     field: "descripcion_cubiculo"
                 },
                 {
                     label: "Material",
                     field: "descripcion_material"
-                },
-                {
-                    label: "Contenido",
-                    field: "descripcion_cantidad_especifica"
                 },
                 {
                     label: "Medida",
@@ -353,10 +345,8 @@ export default {
             headerTitle: [
                 "ID",
                 "Ubicacion",
-                "Servicio",
                 "Cubiculo",
                 "Material",
-                "Contenido",
                 "Medida",
                 "Cantidad",
                 "Valor",
@@ -367,10 +357,8 @@ export default {
             headerVal: [
                 "id",
                 "descripcion_ubicacion",
-                "descripcion_servicio",
                 "descripcion_cubiculo",
                 "descripcion_material",
-                "descripcion_cantidad_especifica",
                 "descripcion_medidas",
                 "material_cantidad",
                 "material_valor",

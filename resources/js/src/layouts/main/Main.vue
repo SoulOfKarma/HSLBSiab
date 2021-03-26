@@ -317,7 +317,7 @@ export default {
 
         var aux2 = sessionStorage.getItem("permiso_usuario");
 
-        if (aux2 == 1) {
+        if (aux2 == 1 || aux2 == 2) {
             console.log("Acceso Correcto");
             this.navMenuItems = navMenuItems;
         } else {
