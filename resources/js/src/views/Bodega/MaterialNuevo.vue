@@ -1093,7 +1093,8 @@ export default {
                         material_valor: this.valor,
                         material_cantidad_calculada: this.totalMaterial,
                         id_documento: this.seleccionDocumento.id,
-                        n_documento: this.ndocumento
+                        n_documento: this.ndocumento,
+                        id_estados: 5
                     };
 
                     const inventario = data;

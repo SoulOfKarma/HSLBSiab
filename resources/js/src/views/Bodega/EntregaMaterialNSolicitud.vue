@@ -11,14 +11,14 @@
                         <div class="vx-col w-1/2 mt-5"></div>
                         <div class="vx-col w-1/4 mt-5"></div>
                         <div class="vx-col w-1/4 mt-5">
-                            <h6>Buscar</h6>
+                            <!-- <h6>Buscar</h6>
                             <vs-input
                                 id="basicInput"
                                 placeholder="Ej. 5"
                                 v-model="searchTerm"
                                 class="w-full"
                                 @keyup.enter="buscarPorId()"
-                            />
+                            /> -->
                         </div>
                     </div>
 
@@ -26,8 +26,8 @@
                         :columns="columns"
                         :rows="listadoInventario"
                         :search-options="{
-                            enabled: true,
-                            externalQuery: searchTerm
+                            enabled: true
+                            //externalQuery: searchTerm
                         }"
                         :pagination-options="{
                             enabled: true,
@@ -60,18 +60,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.2 - Servicio</h6>
-                            <br />
-                            <vs-input
-                                disabled
-                                class="inputx w-full"
-                                placeholder=""
-                                v-model="descripcion_servicio"
-                            />
-                            <br />
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>1.3 - Material</h6>
+                            <h6>1.2 - Material</h6>
                             <br />
                             <vs-input
                                 disabled
@@ -82,29 +71,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.4 - Tipo Material</h6>
-                            <br />
-                            <vs-input
-                                disabled
-                                class="inputx w-full"
-                                placeholder=""
-                                v-model="descripcion_tipo_material"
-                            />
-                            <br />
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>1.5 - Contenido</h6>
-                            <br />
-                            <vs-input
-                                disabled
-                                class="inputx w-full"
-                                placeholder=""
-                                v-model="descripcion_cantidad_especifica"
-                            />
-                            <br />
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>1.6 - Medida</h6>
+                            <h6>1.3 - Medida</h6>
                             <br />
                             <vs-input
                                 disabled
@@ -115,7 +82,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.7 - Cantidad</h6>
+                            <h6>1.4 - Cantidad</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
@@ -127,7 +94,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.8 - Valor</h6>
+                            <h6>1.5 - Valor</h6>
                             <br />
                             <vs-input
                                 disabled
@@ -138,7 +105,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.9 - Documento</h6>
+                            <h6>1.6 - Documento</h6>
                             <br />
                             <vs-input
                                 disabled
@@ -149,7 +116,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.10 - N° Documento</h6>
+                            <h6>1.7 - N° Documento</h6>
                             <br />
                             <vs-input
                                 disabled
@@ -299,20 +266,8 @@ export default {
                     field: "descripcion_ubicacion"
                 },
                 {
-                    label: "Servicio",
-                    field: "descripcion_servicio"
-                },
-                {
                     label: "Material",
                     field: "descripcion_material"
-                },
-                {
-                    label: "Tipo Material",
-                    field: "descripcion_tipo_material"
-                },
-                {
-                    label: "Contenido",
-                    field: "descripcion_cantidad_especifica"
                 },
                 {
                     label: "Medida",
@@ -346,20 +301,8 @@ export default {
                     field: "descripcion_ubicacion"
                 },
                 {
-                    label: "Servicio",
-                    field: "descripcion_servicio"
-                },
-                {
                     label: "Material",
                     field: "descripcion_material"
-                },
-                {
-                    label: "Tipo Material",
-                    field: "descripcion_tipo_material"
-                },
-                {
-                    label: "Contenido",
-                    field: "descripcion_cantidad_especifica"
                 },
                 {
                     label: "Medida",
@@ -411,10 +354,7 @@ export default {
             materialSeleccion: {
                 id: 0,
                 descripcion_ubicacion: "",
-                descripcion_servicio: "",
                 descripcion_material: "",
-                descripcion_tipo_material: "",
-                descripcion_cantidad_especifica: "",
                 descripcion_medidas: "",
                 material_cantidad: 1,
                 material_valor: 0,
@@ -423,10 +363,7 @@ export default {
             },
             id: 0,
             descripcion_ubicacion: "",
-            descripcion_servicio: "",
             descripcion_material: "",
-            descripcion_tipo_material: "",
-            descripcion_cantidad_especifica: "",
             descripcion_medidas: "",
             material_cantidad: 1,
             material_valor: 0,
@@ -437,14 +374,15 @@ export default {
             valCanFinal: 0,
             listadoInventario: [],
             listadoInventarioData: [],
-            listadoTipoMaterial: [],
-            listadoTipoMaterialData: [],
+            /*             listadoTipoMaterial: [],
+            listadoTipoMaterialData: [], */
             listadoAsignarInventario: [],
             listadoAsignarInventarioData: [],
             externalVal: process.env.MIX_APP_URL_EXTERNA,
             localVal: process.env.MIX_APP_URL,
             val: 0,
-            validador: false
+            validador: false,
+            dataParam: []
         };
     },
     methods: {
@@ -484,7 +422,7 @@ export default {
                 console.log(error);
             }
         },
-        buscarPorId() {
+        /* buscarPorId() {
             try {
                 let c = this.listadoTipoMaterialData;
                 let b = [];
@@ -515,7 +453,7 @@ export default {
             } catch (error) {
                 console.log("No Existe Material Activo Registrado");
             }
-        },
+        }, */
         validarCantidad() {
             let c = this.listadoInventario;
             let b = [];
@@ -561,17 +499,23 @@ export default {
                     let obj = {
                         id: this.id,
                         descripcion_ubicacion: this.descripcion_ubicacion,
-                        descripcion_servicio: this.descripcion_servicio,
                         descripcion_material: this.descripcion_material,
-                        descripcion_tipo_material: this
-                            .descripcion_tipo_material,
-                        descripcion_cantidad_especifica: this
-                            .descripcion_cantidad_especifica,
                         descripcion_medidas: this.descripcion_medidas,
                         material_cantidad: this.material_cantidad,
                         material_valor: this.material_valor,
                         descripcion_documento: this.descripcion_documento,
-                        n_documento: this.n_documento
+                        n_documento: this.n_documento,
+                        id_material_inventario: this.dataParam.id,
+                        id_cant_esp: this.dataParam.id_cant_esp,
+                        id_cubiculo: this.dataParam.id_cubiculo,
+                        id_documento: this.dataParam.id_documento,
+                        id_estados: this.dataParam.id_estados,
+                        id_material_ing: this.dataParam.id_material_ing,
+                        id_material_medida: this.dataParam.id_material_medida,
+                        id_servicios: this.dataParam.id_servicios,
+                        id_ubicaciones: this.dataParam.id_ubicaciones,
+                        material_cantidad_calculada: this.dataParam
+                            .material_cantidad_calculada
                     };
 
                     if (c.length > 0) {
@@ -645,6 +589,7 @@ export default {
             let c = this.listadoAsignarInventario;
             let d = this.listadoInventario;
             let b = [];
+            let f = [];
             let list = "";
             c.forEach((value, index) => {
                 d.forEach((val, ind) => {
@@ -654,14 +599,15 @@ export default {
                             "<li>" +
                             value.descripcion_material +
                             " " +
-                            value.descripcion_tipo_material +
-                            " - " +
+                            /*                             value.descripcion_tipo_material +
+                            " - " + */
                             value.material_cantidad +
                             " " +
                             value.descripcion_medidas +
                             "</li>";
                         value.idOT = idExt;
                         b.push(val);
+                        f.push(value);
                     }
                 });
             });
@@ -674,11 +620,32 @@ export default {
                 "</ul>";
             const inventario = b;
             const seguimiento = c;
+            const data = f;
             axios
                 .all([
                     axios.post(
                         this.localVal + "/api/Bodega/PostAsignarMaterial",
                         inventario,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    ),
+                    axios.post(
+                        this.localVal + "/api/Bodega/PostHistorialMateriales",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    ),
+                    axios.post(
+                        this.localVal + "/api/Bodega/PostRetornoMateriales",
+                        data,
                         {
                             headers: {
                                 Authorization:
@@ -700,7 +667,6 @@ export default {
                 ])
                 .then(
                     axios.spread((res1, res2) => {
-                        console.log(res2);
                         if (res1.data == true) {
                             this.$vs.notify({
                                 time: 3000,
@@ -751,7 +717,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoAsignarInventario = [];
-                        router.back();
+                        //router.back();
                     });
             } catch (error) {
                 console.log(error);
@@ -760,34 +726,37 @@ export default {
         onRowClick(params) {
             this.id = params.row.id;
             this.descripcion_ubicacion = params.row.descripcion_ubicacion;
-            this.descripcion_servicio = params.row.descripcion_servicio;
+            /*             this.descripcion_servicio = params.row.descripcion_servicio; */
             this.descripcion_material = params.row.descripcion_material;
-            this.descripcion_tipo_material =
-                params.row.descripcion_tipo_material;
-            this.descripcion_cantidad_especifica =
-                params.row.descripcion_cantidad_especifica;
+            /*             this.descripcion_tipo_material =
+                params.row.descripcion_tipo_material; */
+            /*             this.descripcion_cantidad_especifica =
+                params.row.descripcion_cantidad_especifica; */
             this.descripcion_medidas = params.row.descripcion_medidas;
             this.material_cantidad = params.row.material_cantidad;
             this.material_valor = params.row.material_valor;
             this.descripcion_documento = params.row.descripcion_documento;
             this.n_documento = params.row.n_documento;
             this.valCantidad = params.row.material_cantidad;
+
+            this.dataParam = params.row;
         },
         rowClick(params) {
             this.id = params.row.id;
             this.descripcion_ubicacion = params.row.descripcion_ubicacion;
-            this.descripcion_servicio = params.row.descripcion_servicio;
+            /*  this.descripcion_servicio = params.row.descripcion_servicio; */
             this.descripcion_material = params.row.descripcion_material;
-            this.descripcion_tipo_material =
-                params.row.descripcion_tipo_material;
-            this.descripcion_cantidad_especifica =
-                params.row.descripcion_cantidad_especifica;
+            /* this.descripcion_tipo_material =
+                params.row.descripcion_tipo_material; */
+            /* this.descripcion_cantidad_especifica =
+                params.row.descripcion_cantidad_especifica; */
             this.descripcion_medidas = params.row.descripcion_medidas;
             this.material_cantidad = params.row.material_cantidad;
             this.material_valor = params.row.material_valor;
             this.descripcion_documento = params.row.descripcion_documento;
             this.n_documento = params.row.n_documento;
             this.valCantidad = params.row.material_cantidad;
+            this.dataParam = params.row;
         },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
@@ -826,8 +795,8 @@ export default {
                     this.listadoInventario = res.data;
                     this.listadoInventarioData = res.data;
                 });
-        },
-        cargarTipoMaterial() {
+        }
+        /* cargarTipoMaterial() {
             axios
                 .get(this.localVal + "/api/Bodega/GetTipoMaterial", {
                     headers: {
@@ -839,11 +808,11 @@ export default {
                     this.listadoTipoMaterial = res.data;
                     this.listadoTipoMaterialData = res.data;
                 });
-        }
+        } */
     },
     created() {
         this.cargarInventarioDisponible();
-        this.cargarTipoMaterial();
+        /*         this.cargarTipoMaterial(); */
     }
 };
 </script>

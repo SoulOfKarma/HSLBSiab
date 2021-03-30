@@ -145,7 +145,6 @@ export default {
                 {
                     nticket: 0,
                     nombre: "",
-                    titulop: "",
                     descripcionp: "",
                     descripcionEstado: ""
                 }
@@ -161,10 +160,6 @@ export default {
                 {
                     label: "Persona Solicitante",
                     field: "nombre"
-                },
-                {
-                    label: "Titulo",
-                    field: "tituloP"
                 },
                 {
                     label: "Descripcion Problema",

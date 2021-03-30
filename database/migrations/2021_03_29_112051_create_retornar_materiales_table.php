@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MaterialInventarios extends Migration
+class CreateRetornarMaterialesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class MaterialInventarios extends Migration
      */
     public function up()
     {
-        Schema::create('material_inventarios', function (Blueprint $table) {
-
+        Schema::create('retornar_materiales', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('id_material_inventario');
             $table->bigInteger('id_ubicaciones');
             $table->bigInteger('id_servicios')->nullable();
             $table->bigInteger('id_cubiculo')->nullable();
@@ -27,6 +27,7 @@ class MaterialInventarios extends Migration
             $table->double('material_cantidad_calculada',15,2);
             $table->bigInteger('id_documento');
             $table->string('n_documento');
+            $table->string('id_ticket');
             $table->string('id_estados');
             $table->timestamps();
         });
@@ -39,6 +40,6 @@ class MaterialInventarios extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('material_inventarios');
+        Schema::dropIfExists('retornar_materiales');
     }
 }
