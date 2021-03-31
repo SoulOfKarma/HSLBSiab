@@ -63,6 +63,20 @@ class MaterialInventariosController extends Controller
         }
     }
 
+    public function PutAsignarMaterial(Request $request){
+        try {
+            $userInput = $request->all();
+            foreach($userInput as $e => $req ){                         
+                MaterialInventarios::where('id',$req['id'])
+              ->update(['material_cantidad' => $req['material_cantidad']]);
+            }
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function TraerMaterialEspecifico($id){
         try {
             $get_all = MaterialInventarios::select('material_inventarios.id','material_inventarios.n_documento','material_ubicaciones.descripcion_ubicacion',/* 'material_servicios.descripcion_servicio', */

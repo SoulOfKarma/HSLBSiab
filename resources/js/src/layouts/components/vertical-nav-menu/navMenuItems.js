@@ -44,6 +44,12 @@ export default [
                 name: "Listado Solicitudes",
                 slug: "listadosolicitudes",
                 icon: "HomeIcon"
+            },
+            {
+                url: "/devolucionMaterialAdicional",
+                name: "Devolucion Material",
+                slug: "devolucionMaterialAdicional",
+                icon: "HomeIcon"
             }
         ]
     }

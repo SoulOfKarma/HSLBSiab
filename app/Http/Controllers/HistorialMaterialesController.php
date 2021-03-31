@@ -55,6 +55,19 @@ class HistorialMaterialesController extends Controller
         }
     }
 
+    public function PutHistorialMateriales(Request $request){
+        try {
+            $data = $request->all();
+            foreach($data as $e => $req ){                     
+                HistorialMateriales::create(array_merge($req,['id_ticket' => $req['idOT'],'id_estados' => 6]));
+            }
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
 
     /**
      * Display the specified resource.

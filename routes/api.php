@@ -38,6 +38,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Bodega/TraerMaterial/{id}', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@TraerMaterial']);
     Route::get('/Bodega/TraerMaterialEspecifico/{id}', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@TraerMaterialEspecifico']);
     Route::get('/Bodega/GetSeguimientoMaterial/{id}', ['middleware' => 'cors', 'uses' => 'SeguimientoMaterialesController@GetSeguimientoMaterial']);
+    
     //Posts 
     Route::post('/Bodega/PostMaterial', ['middleware' => 'cors', 'uses' => 'MaterialIngresadoController@PostMaterial']);
     Route::post('/Bodega/PostCubiculo', ['middleware' => 'cors', 'uses' => 'MaterialCubiculosController@PostCubiculo']);
@@ -49,7 +50,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Bodega/PostRetornoMateriales', ['middleware' => 'cors', 'uses' => 'RetornarMaterialesController@store']);
     Route::post('/Bodega/PostAsignarMaterial', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@PostAsignarMaterial']);
     Route::post('/Bodega/PostSeguimientoMaterial/{idUser}', ['middleware' => 'cors', 'uses' => 'SeguimientoMaterialesController@PostSeguimientoMaterial']);
+    Route::post('/Bodega/PostStockDevolucion', ['middleware' => 'cors', 'uses' => 'RetornarMaterialesController@PostStockDevolucion']);
 
     //Post Como Put
     Route::post('/Bodega/PutInventario', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@PutInventario']);
+    Route::post('/Bodega/PutAsignarMaterial', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@PutAsignarMaterial']);
+    Route::post('/Bodega/PutHistorialMateriales', ['middleware' => 'cors', 'uses' => 'HistorialMaterialesController@PutHistorialMateriales']);
+    Route::post('/Bodega/PutRetornoMateriales', ['middleware' => 'cors', 'uses' => 'RetornarMaterialesController@PutRetornoMateriales']);
 });
