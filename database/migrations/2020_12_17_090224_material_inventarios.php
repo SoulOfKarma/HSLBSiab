@@ -25,8 +25,8 @@ class MaterialInventarios extends Migration
             $table->bigInteger('material_cantidad');
             $table->bigInteger('material_valor')->nullable();
             $table->double('material_cantidad_calculada',15,2);
-            $table->bigInteger('id_documento');
-            $table->string('n_documento');
+            $table->bigInteger('id_documento')->nullable();
+            $table->string('n_documento')->nullable();
             $table->string('id_estados');
             $table->timestamps();
         });

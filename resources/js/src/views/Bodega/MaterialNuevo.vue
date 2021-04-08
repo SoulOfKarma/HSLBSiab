@@ -138,25 +138,29 @@
                     </div>
                     <div class="vx-row mb-4">
                         <div class="vx-col w-1/4 mt-5">
-                            <h6>1.5 Ingrese Valor del Material</h6>
-                            <br />
-                            <vs-input
-                                class="inputx w-full"
-                                v-model="valor"
-                                @input="valorTotal"
-                                :step="0.5"
-                                @keypress="isNumber($event)"
-                            ></vs-input>
+                            <div v-show="valCampoValor">
+                                <h6>1.5 Ingrese Valor del Material</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full"
+                                    v-model="valor"
+                                    @input="valorTotal"
+                                    :step="0.5"
+                                    @keypress="isNumber($event)"
+                                ></vs-input>
+                            </div>
                         </div>
                         <div class="vx-col w-1/4 mt-5">
-                            <h6>Total Valor.</h6>
-                            <br />
-                            <vs-input
-                                disabled
-                                class="inputx w-full"
-                                v-model="totalValor"
-                                :step="0.5"
-                            />
+                            <div v-show="valCampoValor">
+                                <h6>Total Valor.</h6>
+                                <br />
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full"
+                                    v-model="totalValor"
+                                    :step="0.5"
+                                />
+                            </div>
                         </div>
                         <div class="vx-col w-1/4 mt-5">
                             <h6>1.6 Seleccione Tipo Documento</h6>
@@ -433,9 +437,10 @@ export default {
                 descripcion_cantidad_especifica: "400"
             }, */
             seleccionDocumento: {
-                id: 0,
-                descripcion_documento: "Seleccione Documento"
+                id: 1,
+                descripcion_documento: "N/A"
             },
+            valCampoValor: true,
             listadoCubiculo: [],
             listadoUbicacion: [],
             listadoUbicacionData: [],
@@ -513,6 +518,14 @@ export default {
                 evt.preventDefault();
             } else {
                 return true;
+            }
+        },
+        validarCampoValor() {
+            let validar = parseInt(sessionStorage.getItem("permiso_usuario"));
+            if (validar == 2) {
+                this.valCampoValor = false;
+            } else {
+                this.valCampoValor = true;
             }
         },
         /* filtroSegunServicio() {
@@ -1082,20 +1095,38 @@ export default {
                         position: "top-right"
                     });
                 } else {
-                    let data = {
-                        id_ubicaciones: this.seleccionUbicacion.id,
-                        //id_servicios: this.seleccionServicio.id,
-                        id_cubiculo: this.seleccionCubiculo.id,
-                        id_material_ing: this.seleccionMaterial.id,
-                        //id_cant_esp: this.seleccionCantEsp.id,
-                        id_material_medida: this.seleccionMedidas.id,
-                        material_cantidad: this.cantidad,
-                        material_valor: this.valor,
-                        material_cantidad_calculada: this.totalMaterial,
-                        id_documento: this.seleccionDocumento.id,
-                        n_documento: this.ndocumento,
-                        id_estados: 5
-                    };
+                    let data = {};
+                    if (this.seleccionDocumento.id == 1) {
+                        data = {
+                            id_ubicaciones: this.seleccionUbicacion.id,
+                            //id_servicios: this.seleccionServicio.id,
+                            id_cubiculo: this.seleccionCubiculo.id,
+                            id_material_ing: this.seleccionMaterial.id,
+                            //id_cant_esp: this.seleccionCantEsp.id,
+                            id_material_medida: this.seleccionMedidas.id,
+                            material_cantidad: this.cantidad,
+                            material_valor: this.valor,
+                            material_cantidad_calculada: this.totalMaterial,
+                            id_documento: this.seleccionDocumento.id,
+                            n_documento: "Sin N° Documento",
+                            id_estados: 5
+                        };
+                    } else {
+                        data = {
+                            id_ubicaciones: this.seleccionUbicacion.id,
+                            //id_servicios: this.seleccionServicio.id,
+                            id_cubiculo: this.seleccionCubiculo.id,
+                            id_material_ing: this.seleccionMaterial.id,
+                            //id_cant_esp: this.seleccionCantEsp.id,
+                            id_material_medida: this.seleccionMedidas.id,
+                            material_cantidad: this.cantidad,
+                            material_valor: this.valor,
+                            material_cantidad_calculada: this.totalMaterial,
+                            id_documento: this.seleccionDocumento.id,
+                            n_documento: this.ndocumento,
+                            id_estados: 5
+                        };
+                    }
 
                     const inventario = data;
 
@@ -1674,6 +1705,7 @@ export default {
         //this.cargarCantidadEspecifica();
         this.cargarDocumentoAsociado();
         this.cargarCubiculos();
+        this.validarCampoValor();
     }
 };
 </script>

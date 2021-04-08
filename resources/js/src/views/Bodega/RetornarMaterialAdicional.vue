@@ -655,9 +655,6 @@ export default {
                     });
                 });
 
-                console.log(b);
-                console.log(f);
-
                 c = [];
                 d = [];
                 c = this.listadoInventarioParaDevolucion;
@@ -676,7 +673,11 @@ export default {
 
                 const inventario = b;
                 const data = f;
-                axios
+
+                console.log(inventario);
+                console.log(data);
+
+                /* axios
                     .all([
                         axios.post(
                             this.localVal + "/api/Bodega/PutAsignarMaterial",
@@ -735,7 +736,7 @@ export default {
                                 });
                             }
                         })
-                    );
+                    ); */
             } catch (error) {
                 console.log("Error al guardar data");
             }

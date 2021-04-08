@@ -11,6 +11,6 @@ class MaterialInventarios extends Model
         'id_material_ing',
         'id_cant_esp','id_material_medida',
         'material_cantidad','material_valor','material_cantidad_calculada',
-        'id_documento','n_documento'
+        'id_documento','n_documento','id_estados'
     ];
 }

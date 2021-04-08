@@ -19,6 +19,7 @@ class MaterialInventariosController extends Controller
             $response = MaterialInventarios::create($request->all());
             return true;
         } catch (\Throwable $th) {
+            log::info($th);
             return false;
         }
         
