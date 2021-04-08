@@ -414,6 +414,16 @@ export default {
         };
     },
     methods: {
+        limpiar() {
+            this.id = 0;
+            this.descripcion_ubicacion = "";
+            this.descripcion_material = "";
+            this.descripcion_medidas = "";
+            this.material_cantidad = 1;
+            this.material_valor = 0;
+            this.descripcion_documento = "";
+            this.n_documento = "";
+        },
         onlyNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
@@ -445,7 +455,6 @@ export default {
                     )
                     .then(res => {
                         this.listadoInventario = res.data;
-                        console.log(this.listadoInventario);
                         this.listadoInventarioData = res.data;
                         this.validarBusqueda = true;
                         this.buscarT = false;
@@ -638,15 +647,19 @@ export default {
                 let idUser = sessionStorage.getItem("id");
                 let c = this.listadoDevolucionInventario;
                 let d = this.listadoInventario;
+
                 let b = [];
                 let f = [];
                 let list = "";
                 c.forEach((value, index) => {
                     d.forEach((val, ind) => {
                         if (value.id == val.id) {
-                            val.material_cantidad = value.material_cantidad;
+                            let matCant =
+                                parseInt(value.material_cantidad) +
+                                parseInt(val.material_cantidad);
                             value.material_cantidad =
-                                value.material_cantidad - val.material_cantidad;
+                                parseInt(matCant) -
+                                parseInt(value.material_cantidad);
                             value.idOT = this.buscarPorNTicket;
                             val.idOT = this.buscarPorNTicket;
                             b.push(val);
@@ -674,10 +687,7 @@ export default {
                 const inventario = b;
                 const data = f;
 
-                console.log(inventario);
-                console.log(data);
-
-                /* axios
+                axios
                     .all([
                         axios.post(
                             this.localVal + "/api/Bodega/PutAsignarMaterial",
@@ -724,6 +734,9 @@ export default {
                                     color: "success",
                                     position: "top-right"
                                 });
+                                this.listadoDevolucionInventario = [];
+                                this.limpiar();
+                                this.refrescarMenu();
                                 this.seguimientoExternoOT(list);
                             } else {
                                 this.$vs.notify({
@@ -736,7 +749,7 @@ export default {
                                 });
                             }
                         })
-                    ); */
+                    );
             } catch (error) {
                 console.log("Error al guardar data");
             }
@@ -769,6 +782,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoAsignarInventario = [];
+
                         //router.back();
                     });
             } catch (error) {
