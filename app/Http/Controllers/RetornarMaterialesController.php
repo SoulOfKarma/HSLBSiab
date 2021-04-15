@@ -27,6 +27,8 @@ class RetornarMaterialesController extends Controller
 
     public function PostStockDevolucion(Request $request){
 
+        $filtro = [0];
+
         $get_all = RetornarMateriales::select('retornar_materiales.*','material_ubicaciones.descripcion_ubicacion',/* 'material_servicios.descripcion_servicio', */
         'material_ingresados.descripcion_material',/* 'material_cantidades_especificas.descripcion_cantidad_especifica', */
         'material_medidas.descripcion_medidas','material_cubiculos.descripcion_cubiculo','documento_asociados.descripcion_documento',DB::raw("DATE_FORMAT(retornar_materiales.created_at,'%d/%m/%Y') as created"))
@@ -37,6 +39,7 @@ class RetornarMaterialesController extends Controller
         ->join('material_medidas', 'retornar_materiales.id_material_medida','=','material_medidas.id')
         ->join('documento_asociados','retornar_materiales.id_documento','=','documento_asociados.id')
         ->join('material_cubiculos','retornar_materiales.id_cubiculo','=','material_cubiculos.id')
+        ->whereNotIn('retornar_materiales.material_cantidad',$filtro)
         ->where('retornar_materiales.id_ticket',$request->idTicket)
         ->get();
 

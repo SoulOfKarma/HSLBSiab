@@ -410,7 +410,8 @@ export default {
             buscarT: true,
             nuevoT: false,
             listadoInventarioParaDevolucion: [],
-            listadoInventarioParaDevolucionData: []
+            listadoInventarioParaDevolucionData: [],
+            valorTotalItem: 0
         };
     },
     methods: {
@@ -574,7 +575,9 @@ export default {
                         id_servicios: this.dataParam.id_servicios,
                         id_ubicaciones: this.dataParam.id_ubicaciones,
                         material_cantidad_calculada: this.dataParam
-                            .material_cantidad_calculada
+                            .material_cantidad_calculada,
+                        m_cant: this.material_cantidad,
+                        v_total: this.valorTotalItem
                     };
 
                     if (c.length > 0) {
@@ -645,8 +648,10 @@ export default {
             try {
                 //Calculo A modificar
                 let idUser = sessionStorage.getItem("id");
-                let c = this.listadoDevolucionInventario;
-                let d = this.listadoInventario;
+                let c = JSON.parse(
+                    JSON.stringify(this.listadoDevolucionInventario)
+                );
+                let d = JSON.parse(JSON.stringify(this.listadoInventario));
 
                 let b = [];
                 let f = [];
@@ -654,12 +659,10 @@ export default {
                 c.forEach((value, index) => {
                     d.forEach((val, ind) => {
                         if (value.id == val.id) {
-                            let matCant =
-                                parseInt(value.material_cantidad) +
-                                parseInt(val.material_cantidad);
                             value.material_cantidad =
-                                parseInt(matCant) -
-                                parseInt(value.material_cantidad);
+                                parseInt(value.v_total) -
+                                parseInt(value.m_cant);
+                            val.m_cant = value.m_cant;
                             value.idOT = this.buscarPorNTicket;
                             val.idOT = this.buscarPorNTicket;
                             b.push(val);
@@ -670,15 +673,17 @@ export default {
 
                 c = [];
                 d = [];
-                c = this.listadoInventarioParaDevolucion;
+                c = JSON.parse(
+                    JSON.stringify(this.listadoInventarioParaDevolucion)
+                );
                 d = b;
                 b = [];
                 c.forEach((value, index) => {
                     d.forEach((val, ind) => {
                         if (value.id == val.id_material_inventario) {
                             value.material_cantidad =
-                                value.material_cantidad +
-                                parseInt(val.material_cantidad);
+                                parseInt(value.material_cantidad) +
+                                parseInt(val.m_cant);
                             b.push(value);
                         }
                     });
@@ -795,6 +800,7 @@ export default {
             this.descripcion_material = params.row.descripcion_material;
             this.descripcion_medidas = params.row.descripcion_medidas;
             this.material_cantidad = params.row.material_cantidad;
+            this.valorTotalItem = params.row.material_cantidad;
             this.material_valor = params.row.material_valor;
             this.descripcion_documento = params.row.descripcion_documento;
             this.n_documento = params.row.n_documento;
