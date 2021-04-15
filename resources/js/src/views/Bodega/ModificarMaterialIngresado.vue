@@ -1414,7 +1414,6 @@ export default {
         },
         cargarDataEspecifica(listado) {
             setTimeout(() => {
-                console.log(listado);
                 var idGen = listado[0].id_ubicaciones;
                 let c = this.listadoUbicacionData;
                 let b = [];

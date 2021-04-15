@@ -46,6 +46,12 @@ export default [
                 icon: "HomeIcon"
             },
             {
+                url: "/listadoMaterialEntregado",
+                name: "Listado M. Entregado",
+                slug: "listadoMaterialEntregado",
+                icon: "HomeIcon"
+            },
+            {
                 url: "/devolucionMaterialAdicional",
                 name: "Devolucion Material",
                 slug: "devolucionMaterialAdicional",

@@ -90,6 +90,18 @@ const router = new Router({
                     name: "entregaMaterialNSolicitud",
                     component: () =>
                         import("./views/Bodega/EntregaMaterialNSolicitud.vue")
+                },
+                {
+                    path: "/listadoMaterialEntregado",
+                    name: "listadoMaterialEntregado",
+                    component: () =>
+                        import("./views/Bodega/ListadoMaterialEntregado.vue")
+                },
+                {
+                    path: "/retornarMaterialList",
+                    name: "retornarMaterialList",
+                    component: () =>
+                        import("./views/Bodega/RetornarMaterialList.vue")
                 }
             ]
         },

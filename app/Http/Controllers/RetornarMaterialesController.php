@@ -25,6 +25,21 @@ class RetornarMaterialesController extends Controller
         }
     }
 
+    public function ListadoRMateriales(){
+        try {
+            $filtro = [0]; 
+
+            $get_all = RetornarMateriales::select('retornar_materiales.id','retornar_materiales.id_ticket',
+            'material_ingresados.descripcion_material','retornar_materiales.material_cantidad')
+            ->join('material_ingresados','retornar_materiales.id_material_ing','=','material_ingresados.id')
+            ->whereNotIn('retornar_materiales.material_cantidad',$filtro)
+            ->get();
+            return $get_all;
+        } catch (\Throwable $th) {
+            log::info($th);
+        }
+    }
+
     public function PostStockDevolucion(Request $request){
 
         $filtro = [0];
