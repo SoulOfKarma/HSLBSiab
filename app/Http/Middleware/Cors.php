@@ -7,12 +7,15 @@ use Closure;
 class Cors
 {
     private static $allowedOriginsWhitelist = [
-        'http://bodegaRRFF.xcl'
+        'http://bodegaRRFF.xcl',
+        'http://10.4.237.120:8001',
+        'http://10.4.237.120:8003'
     ];
 
     // All the headers must be a string
 
-    private static $allowedOrigin = ['http://bodegaRRFF.xcl'];
+    private static $allowedOrigin = ['http://bodegaRRFF.xcl','http://10.4.237.120:8001',
+    'http://10.4.237.120:8003'];
 
     private static $allowedMethods = 'OPTIONS, GET, POST, PUT, PATCH, DELETE';
 
