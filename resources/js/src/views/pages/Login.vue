@@ -28,9 +28,9 @@
                     card-background="#4792f9"
                     content-color="#ffffff"
                 >
-                    <h4 class="text-white">
+                    <h5 class="text-white">
                         Bienvenido al sistema de Bodega de RRFF!
-                    </h4>
+                    </h5>
                 </vx-card>
                 <br />
                 <vs-card class="cardx">
