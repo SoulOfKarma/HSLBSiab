@@ -483,7 +483,22 @@ export default {
                     }
                 })
                 .then(res => {
-                    this.listadoStock = res.data;
+                    const formatter = new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 0
+                    });
+                    let list = res.data;
+                    let b = [];
+
+                    list.forEach((value, index) => {
+                        value.material_valor = formatter.format(
+                            value.material_valor
+                        );
+                        b.push(value);
+                    });
+
+                    this.listadoStock = b;
                 });
         },
         exportToExcel() {

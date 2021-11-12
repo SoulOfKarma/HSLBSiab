@@ -171,6 +171,7 @@
                                 class="w-full select-large"
                                 label="descripcion_documento"
                                 :options="listadoDocumentoAsociado"
+                                @input="validarSinDocumento"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/4 mt-5">
@@ -506,6 +507,7 @@ export default {
             this.total = 0;
             this.totalMaterial = 0;
             this.totalValor = 0;
+            this.ndocumento = "";
         },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
@@ -1047,6 +1049,11 @@ export default {
                     }
                 });
         }, */
+        validarSinDocumento() {
+            if (this.seleccionDocumento.id == 1) {
+                this.ndocumento = "Sin N° Documento";
+            }
+        },
         guardarMaterialNuevo() {
             try {
                 if (
@@ -1096,37 +1103,21 @@ export default {
                     });
                 } else {
                     let data = {};
-                    if (this.seleccionDocumento.id == 1) {
-                        data = {
-                            id_ubicaciones: this.seleccionUbicacion.id,
-                            //id_servicios: this.seleccionServicio.id,
-                            id_cubiculo: this.seleccionCubiculo.id,
-                            id_material_ing: this.seleccionMaterial.id,
-                            //id_cant_esp: this.seleccionCantEsp.id,
-                            id_material_medida: this.seleccionMedidas.id,
-                            material_cantidad: this.cantidad,
-                            material_valor: this.valor,
-                            material_cantidad_calculada: this.totalMaterial,
-                            id_documento: this.seleccionDocumento.id,
-                            n_documento: "Sin N° Documento",
-                            id_estados: 5
-                        };
-                    } else {
-                        data = {
-                            id_ubicaciones: this.seleccionUbicacion.id,
-                            //id_servicios: this.seleccionServicio.id,
-                            id_cubiculo: this.seleccionCubiculo.id,
-                            id_material_ing: this.seleccionMaterial.id,
-                            //id_cant_esp: this.seleccionCantEsp.id,
-                            id_material_medida: this.seleccionMedidas.id,
-                            material_cantidad: this.cantidad,
-                            material_valor: this.valor,
-                            material_cantidad_calculada: this.totalMaterial,
-                            id_documento: this.seleccionDocumento.id,
-                            n_documento: this.ndocumento,
-                            id_estados: 5
-                        };
-                    }
+
+                    data = {
+                        id_ubicaciones: this.seleccionUbicacion.id,
+                        //id_servicios: this.seleccionServicio.id,
+                        id_cubiculo: this.seleccionCubiculo.id,
+                        id_material_ing: this.seleccionMaterial.id,
+                        //id_cant_esp: this.seleccionCantEsp.id,
+                        id_material_medida: this.seleccionMedidas.id,
+                        material_cantidad: this.cantidad,
+                        material_valor: this.valor,
+                        material_cantidad_calculada: this.totalMaterial,
+                        id_documento: this.seleccionDocumento.id,
+                        n_documento: this.ndocumento,
+                        id_estados: 5
+                    };
 
                     const inventario = data;
 
