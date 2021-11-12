@@ -171,6 +171,10 @@ export default {
                     field: "descripcionEstado"
                 },
                 {
+                    label: "Categoria",
+                    field: "des_categoria"
+                },
+                {
                     label: "Opciones",
                     field: "action"
                 }
