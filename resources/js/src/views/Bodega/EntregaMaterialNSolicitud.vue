@@ -586,10 +586,12 @@ export default {
             //Calculo A modificar
             let idUser = sessionStorage.getItem("id");
             let idExt = this.$route.params.id;
+            let idCategoria = this.$route.params.id_categoria;
             let c = this.listadoAsignarInventario;
             let d = this.listadoInventario;
             let b = [];
             let f = [];
+            let g = [];
             let list = "";
             c.forEach((value, index) => {
                 d.forEach((val, ind) => {
@@ -606,10 +608,14 @@ export default {
                             value.descripcion_medidas +
                             "</li>";
                         value.idOT = idExt;
+                        value.id_categoria = idCategoria;
                         b.push(val);
                         f.push(value);
                     }
                 });
+                value.id_solicitud = parseInt(idExt);
+                value.id_categoria = parseInt(idCategoria);
+                g.push(value);
             });
 
             list =
@@ -619,7 +625,7 @@ export default {
                 list +
                 "</ul>";
             const inventario = b;
-            const seguimiento = c;
+            const seguimiento = g;
             const data = f;
             axios
                 .all([

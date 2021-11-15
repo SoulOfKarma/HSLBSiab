@@ -10,9 +10,6 @@
                 :key="componentKey"
                 :columns="columns"
                 :rows="listaRMaterial"
-                :search-options="{
-                    enabled: true
-                }"
                 :pagination-options="{
                     enabled: true,
                     perPage: pageLength
@@ -124,19 +121,31 @@ export default {
             columns: [
                 {
                     label: "ID",
-                    field: "id"
+                    field: "id",
+                    filterOptions: {
+                        enabled: true
+                    }
                 },
                 {
                     label: "N° Ticket",
-                    field: "id_ticket"
+                    field: "id_ticket",
+                    filterOptions: {
+                        enabled: true
+                    }
                 },
                 {
                     label: "Descripcion Material",
-                    field: "descripcion_material"
+                    field: "descripcion_material",
+                    filterOptions: {
+                        enabled: true
+                    }
                 },
                 {
                     label: "Material Cantidad",
-                    field: "material_cantidad"
+                    field: "material_cantidad",
+                    filterOptions: {
+                        enabled: true
+                    }
                 },
                 {
                     label: "Opciones",

@@ -28,6 +28,7 @@ class CreateHistorialMaterialesTable extends Migration
             $table->bigInteger('id_documento');
             $table->string('n_documento');
             $table->string('id_ticket');
+            $table->bigInteger('id_categoria')->nullable();
             $table->string('id_estados');
             $table->timestamps();
         });

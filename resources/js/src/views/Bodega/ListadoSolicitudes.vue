@@ -33,7 +33,11 @@
                             size="1.5x"
                             class="custom-class"
                             @click="
-                                informacionGeneral(props.row.id, props.row.uuid)
+                                informacionGeneral(
+                                    props.row.id,
+                                    props.row.uuid,
+                                    props.row.id_categoria
+                                )
                             "
                         ></info-icon>
                     </span>
@@ -181,12 +185,13 @@ export default {
         forceRerender() {
             this.componentKey += 1;
         },
-        informacionGeneral(id, uuid, id_user) {
+        informacionGeneral(id, uuid, id_categoria) {
             this.$router.push({
                 name: "entregaMaterialNSolicitud",
                 params: {
                     id: `${id}`,
-                    uuid: `${uuid}`
+                    uuid: `${uuid}`,
+                    id_categoria: `${id_categoria}`
                 }
             });
         },

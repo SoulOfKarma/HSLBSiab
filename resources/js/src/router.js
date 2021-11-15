@@ -86,7 +86,7 @@ const router = new Router({
                         import("./views/Bodega/ModificarMaterialIngresado.vue")
                 },
                 {
-                    path: "/entregaMaterialNSolicitud/:id,:uuid",
+                    path: "/entregaMaterialNSolicitud/:id,:uuid,:id_categoria",
                     name: "entregaMaterialNSolicitud",
                     component: () =>
                         import("./views/Bodega/EntregaMaterialNSolicitud.vue")

@@ -18,6 +18,8 @@ class SeguimientoMateriales extends Migration
             $table->id();
             $table->bigInteger('id_usuario');
             $table->bigInteger('id_material');
+            $table->bigInteger('id_solicitud')->nullable();
+            $table->bigInteger('id_categoria')->nullable();
             $table->string('descripcion_seguimiento');
             $table->timestamps();
         });
