@@ -5,30 +5,11 @@
                 Agente:
                 {{ nombre }} - {{ run }}
             </vs-alert>
-
-            <div class="vx-row mb-12">
-                <div class="vx-col w-1/2 mt-5"></div>
-                <div class="vx-col w-1/4 mt-5"></div>
-                <div class="vx-col w-1/4 mt-5">
-                    <h6>Buscar</h6>
-                    <br />
-                    <vs-input
-                        id="basicInput"
-                        placeholder="Ej. 5"
-                        v-model="searchTerm"
-                        class="w-full"
-                    />
-                </div>
-            </div>
-
+            <br />
             <vue-good-table
                 :key="componentKey"
                 :columns="columns"
                 :rows="listadoTickets"
-                :search-options="{
-                    enabled: true,
-                    externalQuery: searchTerm
-                }"
                 :pagination-options="{
                     enabled: true,
                     perPage: pageLength
@@ -155,24 +136,39 @@ export default {
             columns: [
                 {
                     label: "Numero Solicitud",
-                    field: "nticket"
+                    field: "nticket",
+                    filterOptions: {
+                        enabled: true
+                    }
                 },
                 {
                     label: "Persona Solicitante",
-                    field: "nombre"
+                    field: "nombre",
+                    filterOptions: {
+                        enabled: true
+                    }
                 },
                 {
                     label: "Descripcion Problema",
                     field: "descripcionP",
-                    html: true
+                    html: true,
+                    filterOptions: {
+                        enabled: true
+                    }
                 },
                 {
                     label: "Estado",
-                    field: "descripcionEstado"
+                    field: "descripcionEstado",
+                    filterOptions: {
+                        enabled: true
+                    }
                 },
                 {
                     label: "Categoria",
-                    field: "des_categoria"
+                    field: "des_categoria",
+                    filterOptions: {
+                        enabled: true
+                    }
                 },
                 {
                     label: "Opciones",
