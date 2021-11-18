@@ -22,7 +22,6 @@ class SeguimientoMaterialesController extends Controller
     public function PostSeguimientoMaterial(Request $request,$idUser){
         try {
             $lista = $request->all();
-            log::info($request);
         
             foreach($lista as $e => $req ){       
                 $data = ["id_usuario" => $idUser,"id_material" => $req["id"],"id_solicitud" => $req["id_solicitud"],"id_categoria" => $req["id_categoria"], "descripcion_seguimiento" => "Se ha asignado el material a la OT ".''.$req["idOT"].''.", Se utilizaron ".''.$req["material_cantidad"] .''. " " .''.$req["descripcion_medidas"]];

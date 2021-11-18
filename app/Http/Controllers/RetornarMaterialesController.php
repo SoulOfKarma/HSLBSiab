@@ -75,22 +75,6 @@ class RetornarMaterialesController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         try {
@@ -105,48 +89,4 @@ class RetornarMaterialesController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\RetornarMateriales  $retornarMateriales
-     * @return \Illuminate\Http\Response
-     */
-    public function show(RetornarMateriales $retornarMateriales)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\RetornarMateriales  $retornarMateriales
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(RetornarMateriales $retornarMateriales)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\RetornarMateriales  $retornarMateriales
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, RetornarMateriales $retornarMateriales)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\RetornarMateriales  $retornarMateriales
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(RetornarMateriales $retornarMateriales)
-    {
-        //
-    }
 }

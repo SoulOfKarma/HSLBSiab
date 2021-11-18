@@ -58,4 +58,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Bodega/PutAsignarMaterial', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@PutAsignarMaterial']);
     Route::post('/Bodega/PutHistorialMateriales', ['middleware' => 'cors', 'uses' => 'HistorialMaterialesController@PutHistorialMateriales']);
     Route::post('/Bodega/PutRetornoMateriales', ['middleware' => 'cors', 'uses' => 'RetornarMaterialesController@PutRetornoMateriales']);
+
+    
 });
+
+//Generar PDF
+Route::get('/Bodega/ActaEntregaPDF/{idSolicitud}/{idCategoria}/{nombre}', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@ActaEntregaPDF']);

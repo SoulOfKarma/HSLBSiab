@@ -11,6 +11,13 @@
                         <div class="vx-col w-1/2 mt-5"></div>
                         <div class="vx-col w-1/4 mt-5"></div>
                         <div class="vx-col w-1/4 mt-5">
+                            <vs-button
+                                class="w-full"
+                                color="primary"
+                                type="filled"
+                                @click="AbrirPDFActa"
+                                >PDF ACTA</vs-button
+                            >
                             <!-- <h6>Buscar</h6>
                             <vs-input
                                 id="basicInput"
@@ -374,6 +381,7 @@ export default {
             valCanFinal: 0,
             listadoInventario: [],
             listadoInventarioData: [],
+            listadoSolicitud: [],
             /*             listadoTipoMaterial: [],
             listadoTipoMaterialData: [], */
             listadoAsignarInventario: [],
@@ -578,6 +586,27 @@ export default {
                         position: "top-right"
                     });
                 }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AbrirPDFActa() {
+            try {
+                let idSolicitud = this.$route.params.id;
+                let idCategoria = this.$route.params.id_categoria;
+                let nombre =
+                    sessionStorage.getItem("nombre") +
+                    " " +
+                    sessionStorage.getItem("apellido");
+                const url =
+                    this.localVal +
+                    "/api/Bodega/ActaEntregaPDF/" +
+                    idSolicitud +
+                    "/" +
+                    idCategoria +
+                    "/" +
+                    nombre;
+                window.open(url, "_blank");
             } catch (error) {
                 console.log(error);
             }
@@ -801,6 +830,30 @@ export default {
                     this.listadoInventario = res.data;
                     this.listadoInventarioData = res.data;
                 });
+        },
+        cargarDatoSolicitudExterna() {
+            try {
+                let idExt = this.$route.params.id;
+                let idCategoria = this.$route.params.id_categoria;
+                let data = { idSolicitud: idExt, idCategoria: idCategoria };
+                axios
+                    .post(
+                        this.externalVal + "/api/Agente/ExportarDataPDF",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` +
+                                    sessionStorage.getItem("token_externo")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoSolicitud = res.data;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
         }
         /* cargarTipoMaterial() {
             axios
@@ -818,6 +871,7 @@ export default {
     },
     created() {
         this.cargarInventarioDisponible();
+        //this.cargarDatoSolicitudExterna();
         /*         this.cargarTipoMaterial(); */
     }
 };

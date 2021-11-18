@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use DB;
 use App\MaterialInventarios;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
+use GuzzleHttp\Client;
+use App\RetornarMateriales;
 
 class MaterialInventariosController extends Controller
 {
@@ -120,5 +123,60 @@ class MaterialInventariosController extends Controller
         ->groupBy('material_ingresados.descripcion_material','material_inventarios.id_material_medida')
         ->get();
         return $get_all;
+    }
+
+    public function ActaEntregaPDF($idSolicitud,$idCategoria,$nombre){
+        try {
+            $client = new Client();
+            $resp = $client->request('POST','http://10.4.237.120:8001/api/auth/login',
+            [
+                'form_params' => [
+                    'run' => '18499714-2',
+                    'password' => '1849',
+                ]
+            ]); 
+            $tokens = json_decode($resp->getBody()->getContents());
+
+            $token = $tokens->token;
+
+            $res = $client->request('POST','http://10.4.237.120:8001/api/Agente/ExportarDataPDF', 
+            ['json' => [
+                'idSolicitud' => $idSolicitud,
+                'idCategoria' => $idCategoria
+            ],
+            'headers' => 
+                [
+                    'Authorization' => "Bearer {$token}"
+                ]
+            ]);
+            $dat = json_decode($res->getBody()->getContents(),true);
+            $data =[$dat];
+
+            $get_data = RetornarMateriales::select('retornar_materiales.material_cantidad','material_ingresados.descripcion_material')
+            ->join('material_inventarios','retornar_materiales.id_material_inventario','=','material_inventarios.id')
+            ->join('material_ingresados', 'material_inventarios.id_material_ing','=','material_ingresados.id')
+            ->where('retornar_materiales.id_ticket',[$idSolicitud])
+            ->where('retornar_materiales.id_categoria',[$idCategoria])
+            ->whereNotIn('retornar_materiales.material_cantidad',[0])
+            ->get();
+
+            $nomapeA = $nombre;
+
+            $pdf = App::make("dompdf.wrapper");
+            $pdf->loadView('ActEntregaMat', compact ('data','get_data','nomapeA'));
+            //$pdf->loadView('ActEntregaMat',['data' => $data]);
+            $pdf->setOptions(['isJavascriptEnabled' => true]);
+            $pdf->setOptions(['isRemoteEnabled' => true]);
+            return $pdf->stream("ActEntregaMat.pdf", array("Attachment" => 0));
+            //return $pdf->stream("ActEntregaMat.pdf", array("Attachment" => 0));
+            /* return [
+                'status'=>"success",
+                "data"=> mb_convert_encoding($pdf->output(), 'UTF-8', 'UTF-8')
+            ]; */
+            
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 }
