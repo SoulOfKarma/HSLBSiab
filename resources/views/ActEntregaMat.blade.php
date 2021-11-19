@@ -968,15 +968,17 @@ table.table-bordered > tbody > tr > td{
             </div>
             <div class="row">
               <div class="col-xs-1"></div>
-              <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">Nombre de quien Entrega:</label></h5></div>
-              <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">{{$nomapeA}}</label></h5><br>
+              <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">Nombre Quien Entrega:</label></h5></div>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">_____________________</label> <br>
+              <h5><label id="hoverL">{{$nomapeA}}</label></h5><br>
               </div>
               <div class="col-xs-1"></div>
             </div><br>
             <div class="row">
               <div class="col-xs-1"></div>
               <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">Nombre Quien Retira</label></h5></div>
-              <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">{{$trabajador}}</label></h5><br>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">_____________________</label> <br>
+              <h5><label id="hoverL">{{$trabajador}}</label></h5><br>
               </div>
               <div class="col-xs-1"></div>
             </div>
@@ -984,7 +986,8 @@ table.table-bordered > tbody > tr > td{
             <div class="row">
               <div class="col-xs-1"></div>
               <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">Nombre Supervisor</label></h5></div>
-              <div class="col-xs-5" id="centrarFirmas"><h5><label id="hoverL">{{$supervisor}}</label></h5><br>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">_____________________</label> <br>
+              <h5><label id="hoverL">{{$supervisor}}</label></h5><br>
               </div>
               <div class="col-xs-1"></div>
             </div>
