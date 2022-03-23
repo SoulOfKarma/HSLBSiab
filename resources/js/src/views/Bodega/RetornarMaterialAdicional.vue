@@ -13,6 +13,17 @@
                                 @keypress="onlyNumber($event)"
                             />
                             <br />
+                            <h6>Categoria</h6>
+                            <v-select
+                                taggable
+                                v-model="seleccionCategoria"
+                                placeholder="Categoria"
+                                class="w-full select-large"
+                                label="descripcion_categoria"
+                                :options="listadoCategoria"
+                            >
+                            </v-select>
+                            <br />
                             <vs-button
                                 v-if="buscarT"
                                 class="w-full"
@@ -394,6 +405,16 @@ export default {
             busqueda: "",
             valCantidad: 0,
             valCanFinal: 0,
+            seleccionCategoria: {
+                id: 0,
+                descripcion_categoria: "Seleccione Categoria"
+            },
+            listadoCategoria: [
+                { id: 1, descripcion_categoria: "Infraestructura" },
+                { id: 2, descripcion_categoria: "Equipos Medicos" },
+                { id: 3, descripcion_categoria: "Industrial" },
+                { id: 4, descripcion_categoria: "Apoyo Clinico" }
+            ],
             listadoInventario: [],
             listadoInventarioData: [],
             /*             listadoTipoMaterial: [],

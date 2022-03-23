@@ -44,13 +44,12 @@ class RetornarMaterialesController extends Controller
 
         $filtro = [0];
 
-        $get_all = RetornarMateriales::select('retornar_materiales.*','material_ubicaciones.descripcion_ubicacion',/* 'material_servicios.descripcion_servicio', */
-        'material_ingresados.descripcion_material',/* 'material_cantidades_especificas.descripcion_cantidad_especifica', */
-        'material_medidas.descripcion_medidas','material_cubiculos.descripcion_cubiculo','documento_asociados.descripcion_documento',DB::raw("DATE_FORMAT(retornar_materiales.created_at,'%d/%m/%Y') as created"))
+        $get_all = RetornarMateriales::select('retornar_materiales.*','material_ubicaciones.descripcion_ubicacion',
+        'material_ingresados.descripcion_material','material_medidas.descripcion_medidas',
+        'material_cubiculos.descripcion_cubiculo','documento_asociados.descripcion_documento',
+        DB::raw("DATE_FORMAT(retornar_materiales.created_at,'%d/%m/%Y') as created"))
         ->join('material_ubicaciones', 'retornar_materiales.id_ubicaciones','=','material_ubicaciones.id')
-        /* ->join('material_servicios', 'material_inventarios.id_servicios','=','material_servicios.id') */
         ->join('material_ingresados', 'retornar_materiales.id_material_ing','=','material_ingresados.id')
-        /* ->join('material_cantidades_especificas', 'material_inventarios.id_cant_esp','=','material_cantidades_especificas.id') */
         ->join('material_medidas', 'retornar_materiales.id_material_medida','=','material_medidas.id')
         ->join('documento_asociados','retornar_materiales.id_documento','=','documento_asociados.id')
         ->join('material_cubiculos','retornar_materiales.id_cubiculo','=','material_cubiculos.id')

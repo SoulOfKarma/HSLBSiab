@@ -23,6 +23,7 @@ class CreateHistorialMaterialesTable extends Migration
             $table->bigInteger('id_cant_esp')->nullable();
             $table->bigInteger('id_material_medida');
             $table->bigInteger('material_cantidad');
+            $table->bigInteger('material_cantidad_minima');
             $table->bigInteger('material_valor')->nullable();
             $table->double('material_cantidad_calculada',15,2);
             $table->bigInteger('id_documento');

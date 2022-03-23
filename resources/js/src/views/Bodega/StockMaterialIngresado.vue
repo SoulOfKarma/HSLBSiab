@@ -322,6 +322,10 @@ export default {
                     field: "material_cantidad"
                 },
                 {
+                    label: "Cantidad Minima",
+                    field: "material_cantidad_minima"
+                },
+                {
                     label: "Valor",
                     field: "material_valor"
                 },
@@ -399,8 +403,6 @@ export default {
             }
         },
         async printInvoice() {
-            //this.$refs.easyPrint.print();
-            //window.print();
             html2canvas(document.getElementById("printJS-form")).then(
                 canvas => {
                     var imgWidth = 100;
@@ -435,24 +437,6 @@ export default {
                     pdfMake.createPdf(docDefinition).open();
                 }
             );
-
-            /*  {
-                onrendered: function(canvas) {
-                    var data = canvas.toDataURL("image/png");
-                    var docDefinition = {
-                        content: [
-                            {
-                                image: data,
-                                width: 500
-                            }
-                        ]
-                    };
-
-                    pdfMake
-                        .createPdf(docDefinition)
-                        .download("Score_Details.pdf");
-                }
-            } */
         },
         generarBarCode(id) {
             this.popActiveBarCode = true;

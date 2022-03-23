@@ -47,20 +47,6 @@
                             >
                             </v-select>
                         </div>
-                        <!-- <div class="vx-col w-1/3 mt-5">
-                            <h6>1.2 Seleccione Servicio</h6>
-                            <br />
-                            <v-select
-                                taggable
-                                v-model="seleccionServicio"
-                                placeholder="Servicio"
-                                class="w-full select-large"
-                                label="descripcion_servicio"
-                                :options="listadoServicio"
-                                @input="filtroSegunServicio"
-                            >
-                            </v-select>
-                        </div> -->
                         <div class="vx-col w-1/2 mt-5">
                             <h6>1.2 Seleccione Cubiculo</h6>
                             <br />
@@ -77,7 +63,7 @@
                         </div>
                     </div>
                     <div class="vx-row mb-4">
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/3 mt-5">
                             <h6>1.3 Seleccione Material a Ingresar</h6>
                             <br />
                             <v-select
@@ -101,7 +87,18 @@
                                 @keypress="isNumber($event)"
                             />
                         </div>
-                        <div class="vx-col w-1/7 mt-5">
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6>1.4 Ingrese Cantidad Minima</h6>
+                            <br />
+                            <vs-input
+                                class="inputx w-full"
+                                v-model="cantidadMinima"
+                                @input="CalcTotal"
+                                :step="0.5"
+                                @keypress="isNumber($event)"
+                            />
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
                             <h6>Tipo Medida</h6>
                             <br />
                             <v-select
@@ -112,7 +109,7 @@
                                 :options="listadoMedidas"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/4 mt-5">
                             <h6>Total Segun Medida.</h6>
                             <br />
                             <vs-input
@@ -122,19 +119,6 @@
                                 :step="0.5"
                             />
                         </div>
-                        <!-- <div class="vx-col w-1/3 mt-5">
-                            <h6>1.5 Ingrese Contenido</h6>
-                            <br />
-                            <v-select
-                                taggable
-                                v-model="seleccionCantEsp"
-                                placeholder="Cantidad Esp."
-                                class="w-full select-large"
-                                label="descripcion_cantidad_especifica"
-                                :options="listadoCantEsp"
-                                @input="crearValidarCantEsp"
-                            ></v-select>
-                        </div> -->
                     </div>
                     <div class="vx-row mb-4">
                         <div class="vx-col w-1/4 mt-5">
@@ -265,47 +249,6 @@
                 </div>
             </div>
         </vs-popup>
-        <!-- <vs-popup
-            classContent="pop-CrearTipo"
-            title="Guardar Nuevo Servicio?"
-            :active.sync="popActiveServicio"
-        >
-            <vs-input class="inputx mb-3" v-model="desServicio" hidden />
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col sm:w-full w-full">
-                        <h6>Seleccione Ubicacion</h6>
-                        <br />
-                        <v-select
-                            v-model="seleccionUbicacionG"
-                            placeholder="Ubicacion"
-                            class="w-full select-large"
-                            label="descripcion_ubicacion"
-                            :options="listadoUbicacion"
-                        >
-                        </v-select>
-                        <br />
-                        <vs-button
-                            color="warning"
-                            type="filled"
-                            class="w-full m-2"
-                            @click="guardarServicio(desServicio)"
-                        >
-                            Guardar
-                        </vs-button>
-                    </div>
-                    <div class="vx-col sm:w-full w-full">
-                        <vs-button
-                            class="w-full m-2"
-                            @click="popActiveServicio = false"
-                            color="primary"
-                            type="filled"
-                            >Volver</vs-button
-                        >
-                    </div>
-                </div>
-            </div>
-        </vs-popup> -->
         <vs-popup
             classContent="pop-CrearTipo"
             title="Guardar Nuevo Ubicacion?"
@@ -336,36 +279,6 @@
                 </div>
             </div>
         </vs-popup>
-        <!-- <vs-popup
-            classContent="pop-CrearTipo"
-            title="Guardar Cantidad Especifica?"
-            :active.sync="popActiveCantidadEsp"
-        >
-            <vs-input class="inputx mb-3" v-model="desCantEsp" hidden />
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col sm:w-full w-full">
-                        <vs-button
-                            color="warning"
-                            type="filled"
-                            class="w-full m-2"
-                            @click="guardarCantidadEspecifica(desCantEsp)"
-                        >
-                            Guardar
-                        </vs-button>
-                    </div>
-                    <div class="vx-col sm:w-full w-full">
-                        <vs-button
-                            class="w-full m-2"
-                            @click="popActiveCantidadEsp = false"
-                            color="primary"
-                            type="filled"
-                            >Volver</vs-button
-                        >
-                    </div>
-                </div>
-            </div>
-        </vs-popup> -->
     </div>
 </template>
 <script>
@@ -421,10 +334,6 @@ export default {
                 id: 0,
                 descripcion_ubicacion: "Seleccione Ubicacion"
             },
-            /*             seleccionServicio: {
-                id: 0,
-                descripcion_servicio: "Seleccione Servicio"
-            }, */
             seleccionMedidas: {
                 id: 8,
                 descripcion_medidas: "UN"
@@ -433,10 +342,6 @@ export default {
                 id: 0,
                 descripcion_material: "Seleccione Material"
             },
-            /*             seleccionCantEsp: {
-                id: 0,
-                descripcion_cantidad_especifica: "400"
-            }, */
             seleccionDocumento: {
                 id: 1,
                 descripcion_documento: "N/A"
@@ -445,25 +350,20 @@ export default {
             listadoCubiculo: [],
             listadoUbicacion: [],
             listadoUbicacionData: [],
-            /*             listadoServicio: [],
-            listadoServicioData: [], */
             listadoMedidas: [],
             listadoMedidasData: [],
             listadoMaterial: [],
             listadoMaterialData: [],
-            /*             listadoCantEsp: [],
-            listadoCantEspData: [], */
             listadoDocumentoAsociado: [],
             cantidad: 0,
+            cantidadMinima: 0,
             valor: 0,
             total: 0,
             totalMaterial: 0,
             totalValor: 0,
             desMaterial: "",
             desCubiculo: "",
-            /*             desServicio: "", */
             desUbicacion: "",
-            /*             desCantEsp: "", */
             idMaterial: 0,
             medida: "cc",
             ndocumento: "",
@@ -475,8 +375,6 @@ export default {
             localVal: process.env.MIX_APP_URL,
             popActiveMaterial: false,
             popActiveCubiculo: false,
-            /*             popActiveCantidadEsp: false,
-            popActiveServicio: false, */
             popActiveUbicacion: false
         };
     },
@@ -494,10 +392,6 @@ export default {
                 id: 0,
                 descripcion_tipo_material: "Selecione Tipo Material"
             };
-            /* this.seleccionCantEsp = {
-                id: 3,
-                descripcion_cantidad_especifica: "N/A"
-            }; */
             this.seleccionCubiculo = {
                 id: 0,
                 descripcion_cubiculo: "Seleccione Cubiculo"
@@ -530,90 +424,6 @@ export default {
                 this.valCampoValor = true;
             }
         },
-        /* filtroSegunServicio() {
-            try {
-                if (
-                    this.seleccionServicio.id == null ||
-                    this.seleccionServicio.id == 0
-                ) {
-                    if (
-                        this.seleccionServicio.descripcion_servicio ===
-                            undefined ||
-                        this.seleccionServicio === "" ||
-                        this.seleccionServicio === null
-                    ) {
-                        this.desServicio = this.seleccionServicio;
-                        this.popActiveServicio = true;
-                    } else {
-                        this.desServicio = this.seleccionServicio.descripcion_servicio;
-                        this.popActiveServicio = true;
-                    }
-                } else {
-                    let idGen = this.seleccionServicio.id_material_ubicacion;
-                    let c = this.listadoUbicacionData;
-                    let b = [];
-                    let a = 0;
-                    c.forEach((value, index) => {
-                        a = value.id;
-                        if (a == idGen) {
-                            b.push(value);
-                        }
-                    });
-                    this.seleccionUbicacion.id = b[0].id;
-                    this.seleccionUbicacion.descripcion_ubicacion =
-                        b[0].descripcion_ubicacion;
-                }
-            } catch (error) {}
-        }, */
-        //Guardar Servicio
-        /* guardarServicio(desSer) {
-            try {
-                let data = {
-                    id_material_ubicacion: this.seleccionUbicacionG.id,
-                    descripcion_servicio: desSer
-                };
-
-                axios
-                    .post(this.localVal + "/api/Bodega/PostServicio", data, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        if (res.data == true) {
-                            this.$vs.notify({
-                                time: 3000,
-                                title: "Servicio Agregado Correctamente",
-                                text: "Se Recargara Listado",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.cargarServicios();
-                            this.popActiveServicio = false;
-                            this.seleccionServicio = {
-                                id: 0,
-                                descripcion_servicio: ""
-                            };
-                            this.seleccionUbicacion = {
-                                id: 0,
-                                descripcion_ubicacion: ""
-                            };
-                        } else {
-                            this.$vs.notify({
-                                time: 3000,
-                                title: "Error Al Guardar Servicio",
-                                text:
-                                    "Intente Nuevamente o Consulte con el Administrador",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log("Hubo un error al tratar de guardar el servicio");
-            }
-        }, */
         filtroSegunUbicacion() {
             try {
                 if (
@@ -852,31 +662,6 @@ export default {
                 console.log(error);
             }
         },
-        /*  crearValidarCantEsp() {
-            try {
-                if (
-                    this.seleccionCantEsp.id == 0 ||
-                    this.seleccionCantEsp.id == null
-                ) {
-                    if (
-                        this.seleccionCantEsp
-                            .descripcion_cantidad_especifica === undefined ||
-                        this.seleccionCantEsp
-                            .descripcion_cantidad_especifica === null ||
-                        this.seleccionCantEsp.descripcion_cantidad_especifica ==
-                            ""
-                    ) {
-                        this.desCantEsp = this.seleccionCantEsp;
-                        this.popActiveCantidadEsp = true;
-                    } else {
-                        this.desCantEsp = this.seleccionCantEsp.descripcion_cantidad_especifica;
-                        this.popActiveCantidadEsp = true;
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }, */
         cargarUbicaciones() {
             axios
                 .get(this.localVal + "/api/Bodega/GetUbicaciones", {
@@ -890,19 +675,6 @@ export default {
                     this.listadoUbicacionData = res.data;
                 });
         },
-        /*  cargarServicios() {
-            axios
-                .get(this.localVal + "/api/Bodega/GetServicios", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoServicio = res.data;
-                    this.listadoServicioData = res.data;
-                });
-        }, */
         cargarCubiculos() {
             axios
                 .get(this.localVal + "/api/Bodega/GetCubiculos", {
@@ -953,19 +725,6 @@ export default {
                     this.listadoDocumentoAsociado = res.data;
                 });
         },
-        /* cargarCantidadEspecifica() {
-            axios
-                .get(this.localVal + "/api/Bodega/GetCantEsp", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoCantEsp = res.data;
-                    this.listadoCantEspData = res.data;
-                });
-        }, */
         guardarMaterial(valor) {
             let material = {
                 descripcion_material: valor
@@ -1009,46 +768,6 @@ export default {
                     }
                 });
         },
-        /* guardarCantidadEspecifica(valor) {
-            let material = {
-                descripcion_cantidad_especifica: valor
-            };
-
-            axios
-                .post(this.localVal + "/api/Bodega/PostCantEsp", material, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    if (res.data == true) {
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Cantidad Especifica Agregada Correctamente",
-                            text: "Se Recargara Listado",
-                            color: "success",
-                            position: "top-right"
-                        });
-                        this.cargarCantidadEspecifica();
-                        this.seleccionCantEsp = {
-                            id: 0,
-                            descripcion_cantidad_especifica:
-                                "Seleccione Cantidad Especifica"
-                        };
-                        this.popActiveCantidadEsp = false;
-                    } else {
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Error Al Guardar Material",
-                            text:
-                                "Intente Nuevamente o Consulte con el Administrador",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    }
-                });
-        }, */
         validarSinDocumento() {
             if (this.seleccionDocumento.id == 1) {
                 this.ndocumento = "Sin N° Documento";
@@ -1106,12 +825,11 @@ export default {
 
                     data = {
                         id_ubicaciones: this.seleccionUbicacion.id,
-                        //id_servicios: this.seleccionServicio.id,
                         id_cubiculo: this.seleccionCubiculo.id,
                         id_material_ing: this.seleccionMaterial.id,
-                        //id_cant_esp: this.seleccionCantEsp.id,
                         id_material_medida: this.seleccionMedidas.id,
                         material_cantidad: this.cantidad,
+                        material_cantidad_minima: this.cantidadMinima,
                         material_valor: this.valor,
                         material_cantidad_calculada: this.totalMaterial,
                         id_documento: this.seleccionDocumento.id,

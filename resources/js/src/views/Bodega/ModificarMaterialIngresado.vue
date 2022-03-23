@@ -36,7 +36,7 @@
                             >
                             </v-select>
                         </div>
-                        <div class="vx-col w-1/4 mt-5">
+                        <div class="vx-col w-1/5 mt-5">
                             <h6>1.3 - Material</h6>
                             <br />
                             <v-select
@@ -51,7 +51,7 @@
                             <br />
                         </div>
 
-                        <div class="vx-col w-1/4 mt-5">
+                        <div class="vx-col w-1/5 mt-5">
                             <h6>1.4 - Cantidad</h6>
                             <br />
                             <vs-input
@@ -63,8 +63,19 @@
                             />
                             <br />
                         </div>
-                        <div class="vx-col w-1/4 mt-5">
-                            <h6>1.5 - Medida</h6>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>1.5 Ingrese Cantidad Minima</h6>
+                            <br />
+                            <vs-input
+                                class="inputx w-full"
+                                v-model="cantidadMinima"
+                                @input="CalcTotal"
+                                :step="0.5"
+                                @keypress="isNumber($event)"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>1.6 - Medida</h6>
                             <br />
                             <v-select
                                 v-model="seleccionMedidas"
@@ -74,8 +85,8 @@
                                 :options="listadoMedidas"
                             />
                         </div>
-                        <div class="vx-col w-1/4 mt-5">
-                            <h6>1.6 - Valor</h6>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>1.7 - Valor</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
@@ -107,7 +118,7 @@
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.7 - Documento</h6>
+                            <h6>1.8 - Documento</h6>
                             <br />
                             <v-select
                                 v-model="seleccionDocumento"
@@ -119,7 +130,7 @@
                             <br />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.8 - N° Documento</h6>
+                            <h6>1.9 - N° Documento</h6>
                             <br />
                             <vs-input
                                 class="inputx w-full"
@@ -191,37 +202,6 @@
                 </div>
             </div>
         </vs-popup>
-
-        <!--  <vs-popup
-            classContent="pop-CrearTipo"
-            title="Guardar Cantidad Especifica?"
-            :active.sync="popActiveCantidadEsp"
-        >
-            <vs-input class="inputx mb-3" v-model="desCantEsp" hidden />
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col sm:w-full w-full">
-                        <vs-button
-                            color="warning"
-                            type="filled"
-                            class="w-full m-2"
-                            @click="guardarCantidadEspecifica(desCantEsp)"
-                        >
-                            Guardar
-                        </vs-button>
-                    </div>
-                    <div class="vx-col sm:w-full w-full">
-                        <vs-button
-                            class="w-full m-2"
-                            @click="popActiveCantidadEsp = false"
-                            color="primary"
-                            type="filled"
-                            >Volver</vs-button
-                        >
-                    </div>
-                </div>
-            </div>
-        </vs-popup> -->
         <vs-popup
             classContent="pop-CrearTipo"
             title="Guardar Nuevo Cubiculo?"
@@ -306,10 +286,8 @@ export default {
         materialSeleccion: {
             id: 0,
             id_ubicaciones: "",
-            //id_servicios: "",
             id_material_ing: "",
             id_material_tipo: "",
-            //id_cant_esp: "",
             id_material_medida: "",
             material_cantidad: "",
             material_valor: "",
@@ -321,10 +299,6 @@ export default {
             id: 0,
             descripcion_ubicacion: "Seleccione Ubicacion"
         },
-        /*         seleccionServicio: {
-            id: 0,
-            descripcion_servicio: "Seleccione Servicio"
-        }, */
         seleccionMedidas: {
             id: 8,
             descripcion_medidas: "UN"
@@ -337,10 +311,6 @@ export default {
             id: 0,
             descripcion_cubiculo: "Seleccione Cubiculo"
         },
-        /*         seleccionCantEsp: {
-            id: 0,
-            descripcion_cantidad_especifica: "400"
-        }, */
         seleccionDocumento: {
             id: 0,
             descripcion_documento: "Seleccione Documento"
@@ -348,32 +318,27 @@ export default {
         listadoCubiculo: [],
         listadoUbicacion: [],
         listadoUbicacionData: [],
-        /*         listadoServicio: [],
-        listadoServicioData: [], */
         listadoMedidas: [],
         listadoMedidasData: [],
         listadoMaterial: [],
         listadoMaterialData: [],
         listadoTipoMaterial: [],
         listadoTipoMaterialData: [],
-        /*         listadoCantEsp: [],
-        listadoCantEspData: [], */
         listadoDocumentoAsociado: [],
         cantidad: 0,
+        cantidadMinima: 0,
         valor: 0,
         total: 0,
         totalMaterial: 0,
         totalValor: 0,
         desMaterial: "",
         desCubiculo: "",
-        /*         desCantEsp: "", */
         idMaterial: 0,
         medida: "cc",
         ndocumento: "",
         localVal: process.env.MIX_APP_URL,
         popActiveMaterial: false,
         popActiveCubiculo: false
-        /* popActiveCantidadEsp: false */
     }),
     computed: {},
     methods: {
@@ -462,6 +427,17 @@ export default {
                     color: "danger",
                     position: "top-right"
                 });
+            } else if (
+                this.cantidadMinima <= 0 ||
+                this.cantidadMinima == null
+            ) {
+                this.$vs.notify({
+                    time: 3000,
+                    title: "Campo Cantidad Minima Vacio",
+                    text: "Ingrese cantidad para continuar",
+                    color: "danger",
+                    position: "top-right"
+                });
             } else if (this.valor <= 0 || this.valor == null) {
                 this.$vs.notify({
                     time: 3000,
@@ -505,12 +481,11 @@ export default {
                 let data = {
                     id: id,
                     id_ubicaciones: this.seleccionUbicacion.id,
-                    //id_servicios: this.seleccionServicio.id,
                     id_cubiculo: this.seleccionCubiculo.id,
                     id_material_ing: this.seleccionMaterial.id,
-                    //id_cant_esp: this.seleccionCantEsp.id,
                     id_material_medida: this.seleccionMedidas.id,
                     material_cantidad: this.cantidad,
+                    material_cantidad_minima: this.cantidadMinima,
                     material_valor: this.valor,
                     material_cantidad_calculada: this.totalMaterial,
                     id_documento: this.seleccionDocumento.id,
@@ -553,27 +528,6 @@ export default {
                     });
             }
         },
-
-        /* filtroSegunServicio() {
-            if (this.seleccionServicio == null || this.seleccionServicio == 0) {
-                this.listadoUbicacion = this.listadoUbicacionData;
-                this.listadoServicio = this.listadoServicioData;
-            } else {
-                let idGen = this.seleccionServicio.id_material_ubicacion;
-                let c = this.listadoUbicacionData;
-                let b = [];
-                let a = 0;
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGen) {
-                        b.push(value);
-                    }
-                });
-                this.seleccionUbicacion.id = b[0].id;
-                this.seleccionUbicacion.descripcion_ubicacion =
-                    b[0].descripcion_ubicacion;
-            }
-        }, */
         filtroSegunUbicacion() {
             if (
                 this.seleccionUbicacion == null ||
@@ -613,19 +567,7 @@ export default {
                         this.desCubiculo = this.seleccionCubiculo.descripcion_cubiculo;
                         this.popActiveCubiculo = true;
                     }
-                } /* else {
-                    var idGen = this.seleccionCubiculo.id;
-                    let c = this.listadoCubiculo;
-                    let b = [];
-                    let a = 0;
-                    c.forEach((value, index) => {
-                        a = value.id;
-                        if (a == idGen) {
-                            b.push(value);
-                        }
-                    });
-                    this.seleccionCubiculo = b;
-                } */
+                }
             } catch (error) {
                 console.log("Error al tratar de filtrar el cubiculo");
             }
@@ -696,31 +638,6 @@ export default {
                 console.log("Error al filtrar Materiales");
             }
         },
-        /* crearValidarCantEsp() {
-            try {
-                if (
-                    this.seleccionCantEsp.id == 0 ||
-                    this.seleccionCantEsp.id == null
-                ) {
-                    if (
-                        this.seleccionCantEsp
-                            .descripcion_cantidad_especifica === undefined ||
-                        this.seleccionCantEsp
-                            .descripcion_cantidad_especifica === null ||
-                        this.seleccionCantEsp.descripcion_cantidad_especifica ==
-                            ""
-                    ) {
-                        this.desCantEsp = this.seleccionCantEsp;
-                        this.popActiveCantidadEsp = true;
-                    } else {
-                        this.desCantEsp = this.seleccionCantEsp.descripcion_cantidad_especifica;
-                        this.popActiveCantidadEsp = true;
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }, */
         cargarUbicaciones() {
             axios
                 .get(this.localVal + "/api/Bodega/GetUbicaciones", {
@@ -734,19 +651,6 @@ export default {
                     this.listadoUbicacionData = res.data;
                 });
         },
-        /* cargarServicios() {
-            axios
-                .get(this.localVal + "/api/Bodega/GetServicios", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoServicio = res.data;
-                    this.listadoServicioData = res.data;
-                });
-        }, */
         cargarMedidas() {
             axios
                 .get(this.localVal + "/api/Bodega/GetMedidasFiltradas", {
@@ -785,19 +689,6 @@ export default {
                     this.listadoDocumentoAsociado = res.data;
                 });
         },
-        /* cargarCantidadEspecifica() {
-            axios
-                .get(this.localVal + "/api/Bodega/GetCantEsp", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoCantEsp = res.data;
-                    this.listadoCantEspData = res.data;
-                });
-        }, */
         guardarMaterial(valor) {
             let material = {
                 descripcion_material: valor
@@ -833,46 +724,6 @@ export default {
                     }
                 });
         },
-        /* guardarCantidadEspecifica(valor) {
-            let material = {
-                descripcion_cantidad_especifica: valor
-            };
-
-            axios
-                .post(this.localVal + "/api/Bodega/PostCantEsp", material, {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    if (res.data == true) {
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Cantidad Especifica Agregada Correctamente",
-                            text: "Se Recargara Listado",
-                            color: "success",
-                            position: "top-right"
-                        });
-                        this.cargarCantidadEspecifica();
-                        this.seleccionCantEsp = {
-                            id: 0,
-                            descripcion_cantidad_especifica:
-                                "Seleccione Cantidad Especifica"
-                        };
-                        this.popActiveCantidadEsp = false;
-                    } else {
-                        this.$vs.notify({
-                            time: 3000,
-                            title: "Error Al Guardar Material",
-                            text:
-                                "Intente Nuevamente o Consulte con el Administrador",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    }
-                });
-        }, */
         CalcTotal() {
             try {
                 if (
@@ -1429,21 +1280,6 @@ export default {
                 this.seleccionUbicacion.descripcion_ubicacion =
                     b[0].descripcion_ubicacion;
 
-                /* idGen = listado[0].id_servicios;
-                c = this.listadoServicioData;
-                b = [];
-                a = 0;
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGen) {
-                        b.push(value);
-                    }
-                });
-
-                this.seleccionServicio.id = b[0].id;
-                this.seleccionServicio.descripcion_servicio =
-                    b[0].descripcion_servicio; */
-
                 idGen = listado[0].id_material_ing;
 
                 c = this.listadoMaterialData;
@@ -1476,20 +1312,6 @@ export default {
                 this.seleccionCubiculo.descripcion_cubiculo =
                     b[0].descripcion_cubiculo;
 
-                /* idGen = listado[0].id_cant_esp;
-                c = this.listadoCantEspData;
-                b = [];
-                a = 0;
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == idGen) {
-                        b.push(value);
-                    }
-                });
-                this.seleccionCantEsp.id = b[0].id;
-                this.seleccionCantEsp.descripcion_cantidad_especifica =
-                    b[0].descripcion_cantidad_especifica;
- */
                 idGen = listado[0].id_material_medida;
                 c = this.listadoMedidasData;
                 b = [];
@@ -1505,6 +1327,7 @@ export default {
                     b[0].descripcion_medidas;
 
                 this.cantidad = listado[0].material_cantidad;
+                this.cantidadMinima = listado[0].material_cantidad_minima;
                 this.valor = listado[0].material_valor;
                 this.ndocumento = listado[0].n_documento;
 
