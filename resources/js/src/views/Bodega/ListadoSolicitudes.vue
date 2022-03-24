@@ -30,6 +30,8 @@
                     <!-- Column: Action -->
                     <span v-else-if="props.column.field === 'action'">
                         <info-icon
+                            content="Asignar Material"
+                            v-tippy
                             size="1.5x"
                             class="custom-class"
                             @click="
@@ -79,6 +81,9 @@ import {
 import { BFormInput, BRow, BCol, BFormGroup } from "bootstrap-vue";
 import { VueGoodTable } from "vue-good-table";
 import VueGoodTablePlugin from "vue-good-table";
+import VueTippy, { TippyComponent } from "vue-tippy";
+Vue.use(VueTippy);
+Vue.component("tippy", TippyComponent);
 
 Vue.use(VueGoodTablePlugin);
 

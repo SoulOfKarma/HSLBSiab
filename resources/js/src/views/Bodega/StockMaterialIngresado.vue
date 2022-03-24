@@ -31,94 +31,6 @@
                     >
                 </div>
             </vs-prompt>
-            <!-- <vs-table
-                :data="listadoStock"
-                search
-                max-items="15"
-                pagination
-                v-model="busqueda"
-            >
-                <template slot="header">
-                    <vs-button @click="activePrompt = true">Exportar</vs-button>
-                </template>
-                <template slot="thead">
-                    <vs-th>ID</vs-th>
-                    <vs-th>Ubicacion</vs-th>
-                    <vs-th>Servicio</vs-th>
-                    <vs-th>Material</vs-th>
-                    <vs-th>Tipo Material</vs-th>
-                    <vs-th>Contenido</vs-th>
-                    <vs-th>Medida</vs-th>
-                    <vs-th>Cantidad</vs-th>
-                    <vs-th>Valor</vs-th>
-                    <vs-th>Tipo Documento</vs-th>
-                    <vs-th>N° Documento</vs-th>
-                    <vs-th>Opciones</vs-th>
-                </template>
-
-                <template slot-scope="{ data }">
-                    <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                        <vs-td :data="data[indextr].id">
-                            {{ data[indextr].id }}
-                        </vs-td>
-
-                        <vs-td :data="data[indextr].descripcion_ubicacion">
-                            {{ data[indextr].descripcion_ubicacion }}
-                        </vs-td>
-
-                        <vs-td :data="data[indextr].descripcion_servicio">
-                            {{ data[indextr].descripcion_servicio }}
-                        </vs-td>
-
-                        <vs-td :data="data[indextr].descripcion_material">
-                            {{ data[indextr].descripcion_material }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].descripcion_tipo_material">
-                            {{ data[indextr].descripcion_tipo_material }}
-                        </vs-td>
-                        <vs-td
-                            :data="
-                                data[indextr].descripcion_cantidad_especifica
-                            "
-                        >
-                            {{ data[indextr].descripcion_cantidad_especifica }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].descripcion_medidas">
-                            {{ data[indextr].descripcion_medidas }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].material_cantidad">
-                            {{ data[indextr].material_cantidad }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].material_valor">
-                            ${{ data[indextr].material_valor }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].descripcion_documento">
-                            {{ data[indextr].descripcion_documento }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].n_documento">
-                            {{ data[indextr].n_documento }}
-                        </vs-td>
-                        <vs-td :data="data[indextr].id">
-                            <info-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="informacionGeneral(data[indextr].id)"
-                            ></info-icon>
-                            <plus-circle-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="modificarMaterial(data[indextr].id)"
-                            ></plus-circle-icon>
-                            <archive-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="generarBarCode(data[indextr].id)"
-                            ></archive-icon>
-                        </vs-td>
-                    </vs-tr>
-                </template>
-            </vs-table> -->
-            <!-- search input -->
             <div class="vx-row mb-12">
                 <div class="vx-col w-1/2 mt-5">
                     <vs-button @click="activePrompt = true">Exportar</vs-button>
@@ -159,11 +71,15 @@
                     <!-- Column: Action -->
                     <span v-else-if="props.column.field === 'action'">
                         <info-icon
+                            content="Informacion General"
+                            v-tippy
                             size="1.5x"
                             class="custom-class"
                             @click="informacionGeneral(props.row.id)"
                         ></info-icon>
                         <plus-circle-icon
+                            content="Modificar Material"
+                            v-tippy
                             size="1.5x"
                             class="custom-class"
                             @click="modificarMaterial(props.row.id)"
@@ -235,6 +151,9 @@ import vSelect from "vue-select";
 import VueBarcode from "vue-barcode";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import VueTippy, { TippyComponent } from "vue-tippy";
+Vue.use(VueTippy);
+Vue.component("tippy", TippyComponent);
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import html2canvas from "html2canvas";
 import {
