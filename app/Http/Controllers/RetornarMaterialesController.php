@@ -55,6 +55,7 @@ class RetornarMaterialesController extends Controller
         ->join('material_cubiculos','retornar_materiales.id_cubiculo','=','material_cubiculos.id')
         ->whereNotIn('retornar_materiales.material_cantidad',$filtro)
         ->where('retornar_materiales.id_ticket',$request->idTicket)
+        ->where('retornar_materiales.id_categoria',$request->id_categoria)
         ->get();
 
         return $get_all;

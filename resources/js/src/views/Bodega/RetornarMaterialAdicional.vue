@@ -390,6 +390,7 @@ export default {
                 descripcion_material: "",
                 descripcion_medidas: "",
                 material_cantidad: 1,
+                material_cantidad_minima: 0,
                 material_valor: 0,
                 descripcion_documento: "",
                 n_documento: ""
@@ -399,6 +400,7 @@ export default {
             descripcion_material: "",
             descripcion_medidas: "",
             material_cantidad: 1,
+            material_cantidad_minima: 0,
             material_valor: 0,
             descripcion_documento: "",
             n_documento: "",
@@ -462,7 +464,8 @@ export default {
         buscarByTicket() {
             try {
                 let obj = {
-                    idTicket: this.buscarPorNTicket
+                    idTicket: this.buscarPorNTicket,
+                    id_categoria: this.seleccionCategoria.id
                 };
                 axios
                     .post(
@@ -564,10 +567,6 @@ export default {
 
         AddList() {
             try {
-                //var d = Array.from(this.listadoInventarioData);
-                //let d = Object.assign({}, this.listadoInventarioData);
-                //let clonar = _.clone(this.listadoInventarioData);
-
                 if (this.validador) {
                     var d = this.listadoInventarioData;
                     let e = [];
@@ -583,6 +582,7 @@ export default {
                         descripcion_material: this.descripcion_material,
                         descripcion_medidas: this.descripcion_medidas,
                         material_cantidad: this.material_cantidad,
+                        material_cantidad_minima: this.material_cantidad_minima,
                         material_valor: this.material_valor,
                         descripcion_documento: this.descripcion_documento,
                         n_documento: this.n_documento,
@@ -821,6 +821,7 @@ export default {
             this.descripcion_material = params.row.descripcion_material;
             this.descripcion_medidas = params.row.descripcion_medidas;
             this.material_cantidad = params.row.material_cantidad;
+            this.material_cantidad_minima = params.row.material_cantidad_minima;
             this.valorTotalItem = params.row.material_cantidad;
             this.material_valor = params.row.material_valor;
             this.descripcion_documento = params.row.descripcion_documento;

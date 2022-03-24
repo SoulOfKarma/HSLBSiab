@@ -364,6 +364,7 @@ export default {
                 descripcion_material: "",
                 descripcion_medidas: "",
                 material_cantidad: 1,
+                material_cantidad_minima: 0,
                 material_valor: 0,
                 descripcion_documento: "",
                 n_documento: ""
@@ -373,6 +374,7 @@ export default {
             descripcion_material: "",
             descripcion_medidas: "",
             material_cantidad: 1,
+            material_cantidad_minima: 0,
             material_valor: 0,
             descripcion_documento: "",
             n_documento: "",
@@ -430,38 +432,6 @@ export default {
                 console.log(error);
             }
         },
-        /* buscarPorId() {
-            try {
-                let c = this.listadoTipoMaterialData;
-                let b = [];
-                let a = 0;
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == this.searchTerm) {
-                        b.push(value);
-                    }
-                });
-                this.searchTerm = b[0].descripcion_tipo_material;
-            } catch (error) {
-                console.log("No Existe Material Activo Registrado");
-            }
-        },
-        buscarPorIdAsignados() {
-            try {
-                let c = this.listadoTipoMaterialData;
-                let b = [];
-                let a = 0;
-                c.forEach((value, index) => {
-                    a = value.id;
-                    if (a == this.busqueda) {
-                        b.push(value);
-                    }
-                });
-                this.busqueda = b[0].descripcion_tipo_material;
-            } catch (error) {
-                console.log("No Existe Material Activo Registrado");
-            }
-        }, */
         validarCantidad() {
             let c = this.listadoInventario;
             let b = [];
@@ -491,10 +461,6 @@ export default {
 
         AddList() {
             try {
-                //var d = Array.from(this.listadoInventarioData);
-                //let d = Object.assign({}, this.listadoInventarioData);
-                //let clonar = _.clone(this.listadoInventarioData);
-
                 if (this.validador) {
                     var d = this.listadoInventarioData;
                     let e = [];
@@ -510,6 +476,7 @@ export default {
                         descripcion_material: this.descripcion_material,
                         descripcion_medidas: this.descripcion_medidas,
                         material_cantidad: this.material_cantidad,
+                        material_cantidad_minima: this.material_cantidad_minima,
                         material_valor: this.material_valor,
                         descripcion_documento: this.descripcion_documento,
                         n_documento: this.n_documento,
@@ -761,14 +728,10 @@ export default {
         onRowClick(params) {
             this.id = params.row.id;
             this.descripcion_ubicacion = params.row.descripcion_ubicacion;
-            /*             this.descripcion_servicio = params.row.descripcion_servicio; */
             this.descripcion_material = params.row.descripcion_material;
-            /*             this.descripcion_tipo_material =
-                params.row.descripcion_tipo_material; */
-            /*             this.descripcion_cantidad_especifica =
-                params.row.descripcion_cantidad_especifica; */
             this.descripcion_medidas = params.row.descripcion_medidas;
             this.material_cantidad = params.row.material_cantidad;
+            this.material_cantidad_minima = params.row.material_cantidad_minima;
             this.material_valor = params.row.material_valor;
             this.descripcion_documento = params.row.descripcion_documento;
             this.n_documento = params.row.n_documento;
@@ -779,12 +742,7 @@ export default {
         rowClick(params) {
             this.id = params.row.id;
             this.descripcion_ubicacion = params.row.descripcion_ubicacion;
-            /*  this.descripcion_servicio = params.row.descripcion_servicio; */
             this.descripcion_material = params.row.descripcion_material;
-            /* this.descripcion_tipo_material =
-                params.row.descripcion_tipo_material; */
-            /* this.descripcion_cantidad_especifica =
-                params.row.descripcion_cantidad_especifica; */
             this.descripcion_medidas = params.row.descripcion_medidas;
             this.material_cantidad = params.row.material_cantidad;
             this.material_valor = params.row.material_valor;
@@ -808,12 +766,6 @@ export default {
                 this.valCanFinal = this.material_cantidad;
                 return true;
             }
-
-            /*  if (this.valCantidad < this.materialSeleccion.material_cantidad) {
-                this.materialSeleccion.material_cantidad = 0;
-            } else {
-                this.valCanFinal = this.materialSeleccion.material_cantidad;
-            } */
         },
         volver() {
             router.back();
@@ -855,24 +807,9 @@ export default {
                 console.log(error);
             }
         }
-        /* cargarTipoMaterial() {
-            axios
-                .get(this.localVal + "/api/Bodega/GetTipoMaterial", {
-                    headers: {
-                        Authorization:
-                            `Bearer ` + sessionStorage.getItem("token")
-                    }
-                })
-                .then(res => {
-                    this.listadoTipoMaterial = res.data;
-                    this.listadoTipoMaterialData = res.data;
-                });
-        } */
     },
     created() {
         this.cargarInventarioDisponible();
-        //this.cargarDatoSolicitudExterna();
-        /*         this.cargarTipoMaterial(); */
     }
 };
 </script>
