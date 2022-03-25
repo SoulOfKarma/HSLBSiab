@@ -67,7 +67,29 @@
                         class="text-nowrap"
                     >
                     </span>
-
+                    <span
+                        v-if="props.column.field == 'estado_stock'"
+                        class="text-nowrap"
+                    >
+                        <vs-chip
+                            v-if="props.row.estado_stock == 1"
+                            color="success"
+                        >
+                            {{ "En Stock" }}
+                        </vs-chip>
+                        <vs-chip
+                            v-if="props.row.estado_stock == 2"
+                            color="warning"
+                        >
+                            {{ "Stock Limite" }}
+                        </vs-chip>
+                        <vs-chip
+                            v-if="props.row.estado_stock == 3"
+                            color="danger"
+                        >
+                            {{ "Bajo Stock" }}
+                        </vs-chip>
+                    </span>
                     <!-- Column: Action -->
                     <span v-else-if="props.column.field === 'action'">
                         <info-icon
@@ -255,6 +277,10 @@ export default {
                 {
                     label: "N° Documento",
                     field: "n_documento"
+                },
+                {
+                    label: "Estado Stock",
+                    field: "estado_stock"
                 },
                 {
                     label: "Opciones",

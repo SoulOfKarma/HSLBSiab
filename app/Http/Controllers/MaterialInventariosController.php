@@ -103,7 +103,13 @@ class MaterialInventariosController extends Controller
     public function getListadoStock(){
         $get_all = MaterialInventarios::select('material_inventarios.*','material_ubicaciones.descripcion_ubicacion',
         'material_ingresados.descripcion_material','material_medidas.descripcion_medidas','material_cubiculos.descripcion_cubiculo',
-        'documento_asociados.descripcion_documento',DB::raw("DATE_FORMAT(material_inventarios.created_at,'%d/%m/%Y') as created"))
+        'documento_asociados.descripcion_documento',DB::raw("DATE_FORMAT(material_inventarios.created_at,'%d/%m/%Y') as created"),
+        DB::raw("CASE 
+        WHEN material_inventarios.material_cantidad > material_inventarios.material_cantidad_minima THEN 1
+        WHEN material_inventarios.material_cantidad = material_inventarios.material_cantidad_minima THEN 2
+        WHEN material_inventarios.material_cantidad < material_inventarios.material_cantidad_minima THEN 3
+        ELSE 'Error'
+        END as estado_stock"))
         ->join('material_ubicaciones', 'material_inventarios.id_ubicaciones','=','material_ubicaciones.id')
         ->join('material_ingresados', 'material_inventarios.id_material_ing','=','material_ingresados.id')
         ->join('material_medidas', 'material_inventarios.id_material_medida','=','material_medidas.id')
