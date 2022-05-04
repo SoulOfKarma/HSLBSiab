@@ -19,7 +19,7 @@
     >
         <v-nav-menu
             :navMenuItems="navMenuItems"
-            title="Bodega RRFF"
+            title="SIAB"
             parent=".layout--main"
         />
 

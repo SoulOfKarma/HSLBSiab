@@ -22,39 +22,9 @@ export default [
         icon: "HomeIcon",
         submenu: [
             {
-                url: "/materialNuevo",
+                url: null,
                 name: "Ingreso Material",
                 slug: "IngresoMaterial",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/stockMaterialIngresado",
-                name: "Stock",
-                slug: "Stock",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/stockTotal",
-                name: "Stock Total",
-                slug: "Stock",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/listadoSolicitudes",
-                name: "Listado Solicitudes",
-                slug: "listadosolicitudes",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/listadoMaterialEntregado",
-                name: "Listado M. Entregado",
-                slug: "listadoMaterialEntregado",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/devolucionMaterialAdicional",
-                name: "Devolucion Material",
-                slug: "devolucionMaterialAdicional",
                 icon: "HomeIcon"
             }
         ]

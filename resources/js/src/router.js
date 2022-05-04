@@ -39,70 +39,7 @@ const router = new Router({
                     name: "home",
                     component: () => import("./views/Home.vue")
                 },
-                {
-                    path: "/entregaMaterial",
-                    name: "entregamaterial",
-                    component: () =>
-                        import("./views/Bodega/EntregaMaterialNSolicitud.vue")
-                },
-                {
-                    path: "/listadoSolicitudes",
-                    name: "listadosolicitudes",
-                    component: () =>
-                        import("./views/Bodega/ListadoSolicitudes.vue")
-                },
-                {
-                    path: "/materialNuevo",
-                    name: "materialnuevo",
-                    component: () => import("./views/Bodega/MaterialNuevo.vue")
-                },
-                {
-                    path: "/stockMaterialIngresado",
-                    name: "stock",
-                    component: () =>
-                        import("./views/Bodega/StockMaterialIngresado.vue")
-                },
-                {
-                    path: "/stockTotal",
-                    name: "stockTotal",
-                    component: () => import("./views/Bodega/StockTotal.vue")
-                },
-                {
-                    path: "/devolucionMaterialAdicional",
-                    name: "devolucionMaterialAdicional",
-                    component: () =>
-                        import("./views/Bodega/RetornarMaterialAdicional.vue")
-                },
-                {
-                    path: "/seguimientoMaterial/:id",
-                    name: "seguimientoMaterial",
-                    component: () =>
-                        import("./views/Bodega/SeguimientoMaterial.vue")
-                },
-                {
-                    path: "/modificarMaterial/:id",
-                    name: "modificarMaterial",
-                    component: () =>
-                        import("./views/Bodega/ModificarMaterialIngresado.vue")
-                },
-                {
-                    path: "/entregaMaterialNSolicitud/:id,:uuid,:id_categoria",
-                    name: "entregaMaterialNSolicitud",
-                    component: () =>
-                        import("./views/Bodega/EntregaMaterialNSolicitud.vue")
-                },
-                {
-                    path: "/listadoMaterialEntregado",
-                    name: "listadoMaterialEntregado",
-                    component: () =>
-                        import("./views/Bodega/ListadoMaterialEntregado.vue")
-                },
-                {
-                    path: "/retornarMaterialList",
-                    name: "retornarMaterialList",
-                    component: () =>
-                        import("./views/Bodega/RetornarMaterialList.vue")
-                }
+                
             ]
         },
         // =============================================================================
