@@ -19,7 +19,7 @@ const userDefaults = {
     displayName: "John Doe", // From Auth
     about:
         "Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.",
-    photoURL: require("@assets/images/portrait/small/hsjdlogo.png"), // From Auth
+    photoURL: require("@assets/images/portrait/small/1.png"), // From Auth
     status: "online",
     userRole: "admin"
 };

@@ -20,7 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('apellido_usuario');
             $table->bigInteger('anexo');
             $table->string('correo_usuario');
-            $table->string('password');            
+            $table->string('password');
+            $table->string('CB_PERIFERICA');
+            $table->string('NB_PERIFERICA');         
             $table->rememberToken();
             $table->timestamps();
         });

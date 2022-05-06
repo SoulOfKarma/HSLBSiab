@@ -22,8 +22,8 @@
                     <p
                         class="xl:w-3/4 lg:w-4/5 md:w-2/3 w-4/5 mx-auto text-white"
                     >
-                        Sistema de Inventario RRFF -
-                        <strong>Hospital San Juan de Dios</strong>.
+                        SIAB -
+                        <strong>Hospital San Luis de Buin(HSLB)</strong>.
                     </p>
                 </vx-card>
             </div>
@@ -59,7 +59,7 @@ export default {
                     icon: "UsersIcon",
                     title: "Inicio",
                     desc:
-                        "Encontrarás el acceso a la pantalla de Inicio y Al menu de Ingreso del Inventario, Stock disponible de RRFF y Asignacion de Material a las OT En el Menu de la izquierda"
+                        "Test"
                 }
             ]
         };

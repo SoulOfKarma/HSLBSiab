@@ -17,14 +17,38 @@ export default [
 
     {
         url: null,
-        name: "Material",
-        slug: "entregadematerial",
+        name: "Mantenedor",
+        slug: "mantenedor",
         icon: "HomeIcon",
         submenu: [
             {
-                url: null,
-                name: "Ingreso Material",
-                slug: "IngresoMaterial",
+                url: "/Proveedores",
+                name: "Proveedores",
+                slug: "Proveedores",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Laboratorio",
+                name: "Laboratorio",
+                slug: "Laboratorio",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Anulacion",
+                name: "Anulacion",
+                slug: "Anulacion",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Usuario",
+                name: "Usuario",
+                slug: "Usuario",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/UsuariosAuthRetiro",
+                name: "Autorizado Retiro",
+                slug: "UsuariosAuthRetiro",
                 icon: "HomeIcon"
             }
         ]

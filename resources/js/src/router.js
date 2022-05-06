@@ -39,7 +39,34 @@ const router = new Router({
                     name: "home",
                     component: () => import("./views/Home.vue")
                 },
-                
+                {
+                    path: "/Proveedores",
+                    name: "Proveedores",
+                    component: () =>
+                        import("./views/Mantenedor/Proveedores.vue")
+                },
+                {
+                    path: "/Laboratorio",
+                    name: "Laboratorio",
+                    component: () =>
+                        import("./views/Mantenedor/Laboratorio.vue")
+                },
+                {
+                    path: "/Anulacion",
+                    name: "Anulacion",
+                    component: () => import("./views/Mantenedor/Anulacion.vue")
+                },
+                {
+                    path: "/Usuario",
+                    name: "Usuario",
+                    component: () => import("./views/Mantenedor/Usuario.vue")
+                },
+                {
+                    path: "/UsuariosAuthRetiro",
+                    name: "UsuariosAuthRetiro",
+                    component: () =>
+                        import("./views/Mantenedor/UsuariosAuthRetiro.vue")
+                }
             ]
         },
         // =============================================================================
