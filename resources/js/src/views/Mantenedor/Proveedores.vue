@@ -316,7 +316,6 @@ export default {
             },
             //Datos Campos
             popUpProveedor: false,
-            popUpProveedorElim: false,
             popUpProveedorMod: false,
             rutProveedor: "",
             razonSocial: "",
@@ -588,16 +587,12 @@ export default {
                 const dat = data;
 
                 axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/ModificarProveedor",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
+                    .post(this.localVal + "/api/Mantenedor/PutProveedor", dat, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
                         }
-                    )
+                    })
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {

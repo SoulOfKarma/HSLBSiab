@@ -4,82 +4,41 @@ namespace App\Http\Controllers;
 
 use App\motivo_anulaciones;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\Log;
 
 class MotivoAnulacionesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function PostAnulacion(Request $request){
+        try {
+            motivo_anulaciones::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function GetAnulacion(){
+        try {
+            $get = motivo_anulaciones::all();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function PutAnulacion(Request $request)
     {
-        //
-    }
+        try {
+            motivo_anulaciones::where('id',$request->id)
+            ->update(['CODMOT' => $request->CODMOT,'NOMMOT' => $request->NOMMOT]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\motivo_anulaciones  $motivo_anulaciones
-     * @return \Illuminate\Http\Response
-     */
-    public function show(motivo_anulaciones $motivo_anulaciones)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\motivo_anulaciones  $motivo_anulaciones
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(motivo_anulaciones $motivo_anulaciones)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\motivo_anulaciones  $motivo_anulaciones
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, motivo_anulaciones $motivo_anulaciones)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\motivo_anulaciones  $motivo_anulaciones
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(motivo_anulaciones $motivo_anulaciones)
-    {
-        //
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 }

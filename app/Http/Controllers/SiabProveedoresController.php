@@ -29,10 +29,10 @@ class SiabProveedoresController extends Controller
         }
     }
 
-    public function ModificarProveedor(Request $request)
+    public function PutProveedor(Request $request)
     {
         try {
-            CalendarioAscensores::where('id',$request->id)
+            siab_proveedores::where('id',$request->id)
             ->update(['RUTPROV' => $request->RUTPROV,'NOMRAZSOC' => $request->NOMRAZSOC,'DIRPROV' => $request->DIRPROV,
             'TELPROV' => $request->TELPROV,'CELPROV' => $request->CELPROV,'EMAILPROV' => $request->EMAILPROV,'NOMVENPROV' => $request->NOMVENPROV]);
 

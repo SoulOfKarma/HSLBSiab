@@ -7,79 +7,36 @@ use Illuminate\Http\Request;
 
 class AutorizadoretirosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function PostAuthUsuario(Request $request){
+        try {
+            autorizadoretiros::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function GetAuthUsuario(){
+        try {
+            $get = autorizadoretiros::all();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function PutAuthUsuario(Request $request)
     {
-        //
-    }
+        try {
+            autorizadoretiros::where('id',$request->id)
+            ->update(['CODMOT' => $request->CODMOT,'NOMMOT' => $request->NOMMOT]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\autorizadoretiros  $autorizadoretiros
-     * @return \Illuminate\Http\Response
-     */
-    public function show(autorizadoretiros $autorizadoretiros)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\autorizadoretiros  $autorizadoretiros
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(autorizadoretiros $autorizadoretiros)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\autorizadoretiros  $autorizadoretiros
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, autorizadoretiros $autorizadoretiros)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\autorizadoretiros  $autorizadoretiros
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(autorizadoretiros $autorizadoretiros)
-    {
-        //
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 }

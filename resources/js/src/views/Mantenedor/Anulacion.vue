@@ -25,6 +25,19 @@
                             >
                             </span>
                             <span v-else-if="props.column.field === 'action'">
+                                <plus-circle-icon
+                                    content="Modificar Anulacion"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        popModificarAnulacion(
+                                            props.row.id,
+                                            props.row.CODMOT,
+                                            props.row.NOMMOT
+                                        )
+                                    "
+                                ></plus-circle-icon>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -38,6 +51,56 @@
                 classContent="Anulacion"
                 title="Agregar Anulacion"
                 :active.sync="popUpAnulacion"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2">
+                                <h6>Codigo Anulacion</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codAnulacion"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Motivo Anulacion</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="motAnulacion"
+                                />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="vx-row w-full">
+                            <div class="vx-col w-1/2">
+                                <vs-button
+                                    @click="popUpAnulacion = false"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <vs-button
+                                    @click="AgregarAnulacion"
+                                    color="success"
+                                    type="filled"
+                                    class="w-full"
+                                    >Agregar Anulacion</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
+            <vs-popup
+                classContent="Anulacion"
+                title="Modificar Anulacion"
+                :active.sync="popUpAnulacionMod"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
@@ -59,21 +122,23 @@
                                 />
                             </div>
                         </div>
-                        <div class="vx-row">
-                            <div class="vx-col w-full md-5">
+                        <div class="vx-row w-full md-5">
+                            <div class="vx-col w-1/2 ">
                                 <vs-button
-                                    @click="popUpAnulacion = false"
+                                    @click="popUpAnulacionMod = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full m-1"
                                     >Volver</vs-button
                                 >
+                            </div>
+                            <div class="vx-col w-1/2 ">
                                 <vs-button
-                                    @click="AgregarAnulacion"
-                                    color="danger"
+                                    @click="ModificarAnulacion"
+                                    color="warning"
                                     type="filled"
                                     class="w-full m-1"
-                                    >Agregar Anulacion</vs-button
+                                    >Modificar Anulacion</vs-button
                                 >
                             </div>
                         </div>
@@ -93,12 +158,18 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
+import { PlusCircleIcon } from "vue-feather-icons";
+import Vue from "vue";
+import VueTippy, { TippyComponent } from "vue-tippy";
+Vue.use(VueTippy);
+Vue.component("tippy", TippyComponent);
 
 export default {
     components: {
         VueGoodTable,
         "v-select": vSelect,
-        quillEditor
+        quillEditor,
+        PlusCircleIcon
     },
     data() {
         return {
@@ -121,20 +192,22 @@ export default {
             },
             //Datos Campos
             popUpAnulacion: false,
+            popUpAnulacionMod: false,
             codAnulacion: "",
             motAnulacion: "",
+            idMod: 0,
             //Template Columnas Listado Proveedor
             columns: [
                 {
-                    label: "Name",
-                    field: "name",
+                    label: "Codigo Anulacion",
+                    field: "CODMOT",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Age",
-                    field: "age",
+                    label: "Motivo Anulacion",
+                    field: "NOMMOT",
                     filterOptions: {
                         enabled: true
                     }
@@ -145,38 +218,17 @@ export default {
                 }
             ],
             //Datos Listado Proveedor
-            rows: [
-                { id: 1, name: "John", age: 20 },
-                {
-                    id: 2,
-                    name: "Jane",
-                    age: 24
-                },
-                {
-                    id: 3,
-                    name: "Susan",
-                    age: 16
-                },
-                {
-                    id: 4,
-                    name: "Chris",
-                    age: 55
-                },
-                {
-                    id: 5,
-                    name: "Dan",
-                    age: 40
-                },
-                {
-                    id: 6,
-                    name: "John",
-                    age: 20
-                }
-            ]
+            rows: []
         };
     },
     methods: {
         //Metodos Reusables
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 1000);
+        },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
@@ -190,6 +242,15 @@ export default {
                 return true;
             }
         },
+        limpiarCampos() {
+            try {
+                this.codAnulacion = "";
+                this.motAnulacion = "";
+                this.idMod = 0;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         //PopUp
         popAnulacion() {
             try {
@@ -198,14 +259,143 @@ export default {
                 console.log(error);
             }
         },
-        //Metodos para Agregar Datos
+        popModificarAnulacion(id, CodAnu, ModAnu) {
+            try {
+                this.limpiarCampos();
+                this.popUpAnulacionMod = true;
+                this.idMod = id;
+                this.codAnulacion = CodAnu;
+                this.motAnulacion = ModAnu;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Metodos CRUD Anulacion
+        TraerAnulacion() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetAnulacion", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.rows = res.data;
+                        if (this.rows.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de Motivo Anulacion correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         AgregarAnulacion() {
             try {
-                console.log("Mensaje :T");
+                let data = {
+                    CODMOT: this.codAnulacion,
+                    NOMMOT: this.motAnulacion
+                };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.localVal + "/api/Mantenedor/PostAnulacion",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.limpiarCampos();
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Motivo Anulacion Ingresado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpAnulacion = false;
+                            this.TraerAnulacion();
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible registrar el Motivo Anulacion,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ModificarAnulacion() {
+            try {
+                let data = {
+                    id: this.idMod,
+                    CODMOT: this.codAnulacion,
+                    NOMMOT: this.motAnulacion
+                };
+
+                const dat = data;
+
+                axios
+                    .post(this.localVal + "/api/Mantenedor/PutAnulacion", dat, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.limpiarCampos();
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Motivo Anulacion Modificado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpAnulacionMod = false;
+                            this.TraerAnulacion();
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible modificar el Motivo Anulacion,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
         }
+    },
+    beforeMount() {
+        this.TraerAnulacion();
+        this.openLoadingColor();
     }
 };
 </script>

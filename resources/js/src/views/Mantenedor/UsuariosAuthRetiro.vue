@@ -25,6 +25,15 @@
                             >
                             </span>
                             <span v-else-if="props.column.field === 'action'">
+                                <plus-circle-icon
+                                    content="Modificar Usuario Autorizado"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        popModificarAuthUsuarios(props.row.id)
+                                    "
+                                ></plus-circle-icon>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -129,12 +138,18 @@ import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { validate, clean, format } from "rut.js";
+import { PlusCircleIcon } from "vue-feather-icons";
+import Vue from "vue";
+import VueTippy, { TippyComponent } from "vue-tippy";
+Vue.use(VueTippy);
+Vue.component("tippy", TippyComponent);
 
 export default {
     components: {
         VueGoodTable,
         "v-select": vSelect,
-        quillEditor
+        quillEditor,
+        PlusCircleIcon
     },
     data() {
         return {
@@ -157,35 +172,56 @@ export default {
             },
             //Datos Campos
             popUpUsuario: false,
+            popUpUsuarioMod: false,
+            popUpUsuarioElim: false,
             rutUsuario: "",
-            razonSocial: "",
+            nombreUsuario: "",
+            apellidoUsuario: "",
+            idServicio: 0,
+            idEstado: 0,
+            fechaInicio: new Date(),
+            fechaTermino: new Date(),
             val_run: false,
             //Template Columnas Listado Proveedor
             columns: [
                 {
-                    label: "Name",
-                    field: "name",
+                    label: "Run Usuario",
+                    field: "RUN",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Age",
-                    field: "age",
+                    label: "Nombre",
+                    field: "NOMBRES",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Created On",
-                    field: "createdAt",
+                    label: "Apellido",
+                    field: "APELLIDOS",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Percent",
-                    field: "score",
+                    label: "Servicio",
+                    field: "NOMSER",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Inicio",
+                    field: "FECINI",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Estado",
+                    field: "ESTADO",
                     filterOptions: {
                         enabled: true
                     }
@@ -196,48 +232,17 @@ export default {
                 }
             ],
             //Datos Listado Proveedor
-            rows: [
-                { id: 1, name: "John", age: 20, createdAt: "", score: 0.03343 },
-                {
-                    id: 2,
-                    name: "Jane",
-                    age: 24,
-                    createdAt: "2011-10-31",
-                    score: 0.03343
-                },
-                {
-                    id: 3,
-                    name: "Susan",
-                    age: 16,
-                    createdAt: "2011-10-30",
-                    score: 0.03343
-                },
-                {
-                    id: 4,
-                    name: "Chris",
-                    age: 55,
-                    createdAt: "2011-10-11",
-                    score: 0.03343
-                },
-                {
-                    id: 5,
-                    name: "Dan",
-                    age: 40,
-                    createdAt: "2011-10-21",
-                    score: 0.03343
-                },
-                {
-                    id: 6,
-                    name: "John",
-                    age: 20,
-                    createdAt: "2011-10-31",
-                    score: 0.03343
-                }
-            ]
+            rows: []
         };
     },
     methods: {
         //Metodos Reusables
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 1000);
+        },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
@@ -268,14 +273,150 @@ export default {
                 console.log(error);
             }
         },
+        popModificarAuthUsuarios() {
+            try {
+                this.popUpUsuarioMod = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popEliminarAuthUsuarios() {
+            try {
+                this.popUpUsuarioElim = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         //Metodos para Agregar Datos
+        TraerAuthUsuario() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetAuthUsuario", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.rows = res.data;
+                        if (this.rows.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los usuarios autorizados correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         AgregarUsuario() {
             try {
-                console.log("Mensaje :T");
+                let data = {
+                    CODMOT: this.codAnulacion,
+                    NOMMOT: this.motAnulacion
+                };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.localVal + "/api/Mantenedor/PostAuthUsuario",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.limpiarCampos();
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Usuario Autorizado Ingresado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpAnulacion = false;
+                            this.TraerAnulacion();
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible registrar el Motivo Anulacion,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AgregarUsuario() {
+            try {
+                let data = {
+                    id: this.idMod,
+                    CODMOT: this.codAnulacion,
+                    NOMMOT: this.motAnulacion
+                };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.localVal + "/api/Mantenedor/PutAuthUsuario",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.limpiarCampos();
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Usuario Autorizado Modificado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpAnulacion = false;
+                            this.TraerAnulacion();
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible registrar el Motivo Anulacion,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
         }
+    },
+    beforeMount() {
+        this.TraerAuthUsuario();
+        this.openLoadingColor();
     }
 };
 </script>

@@ -25,12 +25,21 @@ Route::post('/auth/login','LoginController@login');
 Route::group(['middleware' => ['jwt.verify']], function() {
     //Gets
     Route::get('/Mantenedor/GetProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@GetProveedor']);
+    Route::get('/Mantenedor/GetLaboratorio', ['middleware' => 'cors', 'uses' => 'SiabLaborsController@GetLaboratorio']);
+    Route::get('/Mantenedor/GetAnulacion', ['middleware' => 'cors', 'uses' => 'MotivoAnulacionesController@GetAnulacion']);
+    Route::get('/Mantenedor/GetAuthUsuario', ['middleware' => 'cors', 'uses' => 'AutorizadoretirosController@GetAnulacion']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
+    Route::post('/Mantenedor/PostLaboratorio', ['middleware' => 'cors', 'uses' => 'SiabLaborsController@PostLaboratorio']);
+    Route::post('/Mantenedor/PostAnulacion', ['middleware' => 'cors', 'uses' => 'MotivoAnulacionesController@PostAnulacion']);
+    Route::post('/Mantenedor/PostAuthUsuario', ['middleware' => 'cors', 'uses' => 'AutorizadoretirosController@PostAuthUsuario']);
 
     //Post Como Put
-    Route::post('/Mantenedor/ModificarProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@ModificarProveedor']);
+    Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);
+    Route::post('/Mantenedor/PutLaboratorio', ['middleware' => 'cors', 'uses' => 'SiabLaborsController@PutLaboratorio']);
+    Route::post('/Mantenedor/PutAnulacion', ['middleware' => 'cors', 'uses' => 'MotivoAnulacionesController@PutAnulacion']);
+    Route::post('/Mantenedor/PutAuthUsuario', ['middleware' => 'cors', 'uses' => 'AutorizadoretirosController@PutAnulacion']);
 
     
 });
