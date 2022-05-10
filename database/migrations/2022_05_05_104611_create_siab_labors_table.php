@@ -13,8 +13,10 @@ class CreateSiabLaborsTable extends Migration
      */
     public function up()
     {
-        Schema::create('siab_labors', function (Blueprint $table) {
+        Schema::create('siab_labor', function (Blueprint $table) {
             $table->id();
+            $table->string('LABORATORIO')->nullable();
+            $table->string('RAZONSOCIAL')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateSiabLaborsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('siab_labors');
+        Schema::dropIfExists('siab_labor');
     }
 }

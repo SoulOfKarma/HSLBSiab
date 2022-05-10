@@ -13,8 +13,10 @@ class CreateCentrocostosTable extends Migration
      */
     public function up()
     {
-        Schema::create('centrocostos', function (Blueprint $table) {
+        Schema::create('centrocosto', function (Blueprint $table) {
             $table->id();
+            $table->string('CODCEN')->nullable();
+            $table->string('NOMCEN')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateCentrocostosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('centrocostos');
+        Schema::dropIfExists('centrocosto');
     }
 }

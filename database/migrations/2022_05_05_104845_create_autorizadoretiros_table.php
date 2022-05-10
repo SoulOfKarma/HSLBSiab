@@ -13,8 +13,16 @@ class CreateAutorizadoretirosTable extends Migration
      */
     public function up()
     {
-        Schema::create('autorizadoretiros', function (Blueprint $table) {
+        Schema::create('autorizadoretiro', function (Blueprint $table) {
             $table->id();
+            $table->string('RUN')->nullable();
+            $table->string('NOMBRES')->nullable();
+            $table->string('APELLIDOS')->nullable();
+            $table->date('FECINI')->nullable();
+            $table->date('FECFIN')->nullable();
+            $table->string('ESTADO')->nullable();
+            $table->string('NOMSER')->nullable();
+            $table->string('NOMARCH')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +34,6 @@ class CreateAutorizadoretirosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('autorizadoretiros');
+        Schema::dropIfExists('autorizadoretiro');
     }
 }

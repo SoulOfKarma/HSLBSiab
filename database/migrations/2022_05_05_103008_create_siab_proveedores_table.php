@@ -13,23 +13,28 @@ class CreateSiabProveedoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('siab_proveedores', function (Blueprint $table) {
+        Schema::create('siab_proveedor', function (Blueprint $table) {
             $table->id();
-            $table->string('LLAVEPROVEEDOR');
-            $table->string('CODFORMAPAGO');
-            $table->string('CODCOM');
-            $table->string('CODCIU');
-            $table->string('CODRUB');
-            $table->string('CODSIT');
-            $table->string('CODEST');
-            $table->string('NUMCRE');
-            $table->string('RUTPROV');
-            $table->string('NOMRAZSOC');
-            $table->string('NOMFAN');
-            $table->string('CTACTEPROV');
-            $table->string('DIRPROV');
-            $table->string('TELPROV');
-            $table->string('CELPROV');
+            $table->string('LLAVEPROVEEDOR')->nullable();
+            $table->string('CODFORMAPAGO')->nullable();
+            $table->string('CODCOM')->nullable();
+            $table->string('CODCIU')->nullable();
+            $table->string('CODRUB')->nullable();
+            $table->string('CODSIT')->nullable();
+            $table->string('CODEST')->nullable();
+            $table->string('NUMCRE')->nullable();
+            $table->string('RUTPROV')->nullable();
+            $table->string('NOMRAZSOC')->nullable();
+            $table->string('NOMFAN')->nullable();
+            $table->string('CTACTEPROV')->nullable();
+            $table->string('DIRPROV')->nullable();
+            $table->string('TELPROV')->nullable();
+            $table->string('CELPROV')->nullable();
+            $table->string('FAXPROV')->nullable();
+            $table->string('EMAILPROV')->nullable();
+            $table->string('NOMVENPROV')->nullable();
+            $table->string('CODBAN')->nullable();
+            $table->string('NOMPERPOD')->nullable();
             $table->timestamps();
         });
     }
@@ -41,6 +46,6 @@ class CreateSiabProveedoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('siab_proveedores');
+        Schema::dropIfExists('siab_proveedor');
     }
 }

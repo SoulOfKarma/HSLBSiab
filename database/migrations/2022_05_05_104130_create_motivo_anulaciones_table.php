@@ -13,8 +13,10 @@ class CreateMotivoAnulacionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('motivo_anulaciones', function (Blueprint $table) {
+        Schema::create('motivo_anulacion', function (Blueprint $table) {
             $table->id();
+            $table->string('CODMOT')->nullable();
+            $table->string('NOMMOT')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateMotivoAnulacionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('motivo_anulaciones');
+        Schema::dropIfExists('motivo_anulacion');
     }
 }

@@ -24,13 +24,13 @@ Route::post('/auth/login','LoginController@login');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     //Gets
-    Route::get('/Bodega/GetUbicaciones', ['middleware' => 'cors', 'uses' => 'MaterialUbicacionesController@getAll']);
+    Route::get('/Mantenedor/GetProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@GetProveedor']);
     
     //Posts 
-    Route::post('/Bodega/PostMaterial', ['middleware' => 'cors', 'uses' => 'MaterialIngresadoController@PostMaterial']);
+    Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
 
     //Post Como Put
-    Route::post('/Bodega/PutInventario', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@PutInventario']);
+    Route::post('/Mantenedor/ModificarProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@ModificarProveedor']);
 
     
 });

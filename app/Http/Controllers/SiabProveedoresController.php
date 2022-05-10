@@ -4,82 +4,43 @@ namespace App\Http\Controllers;
 
 use App\siab_proveedores;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\Log;
 
 class SiabProveedoresController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function PostProveedor(Request $request){
+        try {
+            siab_proveedores::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function GetProveedor(){
+        try {
+            $get = siab_proveedores::all();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function ModificarProveedor(Request $request)
     {
-        //
+        try {
+            CalendarioAscensores::where('id',$request->id)
+            ->update(['RUTPROV' => $request->RUTPROV,'NOMRAZSOC' => $request->NOMRAZSOC,'DIRPROV' => $request->DIRPROV,
+            'TELPROV' => $request->TELPROV,'CELPROV' => $request->CELPROV,'EMAILPROV' => $request->EMAILPROV,'NOMVENPROV' => $request->NOMVENPROV]);
+
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\siab_proveedores  $siab_proveedores
-     * @return \Illuminate\Http\Response
-     */
-    public function show(siab_proveedores $siab_proveedores)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\siab_proveedores  $siab_proveedores
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(siab_proveedores $siab_proveedores)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\siab_proveedores  $siab_proveedores
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, siab_proveedores $siab_proveedores)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\siab_proveedores  $siab_proveedores
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(siab_proveedores $siab_proveedores)
-    {
-        //
-    }
 }

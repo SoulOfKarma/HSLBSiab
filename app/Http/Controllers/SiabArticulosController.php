@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\usuarios;
+use App\siab_articulos;
 use Illuminate\Http\Request;
 
-class UsuariosController extends Controller
+class SiabArticulosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class UsuariosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\usuarios  $usuarios
+     * @param  \App\siab_articulos  $siab_articulos
      * @return \Illuminate\Http\Response
      */
-    public function show(usuarios $usuarios)
+    public function show(siab_articulos $siab_articulos)
     {
         //
     }
@@ -52,10 +52,10 @@ class UsuariosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\usuarios  $usuarios
+     * @param  \App\siab_articulos  $siab_articulos
      * @return \Illuminate\Http\Response
      */
-    public function edit(usuarios $usuarios)
+    public function edit(siab_articulos $siab_articulos)
     {
         //
     }
@@ -64,10 +64,10 @@ class UsuariosController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\usuarios  $usuarios
+     * @param  \App\siab_articulos  $siab_articulos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, usuarios $usuarios)
+    public function update(Request $request, siab_articulos $siab_articulos)
     {
         //
     }
@@ -75,10 +75,10 @@ class UsuariosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\usuarios  $usuarios
+     * @param  \App\siab_articulos  $siab_articulos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(usuarios $usuarios)
+    public function destroy(siab_articulos $siab_articulos)
     {
         //
     }

@@ -29,15 +29,16 @@
                     content-color="#ffffff"
                 >
                     <h5 class="text-white">
-                        Bienvenido al sistema de Bodega de RRFF!
+                        Servicio de Salud Metropolitano Sur Hospital San Luis -
+                        Abastecimiento
                     </h5>
                 </vx-card>
                 <br />
-                <vs-card class="cardx">
-                    <div slot="header">
+                <vs-card class="cardx" :style="'border: 1px solid black;'">
+                    <div slot="header" :style="'border: 1px solid black;'">
                         <h3>
                             <img
-                                src="@assets/images/pages/login.png"
+                                src="@assets/images/pages/siab.png"
                                 alt="login"
                                 class="mx-auto"
                             />
