@@ -543,6 +543,7 @@ export default {
                                 position: "top-right"
                             });
                             this.popUpProveedor = false;
+                            this.TraerProveedores();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -609,6 +610,7 @@ export default {
                                 position: "top-right"
                             });
                             this.popUpProveedor = false;
+                            this.TraerProveedores();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
