@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\autorizadoretiros;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\Log;
 
 class AutorizadoretirosController extends Controller
 {
     public function PostAuthUsuario(Request $request){
         try {
-            autorizadoretiros::create($request->all());
-            return true;
+            $id = autorizadoretiros::create($request->all())->id;
+            return $id;
         } catch (\Throwable $th) {
             log::info($th);
             return false;
@@ -31,7 +33,8 @@ class AutorizadoretirosController extends Controller
     {
         try {
             autorizadoretiros::where('id',$request->id)
-            ->update(['CODMOT' => $request->CODMOT,'NOMMOT' => $request->NOMMOT]);
+            ->update(['RUN' => $request->RUN,'NOMBRES' => $request->NOMBRES,'APELLIDOS' => $request->APELLIDOS,'FECINI' => $request->FECINI,
+            'FECFIN' => $request->FECFIN,'idEstado' => $request->idEstado,'idServicio' => $request->idServicio]);
 
             return true;
         } catch (\Throwable $th) {

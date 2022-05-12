@@ -2,7 +2,10 @@
     <div>
         <vx-card title="Usuarios">
             <div>
-                <vs-button color="primary" type="filled" @click="popUsuarios"
+                <vs-button
+                    color="primary"
+                    type="filled"
+                    @click="popAuthUsuarios"
                     >Agregar Nuevo Usuario</vs-button
                 >
             </div>
@@ -51,7 +54,7 @@
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
                         <div class="vx-row ">
-                            <div class="vx-col w-1/2 mt-5">
+                            <div class="vx-col w-full mt-5">
                                 <h6>Rut Usuario</h6>
                                 <br />
                                 <vs-input
@@ -65,46 +68,88 @@
                                     v-if="val_run"
                                     >Run incorrecto</span
                                 >
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Razon Social</h6>
-                                <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="razonSocial"
-                                />
                             </div>
                         </div>
                         <div class="vx-row">
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Rut Usuario</h6>
+                                <h6>Nombre</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
                                     placeholder="Placeholder"
-                                    v-model="rutUsuario"
-                                    v-on:blur="formatear_run"
+                                    v-model="nombreUsuario"
                                 />
-                                <span
-                                    style="font-size: 10px; color: red; margin-left: 10px;"
-                                    v-if="val_run"
-                                    >Run incorrecto</span
-                                >
                             </div>
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Telefono</h6>
+                                <h6>Apellido</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
                                     placeholder="Placeholder"
-                                    v-model="razonSocial"
+                                    v-model="apellidoUsuario"
                                 />
                             </div>
-                        </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Servicio</h6>
+                                <br />
+                                <v-select
+                                    taggable
+                                    v-model="seleccionServicio"
+                                    placeholder="Servicio"
+                                    class="w-full select-large"
+                                    label="descripcionServicio"
+                                    :options="listadoServicios"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Estado</h6>
+                                <br />
+                                <v-select
+                                    taggable
+                                    v-model="seleccionEstado"
+                                    placeholder="Estado"
+                                    class="w-full select-large"
+                                    label="descripcionEstado"
+                                    :options="listadoAuthEstados"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>Fecha Inicio</h6>
+                                <br />
 
-                        <div class="vx-row">
-                            <div class="vx-col w-full md-5">
+                                <flat-pickr
+                                    :config="configFromdateTimePicker"
+                                    v-model="fechaInicio"
+                                    placeholder="Fecha Inicio"
+                                    @on-change="onFromChange"
+                                    class="w-full "
+                                />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="vx-col md:w-1/1 w-full mb-base">
+                            <vx-card title="Adjuntar Documento">
+                                <div class="vx-row mb-12">
+                                    <div class="vx-col w-1/8 mt-5">
+                                        <vs-input
+                                            type="file"
+                                            id="archivo"
+                                            @change="getImage"
+                                            class="form-control w-full"
+                                        />
+                                    </div>
+                                    <div class="vx-col w-1/2 mt-5">
+                                        <h5 class="w-full ">
+                                            <p class="pt-4 text-justify">
+                                                {{ nombrearchivo }}
+                                            </p>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </vx-card>
+                        </div>
+                        <div class="vx-row w-full md-5">
+                            <div class="vx-col w-1/2 ">
                                 <vs-button
                                     @click="popUpUsuario = false"
                                     color="primary"
@@ -112,8 +157,10 @@
                                     class="w-full m-1"
                                     >Volver</vs-button
                                 >
+                            </div>
+                            <div class="vx-col w-1/2 ">
                                 <vs-button
-                                    @click="AgregarUsuario"
+                                    @click="AgregarAuthUsuario"
                                     color="danger"
                                     type="filled"
                                     class="w-full m-1"
@@ -129,6 +176,9 @@
     </div>
 </template>
 <script>
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";
 import "quill/dist/quill.core.css";
@@ -149,7 +199,8 @@ export default {
         VueGoodTable,
         "v-select": vSelect,
         quillEditor,
-        PlusCircleIcon
+        PlusCircleIcon,
+        flatPickr
     },
     data() {
         return {
@@ -177,11 +228,131 @@ export default {
             rutUsuario: "",
             nombreUsuario: "",
             apellidoUsuario: "",
+            image: "",
+            nombrearchivo: "",
             idServicio: 0,
             idEstado: 0,
-            fechaInicio: new Date(),
-            fechaTermino: new Date(),
+            fechaInicio: null,
             val_run: false,
+            seleccionServicio: {
+                id: 0,
+                descripcionServicio: ""
+            },
+            seleccionEstado: {
+                id: 0,
+                descripcionEstado: ""
+            },
+            //Datos Fechas
+            configFromdateTimePicker: {
+                minDate: null,
+                maxDate: null,
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                        longhand: [
+                            "Domingo",
+                            "Lunes",
+                            "Martes",
+                            "Miércoles",
+                            "Jueves",
+                            "Viernes",
+                            "Sábado"
+                        ]
+                    },
+                    months: {
+                        shorthand: [
+                            "Ene",
+                            "Feb",
+                            "Mar",
+                            "Abr",
+                            "May",
+                            "Jun",
+                            "Jul",
+                            "Ago",
+                            "Sep",
+                            "Оct",
+                            "Nov",
+                            "Dic"
+                        ],
+                        longhand: [
+                            "Enero",
+                            "Febrero",
+                            "Мarzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ]
+                    }
+                }
+            },
+            configTodateTimePicker: {
+                minDate: null,
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                        longhand: [
+                            "Domingo",
+                            "Lunes",
+                            "Martes",
+                            "Miércoles",
+                            "Jueves",
+                            "Viernes",
+                            "Sábado"
+                        ]
+                    },
+                    months: {
+                        shorthand: [
+                            "Ene",
+                            "Feb",
+                            "Mar",
+                            "Abr",
+                            "May",
+                            "Jun",
+                            "Jul",
+                            "Ago",
+                            "Sep",
+                            "Оct",
+                            "Nov",
+                            "Dic"
+                        ],
+                        longhand: [
+                            "Enero",
+                            "Febrero",
+                            "Мarzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ]
+                    }
+                }
+            },
+            configdateTimePicker: {
+                enableTime: true,
+                //enableSeconds: true,
+                noCalendar: true,
+                time_24hr: true,
+                dateFormat: "H:i"
+            },
+            configdateToTimePicker: {
+                enableTime: true,
+                noCalendar: true,
+                time_24hr: true,
+                dateFormat: "H:i"
+            },
             //Template Columnas Listado Proveedor
             columns: [
                 {
@@ -231,12 +402,17 @@ export default {
                     field: "action"
                 }
             ],
-            //Datos Listado Proveedor
+            //Datos Listados
+            listadoServicios: [],
+            listadoAuthEstados: [],
             rows: []
         };
     },
     methods: {
         //Metodos Reusables
+        onFromChange(selectedDates, dateStr, instance) {
+            this.$set(this.configTodateTimePicker, "minDate", dateStr);
+        },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
             setTimeout(() => {
@@ -265,16 +441,38 @@ export default {
                 this.val_run = !validate(this.rutUsuario);
             }
         },
-        //PopUp
-        popUsuarios() {
+        limpiarCampos() {
             try {
+                this.rutUsuario = "";
+                this.nombreUsuario = "";
+                this.apellidoUsuario = "";
+                this.fechaInicio = null;
+                this.seleccionEstado = { id: 0, descripcionEstado: "" };
+                this.seleccionServicio = { id: 0, descripcionServicio: "" };
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //PopUp
+        popAuthUsuarios() {
+            try {
+                this.limpiarCampos();
                 this.popUpUsuario = true;
             } catch (error) {
                 console.log(error);
             }
         },
-        popModificarAuthUsuarios() {
+        popModificarAuthUsuarios(id, rut, nom, ape, fechaI, idEst, idSer) {
             try {
+                this.limpiarCampos();
+                this.idMod = id;
+                this.rutUsuario = rut;
+                this.nombreUsuario = nom;
+                this.apellidoUsuario = ape;
+                this.fechaInicio = fechaI;
+                let idEstado = idEst;
+                let idServicio = idSer;
+
                 this.popUpUsuarioMod = true;
             } catch (error) {
                 console.log(error);
@@ -287,7 +485,59 @@ export default {
                 console.log(error);
             }
         },
-        //Metodos para Agregar Datos
+        //Metodos CRUD
+        TraerServicio() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoServicios = res.data;
+                        if (this.listadoServicios.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerEstado() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetAuthEstado", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoAuthEstados = res.data;
+                        if (this.listadoAuthEstados.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerAuthUsuario() {
             try {
                 axios
@@ -314,11 +564,16 @@ export default {
                 console.log(error);
             }
         },
-        AgregarUsuario() {
+        AgregarAuthUsuario() {
             try {
                 let data = {
-                    CODMOT: this.codAnulacion,
-                    NOMMOT: this.motAnulacion
+                    RUN: this.rutUsuario,
+                    NOMBRES: this.nombreUsuario,
+                    APELLIDOS: this.apellidoUsuario,
+                    FECINI: this.fechaInicio,
+                    FECFIN: null,
+                    idEstado: this.seleccionEstado.id,
+                    idServicio: this.seleccionServicio.id
                 };
 
                 const dat = data;
@@ -335,8 +590,8 @@ export default {
                         }
                     )
                     .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
+                        this.idMod = res.data;
+                        if (this.idMod > 0) {
                             this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
@@ -346,14 +601,18 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpAnulacion = false;
-                            this.TraerAnulacion();
+                            this.popUpUsuario = false;
+                            if ((this.image = !"")) {
+                                this.uploadImage();
+                            } else {
+                                this.TraerAuthUsuario();
+                            }
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible registrar el Motivo Anulacion,intentelo nuevamente",
+                                    "No fue posible registrar el usuario,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -363,12 +622,17 @@ export default {
                 console.log(error);
             }
         },
-        AgregarUsuario() {
+        ModificarAuthUsuario() {
             try {
                 let data = {
                     id: this.idMod,
-                    CODMOT: this.codAnulacion,
-                    NOMMOT: this.motAnulacion
+                    RUN: this.rutUsuario,
+                    NOMBRES: this.nombreUsuario,
+                    APELLIDOS: this.apellidoUsuario,
+                    FECINI: this.fechaInicio,
+                    FECFIN: null,
+                    idEstado: this.seleccionEstado.id,
+                    idServicio: this.seleccionServicio.id
                 };
 
                 const dat = data;
@@ -396,14 +660,15 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpAnulacion = false;
-                            this.TraerAnulacion();
+                            this.popUpUsuarioMod = false;
+
+                            this.TraerAuthUsuario();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible registrar el Motivo Anulacion,intentelo nuevamente",
+                                    "No fue posible registrar el usuario,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -412,9 +677,70 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        getImage(event) {
+            //Asignamos la imagen a  nuestra data
+            this.image = event.target.files[0];
+            this.nombrearchivo = this.image.name;
+        },
+        uploadImage() {
+            //Creamos el formData
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.image);
+            data.append("id", this.idMod);
+            data.append("nombreDocOriginal", this.nombrearchivo);
+
+            console.log(data);
+            axios
+                .post(
+                    this.localVal + "/api/Mantenedor/PostDocumentoAuthUsuario",
+                    data,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(response => {
+                    let resp = response.data;
+                    if (resp == true) {
+                        this.$vs.notify({
+                            title: "Documento Guardado ",
+                            text:
+                                "Podra Visualizarlo en el listado los usuarios autorizados ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.popUpUsuario = false;
+                        this.TraerAuthUsuario();
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
+                });
         }
     },
     beforeMount() {
+        this.TraerServicio();
+        this.TraerEstado();
         this.TraerAuthUsuario();
         this.openLoadingColor();
     }

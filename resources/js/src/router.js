@@ -66,6 +66,16 @@ const router = new Router({
                     name: "UsuariosAuthRetiro",
                     component: () =>
                         import("./views/Mantenedor/UsuariosAuthRetiro.vue")
+                },
+                {
+                    path: "/Servicios",
+                    name: "Servicios",
+                    component: () => import("./views/Mantenedor/Servicios.vue")
+                },
+                {
+                    path: "/AuthEstado",
+                    name: "Auth. Estado",
+                    component: () => import("./views/Mantenedor/AuthEstado.vue")
                 }
             ]
         },

@@ -8,7 +8,7 @@ class autorizadoretiros extends Model
 {
     protected $fillable = [
         'RUN', 'NOMBRES','APELLIDOS', 'FECINI', 'FECFIN', 'ESTADO',
-        'NOMSER','NOMARCH',
+        'idEstado','idServicio',
        
     ];
 

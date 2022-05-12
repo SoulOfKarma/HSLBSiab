@@ -20,9 +20,8 @@ class CreateAutorizadoretirosTable extends Migration
             $table->string('APELLIDOS')->nullable();
             $table->date('FECINI')->nullable();
             $table->date('FECFIN')->nullable();
-            $table->string('ESTADO')->nullable();
-            $table->string('NOMSER')->nullable();
-            $table->string('NOMARCH')->nullable();
+            $table->bigInteger('idEstado')->nullable();
+            $table->bigInteger('idServicio')->nullable();
             $table->timestamps();
         });
     }

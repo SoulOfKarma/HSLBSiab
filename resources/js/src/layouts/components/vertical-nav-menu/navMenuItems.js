@@ -50,6 +50,18 @@ export default [
                 name: "Autorizado Retiro",
                 slug: "UsuariosAuthRetiro",
                 icon: "HomeIcon"
+            },
+            {
+                url: "/Servicios",
+                name: "Servicios",
+                slug: "Servicios",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/AuthEstado",
+                name: "Auth. Estado",
+                slug: "AuthEstado",
+                icon: "HomeIcon"
             }
         ]
     }
