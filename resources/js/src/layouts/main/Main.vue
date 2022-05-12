@@ -291,19 +291,9 @@ export default {
         },
         toggleHideScrollToTop(val) {
             this.hideScrollToTop = val;
-        },
-        cargarTokenExterno() {
-            let objeto = { run: "18499714-2", password: "1849" };
-            axios
-                .post(this.externalVal + "/api/auth/login", objeto)
-                .then(res => {
-                    sessionStorage.setItem("token_externo", res.data.token);
-                })
-                .catch(error => console.log(error));
         }
     },
     created() {
-        this.cargarTokenExterno();
         var aux = sessionStorage.getItem("run");
 
         if (aux == null) {
