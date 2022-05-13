@@ -31,6 +31,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetServicios', ['middleware' => 'cors', 'uses' => 'ServiciosController@GetServicios']);
     Route::get('/Mantenedor/GetAuthUsuario', ['middleware' => 'cors', 'uses' => 'AutorizadoretirosController@GetAuthUsuario']);
     Route::get('/Mantenedor/GetAuthEstado', ['middleware' => 'cors', 'uses' => 'AuthEstadosController@GetAuthEstado']);
+    Route::get('/Mantenedor/GetLabUsuario', ['middleware' => 'cors', 'uses' => 'LabUsuariosController@GetLabUsuario']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
@@ -40,6 +41,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostServicios', ['middleware' => 'cors', 'uses' => 'ServiciosController@PostServicios']);
     Route::post('/Mantenedor/PostAuthUsuario', ['middleware' => 'cors', 'uses' => 'AutorizadoretirosController@PostAuthUsuario']);
     Route::post('/Mantenedor/PostAuthEstado', ['middleware' => 'cors', 'uses' => 'AuthEstadosController@PostAuthEstado']);
+    Route::post('/Mantenedor/PostLabUsuario', ['middleware' => 'cors', 'uses' => 'LabUsuariosController@PostLabUsuario']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);
@@ -49,9 +51,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PutServicio', ['middleware' => 'cors', 'uses' => 'ServiciosController@PutServicio']);
     Route::post('/Mantenedor/PutAuthUsuario', ['middleware' => 'cors', 'uses' => 'AutorizadoretirosController@PutAuthUsuario']);
     Route::post('/Mantenedor/PutAuthEstado', ['middleware' => 'cors', 'uses' => 'AuthEstadosController@PutAuthEstado']);
+    Route::post('/Mantenedor/PutLabUsuario', ['middleware' => 'cors', 'uses' => 'LabUsuariosController@PutLabUsuario']);
 
     //Post Documentos
     Route::post('/Mantenedor/PostDocumentoAuthUsuario', ['middleware' => 'cors', 'uses' => 'DocumentacionAuthUsuariosController@PostDocumentoAuthUsuario']);
+    Route::post('/Mantenedor/PutDocumentoAuthUsuario', ['middleware' => 'cors', 'uses' => 'DocumentacionAuthUsuariosController@PutDocumentoAuthUsuario']);
 
     
 });

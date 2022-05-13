@@ -21,7 +21,15 @@ class AutorizadoretirosController extends Controller
 
     public function GetAuthUsuario(){
         try {
-            $get = autorizadoretiros::all();
+            $get = autorizadoretiros::select('autorizadoretiro.RUN','autorizadoretiro.NOMBRES','autorizadoretiro.APELLIDOS',
+            'servicios.descripcionServicio','auth_estados.descripcionEstado',
+            DB::raw("DATE_FORMAT(autorizadoretiro.FECINI,'%d-%m-%Y') as FECINI"),
+            'documentacion_auth_usuarios.nombreDocAutogenerado','autorizadoretiro.idServicio','autorizadoretiro.idEstado'
+            )
+           ->join('servicios','autorizadoretiro.idServicio','=','servicios.id')
+           ->join('auth_estados','autorizadoretiro.idEstado','=','auth_estados.id')
+           ->join('documentacion_auth_usuarios','autorizadoretiro.id','=','documentacion_auth_usuarios.idAuthUsuario')
+           ->get();
             return $get;
         } catch (\Throwable $th) {
             log::info($th);

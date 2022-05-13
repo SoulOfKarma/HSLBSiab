@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAutorizadoretirosTable extends Migration
+class CreateLabUsuariosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateAutorizadoretirosTable extends Migration
      */
     public function up()
     {
-        Schema::create('autorizadoretiro', function (Blueprint $table) {
+        Schema::create('lab_usuarios', function (Blueprint $table) {
             $table->id();
             $table->string('RUN')->unique();
-            $table->string('NOMBRES');
-            $table->string('APELLIDOS');
-            $table->date('FECINI')->nullable();
-            $table->date('FECFIN')->nullable();
-            $table->bigInteger('idEstado')->nullable();
-            $table->bigInteger('idServicio')->nullable();
+            $table->string('nombreUsuLab');
+            $table->string('apellidoUsuLab');
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ class CreateAutorizadoretirosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('autorizadoretiro');
+        Schema::dropIfExists('lab_usuarios');
     }
 }

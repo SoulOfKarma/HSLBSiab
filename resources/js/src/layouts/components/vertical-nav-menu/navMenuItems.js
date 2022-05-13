@@ -46,6 +46,12 @@ export default [
                 icon: "HomeIcon"
             },
             {
+                url: "/UsuarioLaboratorio",
+                name: "Usuario Laboratorio",
+                slug: "UsuarioLaboratorio",
+                icon: "HomeIcon"
+            },
+            {
                 url: "/UsuariosAuthRetiro",
                 name: "Autorizado Retiro",
                 slug: "UsuariosAuthRetiro",
@@ -61,6 +67,18 @@ export default [
                 url: "/AuthEstado",
                 name: "Auth. Estado",
                 slug: "AuthEstado",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/ArticuloMedicamento",
+                name: "Articulo Medicamento",
+                slug: "ArticuloMedicamento",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/ArticuloInsumoEconomato",
+                name: "Articulo Insumo Economato",
+                slug: "ArticuloInsumoEconomato",
                 icon: "HomeIcon"
             }
         ]

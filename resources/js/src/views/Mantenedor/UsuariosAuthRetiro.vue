@@ -34,7 +34,26 @@
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        popModificarAuthUsuarios(props.row.id)
+                                        popModificarAuthUsuarios(
+                                            props.row.id,
+                                            props.row.RUN,
+                                            props.row.NOMBRES,
+                                            props.row.APELLIDOS,
+                                            props.row.FECINI,
+                                            props.row.idEstado,
+                                            props.row.idServicio
+                                        )
+                                    "
+                                ></plus-circle-icon>
+                                <plus-circle-icon
+                                    content="Abrir Documento"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirDocumento(
+                                            props.row.nombreDocAutogenerado
+                                        )
                                     "
                                 ></plus-circle-icon>
                             </span>
@@ -61,7 +80,7 @@
                                     class="inputx w-full mb-6 "
                                     placeholder="Placeholder"
                                     v-model="rutUsuario"
-                                    v-on:blur="formatear_run"
+                                    formatear_run
                                 />
                                 <span
                                     style="font-size: 10px; color: red; margin-left: 10px;"
@@ -172,6 +191,132 @@
                     <div class="vx-row"></div>
                 </div>
             </vs-popup>
+            <vs-popup
+                classContent="Usuarios"
+                title="Modificar Usuario"
+                :active.sync="popUpUsuarioMod"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row ">
+                            <div class="vx-col w-full mt-5">
+                                <h6>Rut Usuario</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full mb-6 "
+                                    placeholder="Placeholder"
+                                    v-model="rutUsuario"
+                                    formatear_run
+                                />
+                                <span
+                                    style="font-size: 10px; color: red; margin-left: 10px;"
+                                    v-if="val_run"
+                                    >Run incorrecto</span
+                                >
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Nombre</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full mb-6 "
+                                    placeholder="Placeholder"
+                                    v-model="nombreUsuario"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Apellido</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full mb-6 "
+                                    placeholder="Placeholder"
+                                    v-model="apellidoUsuario"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Servicio</h6>
+                                <br />
+                                <v-select
+                                    taggable
+                                    v-model="seleccionServicio"
+                                    placeholder="Servicio"
+                                    class="w-full select-large"
+                                    label="descripcionServicio"
+                                    :options="listadoServicios"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Estado</h6>
+                                <br />
+                                <v-select
+                                    taggable
+                                    v-model="seleccionEstado"
+                                    placeholder="Estado"
+                                    class="w-full select-large"
+                                    label="descripcionEstado"
+                                    :options="listadoAuthEstados"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>Fecha Inicio</h6>
+                                <br />
+
+                                <flat-pickr
+                                    :config="configFromdateTimePicker"
+                                    v-model="fechaInicio"
+                                    placeholder="Fecha Inicio"
+                                    @on-change="onFromChange"
+                                    class="w-full "
+                                />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="vx-col md:w-1/1 w-full mb-base">
+                            <vx-card title="Adjuntar Documento">
+                                <div class="vx-row mb-12">
+                                    <div class="vx-col w-1/8 mt-5">
+                                        <vs-input
+                                            type="file"
+                                            id="archivo"
+                                            @change="getImage"
+                                            class="form-control w-full"
+                                        />
+                                    </div>
+                                    <div class="vx-col w-1/2 mt-5">
+                                        <h5 class="w-full ">
+                                            <p class="pt-4 text-justify">
+                                                {{ nombrearchivo }}
+                                            </p>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </vx-card>
+                        </div>
+                        <div class="vx-row w-full md-5">
+                            <div class="vx-col w-1/2 ">
+                                <vs-button
+                                    @click="popUpUsuarioMod = false"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full m-1"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/2 ">
+                                <vs-button
+                                    @click="ModificarAuthUsuario"
+                                    color="danger"
+                                    type="filled"
+                                    class="w-full m-1"
+                                    >Modificar Usuario</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
         </vx-card>
     </div>
 </template>
@@ -206,6 +351,7 @@ export default {
         return {
             //Datos Locales - Variables de Entorno
             localVal: process.env.MIX_APP_URL,
+            localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
             editorOption: {
                 modules: {
                     toolbar: [
@@ -228,12 +374,14 @@ export default {
             rutUsuario: "",
             nombreUsuario: "",
             apellidoUsuario: "",
-            image: "",
+            image: null,
             nombrearchivo: "",
             idServicio: 0,
             idEstado: 0,
             fechaInicio: null,
             val_run: false,
+            val_doc: 0,
+            idMod: 0,
             seleccionServicio: {
                 id: 0,
                 descripcionServicio: ""
@@ -341,14 +489,14 @@ export default {
                 }
             },
             configdateTimePicker: {
-                enableTime: true,
+                enableTime: false,
                 //enableSeconds: true,
                 noCalendar: true,
                 time_24hr: true,
                 dateFormat: "H:i"
             },
             configdateToTimePicker: {
-                enableTime: true,
+                enableTime: false,
                 noCalendar: true,
                 time_24hr: true,
                 dateFormat: "H:i"
@@ -378,7 +526,7 @@ export default {
                 },
                 {
                     label: "Servicio",
-                    field: "NOMSER",
+                    field: "descripcionServicio",
                     filterOptions: {
                         enabled: true
                     }
@@ -392,7 +540,7 @@ export default {
                 },
                 {
                     label: "Estado",
-                    field: "ESTADO",
+                    field: "descripcionEstado",
                     filterOptions: {
                         enabled: true
                     }
@@ -449,6 +597,8 @@ export default {
                 this.fechaInicio = null;
                 this.seleccionEstado = { id: 0, descripcionEstado: "" };
                 this.seleccionServicio = { id: 0, descripcionServicio: "" };
+                this.val_doc = 0;
+                this.idMod = 0;
             } catch (error) {
                 console.log(error);
             }
@@ -472,6 +622,29 @@ export default {
                 this.fechaInicio = fechaI;
                 let idEstado = idEst;
                 let idServicio = idSer;
+
+                let c = this.listadoServicios;
+                let b = [];
+                c.forEach((value, index) => {
+                    if (idServicio == value.id) {
+                        this.seleccionServicio = {
+                            id: value.id,
+                            descripcionServicio: value.descripcionServicio
+                        };
+                    }
+                });
+
+                c = [];
+                c = this.listadoAuthEstados;
+
+                c.forEach((value, index) => {
+                    if (idEstado == value.id) {
+                        this.seleccionEstado = {
+                            id: value.id,
+                            descripcionEstado: value.descripcionEstado
+                        };
+                    }
+                });
 
                 this.popUpUsuarioMod = true;
             } catch (error) {
@@ -592,7 +765,6 @@ export default {
                     .then(res => {
                         this.idMod = res.data;
                         if (this.idMod > 0) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -602,10 +774,11 @@ export default {
                                 position: "top-right"
                             });
                             this.popUpUsuario = false;
-                            if ((this.image = !"")) {
+                            if (this.val_doc == 1) {
                                 this.uploadImage();
                             } else {
                                 this.TraerAuthUsuario();
+                                this.limpiarCampos();
                             }
                         } else {
                             this.$vs.notify({
@@ -651,18 +824,21 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text:
-                                    "Usuario Autorizado Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpUsuarioMod = false;
-
-                            this.TraerAuthUsuario();
+                            if (this.val_doc == 1) {
+                                this.uploadImageMod();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Usuario Autorizado Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                            } else {
+                                this.TraerAuthUsuario();
+                                this.limpiarCampos();
+                                this.popUpUsuarioMod = false;
+                            }
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -682,22 +858,24 @@ export default {
             //Asignamos la imagen a  nuestra data
             this.image = event.target.files[0];
             this.nombrearchivo = this.image.name;
+            this.val_doc = 1;
         },
         uploadImage() {
             //Creamos el formData
+
             var data = new FormData();
             //Añadimos la imagen seleccionada
             data.append("avatar", this.image);
             data.append("id", this.idMod);
             data.append("nombreDocOriginal", this.nombrearchivo);
 
-            console.log(data);
             axios
                 .post(
                     this.localVal + "/api/Mantenedor/PostDocumentoAuthUsuario",
                     data,
                     {
                         headers: {
+                            "Content-Type": "multipart/form-data",
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
                         }
@@ -714,6 +892,7 @@ export default {
                             position: "top-right"
                         });
                         this.popUpUsuario = false;
+                        this.limpiarCampos();
                         this.TraerAuthUsuario();
                     } else {
                         this.$vs.notify({
@@ -736,6 +915,70 @@ export default {
                         });
                     }
                 });
+        },
+        uploadImageMod() {
+            //Creamos el formData
+
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.image);
+            data.append("id", this.idMod);
+            data.append("nombreDocOriginal", this.nombrearchivo);
+
+            axios
+                .post(
+                    this.localVal + "/api/Mantenedor/PutDocumentoAuthUsuario",
+                    data,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(response => {
+                    let resp = response.data;
+                    if (resp == true) {
+                        this.$vs.notify({
+                            title: "Documento Modificado ",
+                            text:
+                                "Podra Visualizarlo en el listado los usuarios autorizados ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.popUpUsuarioMod = false;
+                        this.limpiarCampos();
+                        this.TraerAuthUsuario();
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        this.$vs.notify({
+                            title: "Token Invalido ",
+                            text: "Debe iniciar sesion nuevamente",
+                            color: "danger",
+                            position: "top-right",
+                            time: 3000
+                        });
+                    }
+                });
+        },
+        abrirDocumento(doc) {
+            try {
+                const url = this.localDoc + "/" + doc;
+                window.open(url, "_blank");
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     beforeMount() {

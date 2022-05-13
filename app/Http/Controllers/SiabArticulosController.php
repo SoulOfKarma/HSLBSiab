@@ -4,82 +4,50 @@ namespace App\Http\Controllers;
 
 use App\siab_articulos;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\Log;
 
 class SiabArticulosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function PostArticuloMedicamento(Request $request){
+        try {
+            $id = siab_articulos::create($request->all())->id;
+            return $id;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function GetArticuloMedicamento(){
+        try {
+            $get = siab_articulos::select('autorizadoretiro.RUN','autorizadoretiro.NOMBRES','autorizadoretiro.APELLIDOS',
+            'servicios.descripcionServicio','auth_estados.descripcionEstado',
+            DB::raw("DATE_FORMAT(autorizadoretiro.FECINI,'%d-%m-%Y') as FECINI"),
+            'documentacion_auth_usuarios.nombreDocAutogenerado','autorizadoretiro.idServicio','autorizadoretiro.idEstado'
+            )
+           ->join('servicios','autorizadoretiro.idServicio','=','servicios.id')
+           ->join('auth_estados','autorizadoretiro.idEstado','=','auth_estados.id')
+           ->join('documentacion_auth_usuarios','autorizadoretiro.id','=','documentacion_auth_usuarios.idAuthUsuario')
+           ->get();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function PutArticuloMedicamento(Request $request)
     {
-        //
-    }
+        try {
+            siab_articulos::where('id',$request->id)
+            ->update(['RUN' => $request->RUN,'NOMBRES' => $request->NOMBRES,'APELLIDOS' => $request->APELLIDOS,'FECINI' => $request->FECINI,
+            'FECFIN' => $request->FECFIN,'idEstado' => $request->idEstado,'idServicio' => $request->idServicio]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\siab_articulos  $siab_articulos
-     * @return \Illuminate\Http\Response
-     */
-    public function show(siab_articulos $siab_articulos)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\siab_articulos  $siab_articulos
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(siab_articulos $siab_articulos)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\siab_articulos  $siab_articulos
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, siab_articulos $siab_articulos)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\siab_articulos  $siab_articulos
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(siab_articulos $siab_articulos)
-    {
-        //
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 }

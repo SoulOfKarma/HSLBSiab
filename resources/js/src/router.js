@@ -76,6 +76,24 @@ const router = new Router({
                     path: "/AuthEstado",
                     name: "Auth. Estado",
                     component: () => import("./views/Mantenedor/AuthEstado.vue")
+                },
+                {
+                    path: "/UsuarioLaboratorio",
+                    name: "UsuarioLaboratorio",
+                    component: () =>
+                        import("./views/Mantenedor/UsuarioLaboratorio.vue")
+                },
+                {
+                    path: "/ArticuloMedicamento",
+                    name: "ArticuloMedicamento",
+                    component: () =>
+                        import("./views/Mantenedor/ArticuloMedicamento.vue")
+                },
+                {
+                    path: "/ArticuloInsumoEconomato",
+                    name: "ArticuloInsumoEconomato",
+                    component: () =>
+                        import("./views/Mantenedor/ArticuloInsumoEconomato.vue")
                 }
             ]
         },

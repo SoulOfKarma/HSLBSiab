@@ -53,6 +53,28 @@ class DocumentacionAuthUsuariosController extends Controller
         }
     }
 
+    public function PutDocumentoAuthUsuario(Request $request)
+    {
+        try {
+            if ($request->hasFile('avatar')) {
+                // Si es así , almacenamos en la carpeta public/avatars
+                // esta estará dentro de public/defaults/
+               
+               $url = $request->avatar->store('users/Documentacion');
+               DocumentacionAuthUsuarios::where('idAuthUsuario', $request->id)
+                ->update(['nombreDocOriginal' => $request->nombreDocOriginal,'nombreDocAutogenerado' => $url]);
+               return true;
+            }else{
+                log::info("No hay archivo");
+                return back()->with('error', 'Missing image!');
+            }
+            
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function DestroyDocumentoAuthUsuario(Request $request){
         try {
             $res=DocumentacionAuthUsuarios::where('id',$request->id)->delete();
