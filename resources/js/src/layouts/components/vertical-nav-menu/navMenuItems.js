@@ -14,7 +14,6 @@ export default [
         slug: "Inicio",
         icon: "HomeIcon"
     },
-
     {
         url: null,
         name: "Mantenedor",
@@ -22,63 +21,143 @@ export default [
         icon: "HomeIcon",
         submenu: [
             {
-                url: "/Proveedores",
+                url: "/Mantenedor/Proveedores",
                 name: "Proveedores",
-                slug: "Proveedores",
+                slug: "/Mantenedor/Proveedores",
                 icon: "HomeIcon"
             },
             {
-                url: "/Laboratorio",
+                url: "/Mantenedor/Laboratorio",
                 name: "Laboratorio",
-                slug: "Laboratorio",
+                slug: "/Mantenedor/Laboratorio",
                 icon: "HomeIcon"
             },
             {
-                url: "/Anulacion",
+                url: "/Mantenedor/Anulacion",
                 name: "Anulacion",
-                slug: "Anulacion",
+                slug: "/Mantenedor/Anulacion",
                 icon: "HomeIcon"
             },
             {
-                url: "/Usuario",
+                url: "/Mantenedor/Usuario",
                 name: "Usuario",
-                slug: "Usuario",
+                slug: "/Mantenedor/Usuario",
                 icon: "HomeIcon"
             },
             {
-                url: "/UsuarioLaboratorio",
+                url: "/Mantenedor/UsuarioLaboratorio",
                 name: "Usuario Laboratorio",
-                slug: "UsuarioLaboratorio",
+                slug: "/Mantenedor/UsuarioLaboratorio",
                 icon: "HomeIcon"
             },
             {
-                url: "/UsuariosAuthRetiro",
+                url: "/Mantenedor/UsuariosAuthRetiro",
                 name: "Autorizado Retiro",
-                slug: "UsuariosAuthRetiro",
-                icon: "HomeIcon"
+                slug: "/Mantenedor/UsuariosAuthRetiro",
+                icon: "/Mantenedor/HomeIcon"
             },
             {
-                url: "/Servicios",
+                url: "/Mantenedor/Servicios",
                 name: "Servicios",
-                slug: "Servicios",
+                slug: "/Mantenedor/Servicios",
                 icon: "HomeIcon"
             },
             {
-                url: "/AuthEstado",
+                url: "/Mantenedor/AuthEstado",
                 name: "Auth. Estado",
-                slug: "AuthEstado",
+                slug: "/Mantenedor/AuthEstado",
                 icon: "HomeIcon"
             },
             {
-                url: "/ArticuloMedicamento",
+                url: "/Mantenedor/Bodega",
+                name: "Bodega",
+                slug: "/Mantenedor/Bodega",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Mantenedor/ArticuloMedicamento",
                 name: "Articulo Medicamento",
-                slug: "ArticuloMedicamento",
+                slug: "/Mantenedor/ArticuloMedicamento",
                 icon: "HomeIcon"
             },
             {
-                url: "/ArticuloInsumoEconomato",
+                url: "/Mantenedor/ArticuloInsumoEconomato",
                 name: "Articulo Insumo Economato",
-                slug: "ArticuloInsumoEconomato",
+                slug: "/Mantenedor/ArticuloInsumoEconomato",
+                icon: "HomeIcon"
+            }
+        ]
+    },
+    {
+        url: null,
+        name: "Recepcion",
+        slug: "recepcion",
+        icon: "HomeIcon",
+        submenu: [
+            {
+                url: "/Recepcion/Recepcion",
+                name: "Recepcion",
+                slug: "/Recepcion/Recepcion",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Recepcion/OrdenCompra",
+                name: "OrdenCompra",
+                slug: "/Recepcion/OrdenCompra",
+                icon: "HomeIcon"
+            }
+        ]
+    },
+    {
+        url: null,
+        name: "Consumo Inmediato",
+        slug: "consumoinmediato",
+        icon: "HomeIcon",
+        submenu: [
+            {
+                url: "/ConsumoInmediato/Recepcion",
+                name: "Recepcion",
+                slug: "/ConsumoInmediato/Recepcion",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/ConsumoInmediato/ListaRecepcion",
+                name: "ListaRecepcion",
+                slug: "/ConsumoInmediato/ListaRecepcion",
+                icon: "HomeIcon"
+            }
+        ]
+    },
+    {
+        url: null,
+        name: "Despacho",
+        slug: "despacho",
+        icon: "HomeIcon",
+        submenu: [
+            {
+                url: "/Despacho/DespachoPEspeciales",
+                name: "DespachoPEspeciales",
+                slug: "/Despacho/DespachoPEspeciales",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Despacho/SolicitudPedidos",
+                name: "SolicitudPedidos",
+                slug: "/Despacho/SolicitudPedidos",
+                icon: "HomeIcon"
+            }
+        ]
+    },
+    {
+        url: null,
+        name: "Reportes",
+        slug: "reportes",
+        icon: "HomeIcon",
+        submenu: [
+            {
+                url: "/Reportes/SaldoXProducto",
+                name: "SaldoXProducto",
+                slug: "/Reportes/SaldoXProducto",
                 icon: "HomeIcon"
             }
         ]

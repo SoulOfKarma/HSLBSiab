@@ -2,8 +2,8 @@
     <div>
         <vx-card title="Servicio">
             <div>
-                <vs-button color="primary" type="filled" @click="popServicio"
-                    >Agregar Servicio</vs-button
+                <vs-button color="primary" type="filled" @click="popMedicamento"
+                    >Agregar Medicamento</vs-button
                 >
             </div>
             <br />
@@ -47,15 +47,161 @@
                 </vx-card>
             </div>
             <vs-popup
-                classContent="AgregarServicio"
-                title="Agregar Servicio"
-                :active.sync="popUpServicio"
+                classContent="AgregarMedicamento"
+                title="Agregar Medicamento"
+                :active.sync="popUpMedicamento"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-full">
-                                <h6>Servicio</h6>
+                            <div class="vx-col w-1/2">
+                                <h6>
+                                    Codigo de Barra
+                                </h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Codigo Track</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Codigo Onu</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Codigo Interno</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Nombre Articulo</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Generico</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Categoria Farmacia</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Unidad Medida Base</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Concentracion</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Estado</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Activacion Fecha Venciminento</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Activacion Lote/Serie</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Laboratorio</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Cantidad Embalaje</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Bodega</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Zona</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Sector</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Ubicacion</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="descripcionServicio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <h6>Z Gen</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
@@ -67,7 +213,7 @@
                         <div class="vx-row w-full">
                             <div class="vx-col w-1/2">
                                 <vs-button
-                                    @click="popUpServicio = false"
+                                    @click="popUpMedicamento = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
@@ -76,11 +222,11 @@
                             </div>
                             <div class="vx-col w-1/2">
                                 <vs-button
-                                    @click="AgregarServicio"
+                                    @click="AgregarMedicamento"
                                     color="success"
                                     type="filled"
                                     class="w-full"
-                                    >Agregar Servicio</vs-button
+                                    >Agregar Medicamento</vs-button
                                 >
                             </div>
                         </div>
@@ -174,7 +320,7 @@ export default {
                 }
             },
             //Datos Campos
-            popUpServicio: false,
+            popUpMedicamento: false,
             popUpServicioMod: false,
             descripcionServicio: "",
 
@@ -227,9 +373,9 @@ export default {
             }
         },
         //PopUp
-        popServicio() {
+        popMedicamento() {
             try {
-                this.popUpServicio = true;
+                this.popUpMedicamento = true;
             } catch (error) {
                 console.log(error);
             }
@@ -271,7 +417,7 @@ export default {
                 console.log(error);
             }
         },
-        AgregarServicio() {
+        AgregarMedicamento() {
             try {
                 let data = {
                     descripcionServicio: this.descripcionServicio
@@ -284,13 +430,13 @@ export default {
                     //CAT_FARMACIA
                     //UNIMEDBASE
                     //CONCENTRACION
-                    //idEstado
-                    //ACT_FECVEN
-                    //ACT_LOTE
+                    //idEstado -> cambiar a biginteger en tabla
+                    //ACT_FECVEN -> cambiar a boolean en tabla
+                    //ACT_LOTE -> cambiar a boolean en tabla
                     //LABORATORIO
                     //CANTXEMB
-                    //idBodega
-                    //idZona
+                    //idBodega -> cambiar a biginteger en tabla
+                    //idZona -> cambiar a biginteger en tabla
                     //SECTOR
                     //UBICACION
                     //ZGEN

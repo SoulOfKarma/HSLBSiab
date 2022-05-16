@@ -32,6 +32,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetAuthUsuario', ['middleware' => 'cors', 'uses' => 'AutorizadoretirosController@GetAuthUsuario']);
     Route::get('/Mantenedor/GetAuthEstado', ['middleware' => 'cors', 'uses' => 'AuthEstadosController@GetAuthEstado']);
     Route::get('/Mantenedor/GetLabUsuario', ['middleware' => 'cors', 'uses' => 'LabUsuariosController@GetLabUsuario']);
+    Route::get('/Mantenedor/GetBodega', ['middleware' => 'cors', 'uses' => 'BodegasController@GetBodega']);
+    Route::get('/Mantenedor/GetFamilia1', ['middleware' => 'cors', 'uses' => 'DescripcionFamiliaController@GetFamilia']);
+    Route::get('/Mantenedor/GetFamilia2', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia01Controller@GetFamilia']);
+    Route::get('/Mantenedor/GetFamilia3', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia02Controller@GetFamilia']);
+    Route::get('/Mantenedor/GetFamilia4', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia03Controller@GetFamilia']);
+    Route::get('/Mantenedor/GetFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@GetFamilia']);
+    Route::get('/Mantenedor/GetZona', ['middleware' => 'cors', 'uses' => 'ZonasController@GetZona']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
@@ -42,6 +49,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostAuthUsuario', ['middleware' => 'cors', 'uses' => 'AutorizadoretirosController@PostAuthUsuario']);
     Route::post('/Mantenedor/PostAuthEstado', ['middleware' => 'cors', 'uses' => 'AuthEstadosController@PostAuthEstado']);
     Route::post('/Mantenedor/PostLabUsuario', ['middleware' => 'cors', 'uses' => 'LabUsuariosController@PostLabUsuario']);
+    Route::post('/Mantenedor/PostBodega', ['middleware' => 'cors', 'uses' => 'BodegasController@PostBodega']);
+    Route::post('/Mantenedor/PostFamilia1', ['middleware' => 'cors', 'uses' => 'DescripcionFamiliaController@PostFamilia']);
+    Route::post('/Mantenedor/PostFamilia2', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia01Controller@PostFamilia']);
+    Route::post('/Mantenedor/PostFamilia3', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia02Controller@PostFamilia']);
+    Route::post('/Mantenedor/PostFamilia4', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia03Controller@PostFamilia']);
+    Route::post('/Mantenedor/PostFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@PostFamilia']);
+    Route::post('/Mantenedor/PostZona', ['middleware' => 'cors', 'uses' => 'ZonasController@PostZona']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);
@@ -52,6 +66,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PutAuthUsuario', ['middleware' => 'cors', 'uses' => 'AutorizadoretirosController@PutAuthUsuario']);
     Route::post('/Mantenedor/PutAuthEstado', ['middleware' => 'cors', 'uses' => 'AuthEstadosController@PutAuthEstado']);
     Route::post('/Mantenedor/PutLabUsuario', ['middleware' => 'cors', 'uses' => 'LabUsuariosController@PutLabUsuario']);
+    Route::post('/Mantenedor/PutBodega', ['middleware' => 'cors', 'uses' => 'BodegasController@PutBodega']);
+    Route::post('/Mantenedor/PutFamilia1', ['middleware' => 'cors', 'uses' => 'DescripcionFamiliaController@PutFamilia']);
+    Route::post('/Mantenedor/PutFamilia2', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia01Controller@PutFamilia']);
+    Route::post('/Mantenedor/PutFamilia3', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia02Controller@PutFamilia']);
+    Route::post('/Mantenedor/PutFamilia4', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia03Controller@PutFamilia']);
+    Route::post('/Mantenedor/PutFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@PutFamilia']);
+    Route::post('/Mantenedor/PutZona', ['middleware' => 'cors', 'uses' => 'ZonasController@PutZona']);
 
     //Post Documentos
     Route::post('/Mantenedor/PostDocumentoAuthUsuario', ['middleware' => 'cors', 'uses' => 'DocumentacionAuthUsuariosController@PostDocumentoAuthUsuario']);

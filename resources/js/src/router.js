@@ -39,61 +39,111 @@ const router = new Router({
                     name: "home",
                     component: () => import("./views/Home.vue")
                 },
+                //Router de Mantenedor
                 {
-                    path: "/Proveedores",
-                    name: "Proveedores",
+                    path: "/Mantenedor/Proveedores",
+                    name: "/Mantenedor/Proveedores",
                     component: () =>
                         import("./views/Mantenedor/Proveedores.vue")
                 },
                 {
-                    path: "/Laboratorio",
-                    name: "Laboratorio",
+                    path: "/Mantenedor/Laboratorio",
+                    name: "/Mantenedor/Laboratorio",
                     component: () =>
                         import("./views/Mantenedor/Laboratorio.vue")
                 },
                 {
-                    path: "/Anulacion",
-                    name: "Anulacion",
+                    path: "/Mantenedor/Anulacion",
+                    name: "/Mantenedor/Anulacion",
                     component: () => import("./views/Mantenedor/Anulacion.vue")
                 },
                 {
-                    path: "/Usuario",
-                    name: "Usuario",
+                    path: "/Mantenedor/Usuario",
+                    name: "/Mantenedor/Usuario",
                     component: () => import("./views/Mantenedor/Usuario.vue")
                 },
                 {
-                    path: "/UsuariosAuthRetiro",
-                    name: "UsuariosAuthRetiro",
+                    path: "/Mantenedor/UsuariosAuthRetiro",
+                    name: "/Mantenedor/UsuariosAuthRetiro",
                     component: () =>
                         import("./views/Mantenedor/UsuariosAuthRetiro.vue")
                 },
                 {
-                    path: "/Servicios",
-                    name: "Servicios",
+                    path: "/Mantenedor/Servicios",
+                    name: "/Mantenedor/Servicios",
                     component: () => import("./views/Mantenedor/Servicios.vue")
                 },
                 {
-                    path: "/AuthEstado",
-                    name: "Auth. Estado",
+                    path: "/Mantenedor/AuthEstado",
+                    name: "/Mantenedor/Auth. Estado",
                     component: () => import("./views/Mantenedor/AuthEstado.vue")
                 },
                 {
-                    path: "/UsuarioLaboratorio",
-                    name: "UsuarioLaboratorio",
+                    path: "/Mantenedor/UsuarioLaboratorio",
+                    name: "/Mantenedor/UsuarioLaboratorio",
                     component: () =>
                         import("./views/Mantenedor/UsuarioLaboratorio.vue")
                 },
                 {
-                    path: "/ArticuloMedicamento",
-                    name: "ArticuloMedicamento",
+                    path: "/Mantenedor/ArticuloMedicamento",
+                    name: "/Mantenedor/ArticuloMedicamento",
                     component: () =>
                         import("./views/Mantenedor/ArticuloMedicamento.vue")
                 },
                 {
-                    path: "/ArticuloInsumoEconomato",
-                    name: "ArticuloInsumoEconomato",
+                    path: "/Mantenedor/ArticuloInsumoEconomato",
+                    name: "/Mantenedor/ArticuloInsumoEconomato",
                     component: () =>
                         import("./views/Mantenedor/ArticuloInsumoEconomato.vue")
+                },
+                {
+                    path: "/Mantenedor/Bodega",
+                    name: "/Mantenedor/Bodega",
+                    component: () => import("./views/Mantenedor/Bodega.vue")
+                },
+                //Router de Recepcion
+                {
+                    path: "/Recepcion/Recepcion",
+                    name: "/Recepcion/Recepcion",
+                    component: () => import("./views/Recepcion/Recepcion.vue")
+                },
+                {
+                    path: "/Recepcion/OrdenCompra",
+                    name: "/Recepcion/OrdenCompra",
+                    component: () => import("./views/Recepcion/OrdenCompra.vue")
+                },
+                //Router de Consumo Inmediato
+                {
+                    path: "/ConsumoInmediato/Recepcion",
+                    name: "/ConsumoInmediato/Recepcion",
+                    component: () =>
+                        import("./views/ConsumoInmediato/Recepcion.vue")
+                },
+                {
+                    path: "/ConsumoInmediato/ListaRecepcion",
+                    name: "/ConsumoInmediato/ListaRecepcion",
+                    component: () =>
+                        import("./views/ConsumoInmediato/ListaRecepcion.vue")
+                },
+                //Router de Despacho
+                {
+                    path: "/Despacho/DespachoPEspeciales",
+                    name: "/Despacho/DespachoPEspeciales",
+                    component: () =>
+                        import("./views/Despacho/DespachoPEspeciales.vue")
+                },
+                {
+                    path: "/Despacho/SolicitudPedidos",
+                    name: "/Despacho/SolicitudPedidos",
+                    component: () =>
+                        import("./views/Despacho/SolicitudPedidos.vue")
+                },
+                //Router de Despacho
+                {
+                    path: "/Reportes/SaldoXProducto",
+                    name: "/Reportes/SaldoXProducto",
+                    component: () =>
+                        import("./views/Reportes/SaldoXProducto.vue")
                 }
             ]
         },
