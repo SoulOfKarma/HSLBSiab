@@ -31,9 +31,27 @@
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        popModificarServicio(
+                                        popModificarMedicamento(
                                             props.row.id,
-                                            props.row.descripcionServicio
+                                            props.row.CODART_TRACK,
+                                            props.row.NOMBRE,
+                                            props.row.GENERICO,
+                                            props.row.CAT_FARMACIA,
+                                            props.row.UNIMEDBASE,
+                                            props.row.CONCENTRACION,
+                                            props.row.CODART_ONU,
+                                            props.row.CODART,
+                                            props.row.CODART_BARR,
+                                            props.row.UBICACION,
+                                            props.row.SECTOR,
+                                            props.row.ZGEN,
+                                            props.row.idBodega,
+                                            props.row.idZona,
+                                            props.row.idEstado,
+                                            props.row.LABORATORIO,
+                                            props.row.CANTXENB,
+                                            props.row.idACT_FECVEN,
+                                            props.row.idACTLOTE
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -54,7 +72,7 @@
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>
                                     Codigo de Barra
                                 </h6>
@@ -63,73 +81,76 @@
                                     v-model="codigoBarra"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Codigo Track</h6>
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="codigoTrack"
                                 />
                             </div>
-
-                            <div class="vx-col w-1/2">
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Codigo Onu</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="codigoOnu"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Codigo Interno</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="codigoArticulo"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Nombre Articulo</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="nombre"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Generico</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="generico"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Categoria Farmacia</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="categoriaFarmacia"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Unidad Medida Base</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="unidadMedidaBase"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Concentracion</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="concentracion"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Estado</h6>
-                                <br />
+
                                 <v-select
                                     v-model="seleccionEstado"
                                     placeholder="Activo"
@@ -138,9 +159,9 @@
                                     :options="listaEstado"
                                 ></v-select>
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Activacion Fecha Venciminento</h6>
-                                <br />
+
                                 <v-select
                                     v-model="seleccionFechaVenciminento"
                                     placeholder="Activo"
@@ -149,9 +170,9 @@
                                     :options="listaFVenciminento"
                                 ></v-select>
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Activacion Lote/Serie</h6>
-                                <br />
+
                                 <v-select
                                     v-model="seleccionLoteSerie"
                                     placeholder="Activo"
@@ -160,25 +181,25 @@
                                     :options="listaFLoteSerie"
                                 ></v-select>
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Laboratorio</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="laboratorio"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Cantidad Embalaje</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="cantidadEmbalaje"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Bodega</h6>
-                                <br />
+
                                 <v-select
                                     v-model="seleccionBodega"
                                     placeholder="Activo"
@@ -187,9 +208,9 @@
                                     :options="listaBodega"
                                 ></v-select>
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Zona</h6>
-                                <br />
+
                                 <v-select
                                     v-model="seleccionZona"
                                     placeholder="Activo"
@@ -198,25 +219,25 @@
                                     :options="listaZona"
                                 ></v-select>
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Sector</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="sector"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Ubicacion</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="ubicacion"
                                 />
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Z Gen</h6>
-                                <br />
+
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="zgen"
@@ -225,7 +246,7 @@
                         </div>
                         <br />
                         <div class="vx-row w-full">
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
                                     @click="popUpMedicamento = false"
                                     color="primary"
@@ -234,7 +255,7 @@
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
                                     @click="AgregarMedicamento"
                                     color="success"
@@ -249,19 +270,182 @@
                 </div>
             </vs-popup>
             <vs-popup
-                classContent="ServicioMod"
-                title="Modificar Servicio"
+                classContent="ModificarMedicamento"
+                title="Modificar Medicamento"
                 :active.sync="popUpMedicamentoMod"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
-                        <div class="vx-row ">
-                            <div class="vx-col w-full mt-5">
-                                <h6>Servicio</h6>
-                                <br />
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>
+                                    Codigo de Barra
+                                </h6>
                                 <vs-input
-                                    class="inputx w-full mb-6 "
-                                    v-model="descripcionServicio"
+                                    class="inputx w-full  "
+                                    v-model="codigoBarra"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Track</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoTrack"
+                                />
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Onu</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoOnu"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Interno</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoArticulo"
+                                />
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Nombre Articulo</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="nombre"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Generico</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="generico"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Categoria Farmacia</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="categoriaFarmacia"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Unidad Medida Base</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="unidadMedidaBase"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Concentracion</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="concentracion"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Estado</h6>
+
+                                <v-select
+                                    v-model="seleccionEstado"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionEstado"
+                                    :options="listaEstado"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Fecha Venciminento</h6>
+
+                                <v-select
+                                    v-model="seleccionFechaVenciminento"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFVen"
+                                    :options="listaFVenciminento"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Lote/Serie</h6>
+
+                                <v-select
+                                    v-model="seleccionLoteSerie"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionLoteSerie"
+                                    :options="listaFLoteSerie"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Laboratorio</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="laboratorio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Cantidad Embalaje</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="cantidadEmbalaje"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Bodega</h6>
+
+                                <v-select
+                                    v-model="seleccionBodega"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionBodega"
+                                    :options="listaBodega"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Zona</h6>
+
+                                <v-select
+                                    v-model="seleccionZona"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionZonas"
+                                    :options="listaZona"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Sector</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="sector"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Ubicacion</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="ubicacion"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Z Gen</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="zgen"
                                 />
                             </div>
                         </div>
@@ -281,7 +465,7 @@
                                     color="warning"
                                     type="filled"
                                     class="w-full m-1"
-                                    >Modificar Servicio</vs-button
+                                    >Modificar Medicamento</vs-button
                                 >
                             </div>
                         </div>
@@ -386,6 +570,13 @@ export default {
                     }
                 },
                 {
+                    label: "Codigo de Barra 2",
+                    field: "CODBAR2",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
                     label: "Codigo Track",
                     field: "CODART_TRACK",
                     filterOptions: {
@@ -442,27 +633,6 @@ export default {
                     }
                 },
                 {
-                    label: "Estado",
-                    field: "descripcionEstado",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Fecha Venciminento",
-                    field: "ACT_FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Fecha Lote/Serie",
-                    field: "ACT_LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
                     label: "Laboratorio",
                     field: "LABORATORIO",
                     filterOptions: {
@@ -470,43 +640,8 @@ export default {
                     }
                 },
                 {
-                    label: "Cantidad Embalaje",
-                    field: "CANTXEMB",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Bodega",
-                    field: "descripcionBodega",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Zona",
-                    field: "descripcionZona",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Sector",
-                    field: "SECTOR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Ubicacion",
-                    field: "UBICACION",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Z Gen",
-                    field: "ZGEN",
+                    label: "Estado",
+                    field: "descripcionEstado",
                     filterOptions: {
                         enabled: true
                     }
@@ -566,7 +701,30 @@ export default {
         },
         limpiarCampos() {
             try {
-                this.descripcionServicio = "";
+                this.codigoBarra = "";
+                this.codigoTrack = "";
+                this.codigoOnu = "";
+                this.codigoArticulo = "";
+                this.nombre = "";
+                this.generico = "";
+                this.categoriaFarmacia = "";
+                this.unidadMedidaBase = "";
+                this.concentracion = "";
+                this.seleccionEstado = { id: 0, descripcionEstado: "" };
+                this.laboratorio = "";
+                this.cantidadEmbalaje = "";
+                this.idBodega = 0;
+                this.seleccionBodega = { id: 0, descripcionBodega: "" };
+                this.idZona = 0;
+                this.seleccionZona = { id: 0, descripcionZonas: "" };
+                this.seleccionFechaVenciminento = {
+                    id: 0,
+                    descripcionFVen: ""
+                };
+                this.seleccionLoteSerie = { id: 0, descripcionLoteSerie: "" };
+                this.sector = "";
+                this.ubicacion = "";
+                this.zgen = "";
                 this.idMod = 0;
             } catch (error) {
                 console.log(error);
@@ -580,12 +738,106 @@ export default {
                 console.log(error);
             }
         },
-        popModificarMedicamento(id, DesServicio) {
+        popModificarMedicamento(
+            id,
+            CODART_TRACK,
+            NOMBRE,
+            GENERICO,
+            CAT_FARMACIA,
+            UNIMEDBASE,
+            CONCENTRACION,
+            CODART_ONU,
+            CODART,
+            CODART_BARR,
+            UBICACION,
+            SECTOR,
+            ZGEN,
+            idBodega,
+            idZona,
+            idEstado,
+            LABORATORIO,
+            CANTXENB,
+            idACT_FECVEN,
+            idACTLOTE
+        ) {
             try {
                 this.limpiarCampos();
-                this.popUpServicioMod = true;
+                this.popUpMedicamentoMod = true;
                 this.idMod = id;
-                this.descripcionServicio = DesServicio;
+                this.codigoBarra = CODART_BARR;
+                this.codigoTrack = CODART_TRACK;
+                this.codigoOnu = CODART_ONU;
+                this.codigoArticulo = CODART;
+                this.nombre = NOMBRE;
+                this.generico = GENERICO;
+                this.categoriaFarmacia = CAT_FARMACIA;
+                this.unidadMedidaBase = UNIMEDBASE;
+                this.concentracion = CONCENTRACION;
+                let c = this.listaEstado;
+
+                c.forEach((value, index) => {
+                    if (idEstado == value.id) {
+                        this.seleccionEstado.id = value.id;
+                        this.seleccionEstado.descripcionEstado =
+                            value.descripcionEstado;
+                    }
+                });
+
+                c = [];
+                this.laboratorio = LABORATORIO;
+                this.cantidadEmbalaje = CANTXENB;
+                this.idBodega = 0;
+                c = this.listaBodega;
+
+                c.forEach((value, index) => {
+                    if (idBodega == value.id) {
+                        this.seleccionBodega.id = value.id;
+                        this.seleccionBodega.descripcionBodega =
+                            value.descripcionBodega;
+                    }
+                });
+
+                c = [];
+
+                this.idZona = 0;
+
+                c = this.listaZona;
+
+                c.forEach((value, index) => {
+                    if (idZona == value.id) {
+                        this.seleccionZona.id = value.id;
+                        this.seleccionZona.descripcionZonas =
+                            value.descripcionZonas;
+                    }
+                });
+
+                c = [];
+                if (idACT_FECVEN == 1) {
+                    this.seleccionFechaVenciminento = {
+                        id: 1,
+                        descripcionFVen: "Si"
+                    };
+                } else {
+                    this.seleccionFechaVenciminento = {
+                        id: 2,
+                        descripcionFVen: "No"
+                    };
+                }
+
+                if (idACTLOTE == 1) {
+                    this.seleccionLoteSerie = {
+                        id: 1,
+                        descripcionLoteSerie: "Si"
+                    };
+                } else {
+                    this.seleccionLoteSerie = {
+                        id: 2,
+                        descripcionLoteSerie: "No"
+                    };
+                }
+                this.sector = SECTOR;
+                this.ubicacion = UBICACION;
+                this.zgen = ZGEN;
             } catch (error) {
                 console.log(error);
             }
@@ -725,9 +977,9 @@ export default {
                     ACT_FECVEN: boolFVen,
                     ACT_LOTE: boolFLoteSerie,
                     LABORATORIO: this.laboratorio,
-                    CANTXEMB: this.cantidadEmbalaje,
-                    idBodega: this.idBodega,
-                    idZona: this.idZona,
+                    CANTXENB: this.cantidadEmbalaje,
+                    idBodega: this.seleccionBodega.id,
+                    idZona: this.seleccionZona.id,
                     SECTOR: this.sector,
                     UBICACION: this.ubicacion,
                     ZGEN: this.zgen
@@ -776,6 +1028,20 @@ export default {
         },
         ModificarMedicamento() {
             try {
+                let boolFVen = false;
+                if (this.seleccionFechaVenciminento.id == 1) {
+                    boolFVen = true;
+                } else {
+                    boolFVen = true;
+                }
+
+                let boolFLoteSerie = false;
+                if (this.seleccionLoteSerie.id == 1) {
+                    boolFLoteSerie = true;
+                } else {
+                    boolFLoteSerie = true;
+                }
+
                 let data = {
                     id: this.idMod,
                     CODART_BARR: this.codigoBarra,
@@ -791,9 +1057,9 @@ export default {
                     ACT_FECVEN: boolFVen,
                     ACT_LOTE: boolFLoteSerie,
                     LABORATORIO: this.laboratorio,
-                    CANTXEMB: this.cantidadEmbalaje,
-                    idBodega: this.idBodega,
-                    idZona: this.idZona,
+                    CANTXENB: this.cantidadEmbalaje,
+                    idBodega: this.seleccionBodega.id,
+                    idZona: this.seleccionZona.id,
                     SECTOR: this.sector,
                     UBICACION: this.ubicacion,
                     ZGEN: this.zgen

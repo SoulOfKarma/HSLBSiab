@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\LoginCollection;
 use App\Users;
+use App\tblPermisoUsuarios;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -83,6 +84,67 @@ class LoginController extends Controller
         $request->session()->flush();
 
         return response()->json(['message' => 'Se a cerrado sesion corectamente']);
+    }
+
+    public function RegistrarUsuario(Request $request){
+        try
+        {       
+                $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run); 
+                Users::create([
+                   'run' =>  $run,
+                   'correo_usuario' => $request->correo_usuario,
+                   'nombre_usuario' => $request->nombre_usuario,
+                   'apellido_usuario' => $request->apellido_usuario,
+                   'anexo' => $request->anexo,
+                   'password' => Hash::make($request->password),
+                   'CB_PERIFERICA' => $request->CB_PERIFERICA,
+                   'NB_PERIFERICA' => $request->NB_PERIFERICA,
+                   'api_token' => Str::random(60),
+                ]);
+       
+                 tblPermisoUsuarios::create([
+                   'run_usuario' => $run,
+                   'permiso_usuario' => $request->permiso_usuario,
+                   'estado_login' =>  $request->estado_login
+                ]); 
+            
+            
+         return true;
+        }
+        catch(\Throwable $th){
+          log::info($th);
+          return false;
+        }
+        
+    }
+
+    public function GetUsers(){
+        try {
+            $get = Users::all();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PutUsuario(Request $request){
+        try {
+
+                $run = $request->run_usuario;
+                $run = str_replace('.', '', $run);
+                $run = strtoupper($run); 
+                Users::where('id',$request->id)
+                    ->update(['run' => $run,'correo_usuario' => $request->correo_usuario,'nombre_usuario' => $request->nombre_usuario,
+                    'apellido_usuario' => $request->apellido_usuario,'anexo' => $request->anexo,'password' => $request->password,
+                    'CB_PERIFERICA' => $request->CB_PERIFERICA,'NB_PERIFERICA' => $request->NB_PERIFERICA]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
     }
 
 

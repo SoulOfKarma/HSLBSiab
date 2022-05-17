@@ -1,9 +1,12 @@
 <template>
     <div>
-        <vx-card title="Servicio">
+        <vx-card title="Insumo/Economato">
             <div>
-                <vs-button color="primary" type="filled" @click="popServicio"
-                    >Agregar Servicio</vs-button
+                <vs-button
+                    color="primary"
+                    type="filled"
+                    @click="popInsumoEsconomato"
+                    >Agregar Insumo/Economato</vs-button
                 >
             </div>
             <br />
@@ -26,14 +29,31 @@
                             </span>
                             <span v-else-if="props.column.field === 'action'">
                                 <plus-circle-icon
-                                    content="Modificar Servicio"
+                                    content="Modificar Insumo/Economato"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        popModificarServicio(
+                                        popInsumoEsconomatoMod(
                                             props.row.id,
-                                            props.row.descripcionServicio
+                                            props.row.NOMBRE,
+                                            props.row.UNIMEDBASE,
+                                            props.row.CODART_ONU,
+                                            props.row.CODART,
+                                            props.row.CODART_BARR,
+                                            props.row.idEstado,
+                                            props.row.UBICACION,
+                                            props.row.SECTOR,
+                                            props.row.idBodega,
+                                            props.row.idZona,
+                                            props.row.CANTXENB,
+                                            props.row.idFam1,
+                                            props.row.idFam2,
+                                            props.row.idFam3,
+                                            props.row.idFam4,
+                                            props.row.idFam5,
+                                            props.row.idACT_FECVEN,
+                                            props.row.idACTLOTE
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -46,41 +66,219 @@
                     </vue-good-table>
                 </vx-card>
             </div>
+            <!-- Agregar -->
             <vs-popup
-                classContent="AgregarServicio"
-                title="Agregar Servicio"
-                :active.sync="popUpServicio"
+                classContent="AgregarInsumoEco"
+                title="Agregar Insumo/Economato"
+                :active.sync="popUpInsumoEco"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-full">
-                                <h6>Servicio</h6>
-                                <br />
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Bodega</h6>
+
+                                <v-select
+                                    v-model="seleccionBodega"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionBodega"
+                                    :options="listaBodega"
+                                    @input="cargaItemBodegaFamilia"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>
+                                    Codigo de Barra
+                                </h6>
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="codigoBarra"
+                                />
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Onu</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoOnu"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Interno</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoArticulo"
+                                />
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Nombre Articulo</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="nombre"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 1</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia1"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia1"
+                                    @input="cargaItemFamilia1"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 2</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia2"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia2"
+                                    @input="cargaItemFamilia2"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 3</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia3"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia3"
+                                    @input="cargaItemFamilia3"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 4</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia4"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia4"
+                                    @input="cargaItemFamilia4"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 5</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia5"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia5"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Unidad Medida Base</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="unidadMedidaBase"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Estado</h6>
+
+                                <v-select
+                                    v-model="seleccionEstado"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionEstado"
+                                    :options="listaEstado"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Fecha Venciminento</h6>
+
+                                <v-select
+                                    v-model="seleccionFechaVenciminento"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFVen"
+                                    :options="listaFVenciminento"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Lote/Serie</h6>
+
+                                <v-select
+                                    v-model="seleccionLoteSerie"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionLoteSerie"
+                                    :options="listaFLoteSerie"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Cantidad Embalaje</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="cantidadEmbalaje"
+                                />
+                            </div>
+
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Zona</h6>
+
+                                <v-select
+                                    v-model="seleccionZona"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionZonas"
+                                    :options="listaZona"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Sector</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="sector"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Ubicacion</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="ubicacion"
                                 />
                             </div>
                         </div>
                         <br />
                         <div class="vx-row w-full">
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
-                                    @click="popUpServicio = false"
+                                    @click="popUpInsumoEco = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/2">
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
-                                    @click="AgregarServicio"
+                                    @click="AgregarInsumoEco"
                                     color="success"
                                     type="filled"
                                     class="w-full"
-                                    >Agregar Servicio</vs-button
+                                    >Agregar Insumo/Economato</vs-button
                                 >
                             </div>
                         </div>
@@ -88,40 +286,219 @@
                     <div class="vx-row"></div>
                 </div>
             </vs-popup>
+            <!-- Modificar -->
             <vs-popup
-                classContent="ServicioMod"
-                title="Modificar Servicio"
-                :active.sync="popUpServicioMod"
+                classContent="InsumoEcoMod"
+                title="Modificar Insumo/Economato"
+                :active.sync="popUpInsumoEcoMod"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
-                        <div class="vx-row ">
-                            <div class="vx-col w-full mt-5">
-                                <h6>Servicio</h6>
-                                <br />
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Bodega</h6>
+
+                                <v-select
+                                    v-model="seleccionBodega"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionBodega"
+                                    :options="listaBodega"
+                                    @input="cargaItemBodegaFamilia"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>
+                                    Codigo de Barra
+                                </h6>
                                 <vs-input
-                                    class="inputx w-full mb-6 "
-                                    v-model="descripcionServicio"
+                                    class="inputx w-full  "
+                                    v-model="codigoBarra"
                                 />
                             </div>
                         </div>
-                        <div class="vx-row w-full md-5">
-                            <div class="vx-col w-1/2 ">
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Onu</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoOnu"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Interno</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoArticulo"
+                                />
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Nombre Articulo</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="nombre"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 1</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia1"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia1"
+                                    @input="cargaItemFamilia1"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 2</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia2"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia2"
+                                    @input="cargaItemFamilia2"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 3</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia3"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia3"
+                                    @input="cargaItemFamilia3"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 4</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia4"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia4"
+                                    @input="cargaItemFamilia4"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 5</h6>
+
+                                <v-select
+                                    v-model="seleccionFamilia5"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia5"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Unidad Medida Base</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="unidadMedidaBase"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Estado</h6>
+
+                                <v-select
+                                    v-model="seleccionEstado"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionEstado"
+                                    :options="listaEstado"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Fecha Venciminento</h6>
+
+                                <v-select
+                                    v-model="seleccionFechaVenciminento"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFVen"
+                                    :options="listaFVenciminento"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Lote/Serie</h6>
+
+                                <v-select
+                                    v-model="seleccionLoteSerie"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionLoteSerie"
+                                    :options="listaFLoteSerie"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Cantidad Embalaje</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="cantidadEmbalaje"
+                                />
+                            </div>
+
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Zona</h6>
+
+                                <v-select
+                                    v-model="seleccionZona"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionZonas"
+                                    :options="listaZona"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Sector</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="sector"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Ubicacion</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="ubicacion"
+                                />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="vx-row w-full">
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
-                                    @click="popUpServicioMod = false"
+                                    @click="popUpInsumoEcoMod = false"
                                     color="primary"
                                     type="filled"
-                                    class="w-full m-1"
+                                    class="w-full"
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/2 ">
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
-                                    @click="ModificarServicio"
-                                    color="warning"
+                                    @click="ModificarInsumoEco"
+                                    color="success"
                                     type="filled"
-                                    class="w-full m-1"
-                                    >Modificar Servicio</vs-button
+                                    class="w-full"
+                                    >Modificar Insumo/Economato</vs-button
                                 >
                             </div>
                         </div>
@@ -174,16 +551,134 @@ export default {
                 }
             },
             //Datos Campos
-            popUpServicio: false,
-            popUpServicioMod: false,
-            descripcionServicio: "",
-
+            popUpInsumoEco: false,
+            popUpInsumoEcoMod: false,
+            codigoBarra: "",
+            codigoOnu: "",
+            codigoArticulo: "",
+            nombre: "",
+            idEstado: "",
+            actFechaVencimiento: false,
+            actLoteSerie: false,
+            cantidadEmbalaje: "",
+            idBodega: "",
+            idZona: "",
+            sector: "",
+            ubicacion: "",
+            unidadMedidaBase: "",
+            seleccionEstado: {
+                id: 0,
+                descripcionEstado: ""
+            },
+            seleccionBodega: {
+                id: 0,
+                descripcionBodega: ""
+            },
+            seleccionZona: {
+                id: 0,
+                descripcionZonas: ""
+            },
+            seleccionFechaVenciminento: {
+                id: 0,
+                descripcionFVen: "Seleccione Fecha Venciminento"
+            },
+            seleccionLoteSerie: {
+                id: 0,
+                descripcionLoteSerie: "Seleccione Lote/Serie"
+            },
+            seleccionFamilia1: {
+                id: 0,
+                descripcionFamilia: "",
+                idBodega: 0
+            },
+            seleccionFamilia2: {
+                id: 0,
+                descripcionFamilia: "",
+                idDesFam: 0
+            },
+            seleccionFamilia3: {
+                id: 0,
+                descripcionFamilia: "",
+                idDesFam01: 0
+            },
+            seleccionFamilia4: {
+                id: 0,
+                descripcionFamilia: "",
+                idDesFam02: 0
+            },
+            seleccionFamilia5: {
+                id: 0,
+                descripcionFamilia: "",
+                idDesFam03: 0
+            },
             idMod: 0,
-            //Template Columnas Listado Proveedor
             columns: [
                 {
-                    label: "Servicio",
-                    field: "descripcionServicio",
+                    label: "Codigo de Barra",
+                    field: "CODART_BARR",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Onu",
+                    field: "CODART_ONU",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Articulo",
+                    field: "CODART",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Nombre Medicamento",
+                    field: "NOMBRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Unidad de Medida",
+                    field: "UNIMEDBASE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Familia 1",
+                    field: "desFam1",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Familia 2",
+                    field: "desFam2",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Familia 3",
+                    field: "desFam3",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Familia 4",
+                    field: "desFam4",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Familia 5",
+                    field: "desFam5",
                     filterOptions: {
                         enabled: true
                     }
@@ -194,7 +689,40 @@ export default {
                 }
             ],
             //Datos Listado Proveedor
-            rows: []
+            rows: [],
+            listaEstado: [],
+            listaBodega: [],
+            listaZona: [],
+            listaFamilia1: [],
+            listaFamilia2: [],
+            listaFamilia3: [],
+            listaFamilia4: [],
+            listaFamilia5: [],
+            listaTempFamilia1: [],
+            listaTempFamilia2: [],
+            listaTempFamilia3: [],
+            listaTempFamilia4: [],
+            listaTempFamilia5: [],
+            listaFVenciminento: [
+                {
+                    id: 1,
+                    descripcionFVen: "Si"
+                },
+                {
+                    id: 2,
+                    descripcionFVen: "No"
+                }
+            ],
+            listaFLoteSerie: [
+                {
+                    id: 1,
+                    descripcionLoteSerie: "Si"
+                },
+                {
+                    id: 2,
+                    descripcionLoteSerie: "No"
+                }
+            ]
         };
     },
     methods: {
@@ -220,35 +748,328 @@ export default {
         },
         limpiarCampos() {
             try {
-                this.descripcionServicio = "";
+                this.codigoBarra = "";
+                this.codigoOnu = "";
+                this.codigoArticulo = "";
+                this.nombre = "";
+                this.seleccionEstado = {
+                    id: 0,
+                    descripcionEstado: ""
+                };
+                this.seleccionFechaVenciminento = {
+                    id: 0,
+                    descripcionFVen: "Seleccione Fecha Venciminento"
+                };
+                this.seleccionLoteSerie = {
+                    id: 0,
+                    descripcionLoteSerie: "Seleccione Lote/Serie"
+                };
+                this.cantidadEmbalaje = "";
+                this.idBodega = 0;
+                this.seleccionBodega = {
+                    id: 0,
+                    descripcionBodega: ""
+                };
+                this.idZona = 0;
+                this.seleccionZona = {
+                    id: 0,
+                    descripcionZonas: ""
+                };
+                this.sector = "";
+                this.ubicacion = "";
+                this.seleccionFamilia1 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idBodega: 0
+                };
+                this.seleccionFamilia2 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam: 0
+                };
+                this.seleccionFamilia3 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam01: 0
+                };
+                this.seleccionFamilia4 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam02: 0
+                };
+                this.seleccionFamilia5 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam03: 0
+                };
+                this.unidadMedidaBase = "";
                 this.idMod = 0;
             } catch (error) {
                 console.log(error);
             }
         },
-        //PopUp
-        popServicio() {
+        cargaItemBodegaFamilia() {
             try {
-                this.popUpServicio = true;
+                this.listaFamilia1 = [];
+                let c = this.listaTempFamilia1;
+                let b = this.seleccionBodega.id;
+                let a = [];
+                c.forEach((value, index) => {
+                    if (b == value.id) {
+                        a.push(value);
+                    }
+                });
+
+                this.listaFamilia1 = a;
             } catch (error) {
                 console.log(error);
             }
         },
-        popModificarServicio(id, DesServicio) {
+        cargaItemFamilia1() {
+            try {
+                this.listaFamilia2 = [];
+                let c = this.listaTempFamilia2;
+                let b = this.seleccionFamilia1.id;
+                let a = [];
+                c.forEach((value, index) => {
+                    if (b == value.id) {
+                        a.push(value);
+                    }
+                });
+
+                this.listaFamilia2 = a;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargaItemFamilia2() {
+            try {
+                this.listaFamilia3 = [];
+                let c = this.listaTempFamilia3;
+                let b = this.seleccionFamilia2.id;
+                let a = [];
+                c.forEach((value, index) => {
+                    if (b == value.id) {
+                        a.push(value);
+                    }
+                });
+
+                this.listaFamilia3 = a;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargaItemFamilia3() {
+            try {
+                this.listaFamilia4 = [];
+                let c = this.listaTempFamilia4;
+                let b = this.seleccionFamilia3.id;
+                let a = [];
+                c.forEach((value, index) => {
+                    if (b == value.id) {
+                        a.push(value);
+                    }
+                });
+
+                this.listaFamilia4 = a;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargaItemFamilia4() {
+            try {
+                this.listaFamilia5 = [];
+                let c = this.listaTempFamilia5;
+                let b = this.seleccionFamilia4.id;
+                let a = [];
+                c.forEach((value, index) => {
+                    if (b == value.id) {
+                        a.push(value);
+                    }
+                });
+
+                this.listaFamilia5 = a;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //PopUp
+        popInsumoEsconomato() {
+            try {
+                this.popUpInsumoEco = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popInsumoEsconomatoMod(
+            id,
+            NOMBRE,
+            UNIMEDBASE,
+            CODART_ONU,
+            CODART,
+            CODART_BARR,
+            idEstado,
+            UBICACION,
+            SECTOR,
+            idBodega,
+            idZona,
+            CANTXENB,
+            idFam1,
+            idFam2,
+            idFam3,
+            idFam4,
+            idFam5,
+            idACT_FECVEN,
+            idACTLOTE
+        ) {
             try {
                 this.limpiarCampos();
-                this.popUpServicioMod = true;
+                this.popUpInsumoEcoMod = true;
                 this.idMod = id;
-                this.descripcionServicio = DesServicio;
+                this.codigoBarra = CODART_BARR;
+                this.codigoOnu = CODART_ONU;
+                this.codigoArticulo = CODART;
+                this.nombre = NOMBRE;
+                let c = this.listaEstado;
+
+                c.forEach((value, index) => {
+                    if (idEstado == value.id) {
+                        this.seleccionEstado.id = value.id;
+                        this.seleccionEstado.descripcionEstado =
+                            value.descripcionEstado;
+                    }
+                });
+
+                c = [];
+
+                if (idACT_FECVEN == 1) {
+                    this.seleccionFechaVenciminento = {
+                        id: 1,
+                        descripcionFVen: "Si"
+                    };
+                } else {
+                    this.seleccionFechaVenciminento = {
+                        id: 2,
+                        descripcionFVen: "No"
+                    };
+                }
+
+                if (idACTLOTE == 1) {
+                    this.seleccionLoteSerie = {
+                        id: 1,
+                        descripcionLoteSerie: "Si"
+                    };
+                } else {
+                    this.seleccionLoteSerie = {
+                        id: 2,
+                        descripcionLoteSerie: "No"
+                    };
+                }
+
+                this.cantidadEmbalaje = CANTXENB;
+                this.idBodega = 0;
+
+                c = this.listaBodega;
+
+                c.forEach((value, index) => {
+                    if (idBodega == value.id) {
+                        this.seleccionBodega.id = value.id;
+                        this.seleccionBodega.descripcionBodega =
+                            value.descripcionBodega;
+                    }
+                });
+
+                c = [];
+
+                this.idZona = 0;
+
+                c = this.listaZona;
+
+                c.forEach((value, index) => {
+                    if (idZona == value.id) {
+                        this.seleccionZona.id = value.id;
+                        this.seleccionZona.descripcionZonas =
+                            value.descripcionZonas;
+                    }
+                });
+
+                c = [];
+                this.sector = SECTOR;
+                this.ubicacion = UBICACION;
+
+                c = this.listaFamilia1;
+
+                c.forEach((value, index) => {
+                    if (idFam1 == value.id) {
+                        this.seleccionFamilia1.id = value.id;
+                        this.seleccionFamilia1.idBodega = value.idBodega;
+                        this.seleccionFamilia1.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                c = [];
+
+                c = this.listaFamilia2;
+
+                c.forEach((value, index) => {
+                    if (idFam2 == value.id) {
+                        this.seleccionFamilia2.id = value.id;
+                        this.seleccionFamilia2.idDesFam = value.idDesFam;
+                        this.seleccionFamilia2.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                c = [];
+
+                c = this.listaFamilia3;
+
+                c.forEach((value, index) => {
+                    if (idFam3 == value.id) {
+                        this.seleccionFamilia3.id = value.id;
+                        this.seleccionFamilia3.idDesFam01 = value.idDesFam01;
+                        this.seleccionFamilia3.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                c = [];
+
+                c = this.listaFamilia4;
+
+                c.forEach((value, index) => {
+                    if (idFam4 == value.id) {
+                        this.seleccionFamilia4.id = value.id;
+                        this.seleccionFamilia4.idDesFam02 = value.idDesFam02;
+                        this.seleccionFamilia4.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                c = [];
+
+                c = this.listaFamilia5;
+
+                c.forEach((value, index) => {
+                    if (idFam5 == value.id) {
+                        this.seleccionFamilia5.id = value.id;
+                        this.seleccionFamilia5.idDesFam03 = value.idDesFam03;
+                        this.seleccionFamilia5.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                this.unidadMedidaBase = UNIMEDBASE;
             } catch (error) {
                 console.log(error);
             }
         },
         //Metodos CRUD Servicios
-        TraerServicio() {
+        TraerInsumoEconomato() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
+                    .get(this.localVal + "/api/Mantenedor/GetInsumoEconomato", {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -271,36 +1092,255 @@ export default {
                 console.log(error);
             }
         },
-        AgregarServicio() {
+        TraerEstado() {
             try {
-                let data = {
-                    descripcionServicio: this.descripcionServicio
-                    //CODART_BARR
-                    //CODART_ONU
-                    //CODART
-                    //NOMBRE
-                    //UNIMEDBASE
-                    //idEstado
-                    //ACT_FECVEN <- cambiar a id
-                    //ACT_LOTE <- cambiar a id
-                    //CANTXEMB
-                    //idBodega <- cambiar a id - Manda a las Familias Asociadas
-                    //idZona <- cambiar a id
-                    //SECTOR
-                    //UBICACION
-                    //NOMFAM1 <- cambiar a id
-                    //NOMFAM2 <- cambiar a id
-                    //NOMFAM3 <- cambiar a id
-                    //NOMFAM4 <- cambiar a id
-                    //NOMFAM5 <- cambiar a id
-                    //UNIMEDBASE
-                };
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetAuthEstado", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaEstado = res.data;
+                        if (this.listaEstado.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de Estado correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerBodega() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetBodega", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaBodega = res.data;
+                        if (this.listaBodega.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de las Bodegas correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerZona() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetZona", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaZona = res.data;
+                        if (this.listaZona.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerFamilia1() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetFamilia1", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaTempFamilia1 = res.data;
+                        if (this.listaTempFamilia1.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerFamilia2() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetFamilia2", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaTempFamilia2 = res.data;
+                        if (this.listaTempFamilia2.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerFamilia3() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetFamilia3", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaTempFamilia3 = res.data;
+                        if (this.listaTempFamilia3.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerFamilia4() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetFamilia4", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaTempFamilia4 = res.data;
+                        if (this.listaTempFamilia4.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerFamilia5() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetFamilia5", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaTempFamilia5 = res.data;
+                        if (this.listaTempFamilia5.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AgregarInsumoEco() {
+            try {
+                let boolFVen = false;
+                if (this.seleccionFechaVenciminento.id == 1) {
+                    boolFVen = true;
+                } else {
+                    boolFVen = true;
+                }
 
+                let boolFLoteSerie = false;
+                if (this.seleccionLoteSerie.id == 1) {
+                    boolFLoteSerie = true;
+                } else {
+                    boolFLoteSerie = true;
+                }
+
+                let data = {
+                    CODART_BARR: this.codigoBarra,
+                    CODART_ONU: this.codigoOnu,
+                    CODART: this.codigoArticulo,
+                    NOMBRE: this.nombre,
+                    idEstado: this.seleccionEstado.id,
+                    ACT_FECVEN: boolFVen,
+                    ACT_LOTE: boolFLoteSerie,
+                    CANTXENB: this.cantidadEmbalaje,
+                    idBodega: this.seleccionBodega.id,
+                    idZona: this.seleccionZona.id,
+                    SECTOR: this.sector,
+                    UBICACION: this.ubicacion,
+                    idFam1: this.seleccionFamilia1.id,
+                    idFam2: this.seleccionFamilia2.id,
+                    idFam3: this.seleccionFamilia3.id,
+                    idFam4: this.seleccionFamilia4.id,
+                    idFam5: this.seleccionFamilia5.id,
+                    UNIMEDBASE: this.unidadMedidaBase
+                };
                 const dat = data;
 
                 axios
                     .post(
-                        this.localVal + "/api/Mantenedor/PostServicios",
+                        this.localVal + "/api/Mantenedor/PostInsumoEconomato",
                         dat,
                         {
                             headers: {
@@ -316,18 +1356,19 @@ export default {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
-                                text: "Servicio Ingresado Correctamente",
+                                text:
+                                    "Insumo/Economato Ingresado Correctamente",
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpServicio = false;
-                            this.TraerServicio();
+                            this.popUpInsumoEco = false;
+                            this.TraerInsumoEconomato();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible registrar el Servicio,intentelo nuevamente",
+                                    "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -337,22 +1378,55 @@ export default {
                 console.log(error);
             }
         },
-        ModificarServicio() {
+        ModificarInsumoEco() {
             try {
+                let boolFVen = false;
+                if (this.seleccionFechaVenciminento.id == 1) {
+                    boolFVen = true;
+                } else {
+                    boolFVen = true;
+                }
+
+                let boolFLoteSerie = false;
+                if (this.seleccionLoteSerie.id == 1) {
+                    boolFLoteSerie = true;
+                } else {
+                    boolFLoteSerie = true;
+                }
+
                 let data = {
                     id: this.idMod,
-                    descripcionServicio: this.descripcionServicio
+                    CODART_BARR: this.codigoBarra,
+                    CODART_ONU: this.codigoOnu,
+                    CODART: this.codigoArticulo,
+                    NOMBRE: this.nombre,
+                    idEstado: this.seleccionEstado.id,
+                    ACT_FECVEN: boolFVen,
+                    ACT_LOTE: boolFLoteSerie,
+                    CANTXENB: this.cantidadEmbalaje,
+                    idBodega: this.seleccionBodega.id,
+                    idZona: this.seleccionZona.id,
+                    SECTOR: this.sector,
+                    UBICACION: this.ubicacion,
+                    idFam1: this.seleccionFamilia1.id,
+                    idFam2: this.seleccionFamilia2.id,
+                    idFam3: this.seleccionFamilia3.id,
+                    idFam4: this.seleccionFamilia4.id,
+                    idFam5: this.seleccionFamilia5.id,
+                    UNIMEDBASE: this.unidadMedidaBase
                 };
-
                 const dat = data;
-
                 axios
-                    .post(this.localVal + "/api/Mantenedor/PutServicio", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                    .post(
+                        this.localVal + "/api/Mantenedor/PutInsumoEconomato",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
@@ -360,18 +1434,19 @@ export default {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
-                                text: "Servicio Modificado Correctamente",
+                                text:
+                                    "Insumo/Economato Modificado Correctamente",
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpServicioMod = false;
-                            this.TraerServicio();
+                            this.TraerInsumoEconomato();
+                            this.popUpInsumoEcoMod = false;
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible modificar el servicio,intentelo nuevamente",
+                                    "No fue posible modificar el Insumo/Economato,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -383,7 +1458,15 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerServicio();
+        this.TraerInsumoEconomato();
+        this.TraerEstado();
+        this.TraerBodega();
+        this.TraerZona();
+        this.TraerFamilia1();
+        this.TraerFamilia2();
+        this.TraerFamilia3();
+        this.TraerFamilia4();
+        this.TraerFamilia5();
         this.openLoadingColor();
     }
 };
