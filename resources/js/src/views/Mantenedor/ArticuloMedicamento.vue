@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vx-card title="Servicio">
+        <vx-card title="Medicamentos">
             <div>
                 <vs-button color="primary" type="filled" @click="popMedicamento"
                     >Agregar Medicamento</vs-button
@@ -58,26 +58,25 @@
                                 <h6>
                                     Codigo de Barra
                                 </h6>
-                                <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="codigoBarra"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
                                 <h6>Codigo Track</h6>
-                                <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="codigoTrack"
                                 />
                             </div>
+
                             <div class="vx-col w-1/2">
                                 <h6>Codigo Onu</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="codigoOnu"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
@@ -85,7 +84,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="codigoArticulo"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
@@ -93,7 +92,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="nombre"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
@@ -101,7 +100,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="generico"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
@@ -109,7 +108,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="categoriaFarmacia"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
@@ -117,7 +116,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="unidadMedidaBase"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
@@ -125,39 +124,48 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="concentracion"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
                                 <h6>Estado</h6>
                                 <br />
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="descripcionServicio"
-                                />
+                                <v-select
+                                    v-model="seleccionEstado"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionEstado"
+                                    :options="listaEstado"
+                                ></v-select>
                             </div>
                             <div class="vx-col w-1/2">
                                 <h6>Activacion Fecha Venciminento</h6>
                                 <br />
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="descripcionServicio"
-                                />
+                                <v-select
+                                    v-model="seleccionFechaVenciminento"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFVen"
+                                    :options="listaFVenciminento"
+                                ></v-select>
                             </div>
                             <div class="vx-col w-1/2">
                                 <h6>Activacion Lote/Serie</h6>
                                 <br />
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="descripcionServicio"
-                                />
+                                <v-select
+                                    v-model="seleccionLoteSerie"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionLoteSerie"
+                                    :options="listaFLoteSerie"
+                                ></v-select>
                             </div>
                             <div class="vx-col w-1/2">
                                 <h6>Laboratorio</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="laboratorio"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
@@ -165,31 +173,37 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="cantidadEmbalaje"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
                                 <h6>Bodega</h6>
                                 <br />
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="descripcionServicio"
-                                />
+                                <v-select
+                                    v-model="seleccionBodega"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionBodega"
+                                    :options="listaBodega"
+                                ></v-select>
                             </div>
                             <div class="vx-col w-1/2">
                                 <h6>Zona</h6>
                                 <br />
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="descripcionServicio"
-                                />
+                                <v-select
+                                    v-model="seleccionZona"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionZonas"
+                                    :options="listaZona"
+                                ></v-select>
                             </div>
                             <div class="vx-col w-1/2">
                                 <h6>Sector</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="sector"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
@@ -197,7 +211,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="ubicacion"
                                 />
                             </div>
                             <div class="vx-col w-1/2">
@@ -205,7 +219,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="descripcionServicio"
+                                    v-model="zgen"
                                 />
                             </div>
                         </div>
@@ -237,7 +251,7 @@
             <vs-popup
                 classContent="ServicioMod"
                 title="Modificar Servicio"
-                :active.sync="popUpServicioMod"
+                :active.sync="popUpMedicamentoMod"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
@@ -254,7 +268,7 @@
                         <div class="vx-row w-full md-5">
                             <div class="vx-col w-1/2 ">
                                 <vs-button
-                                    @click="popUpServicioMod = false"
+                                    @click="popUpMedicamentoMod = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full m-1"
@@ -263,7 +277,7 @@
                             </div>
                             <div class="vx-col w-1/2 ">
                                 <vs-button
-                                    @click="ModificarServicio"
+                                    @click="ModificarMedicamento"
                                     color="warning"
                                     type="filled"
                                     class="w-full m-1"
@@ -321,15 +335,178 @@ export default {
             },
             //Datos Campos
             popUpMedicamento: false,
-            popUpServicioMod: false,
+            popUpMedicamentoMod: false,
             descripcionServicio: "",
-
+            codigoBarra: "",
+            codigoTrack: "",
+            codigoOnu: "",
+            codigoArticulo: "",
+            nombre: "",
+            generico: "",
+            categoriaFarmacia: "",
+            unidadMedidaBase: "",
+            concentracion: "",
+            idEstado: "",
+            actFechaVencimiento: false,
+            actLoteSerie: false,
+            laboratorio: "",
+            cantidadEmbalaje: "",
+            idBodega: "",
+            idZona: "",
+            sector: "",
+            ubicacion: "",
+            zgen: "",
+            seleccionEstado: {
+                id: 0,
+                descripcionEstado: ""
+            },
+            seleccionBodega: {
+                id: 0,
+                descripcionBodega: ""
+            },
+            seleccionZona: {
+                id: 0,
+                descripcionZonas: ""
+            },
+            seleccionFechaVenciminento: {
+                id: 0,
+                descripcionFVen: "Seleccione Fecha Venciminento"
+            },
+            seleccionLoteSerie: {
+                id: 0,
+                descripcionLoteSerie: "Seleccione Lote/Serie"
+            },
             idMod: 0,
-            //Template Columnas Listado Proveedor
             columns: [
                 {
-                    label: "Servicio",
-                    field: "descripcionServicio",
+                    label: "Codigo de Barra",
+                    field: "CODART_BARR",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Track",
+                    field: "CODART_TRACK",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Onu",
+                    field: "CODART_ONU",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Articulo",
+                    field: "CODART",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Nombre Medicamento",
+                    field: "NOMBRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Generico",
+                    field: "GENERICO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Categoria Farmacia",
+                    field: "CAT_FARMACIA",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Unidad de Medida",
+                    field: "UNIMEDBASE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Concentracion",
+                    field: "CONCENTRACION",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Estado",
+                    field: "descripcionEstado",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Venciminento",
+                    field: "ACT_FECVEN",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Lote/Serie",
+                    field: "ACT_LOTE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Laboratorio",
+                    field: "LABORATORIO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Cantidad Embalaje",
+                    field: "CANTXEMB",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Bodega",
+                    field: "descripcionBodega",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Zona",
+                    field: "descripcionZona",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Sector",
+                    field: "SECTOR",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Ubicacion",
+                    field: "UBICACION",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Z Gen",
+                    field: "ZGEN",
                     filterOptions: {
                         enabled: true
                     }
@@ -340,7 +517,30 @@ export default {
                 }
             ],
             //Datos Listado Proveedor
-            rows: []
+            rows: [],
+            listaEstado: [],
+            listaBodega: [],
+            listaZona: [],
+            listaFVenciminento: [
+                {
+                    id: 1,
+                    descripcionFVen: "Si"
+                },
+                {
+                    id: 2,
+                    descripcionFVen: "No"
+                }
+            ],
+            listaFLoteSerie: [
+                {
+                    id: 1,
+                    descripcionLoteSerie: "Si"
+                },
+                {
+                    id: 2,
+                    descripcionLoteSerie: "No"
+                }
+            ]
         };
     },
     methods: {
@@ -380,7 +580,7 @@ export default {
                 console.log(error);
             }
         },
-        popModificarServicio(id, DesServicio) {
+        popModificarMedicamento(id, DesServicio) {
             try {
                 this.limpiarCampos();
                 this.popUpServicioMod = true;
@@ -391,10 +591,10 @@ export default {
             }
         },
         //Metodos CRUD Servicios
-        TraerServicio() {
+        TraerMedicamentos() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
+                    .get(this.localVal + "/api/Mantenedor/GetMedicamentos", {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -417,36 +617,127 @@ export default {
                 console.log(error);
             }
         },
+        TraerEstado() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetAuthEstado", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaEstado = res.data;
+                        if (this.listaEstado.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de Estado correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerBodega() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetBodega", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaBodega = res.data;
+                        if (this.listaBodega.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de las Bodegas correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerZona() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetZona", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaZona = res.data;
+                        if (this.listaZona.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         AgregarMedicamento() {
             try {
+                let boolFVen = false;
+                if (this.seleccionFechaVenciminento.id == 1) {
+                    boolFVen = true;
+                } else {
+                    boolFVen = true;
+                }
+
+                let boolFLoteSerie = false;
+                if (this.seleccionLoteSerie.id == 1) {
+                    boolFLoteSerie = true;
+                } else {
+                    boolFLoteSerie = true;
+                }
+
                 let data = {
-                    descripcionServicio: this.descripcionServicio
-                    //CODART_BARR
-                    //CODART_TRACK
-                    //CODART_ONU
-                    //CODART
-                    //NOMBRE
-                    //GENERICO
-                    //CAT_FARMACIA
-                    //UNIMEDBASE
-                    //CONCENTRACION
-                    //idEstado -> cambiar a biginteger en tabla
-                    //ACT_FECVEN -> cambiar a boolean en tabla
-                    //ACT_LOTE -> cambiar a boolean en tabla
-                    //LABORATORIO
-                    //CANTXEMB
-                    //idBodega -> cambiar a biginteger en tabla
-                    //idZona -> cambiar a biginteger en tabla
-                    //SECTOR
-                    //UBICACION
-                    //ZGEN
+                    CODART_BARR: this.codigoBarra,
+                    CODART_TRACK: this.codigoTrack,
+                    CODART_ONU: this.codigoOnu,
+                    CODART: this.codigoArticulo,
+                    NOMBRE: this.nombre,
+                    GENERICO: this.generico,
+                    CAT_FARMACIA: this.categoriaFarmacia,
+                    UNIMEDBASE: this.unidadMedidaBase,
+                    CONCENTRACION: this.concentracion,
+                    idEstado: this.seleccionEstado.id,
+                    ACT_FECVEN: boolFVen,
+                    ACT_LOTE: boolFLoteSerie,
+                    LABORATORIO: this.laboratorio,
+                    CANTXEMB: this.cantidadEmbalaje,
+                    idBodega: this.idBodega,
+                    idZona: this.idZona,
+                    SECTOR: this.sector,
+                    UBICACION: this.ubicacion,
+                    ZGEN: this.zgen
                 };
 
                 const dat = data;
 
                 axios
                     .post(
-                        this.localVal + "/api/Mantenedor/PostServicios",
+                        this.localVal + "/api/Mantenedor/PostMedicamentos",
                         dat,
                         {
                             headers: {
@@ -462,18 +753,18 @@ export default {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
-                                text: "Servicio Ingresado Correctamente",
+                                text: "Medicamento Ingresado Correctamente",
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpServicio = false;
-                            this.TraerServicio();
+                            this.popUpMedicamento = false;
+                            this.TraerMedicamentos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible registrar el Servicio,intentelo nuevamente",
+                                    "No fue posible registrar el medicamento,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -483,22 +774,44 @@ export default {
                 console.log(error);
             }
         },
-        ModificarServicio() {
+        ModificarMedicamento() {
             try {
                 let data = {
                     id: this.idMod,
-                    descripcionServicio: this.descripcionServicio
+                    CODART_BARR: this.codigoBarra,
+                    CODART_TRACK: this.codigoTrack,
+                    CODART_ONU: this.codigoOnu,
+                    CODART: this.codigoArticulo,
+                    NOMBRE: this.nombre,
+                    GENERICO: this.generico,
+                    CAT_FARMACIA: this.categoriaFarmacia,
+                    UNIMEDBASE: this.unidadMedidaBase,
+                    CONCENTRACION: this.concentracion,
+                    idEstado: this.seleccionEstado.id,
+                    ACT_FECVEN: boolFVen,
+                    ACT_LOTE: boolFLoteSerie,
+                    LABORATORIO: this.laboratorio,
+                    CANTXEMB: this.cantidadEmbalaje,
+                    idBodega: this.idBodega,
+                    idZona: this.idZona,
+                    SECTOR: this.sector,
+                    UBICACION: this.ubicacion,
+                    ZGEN: this.zgen
                 };
 
                 const dat = data;
 
                 axios
-                    .post(this.localVal + "/api/Mantenedor/PutServicio", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                    .post(
+                        this.localVal + "/api/Mantenedor/PutMedicamentos",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
@@ -506,18 +819,18 @@ export default {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
-                                text: "Servicio Modificado Correctamente",
+                                text: "Medicamento Modificado Correctamente",
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpServicioMod = false;
-                            this.TraerServicio();
+                            this.popUpMedicamentoMod = false;
+                            this.TraerMedicamentos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible modificar el servicio,intentelo nuevamente",
+                                    "No fue posible modificar el medicamento,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -529,7 +842,10 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerServicio();
+        this.TraerMedicamentos();
+        this.TraerEstado();
+        this.TraerBodega();
+        this.TraerZona();
         this.openLoadingColor();
     }
 };

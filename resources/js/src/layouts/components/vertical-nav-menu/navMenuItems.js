@@ -85,6 +85,12 @@ export default [
                 name: "Articulo Insumo Economato",
                 slug: "/Mantenedor/ArticuloInsumoEconomato",
                 icon: "HomeIcon"
+            },
+            {
+                url: "/Mantenedor/Zona",
+                name: "Zonas",
+                slug: "/Mantenedor/Zona",
+                icon: "HomeIcon"
             }
         ]
     },

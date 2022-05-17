@@ -101,6 +101,11 @@ const router = new Router({
                     name: "/Mantenedor/Bodega",
                     component: () => import("./views/Mantenedor/Bodega.vue")
                 },
+                {
+                    path: "/Mantenedor/Zona",
+                    name: "/Mantenedor/Zona",
+                    component: () => import("./views/Mantenedor/Zona.vue")
+                },
                 //Router de Recepcion
                 {
                     path: "/Recepcion/Recepcion",

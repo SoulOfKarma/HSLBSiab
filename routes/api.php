@@ -39,6 +39,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetFamilia4', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia03Controller@GetFamilia']);
     Route::get('/Mantenedor/GetFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@GetFamilia']);
     Route::get('/Mantenedor/GetZona', ['middleware' => 'cors', 'uses' => 'ZonasController@GetZona']);
+    Route::get('/Mantenedor/GetMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetMedicamentos']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
@@ -56,6 +57,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostFamilia4', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia03Controller@PostFamilia']);
     Route::post('/Mantenedor/PostFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@PostFamilia']);
     Route::post('/Mantenedor/PostZona', ['middleware' => 'cors', 'uses' => 'ZonasController@PostZona']);
+    Route::post('/Mantenedor/PostMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostMedicamentos']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);
@@ -73,6 +75,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PutFamilia4', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia03Controller@PutFamilia']);
     Route::post('/Mantenedor/PutFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@PutFamilia']);
     Route::post('/Mantenedor/PutZona', ['middleware' => 'cors', 'uses' => 'ZonasController@PutZona']);
+    Route::post('/Mantenedor/PutMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PutMedicamentos']);
 
     //Post Documentos
     Route::post('/Mantenedor/PostDocumentoAuthUsuario', ['middleware' => 'cors', 'uses' => 'DocumentacionAuthUsuariosController@PostDocumentoAuthUsuario']);
