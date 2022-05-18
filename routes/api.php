@@ -62,6 +62,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostMedicamentos']);
     Route::post('/Mantenedor/PostInsumoEconomato', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostInsumoEconomato']);
     Route::post('/Mantenedor/RegistrarUsuario', ['middleware' => 'cors', 'uses' => 'LoginController@RegistrarUsuario']);
+    Route::post('/Mantenedor/PostCodMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostCodMedicamentos']);
+    Route::post('/Mantenedor/PostCodInsumoEconomato', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostCodInsumoEconomato']);
+    Route::post('/Mantenedor/PostSaldoInventario', ['middleware' => 'cors', 'uses' => 'SaldoInventariosController@PostSaldoInventario']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);

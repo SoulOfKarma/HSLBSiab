@@ -5,7 +5,7 @@
                 <vs-button
                     color="primary"
                     type="filled"
-                    @click="popInsumoEsconomato"
+                    @click="popInsumoEconomato"
                     >Agregar Insumo/Economato</vs-button
                 >
             </div>
@@ -34,8 +34,36 @@
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        popInsumoEsconomatoMod(
+                                        popInsumoEconomatoMod(
                                             props.row.id,
+                                            props.row.NOMBRE,
+                                            props.row.UNIMEDBASE,
+                                            props.row.CODART_ONU,
+                                            props.row.CODART,
+                                            props.row.CODART_BARR,
+                                            props.row.idEstado,
+                                            props.row.UBICACION,
+                                            props.row.SECTOR,
+                                            props.row.idBodega,
+                                            props.row.idZona,
+                                            props.row.CANTXENB,
+                                            props.row.idFam1,
+                                            props.row.idFam2,
+                                            props.row.idFam3,
+                                            props.row.idFam4,
+                                            props.row.idFam5,
+                                            props.row.idACT_FECVEN,
+                                            props.row.idACTLOTE
+                                        )
+                                    "
+                                ></plus-circle-icon>
+                                <plus-circle-icon
+                                    content="Agregar Codigo Insumo/Economato"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        popCodInsumoEconomato(
                                             props.row.NOMBRE,
                                             props.row.UNIMEDBASE,
                                             props.row.CODART_ONU,
@@ -506,6 +534,226 @@
                     <div class="vx-row"></div>
                 </div>
             </vs-popup>
+            <!-- Codigo Articulo -->
+            <vs-popup
+                classContent="InsumoEcoMod"
+                title="Agregar Codigo Insumo/Economato"
+                :active.sync="popUpCodInsumoEco"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Bodega</h6>
+
+                                <v-select
+                                    v-model="seleccionBodega"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionBodega"
+                                    :options="listaBodega"
+                                    @input="cargaItemBodegaFamilia"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>
+                                    Codigo de Barra
+                                </h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoBarra"
+                                />
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Onu</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoOnu"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Interno</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoArticulo"
+                                    disabled
+                                />
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Nombre Articulo</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="nombre"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 1</h6>
+                                <v-select
+                                    v-model="seleccionFamilia1"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia1"
+                                    @input="cargaItemFamilia1"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 2</h6>
+                                <v-select
+                                    v-model="seleccionFamilia2"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia2"
+                                    @input="cargaItemFamilia2"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 3</h6>
+                                <v-select
+                                    v-model="seleccionFamilia3"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia3"
+                                    @input="cargaItemFamilia3"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 4</h6>
+                                <v-select
+                                    v-model="seleccionFamilia4"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia4"
+                                    @input="cargaItemFamilia4"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Descripcion Familia 5</h6>
+                                <v-select
+                                    v-model="seleccionFamilia5"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFamilia"
+                                    :options="listaFamilia5"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Unidad Medida Base</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="unidadMedidaBase"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Estado</h6>
+                                <v-select
+                                    v-model="seleccionEstado"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionEstado"
+                                    :options="listaEstado"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Fecha Venciminento</h6>
+                                <v-select
+                                    v-model="seleccionFechaVenciminento"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFVen"
+                                    :options="listaFVenciminento"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Lote/Serie</h6>
+                                <v-select
+                                    v-model="seleccionLoteSerie"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionLoteSerie"
+                                    :options="listaFLoteSerie"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Cantidad Embalaje</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="cantidadEmbalaje"
+                                    disabled
+                                />
+                            </div>
+
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Zona</h6>
+                                <v-select
+                                    v-model="seleccionZona"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionZonas"
+                                    :options="listaZona"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Sector</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="sector"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Ubicacion</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="ubicacion"
+                                    disabled
+                                />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="vx-row w-full">
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    @click="popUpCodInsumoEco = false"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    @click="AgregarCodInsumoEco"
+                                    color="success"
+                                    type="filled"
+                                    class="w-full"
+                                    >Agregar Codigo Insumo/Economato</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
         </vx-card>
     </div>
 </template>
@@ -553,6 +801,7 @@ export default {
             //Datos Campos
             popUpInsumoEco: false,
             popUpInsumoEcoMod: false,
+            popUpCodInsumoEco: false,
             codigoBarra: "",
             codigoOnu: "",
             codigoArticulo: "",
@@ -894,14 +1143,15 @@ export default {
             }
         },
         //PopUp
-        popInsumoEsconomato() {
+        popInsumoEconomato() {
             try {
                 this.popUpInsumoEco = true;
+                this.limpiarCampos();
             } catch (error) {
                 console.log(error);
             }
         },
-        popInsumoEsconomatoMod(
+        popInsumoEconomatoMod(
             id,
             NOMBRE,
             UNIMEDBASE,
@@ -997,7 +1247,7 @@ export default {
                 this.sector = SECTOR;
                 this.ubicacion = UBICACION;
 
-                c = this.listaFamilia1;
+                c = this.listaTempFamilia1;
 
                 c.forEach((value, index) => {
                     if (idFam1 == value.id) {
@@ -1010,7 +1260,7 @@ export default {
 
                 c = [];
 
-                c = this.listaFamilia2;
+                c = this.listaTempFamilia2;
 
                 c.forEach((value, index) => {
                     if (idFam2 == value.id) {
@@ -1023,7 +1273,7 @@ export default {
 
                 c = [];
 
-                c = this.listaFamilia3;
+                c = this.listaTempFamilia3;
 
                 c.forEach((value, index) => {
                     if (idFam3 == value.id) {
@@ -1036,7 +1286,7 @@ export default {
 
                 c = [];
 
-                c = this.listaFamilia4;
+                c = this.listaTempFamilia4;
 
                 c.forEach((value, index) => {
                     if (idFam4 == value.id) {
@@ -1049,7 +1299,169 @@ export default {
 
                 c = [];
 
-                c = this.listaFamilia5;
+                c = this.listaTempFamilia5;
+
+                c.forEach((value, index) => {
+                    if (idFam5 == value.id) {
+                        this.seleccionFamilia5.id = value.id;
+                        this.seleccionFamilia5.idDesFam03 = value.idDesFam03;
+                        this.seleccionFamilia5.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                this.unidadMedidaBase = UNIMEDBASE;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popCodInsumoEconomato(
+            NOMBRE,
+            UNIMEDBASE,
+            CODART_ONU,
+            CODART,
+            CODART_BARR,
+            idEstado,
+            UBICACION,
+            SECTOR,
+            idBodega,
+            idZona,
+            CANTXENB,
+            idFam1,
+            idFam2,
+            idFam3,
+            idFam4,
+            idFam5,
+            idACT_FECVEN,
+            idACTLOTE
+        ) {
+            try {
+                this.limpiarCampos();
+                this.popUpCodInsumoEco = true;
+                this.codigoBarra = CODART_BARR;
+                this.codigoOnu = CODART_ONU;
+                this.codigoArticulo = CODART;
+                this.nombre = NOMBRE;
+                let c = this.listaEstado;
+
+                c.forEach((value, index) => {
+                    if (idEstado == value.id) {
+                        this.seleccionEstado.id = value.id;
+                        this.seleccionEstado.descripcionEstado =
+                            value.descripcionEstado;
+                    }
+                });
+
+                c = [];
+
+                if (idACT_FECVEN == 1) {
+                    this.seleccionFechaVenciminento = {
+                        id: 1,
+                        descripcionFVen: "Si"
+                    };
+                } else {
+                    this.seleccionFechaVenciminento = {
+                        id: 2,
+                        descripcionFVen: "No"
+                    };
+                }
+
+                if (idACTLOTE == 1) {
+                    this.seleccionLoteSerie = {
+                        id: 1,
+                        descripcionLoteSerie: "Si"
+                    };
+                } else {
+                    this.seleccionLoteSerie = {
+                        id: 2,
+                        descripcionLoteSerie: "No"
+                    };
+                }
+
+                this.cantidadEmbalaje = CANTXENB;
+                this.idBodega = 0;
+
+                c = this.listaBodega;
+
+                c.forEach((value, index) => {
+                    if (idBodega == value.id) {
+                        this.seleccionBodega.id = value.id;
+                        this.seleccionBodega.descripcionBodega =
+                            value.descripcionBodega;
+                    }
+                });
+
+                c = [];
+
+                this.idZona = 0;
+
+                c = this.listaZona;
+
+                c.forEach((value, index) => {
+                    if (idZona == value.id) {
+                        this.seleccionZona.id = value.id;
+                        this.seleccionZona.descripcionZonas =
+                            value.descripcionZonas;
+                    }
+                });
+
+                c = [];
+                this.sector = SECTOR;
+                this.ubicacion = UBICACION;
+
+                c = this.listaTempFamilia1;
+
+                c.forEach((value, index) => {
+                    if (idFam1 == value.id) {
+                        this.seleccionFamilia1.id = value.id;
+                        this.seleccionFamilia1.idBodega = value.idBodega;
+                        this.seleccionFamilia1.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                c = [];
+
+                c = this.listaTempFamilia2;
+
+                c.forEach((value, index) => {
+                    if (idFam2 == value.id) {
+                        this.seleccionFamilia2.id = value.id;
+                        this.seleccionFamilia2.idDesFam = value.idDesFam;
+                        this.seleccionFamilia2.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                c = [];
+
+                c = this.listaTempFamilia3;
+
+                c.forEach((value, index) => {
+                    if (idFam3 == value.id) {
+                        this.seleccionFamilia3.id = value.id;
+                        this.seleccionFamilia3.idDesFam01 = value.idDesFam01;
+                        this.seleccionFamilia3.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                c = [];
+
+                c = this.listaTempFamilia4;
+
+                c.forEach((value, index) => {
+                    if (idFam4 == value.id) {
+                        this.seleccionFamilia4.id = value.id;
+                        this.seleccionFamilia4.idDesFam02 = value.idDesFam02;
+                        this.seleccionFamilia4.descripcionFamilia =
+                            value.descripcionFamilia;
+                    }
+                });
+
+                c = [];
+
+                c = this.listaTempFamilia5;
 
                 c.forEach((value, index) => {
                     if (idFam5 == value.id) {
@@ -1447,6 +1859,83 @@ export default {
                                 title: "Error",
                                 text:
                                     "No fue posible modificar el Insumo/Economato,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AgregarCodInsumoEco() {
+            try {
+                let boolFVen = false;
+                if (this.seleccionFechaVenciminento.id == 1) {
+                    boolFVen = true;
+                } else {
+                    boolFVen = true;
+                }
+
+                let boolFLoteSerie = false;
+                if (this.seleccionLoteSerie.id == 1) {
+                    boolFLoteSerie = true;
+                } else {
+                    boolFLoteSerie = true;
+                }
+
+                let data = {
+                    CODART_BARR: this.codigoBarra,
+                    CODART_ONU: this.codigoOnu,
+                    CODART: this.codigoArticulo,
+                    NOMBRE: this.nombre,
+                    idEstado: this.seleccionEstado.id,
+                    ACT_FECVEN: boolFVen,
+                    ACT_LOTE: boolFLoteSerie,
+                    CANTXENB: this.cantidadEmbalaje,
+                    idBodega: this.seleccionBodega.id,
+                    idZona: this.seleccionZona.id,
+                    SECTOR: this.sector,
+                    UBICACION: this.ubicacion,
+                    idFam1: this.seleccionFamilia1.id,
+                    idFam2: this.seleccionFamilia2.id,
+                    idFam3: this.seleccionFamilia3.id,
+                    idFam4: this.seleccionFamilia4.id,
+                    idFam5: this.seleccionFamilia5.id,
+                    UNIMEDBASE: this.unidadMedidaBase
+                };
+                const dat = data;
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/PostCodInsumoEconomato",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.limpiarCampos();
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text: "Codigo Insumo/Economato Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.TraerInsumoEconomato();
+                            this.popUpCodInsumoEco = false;
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible agregar el codigo de Insumo/Economato,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });

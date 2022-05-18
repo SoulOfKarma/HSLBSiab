@@ -55,6 +55,35 @@
                                         )
                                     "
                                 ></plus-circle-icon>
+                                <plus-circle-icon
+                                    content="Agregar Codigo Nuevo"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        popAgregarCodMedicamento(
+                                            props.row.CODART_TRACK,
+                                            props.row.NOMBRE,
+                                            props.row.GENERICO,
+                                            props.row.CAT_FARMACIA,
+                                            props.row.UNIMEDBASE,
+                                            props.row.CONCENTRACION,
+                                            props.row.CODART_ONU,
+                                            props.row.CODART,
+                                            props.row.CODART_BARR,
+                                            props.row.UBICACION,
+                                            props.row.SECTOR,
+                                            props.row.ZGEN,
+                                            props.row.idBodega,
+                                            props.row.idZona,
+                                            props.row.idEstado,
+                                            props.row.LABORATORIO,
+                                            props.row.CANTXENB,
+                                            props.row.idACT_FECVEN,
+                                            props.row.idACTLOTE
+                                        )
+                                    "
+                                ></plus-circle-icon>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -449,6 +478,7 @@
                                 />
                             </div>
                         </div>
+                        <br />
                         <div class="vx-row w-full md-5">
                             <div class="vx-col w-1/2 ">
                                 <vs-button
@@ -466,6 +496,212 @@
                                     type="filled"
                                     class="w-full m-1"
                                     >Modificar Medicamento</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
+            <vs-popup
+                classContent="AgregarCodigoNMedicamento"
+                title="Agregar Nuevo Codigo a Medicamento"
+                :active.sync="popUpNCMedicamento"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>
+                                    Codigo de Barra
+                                </h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoBarra"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Track</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="codigoTrack"
+                                />
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Onu</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="codigoOnu"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Codigo Interno</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="codigoArticulo"
+                                />
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Nombre Articulo</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="nombre"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Generico</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="generico"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Categoria Farmacia</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    disabled
+                                    v-model="categoriaFarmacia"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Unidad Medida Base</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    disabled
+                                    v-model="unidadMedidaBase"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Concentracion</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="concentracion"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Estado</h6>
+                                <v-select
+                                    disabled
+                                    v-model="seleccionEstado"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionEstado"
+                                    :options="listaEstado"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Fecha Venciminento</h6>
+                                <v-select
+                                    disabled
+                                    v-model="seleccionFechaVenciminento"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionFVen"
+                                    :options="listaFVenciminento"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Activacion Lote/Serie</h6>
+                                <v-select
+                                    disabled
+                                    v-model="seleccionLoteSerie"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionLoteSerie"
+                                    :options="listaFLoteSerie"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Laboratorio</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="laboratorio"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Cantidad Embalaje</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="cantidadEmbalaje"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Bodega</h6>
+                                <v-select
+                                    disabled
+                                    v-model="seleccionBodega"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionBodega"
+                                    :options="listaBodega"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Zona</h6>
+                                <v-select
+                                    disabled
+                                    v-model="seleccionZona"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionZonas"
+                                    :options="listaZona"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Sector</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="sector"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Ubicacion</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="ubicacion"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Z Gen</h6>
+                                <vs-input
+                                    disabled
+                                    class="inputx w-full  "
+                                    v-model="zgen"
+                                />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="vx-row w-full md-5">
+                            <div class="vx-col w-1/2 ">
+                                <vs-button
+                                    @click="popUpNCMedicamento = false"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full m-1"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/2 ">
+                                <vs-button
+                                    @click="AgregarCodigoMedicamento"
+                                    color="warning"
+                                    type="filled"
+                                    class="w-full m-1"
+                                    >Agregar Codigo Medicamento</vs-button
                                 >
                             </div>
                         </div>
@@ -520,6 +756,7 @@ export default {
             //Datos Campos
             popUpMedicamento: false,
             popUpMedicamentoMod: false,
+            popUpNCMedicamento: false,
             descripcionServicio: "",
             codigoBarra: "",
             codigoTrack: "",
@@ -842,6 +1079,108 @@ export default {
                 console.log(error);
             }
         },
+        popAgregarCodMedicamento(
+            CODART_TRACK,
+            NOMBRE,
+            GENERICO,
+            CAT_FARMACIA,
+            UNIMEDBASE,
+            CONCENTRACION,
+            CODART_ONU,
+            CODART,
+            CODART_BARR,
+            UBICACION,
+            SECTOR,
+            ZGEN,
+            idBodega,
+            idZona,
+            idEstado,
+            LABORATORIO,
+            CANTXENB,
+            idACT_FECVEN,
+            idACTLOTE
+        ) {
+            try {
+                this.limpiarCampos();
+                this.popUpNCMedicamento = true;
+                this.codigoBarra = CODART_BARR;
+                this.codigoTrack = CODART_TRACK;
+                this.codigoOnu = CODART_ONU;
+                this.codigoArticulo = CODART;
+                this.nombre = NOMBRE;
+                this.generico = GENERICO;
+                this.categoriaFarmacia = CAT_FARMACIA;
+                this.unidadMedidaBase = UNIMEDBASE;
+                this.concentracion = CONCENTRACION;
+                let c = this.listaEstado;
+
+                c.forEach((value, index) => {
+                    if (idEstado == value.id) {
+                        this.seleccionEstado.id = value.id;
+                        this.seleccionEstado.descripcionEstado =
+                            value.descripcionEstado;
+                    }
+                });
+
+                c = [];
+                this.laboratorio = LABORATORIO;
+                this.cantidadEmbalaje = CANTXENB;
+                this.idBodega = 0;
+                c = this.listaBodega;
+
+                c.forEach((value, index) => {
+                    if (idBodega == value.id) {
+                        this.seleccionBodega.id = value.id;
+                        this.seleccionBodega.descripcionBodega =
+                            value.descripcionBodega;
+                    }
+                });
+
+                c = [];
+
+                this.idZona = 0;
+
+                c = this.listaZona;
+
+                c.forEach((value, index) => {
+                    if (idZona == value.id) {
+                        this.seleccionZona.id = value.id;
+                        this.seleccionZona.descripcionZonas =
+                            value.descripcionZonas;
+                    }
+                });
+
+                c = [];
+                if (idACT_FECVEN == 1) {
+                    this.seleccionFechaVenciminento = {
+                        id: 1,
+                        descripcionFVen: "Si"
+                    };
+                } else {
+                    this.seleccionFechaVenciminento = {
+                        id: 2,
+                        descripcionFVen: "No"
+                    };
+                }
+
+                if (idACTLOTE == 1) {
+                    this.seleccionLoteSerie = {
+                        id: 1,
+                        descripcionLoteSerie: "Si"
+                    };
+                } else {
+                    this.seleccionLoteSerie = {
+                        id: 2,
+                        descripcionLoteSerie: "No"
+                    };
+                }
+                this.sector = SECTOR;
+                this.ubicacion = UBICACION;
+                this.zgen = ZGEN;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         //Metodos CRUD Servicios
         TraerMedicamentos() {
             try {
@@ -1086,6 +1425,86 @@ export default {
                                 time: 5000,
                                 title: "Completado",
                                 text: "Medicamento Modificado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpMedicamentoMod = false;
+                            this.TraerMedicamentos();
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible modificar el medicamento,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AgregarCodigoMedicamento() {
+            try {
+                let boolFVen = false;
+                if (this.seleccionFechaVenciminento.id == 1) {
+                    boolFVen = true;
+                } else {
+                    boolFVen = true;
+                }
+
+                let boolFLoteSerie = false;
+                if (this.seleccionLoteSerie.id == 1) {
+                    boolFLoteSerie = true;
+                } else {
+                    boolFLoteSerie = true;
+                }
+
+                let data = {
+                    CODART_BARR: this.codigoBarra,
+                    CODART_TRACK: this.codigoTrack,
+                    CODART_ONU: this.codigoOnu,
+                    CODART: this.codigoArticulo,
+                    NOMBRE: this.nombre,
+                    GENERICO: this.generico,
+                    CAT_FARMACIA: this.categoriaFarmacia,
+                    UNIMEDBASE: this.unidadMedidaBase,
+                    CONCENTRACION: this.concentracion,
+                    idEstado: this.seleccionEstado.id,
+                    ACT_FECVEN: boolFVen,
+                    ACT_LOTE: boolFLoteSerie,
+                    LABORATORIO: this.laboratorio,
+                    CANTXENB: this.cantidadEmbalaje,
+                    idBodega: this.seleccionBodega.id,
+                    idZona: this.seleccionZona.id,
+                    SECTOR: this.sector,
+                    UBICACION: this.ubicacion,
+                    ZGEN: this.zgen
+                };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.localVal + "/api/Mantenedor/PostCodMedicamentos",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.limpiarCampos();
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Codigo Medicamento Agregado Correctamente",
                                 color: "success",
                                 position: "top-right"
                             });

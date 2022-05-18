@@ -19,7 +19,27 @@ class SiabArticulosController extends Controller
         }
     }
 
+    public function PostCodMedicamentos(Request $request){
+        try {
+            siab_articulos::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function PostInsumoEconomato(Request $request){
+        try {
+            siab_articulos::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PostCodInsumoEconomato(Request $request){
         try {
             siab_articulos::create($request->all());
             return true;
