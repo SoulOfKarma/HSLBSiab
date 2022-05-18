@@ -79,6 +79,11 @@ const router = new Router({
                     component: () => import("./views/Mantenedor/AuthEstado.vue")
                 },
                 {
+                    path: "/Mantenedor/Estado",
+                    name: "/Mantenedor/Estado General",
+                    component: () => import("./views/Mantenedor/Estado.vue")
+                },
+                {
                     path: "/Mantenedor/UsuarioLaboratorio",
                     name: "/Mantenedor/UsuarioLaboratorio",
                     component: () =>
@@ -105,6 +110,12 @@ const router = new Router({
                     path: "/Mantenedor/Zona",
                     name: "/Mantenedor/Zona",
                     component: () => import("./views/Mantenedor/Zona.vue")
+                },
+                {
+                    path: "/Mantenedor/StockMinMax",
+                    name: "/Mantenedor/StockMinMax",
+                    component: () =>
+                        import("./views/Mantenedor/StockMinMax.vue")
                 },
                 //Router de Recepcion
                 {

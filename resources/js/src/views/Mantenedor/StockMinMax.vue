@@ -1,9 +1,9 @@
 <template>
     <div>
-        <vx-card title="Usuarios">
+        <vx-card title="Stock Min/Max">
             <div>
-                <vs-button color="primary" type="filled" @click="popUsuarios"
-                    >Agregar Nuevo Usuario</vs-button
+                <vs-button color="primary" type="filled" @click="popStockMinMax"
+                    >Agregar Stock Min/Max</vs-button
                 >
             </div>
             <br />
@@ -26,18 +26,26 @@
                             </span>
                             <span v-else-if="props.column.field === 'action'">
                                 <plus-circle-icon
-                                    content="Modificar Usuario"
+                                    content="Modificar Stock Min/Max"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        popModificarUsuario(
+                                        popModificarStockMinMax(
                                             props.row.id,
-                                            props.row.run,
-                                            props.row.nombre_usuario,
-                                            props.row.apellido_usuario,
-                                            props.row.anexo,
-                                            props.row.correo_usuario
+                                            props.row.descripcionEstado
+                                        )
+                                    "
+                                ></plus-circle-icon>
+                                <plus-circle-icon
+                                    content="Desactivar Stock Min/Max"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        popDesactivarStockMinMax(
+                                            props.row.id,
+                                            props.row.descripcionEstado
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -51,95 +59,87 @@
                 </vx-card>
             </div>
             <vs-popup
-                classContent="Usuarios"
-                title="Agregar Usuario"
-                :active.sync="popUpUsuario"
+                classContent="AgregarStockMinMax"
+                title="Agregar Stock Min/Max"
+                :active.sync="popUpStockMinMax"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
-                        <div class="vx-row ">
+                        <div class="vx-row">
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Rut Usuario</h6>
+                                <h6>Bodega</h6>
                                 <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="run_usuario"
-                                    v-on:blur="formatear_run"
-                                />
-                                <span
-                                    style="font-size: 10px; color: red; margin-left: 10px;"
-                                    v-if="val_run"
-                                    >Run incorrecto</span
-                                >
+                                <v-select
+                                    v-model="seleccionBodega"
+                                    placeholder="Bodega"
+                                    class="w-full select-large"
+                                    label="descripcionBodega"
+                                    :options="listaBodega"
+                                    disabled
+                                ></v-select>
                             </div>
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Nombre</h6>
+                                <h6>Codigo Interno</h6>
                                 <br />
                                 <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="nombre_usuario"
+                                    class="inputx w-full  "
+                                    v-model="CodArt"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Nombre Articulo</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="Nombre"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Unidad Medida Base</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="UnidadMedida"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Stock Minimo</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="stockMin"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Stock Critico</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="stockCri"
                                 />
                             </div>
                         </div>
-                        <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Apellido</h6>
-                                <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="apellido_usuario"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Anexo</h6>
-                                <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="anexo"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Correo</h6>
-                                <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="correo_usuario"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Password</h6>
-                                <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="password"
-                                    type="password"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
+                        <br />
+                        <div class="vx-row w-full">
+                            <div class="vx-col w-1/2">
                                 <vs-button
-                                    @click="popUpUsuario = false"
+                                    @click="popUpStockMinMax = false"
                                     color="primary"
                                     type="filled"
-                                    class="w-full m-1"
+                                    class="w-full"
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/2 mt-5">
+                            <div class="vx-col w-1/2">
                                 <vs-button
-                                    @click="AgregarUsuario"
-                                    color="danger"
+                                    @click="AgregarStockMinMax"
+                                    color="success"
                                     type="filled"
-                                    class="w-full m-1"
-                                    >Agregar Usuario</vs-button
+                                    class="w-full"
+                                    >Agregar Stock Min/Max</vs-button
                                 >
                             </div>
                         </div>
@@ -148,95 +148,87 @@
                 </div>
             </vs-popup>
             <vs-popup
-                classContent="Usuarios"
-                title="Modificar Usuario"
-                :active.sync="popUpUsuarioMod"
+                classContent="stockMod"
+                title="Modificar Stock Min/Max"
+                :active.sync="popUpStockMinMaxMod"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
-                        <div class="vx-row ">
+                        <div class="vx-row">
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Rut Usuario</h6>
+                                <h6>Bodega</h6>
                                 <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="run_usuario"
-                                    v-on:blur="formatear_run"
-                                />
-                                <span
-                                    style="font-size: 10px; color: red; margin-left: 10px;"
-                                    v-if="val_run"
-                                    >Run incorrecto</span
-                                >
+                                <v-select
+                                    v-model="seleccionBodega"
+                                    placeholder="Bodega"
+                                    class="w-full select-large"
+                                    label="descripcionBodega"
+                                    :options="listaBodega"
+                                    disabled
+                                ></v-select>
                             </div>
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Nombre</h6>
+                                <h6>Codigo Interno</h6>
                                 <br />
                                 <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="nombre_usuario"
+                                    class="inputx w-full  "
+                                    v-model="CodArt"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Nombre Articulo</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="Nombre"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Unidad Medida Base</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="UnidadMedida"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Stock Minimo</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="stockMin"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Stock Critico</h6>
+                                <br />
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="stockCri"
                                 />
                             </div>
                         </div>
-                        <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Apellido</h6>
-                                <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="apellido_usuario"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Anexo</h6>
-                                <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="anexo"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Correo</h6>
-                                <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="correo_usuario"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Password</h6>
-                                <br />
-                                <vs-input
-                                    class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
-                                    v-model="password"
-                                    type="password"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
+                        <br />
+                        <div class="vx-row w-full">
+                            <div class="vx-col w-1/2">
                                 <vs-button
-                                    @click="popUpUsuarioMod = false"
+                                    @click="popUpStockMinMaxMod = false"
                                     color="primary"
                                     type="filled"
-                                    class="w-full m-1"
+                                    class="w-full"
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/2 mt-5">
+                            <div class="vx-col w-1/2">
                                 <vs-button
-                                    @click="ModificarUsuario"
-                                    color="danger"
+                                    @click="ModificarStockMinMax"
+                                    color="success"
                                     type="filled"
-                                    class="w-full m-1"
-                                    >Modificar Usuario</vs-button
+                                    class="w-full"
+                                    >Modificar Stock Min/Max</vs-button
                                 >
                             </div>
                         </div>
@@ -257,7 +249,6 @@ import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
-import { validate, clean, format } from "rut.js";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 Vue.use(VueTippy);
@@ -290,42 +281,30 @@ export default {
                 }
             },
             //Datos Campos
-            popUpUsuario: false,
-            popUpUsuarioMod: false,
-            run_usuario: "",
-            nombre_usuario: "",
-            apellido_usuario: "",
-            anexo: "",
-            correo_usuario: "",
-            password: "",
+            popUpStockMinMax: false,
+            popUpStockMinMaxMod: false,
+            popUpDesactivarStockMinMax: false,
+            descripcionEstado: "",
             idMod: 0,
-            val_run: false,
+            idBodega: 0,
+            CodArt: 0,
+            Nombre: "",
+            UnidadMedida: "",
+            stockMin: 0,
+            stockCri: 0,
+            seleccionBodega: {
+                id: 0,
+                descripcionBodega: ""
+            },
+            seleccionEstado: {
+                id: 0,
+                descripcionEstado: ""
+            },
             //Template Columnas Listado Proveedor
             columns: [
                 {
-                    label: "Rut",
-                    field: "run",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Nombre",
-                    field: "nombre_usuario",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Apellido",
-                    field: "apellido_usuario",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Anexo",
-                    field: "anexo",
+                    label: "Estado",
+                    field: "descripcionEstado",
                     filterOptions: {
                         enabled: true
                     }
@@ -335,8 +314,11 @@ export default {
                     field: "action"
                 }
             ],
-            //Datos Listado Proveedor
-            rows: []
+            //Datos Listado
+            rows: [],
+            listaEstado: [],
+            listaBodega: [],
+            listaArticulos: []
         };
     },
     methods: {
@@ -360,53 +342,99 @@ export default {
                 return true;
             }
         },
-        formatear_run() {
-            if (this.run_usuario == "" || this.run_usuario == null) {
-                //console.log("Sin Rut");
-                this.val_run = false;
-            } else {
-                this.run_usuario = format(this.run_usuario);
-                this.val_run = !validate(this.run_usuario);
-            }
-        },
         limpiarCampos() {
             try {
-                this.run_usuario = "";
-                this.nombre_usuario = "";
-                this.apellido_usuario = "";
-                this.anexo = "";
-                this.correo_usuario = "";
-                this.password = "";
+                this.descripcionEstado = "";
+                this.idMod = 0;
             } catch (error) {
                 console.log(error);
             }
         },
         //PopUp
-        popUsuarios() {
+        popStockMinMax() {
             try {
-                this.popUpUsuario = true;
+                this.popUpStockMinMax = true;
             } catch (error) {
                 console.log(error);
             }
         },
-        popModificarUsuario(id, rut, nombre, apellido, anexo, correo) {
+        popModificarStockMinMax(id, DesEstado) {
             try {
-                this.run_usuario = rut;
-                this.nombre_usuario = nombre;
-                this.apellido_usuario = apellido;
-                this.anexo = anexo;
-                this.correo_usuario = correo;
+                this.limpiarCampos();
+                this.popUpStockMinMaxMod = true;
                 this.idMod = id;
-                this.popUpUsuarioMod = true;
+                this.descripcionEstado = DesEstado;
             } catch (error) {
                 console.log(error);
             }
         },
-        //Carga de Datos
-        TraerUsuarios() {
+        popDesactivarStockMinMax(id, DesEstado) {
+            try {
+                this.limpiarCampos();
+                this.popUpDesactivarStockMinMax = true;
+                this.idMod = id;
+                this.descripcionEstado = DesEstado;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Metodos CRUD Servicios
+        TraerEstado() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetUsers", {
+                    .get(this.localVal + "/api/Mantenedor/GetEstado", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaEstado = res.data;
+                        if (this.listaEstado.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de Estado correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerBodega() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetBodega", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaBodega = res.data;
+                        if (this.listaBodega.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de las Bodegas correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerStockMinMax() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetStockMinMax", {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -419,7 +447,7 @@ export default {
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                    "No hay datos o no se cargaron los datos correctamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -429,27 +457,17 @@ export default {
                 console.log(error);
             }
         },
-        //Metodos para Agregar Datos
-        AgregarUsuario() {
+        AgregarStockMinMax() {
             try {
                 let data = {
-                    run_usuario: this.run_usuario,
-                    correo_usuario: this.correo_usuario,
-                    nombre_usuario: this.nombre_usuario,
-                    apellido_usuario: this.apellido_usuario,
-                    anexo: this.anexo,
-                    password: this.password,
-                    CB_PERIFERICA: "-",
-                    NB_PERIFERICA: "-",
-                    permiso_usuario: 1,
-                    estado_login: 1
+                    descripcionEstado: this.descripcionEstado
                 };
 
                 const dat = data;
 
                 axios
                     .post(
-                        this.localVal + "/api/Mantenedor/RegistrarUsuario",
+                        this.localVal + "/api/Mantenedor/PostStockMinMax",
                         dat,
                         {
                             headers: {
@@ -465,17 +483,18 @@ export default {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
-                                text: "Usuario Registrado Correctamente",
+                                text: "Stock Min/Max Ingresado Correctamente",
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpUsuario = false;
+                            this.popUpStockMinMax = false;
+                            this.TraerStockMinMax();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible registrar al usuario,intentelo nuevamente",
+                                    "No fue posible registrar el Stock Min/Max,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -485,31 +504,26 @@ export default {
                 console.log(error);
             }
         },
-        ModificarUsuario() {
+        ModificarStockMinMax() {
             try {
                 let data = {
                     id: this.idMod,
-                    run_usuario: this.run_usuario,
-                    correo_usuario: this.correo_usuario,
-                    nombre_usuario: this.nombre_usuario,
-                    apellido_usuario: this.apellido_usuario,
-                    anexo: this.anexo,
-                    password: this.password,
-                    CB_PERIFERICA: "-",
-                    NB_PERIFERICA: "-",
-                    permiso_usuario: 1,
-                    estado_login: 1
+                    descripcionEstado: this.descripcionEstado
                 };
 
                 const dat = data;
 
                 axios
-                    .post(this.localVal + "/api/Mantenedor/PutUsuario", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                    .post(
+                        this.localVal + "/api/Mantenedor/PutStockMinMax",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
@@ -517,17 +531,18 @@ export default {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
-                                text: "Usuario Modificado Correctamente",
+                                text: "Stock Min/Max Modificado Correctamente",
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpUsuarioMod = false;
+                            this.popUpStockMinMaxMod = false;
+                            this.TraerStockMinMax();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible modificar al usuario,intentelo nuevamente",
+                                    "No fue posible modificar el Stock Min/Max,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -539,7 +554,9 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerUsuarios();
+        this.TraerStockMinMax();
+        this.TraerEstado();
+        this.TraerBodega();
         this.openLoadingColor();
     }
 };

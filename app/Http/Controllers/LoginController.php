@@ -138,7 +138,7 @@ class LoginController extends Controller
                 $run = strtoupper($run); 
                 Users::where('id',$request->id)
                     ->update(['run' => $run,'correo_usuario' => $request->correo_usuario,'nombre_usuario' => $request->nombre_usuario,
-                    'apellido_usuario' => $request->apellido_usuario,'anexo' => $request->anexo,'password' => $request->password,
+                    'apellido_usuario' => $request->apellido_usuario,'anexo' => $request->anexo,'password' => Hash::make($request->password),
                     'CB_PERIFERICA' => $request->CB_PERIFERICA,'NB_PERIFERICA' => $request->NB_PERIFERICA]);
             return true;
         } catch (\Throwable $th) {

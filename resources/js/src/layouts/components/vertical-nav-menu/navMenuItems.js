@@ -69,6 +69,12 @@ export default [
                 icon: "HomeIcon"
             },
             {
+                url: "/Mantenedor/Estado",
+                name: "Estado General",
+                slug: "/Mantenedor/Estado",
+                icon: "HomeIcon"
+            },
+            {
                 url: "/Mantenedor/Bodega",
                 name: "Bodega",
                 slug: "/Mantenedor/Bodega",
@@ -90,6 +96,12 @@ export default [
                 url: "/Mantenedor/Zona",
                 name: "Zonas",
                 slug: "/Mantenedor/Zona",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Mantenedor/StockMinMax",
+                name: "StockMinMax",
+                slug: "/Mantenedor/StockMinMax",
                 icon: "HomeIcon"
             }
         ]
