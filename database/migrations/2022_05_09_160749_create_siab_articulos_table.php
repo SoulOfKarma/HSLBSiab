@@ -31,11 +31,11 @@ class CreateSiabArticulosTable extends Migration
             $table->boolean('ACT_LOTE')->nullable();
             $table->boolean('ACT_SERIE')->nullable();
             $table->bigInteger('idBodega')->nullable();
-            $table->bigInteger('idFam1')->nullable();
-            $table->bigInteger('idFam2')->nullable();
-            $table->bigInteger('idFam3')->nullable();
-            $table->bigInteger('idFam4')->nullable();
-            $table->bigInteger('idFam5')->nullable();
+            $table->string('NOMFAM1')->nullable();
+            $table->string('NOMFAM2')->nullable();
+            $table->string('NOMFAM3')->nullable();
+            $table->string('NOMFAM4')->nullable();
+            $table->string('NOMFAM5')->nullable();
             $table->string('STOCK_MIN')->nullable();
             $table->string('STOCK_MAX')->nullable();
             $table->string('STOCK_CRI')->nullable();

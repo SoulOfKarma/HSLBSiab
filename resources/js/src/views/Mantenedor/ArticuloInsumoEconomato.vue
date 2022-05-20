@@ -870,6 +870,13 @@ export default {
                     }
                 },
                 {
+                    label: "Bodega",
+                    field: "descripcionBodega",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
                     label: "Codigo Onu",
                     field: "CODART_ONU",
                     filterOptions: {
@@ -899,35 +906,35 @@ export default {
                 },
                 {
                     label: "Descripcion Familia 1",
-                    field: "desFam1",
+                    field: "NOMFAM1",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "Descripcion Familia 2",
-                    field: "desFam2",
+                    field: "NOMFAM2",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "Descripcion Familia 3",
-                    field: "desFam3",
+                    field: "NOMFAM3",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "Descripcion Familia 4",
-                    field: "desFam4",
+                    field: "NOMFAM4",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "Descripcion Familia 5",
-                    field: "desFam5",
+                    field: "NOMFAM5",
                     filterOptions: {
                         enabled: true
                     }
