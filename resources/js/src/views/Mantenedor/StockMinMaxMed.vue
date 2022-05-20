@@ -1,12 +1,9 @@
 <template>
     <div>
-        <vx-card title="Stock Insumo/Economato">
+        <vx-card title="Stock Min/Max">
             <div>
-                <vs-button
-                    color="primary"
-                    type="filled"
-                    @click="PopUpListadoArticulos = true"
-                    >Agregar Stock Insumo/Economato</vs-button
+                <vs-button color="primary" type="filled" @click="popStockMinMax"
+                    >Agregar Stock Min/Max</vs-button
                 >
             </div>
             <br />
@@ -29,7 +26,7 @@
                             </span>
                             <span v-else-if="props.column.field === 'action'">
                                 <plus-circle-icon
-                                    content="Modificar Stock Insumo/Economato"
+                                    content="Modificar Stock Min/Max"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
@@ -41,7 +38,7 @@
                                     "
                                 ></plus-circle-icon>
                                 <plus-circle-icon
-                                    content="Desactivar Stock Insumo/Economato"
+                                    content="Desactivar Stock Min/Max"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
@@ -62,8 +59,8 @@
                 </vx-card>
             </div>
             <vs-popup
-                classContent="AgregarStockInsumoEconomato"
-                title="Agregar Stock Insumo/Economato"
+                classContent="AgregarStockMinMax"
+                title="Agregar Stock Min/Max"
                 :active.sync="popUpStockMinMax"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
@@ -129,7 +126,7 @@
                         <div class="vx-row w-full">
                             <div class="vx-col w-1/2">
                                 <vs-button
-                                    @click="popStockMinMaxVolver"
+                                    @click="popUpStockMinMax = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
@@ -142,7 +139,7 @@
                                     color="success"
                                     type="filled"
                                     class="w-full"
-                                    >Agregar Stock Insumo/Economato</vs-button
+                                    >Agregar Stock Min/Max</vs-button
                                 >
                             </div>
                         </div>
@@ -151,8 +148,8 @@
                 </div>
             </vs-popup>
             <vs-popup
-                classContent="stockModInsumoEconomato"
-                title="Modificar Stock Insumo/Economato"
+                classContent="stockMod"
+                title="Modificar Stock Min/Max"
                 :active.sync="popUpStockMinMaxMod"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
@@ -231,75 +228,9 @@
                                     color="success"
                                     type="filled"
                                     class="w-full"
-                                    >Modificar Stock Insumo/Economato</vs-button
+                                    >Modificar Stock Min/Max</vs-button
                                 >
                             </div>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-            </vs-popup>
-            <vs-popup
-                classContent="ListadoInsumoEconomato"
-                title="Listado Articulos Insumo/Economato"
-                :active.sync="PopUpListadoArticulos"
-            >
-                <div class="vx-col md:w-1/1 w-full mb-base">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vx-card>
-                                <vue-good-table
-                                    :columns="col"
-                                    :rows="listaInsumoEconomato"
-                                    :pagination-options="{
-                                        enabled: true,
-                                        perPage: 10
-                                    }"
-                                >
-                                    <template
-                                        slot="table-row"
-                                        slot-scope="props"
-                                    >
-                                        <!-- Column: Name -->
-                                        <span
-                                            v-if="
-                                                props.column.field ===
-                                                    'fullName'
-                                            "
-                                            class="text-nowrap"
-                                        >
-                                        </span>
-                                        <span
-                                            v-else-if="
-                                                props.column.field === 'action'
-                                            "
-                                        >
-                                            <plus-circle-icon
-                                                content="Asignar Insumo/Economato"
-                                                v-tippy
-                                                size="1.5x"
-                                                class="custom-class"
-                                                @click="
-                                                    popAsignarInsumoEco(
-                                                        props.row.NOMBRE,
-                                                        props.row.CODART,
-                                                        props.row.idEstado,
-                                                        props.row.idBodega
-                                                    )
-                                                "
-                                            ></plus-circle-icon>
-                                        </span>
-                                        <!-- Column: Common -->
-                                        <span v-else>
-                                            {{
-                                                props.formattedRow[
-                                                    props.column.field
-                                                ]
-                                            }}
-                                        </span>
-                                    </template>
-                                </vue-good-table>
-                            </vx-card>
                         </div>
                     </vx-card>
                     <div class="vx-row"></div>
@@ -353,7 +284,6 @@ export default {
             popUpStockMinMax: false,
             popUpStockMinMaxMod: false,
             popUpDesactivarStockMinMax: false,
-            PopUpListadoArticulos: false,
             descripcionEstado: "",
             idMod: 0,
             idBodega: 0,
@@ -370,90 +300,7 @@ export default {
                 id: 0,
                 descripcionEstado: ""
             },
-            //Template Columnas Listado
-            col: [
-                {
-                    label: "Codigo de Barra",
-                    field: "CODART_BARR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Bodega",
-                    field: "descripcionBodega",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Onu",
-                    field: "CODART_ONU",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Articulo",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Nombre Medicamento",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Unidad de Medida",
-                    field: "UNIMEDBASE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 1",
-                    field: "NOMFAM1",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 2",
-                    field: "NOMFAM2",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 3",
-                    field: "NOMFAM3",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 4",
-                    field: "NOMFAM4",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 5",
-                    field: "NOMFAM5",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Opciones",
-                    field: "action"
-                }
-            ],
+            //Template Columnas Listado Proveedor
             columns: [
                 {
                     label: "Codigo Interno",
@@ -499,8 +346,7 @@ export default {
             rows: [],
             listaEstado: [],
             listaBodega: [],
-            listaArticulos: [],
-            listaInsumoEconomato: []
+            listaArticulos: []
         };
     },
     methods: {
@@ -528,30 +374,14 @@ export default {
             try {
                 this.descripcionEstado = "";
                 this.idMod = 0;
-                this.idBodega = 0;
-                this.CodArt = 0;
-                this.Nombre = "";
-                this.UnidadMedida = "";
-                this.stockMin = 0;
-                this.stockCri = 0;
-                this.seleccionBodega = {
-                    id: 0,
-                    descripcionBodega: ""
-                };
-                this.seleccionEstado = {
-                    id: 0,
-                    descripcionEstado: ""
-                };
             } catch (error) {
                 console.log(error);
             }
         },
         //PopUp
-        popStockMinMaxVolver() {
+        popStockMinMax() {
             try {
-                this.limpiarCampos();
-                this.PopUpListadoArticulos = true;
-                this.popUpStockMinMax = false;
+                this.popUpStockMinMax = true;
             } catch (error) {
                 console.log(error);
             }
@@ -576,69 +406,7 @@ export default {
                 console.log(error);
             }
         },
-        popAsignarInsumoEco(NOMBRE, CODART, idEstado, idBodega) {
-            try {
-                this.limpiarCampos();
-                this.PopUpListadoArticulos = false;
-                this.popUpStockMinMax = true;
-                this.codigoArticulo = CODART;
-                this.nombre = NOMBRE;
-                let c = this.listaEstado;
-
-                c.forEach((value, index) => {
-                    if (idEstado == value.id) {
-                        this.seleccionEstado.id = value.id;
-                        this.seleccionEstado.descripcionEstado =
-                            value.descripcionEstado;
-                    }
-                });
-
-                c = [];
-
-                this.idBodega = 0;
-
-                c = this.listaBodega;
-
-                c.forEach((value, index) => {
-                    if (idBodega == value.id) {
-                        this.seleccionBodega.id = value.id;
-                        this.seleccionBodega.descripcionBodega =
-                            value.descripcionBodega;
-                    }
-                });
-
-                c = [];
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        //Metodos CRUD
-        TraerInsumoEconomato() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetInsumoEconomato", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaInsumoEconomato = res.data;
-                        if (this.rows.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
+        //Metodos CRUD Servicios
         TraerEstado() {
             try {
                 axios
@@ -814,7 +582,6 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerInsumoEconomato();
         this.TraerStockMinMax();
         this.TraerEstado();
         this.TraerBodega();

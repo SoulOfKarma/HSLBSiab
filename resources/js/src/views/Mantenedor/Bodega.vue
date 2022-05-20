@@ -5,52 +5,58 @@
                 <div class="vx-row w-full ">
                     <div class="vx-col w-1/2 mt-5">
                         <vs-button
+                            class="w-full"
                             color="primary"
                             type="filled"
-                            @click="popUpBodega = true"
+                            @click="PopBodega"
                             >Agregar y Modificar Bodega</vs-button
                         >
                     </div>
                     <br />
                     <div class="vx-col w-1/2 mt-5">
                         <vs-button
+                            class="w-full"
                             color="primary"
                             type="filled"
-                            @click="popUpFam1 = true"
+                            @click="PopFam1"
                             >Agregar y Modificar Familia 1</vs-button
                         >
                     </div>
                     <div class="vx-col w-1/2 mt-5">
                         <vs-button
+                            class="w-full"
                             color="primary"
                             type="filled"
-                            @click="popUpFam2 = true"
+                            @click="PopFam2"
                             >Agregar y Modificar Familia 2</vs-button
                         >
                     </div>
                     <br />
                     <div class="vx-col w-1/2 mt-5">
                         <vs-button
+                            class="w-full"
                             color="primary"
                             type="filled"
-                            @click="popUpFam3 = true"
+                            @click="PopFam3"
                             >Agregar y Modificar Familia 3</vs-button
                         >
                     </div>
                     <div class="vx-col w-1/2 mt-5">
                         <vs-button
+                            class="w-full"
                             color="primary"
                             type="filled"
-                            @click="popUpFam4 = true"
+                            @click="PopFam4"
                             >Agregar y Modificar Familia 4</vs-button
                         >
                     </div>
                     <br />
                     <div class="vx-col w-1/2 mt-5">
                         <vs-button
+                            class="w-full"
                             color="primary"
                             type="filled"
-                            @click="popUpFam5 = true"
+                            @click="PopFam5"
                             >Agregar y Modificar Familia 5</vs-button
                         >
                     </div>
@@ -67,6 +73,8 @@
                     <div class="vx-row w-full">
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Agregar Bodega">
+                                <h6>Descripcion Bodega</h6>
+                                <br />
                                 <vs-input
                                     class="w-full inputx"
                                     placeholder="Descripcion Bodega"
@@ -83,6 +91,8 @@
                         </div>
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Modificar Bodega">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodega"
                                     placeholder="Bodega"
@@ -91,6 +101,8 @@
                                     :options="listaBodega"
                                     @input="cargaItemBodega"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Bodega</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full"
@@ -117,6 +129,8 @@
                     <div class="vx-row w-full">
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Agregar Familia 1">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodega"
                                     placeholder="Bodega"
@@ -124,6 +138,8 @@
                                     label="descripcionBodega"
                                     :options="listaBodega"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 1</h6>
                                 <br />
                                 <vs-input
                                     class="w-full inputx"
@@ -141,6 +157,8 @@
                         </div>
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Modificar Familia 1">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodegaMod"
                                     placeholder="Bodega"
@@ -150,6 +168,8 @@
                                     @input="cargaItemBodegaFamiliaMod"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 1</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia1M"
                                     placeholder="Bodega"
@@ -158,6 +178,8 @@
                                     :options="listaFamilia1"
                                     @input="cargaItemFamiliaDescripcion1"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 1</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full"
@@ -184,6 +206,8 @@
                     <div class="vx-row w-full">
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Agregar Familia 2">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodega"
                                     placeholder="Bodega"
@@ -193,6 +217,8 @@
                                     @input="cargaItemBodegaFamilia"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 1</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia1"
                                     placeholder="Bodega"
@@ -200,6 +226,8 @@
                                     label="descripcionFamilia"
                                     :options="listaFamilia1"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 2</h6>
                                 <br />
                                 <vs-input
                                     class="w-full inputx"
@@ -217,6 +245,8 @@
                         </div>
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Modificar Familia 2">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodegaMod"
                                     placeholder="Bodega"
@@ -225,6 +255,8 @@
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamiliaMod"
                                 ></v-select>
+                                <br />
+                                <h6>Seleccione Familia 1</h6>
                                 <br />
                                 <v-select
                                     v-model="seleccionFamilia1M"
@@ -235,6 +267,8 @@
                                     @input="cargaItemFamilia1M"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccion Familia 2</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia2M"
                                     placeholder="Bodega"
@@ -243,6 +277,8 @@
                                     :options="listaFamilia2"
                                     @input="cargaItemFamiliaDescripcion2"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 2</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full"
@@ -269,6 +305,8 @@
                     <div class="vx-row w-full">
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Agregar Familia 3">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodega"
                                     placeholder="Bodega"
@@ -277,6 +315,8 @@
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamilia"
                                 ></v-select>
+                                <br />
+                                <h6>Seleccione Familia 1</h6>
                                 <br />
                                 <v-select
                                     v-model="seleccionFamilia1"
@@ -287,6 +327,8 @@
                                     @input="cargaItemFamilia1"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 2</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia2"
                                     placeholder="Bodega"
@@ -295,6 +337,8 @@
                                     :options="listaFamilia2"
                                     @input="cargaItemFamilia2"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 3</h6>
                                 <br />
                                 <vs-input
                                     class="w-full inputx"
@@ -312,6 +356,8 @@
                         </div>
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Modificar Familia 3">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodegaMod"
                                     placeholder="Bodega"
@@ -320,6 +366,8 @@
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamiliaMod"
                                 ></v-select>
+                                <br />
+                                <h6>Seleccione Familia 1</h6>
                                 <br />
                                 <v-select
                                     v-model="seleccionFamilia1M"
@@ -330,6 +378,8 @@
                                     @input="cargaItemFamilia1M"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 2</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia2M"
                                     placeholder="Bodega"
@@ -339,6 +389,8 @@
                                     @input="cargaItemFamilia2M"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 3</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia3M"
                                     placeholder="Bodega"
@@ -347,6 +399,8 @@
                                     :options="listaFamilia3"
                                     @input="cargaItemFamiliaDescripcion3"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 3</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full"
@@ -373,6 +427,8 @@
                     <div class="vx-row w-full">
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Agregar Familia 4">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodega"
                                     placeholder="Bodega"
@@ -381,6 +437,8 @@
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamilia"
                                 ></v-select>
+                                <br />
+                                <h6>Seleccione Familia 1</h6>
                                 <br />
                                 <v-select
                                     v-model="seleccionFamilia1"
@@ -391,6 +449,8 @@
                                     @input="cargaItemFamilia1"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 2</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia2"
                                     placeholder="Bodega"
@@ -400,6 +460,8 @@
                                     @input="cargaItemFamilia2"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 3</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia3"
                                     placeholder="Bodega"
@@ -407,6 +469,8 @@
                                     label="descripcionFamilia"
                                     :options="listaFamilia3"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 4</h6>
                                 <br />
                                 <vs-input
                                     class="w-full inputx"
@@ -424,6 +488,8 @@
                         </div>
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Modificar Familia 4">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodegaMod"
                                     placeholder="Bodega"
@@ -432,6 +498,8 @@
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamiliaMod"
                                 ></v-select>
+                                <br />
+                                <h6>Seleccione Familia 1</h6>
                                 <br />
                                 <v-select
                                     v-model="seleccionFamilia1M"
@@ -442,6 +510,8 @@
                                     @input="cargaItemFamilia1M"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 2</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia2M"
                                     placeholder="Bodega"
@@ -450,6 +520,8 @@
                                     :options="listaFamilia2"
                                     @input="cargaItemFamilia2M"
                                 ></v-select>
+                                <br />
+                                <h6>Seleccione Familia 3</h6>
                                 <br />
                                 <v-select
                                     v-model="seleccionFamilia3M"
@@ -460,6 +532,8 @@
                                     @input="cargaItemFamilia3M"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 4</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia4M"
                                     placeholder="Bodega"
@@ -468,6 +542,8 @@
                                     :options="listaFamilia4"
                                     @input="cargaItemFamiliaDescripcion4"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 4</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full"
@@ -494,6 +570,8 @@
                     <div class="vx-row w-full">
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Agregar Familia 5">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodega"
                                     placeholder="Bodega"
@@ -502,6 +580,8 @@
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamilia"
                                 ></v-select>
+                                <br />
+                                <h6>Seleccione Familia 1</h6>
                                 <br />
                                 <v-select
                                     v-model="seleccionFamilia1"
@@ -512,6 +592,8 @@
                                     @input="cargaItemFamilia1"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 2</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia2"
                                     placeholder="Bodega"
@@ -521,6 +603,8 @@
                                     @input="cargaItemFamilia2"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 3</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia3"
                                     placeholder="Bodega"
@@ -529,6 +613,8 @@
                                     :options="listaFamilia3"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 4</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia4"
                                     placeholder="Bodega"
@@ -536,6 +622,8 @@
                                     label="descripcionFamilia"
                                     :options="listaFamilia4"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 5</h6>
                                 <br />
                                 <vs-input
                                     class="w-full inputx"
@@ -553,6 +641,8 @@
                         </div>
                         <div class="vx-col w-1/2 mt-5">
                             <vx-card title="Modificar Familia 5">
+                                <h6>Seleccione Bodega</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionBodegaMod"
                                     placeholder="Bodega"
@@ -561,6 +651,8 @@
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamiliaMod"
                                 ></v-select>
+                                <br />
+                                <h6>Seleccione Familia 1</h6>
                                 <br />
                                 <v-select
                                     v-model="seleccionFamilia1M"
@@ -571,6 +663,8 @@
                                     @input="cargaItemFamilia1M"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 2</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia2M"
                                     placeholder="Bodega"
@@ -579,6 +673,8 @@
                                     :options="listaFamilia2"
                                     @input="cargaItemFamilia2M"
                                 ></v-select>
+                                <br />
+                                <h6>Seleccione Familia 3</h6>
                                 <br />
                                 <v-select
                                     v-model="seleccionFamilia3M"
@@ -589,6 +685,8 @@
                                     @input="cargaItemFamilia3M"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 4</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia4M"
                                     placeholder="Bodega"
@@ -598,6 +696,8 @@
                                     @input="cargaItemFamilia4M"
                                 ></v-select>
                                 <br />
+                                <h6>Seleccione Familia 5</h6>
+                                <br />
                                 <v-select
                                     v-model="seleccionFamilia5M"
                                     placeholder="Bodega"
@@ -606,6 +706,8 @@
                                     :options="listaFamilia5"
                                     @input="cargaItemFamiliaDescripcion5"
                                 ></v-select>
+                                <br />
+                                <h6>Descripcion Familia 5</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full"
@@ -780,9 +882,131 @@ export default {
         },
         limpiarCampos() {
             try {
+                this.listaFamilia1 = [];
+                this.listaFamilia2 = [];
+                this.listaFamilia3 = [];
+                this.listaFamilia4 = [];
+                this.listaFamilia5 = [];
                 this.descripcionBodega = "";
                 this.descripcionBodegaMod = "";
+                this.descripcionFamilia1 = "";
+                this.descripcionFamilia2 = "";
+                this.descripcionFamilia3 = "";
+                this.descripcionFamilia4 = "";
+                this.descripcionFamilia5 = "";
+                this.descripcionFamilia1Mod = "";
+                this.descripcionFamilia2Mod = "";
+                this.descripcionFamilia3Mod = "";
+                this.descripcionFamilia4Mod = "";
+                this.descripcionFamilia5Mod = "";
                 this.idMod = 0;
+                this.seleccionBodega = {
+                    id: 0,
+                    descripcionBodega: ""
+                };
+                this.seleccionBodegaMod = {
+                    id: 0,
+                    descripcionBodega: ""
+                };
+                this.seleccionFamilia1 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idBodega: 0
+                };
+                this.seleccionFamilia2 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam: 0
+                };
+                this.seleccionFamilia3 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam01: 0
+                };
+                this.seleccionFamilia4 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam02: 0
+                };
+                this.seleccionFamilia5 = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam03: 0
+                };
+                this.seleccionFamilia1M = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idBodega: 0
+                };
+                this.seleccionFamilia2M = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam: 0
+                };
+                this.seleccionFamilia3M = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam01: 0
+                };
+                this.seleccionFamilia4M = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam02: 0
+                };
+                this.seleccionFamilia5M = {
+                    id: 0,
+                    descripcionFamilia: "",
+                    idDesFam03: 0
+                };
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //PopUp
+        PopBodega() {
+            try {
+                this.popUpBodega = true;
+                this.limpiarCampos();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        PopFam1() {
+            try {
+                this.popUpFam1 = true;
+                this.limpiarCampos();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        PopFam2() {
+            try {
+                this.popUpFam2 = true;
+                this.limpiarCampos();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        PopFam3() {
+            try {
+                this.popUpFam3 = true;
+                this.limpiarCampos();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        PopFam4() {
+            try {
+                this.popUpFam4 = true;
+                this.limpiarCampos();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        PopFam5() {
+            try {
+                this.popUpFam5 = true;
+                this.limpiarCampos();
             } catch (error) {
                 console.log(error);
             }
@@ -832,8 +1056,6 @@ export default {
                     }
                 });
 
-                console.log(b);
-
                 this.listaFamilia1 = a;
             } catch (error) {
                 console.log(error);
@@ -843,7 +1065,7 @@ export default {
             try {
                 this.listaFamilia2 = [];
                 let c = this.listaTempFamilia2;
-                let b = this.seleccionFamilia1.id;
+                let b = this.seleccionFamilia1.CODFAM1;
                 let a = [];
                 c.forEach((value, index) => {
                     if (b == value.idDesFam) {
@@ -860,7 +1082,7 @@ export default {
             try {
                 this.listaFamilia2 = [];
                 let c = this.listaTempFamilia2;
-                let b = this.seleccionFamilia1M.id;
+                let b = this.seleccionFamilia1M.CODFAM1;
                 let a = [];
                 c.forEach((value, index) => {
                     if (b == value.idDesFam) {
@@ -877,7 +1099,7 @@ export default {
             try {
                 this.listaFamilia3 = [];
                 let c = this.listaTempFamilia3;
-                let b = this.seleccionFamilia2.id;
+                let b = this.seleccionFamilia2.CODFAM2;
                 let a = [];
                 c.forEach((value, index) => {
                     if (b == value.idDesFam01) {
@@ -894,7 +1116,7 @@ export default {
             try {
                 this.listaFamilia3 = [];
                 let c = this.listaTempFamilia3;
-                let b = this.seleccionFamilia2M.id;
+                let b = this.seleccionFamilia2M.CODFAM2;
                 let a = [];
                 c.forEach((value, index) => {
                     if (b == value.idDesFam01) {
@@ -911,7 +1133,7 @@ export default {
             try {
                 this.listaFamilia4 = [];
                 let c = this.listaTempFamilia4;
-                let b = this.seleccionFamilia3.id;
+                let b = this.seleccionFamilia3.CODFAM3;
                 let a = [];
                 c.forEach((value, index) => {
                     if (b == value.idDesFam02) {
@@ -928,7 +1150,7 @@ export default {
             try {
                 this.listaFamilia4 = [];
                 let c = this.listaTempFamilia4;
-                let b = this.seleccionFamilia3M.id;
+                let b = this.seleccionFamilia3M.CODFAM3;
                 let a = [];
                 c.forEach((value, index) => {
                     if (b == value.idDesFam02) {
@@ -945,7 +1167,7 @@ export default {
             try {
                 this.listaFamilia5 = [];
                 let c = this.listaTempFamilia5;
-                let b = this.seleccionFamilia4.id;
+                let b = this.seleccionFamilia4.CODFAM4;
                 let a = [];
                 c.forEach((value, index) => {
                     if (b == value.idDesFam03) {
@@ -962,7 +1184,7 @@ export default {
             try {
                 this.listaFamilia5 = [];
                 let c = this.listaTempFamilia5;
-                let b = this.seleccionFamilia4M.id;
+                let b = this.seleccionFamilia4M.CODFAM4;
                 let a = [];
                 c.forEach((value, index) => {
                     if (b == value.idDesFam03) {
@@ -1221,7 +1443,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1230,6 +1451,7 @@ export default {
                                 position: "top-right"
                             });
                             this.TraerBodega();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1264,7 +1486,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1277,6 +1498,7 @@ export default {
                                 descripcionBodega: data.descripcionBodega
                             };
                             this.TraerBodega();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1311,7 +1533,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1320,6 +1541,7 @@ export default {
                                 position: "top-right"
                             });
                             this.TraerFamilia1();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1355,7 +1577,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1369,6 +1590,7 @@ export default {
                                 descripcionFamilia: data.descripcionFamilia
                             };
                             this.TraerFamilia1();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1403,7 +1625,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1412,6 +1633,7 @@ export default {
                                 position: "top-right"
                             });
                             this.TraerFamilia2();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1447,7 +1669,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1461,6 +1682,7 @@ export default {
                                 descripcionFamilia: data.descripcionFamilia
                             };
                             this.TraerFamilia2();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1495,7 +1717,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1504,6 +1725,7 @@ export default {
                                 position: "top-right"
                             });
                             this.TraerFamilia3();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1539,7 +1761,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1553,6 +1774,7 @@ export default {
                                 descripcionFamilia: data.descripcionFamilia
                             };
                             this.TraerFamilia3();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1587,7 +1809,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1596,6 +1817,7 @@ export default {
                                 position: "top-right"
                             });
                             this.TraerFamilia4();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1631,7 +1853,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1645,6 +1866,7 @@ export default {
                                 descripcionFamilia: data.descripcionFamilia
                             };
                             this.TraerFamilia4();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1679,7 +1901,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1688,6 +1909,7 @@ export default {
                                 position: "top-right"
                             });
                             this.TraerFamilia5();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1723,7 +1945,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1737,6 +1958,7 @@ export default {
                                 descripcionFamilia: data.descripcionFamilia
                             };
                             this.TraerFamilia5();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,

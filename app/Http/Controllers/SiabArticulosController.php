@@ -120,8 +120,8 @@ class SiabArticulosController extends Controller
             ->update(['CODART_BARR' => $request->CODART_BARR,'CODART_ONU' => $request->CODART_ONU,'CODART' => $request->CODART,
             'NOMBRE' => $request->NOMBRE,'idEstado' => $request->idEstado,'ACT_FECVEN' => $request->ACT_FECVEN,
             'ACT_LOTE' => $request->ACT_LOTE,'idBodega' => $request->idBodega,'idZona' => $request->idZona,
-            'SECTOR' => $request->SECTOR,'UBICACION' => $request->UBICACION,'idFam1' => $request->idFam1,
-            'idFam2' => $request->idFam2,'idFam3' => $request->idFam3,'idFam4' => $request->idFam4,'idFam5' => $request->idFam5,
+            'SECTOR' => $request->SECTOR,'UBICACION' => $request->UBICACION,'NOMFAM1' => $request->NOMFAM1,
+            'NOMFAM2' => $request->NOMFAM2,'NOMFAM3' => $request->NOMFAM3,'NOMFAM4' => $request->NOMFAM4,'NOMFAM5' => $request->NOMFAM5,
             'UNIMEDBASE' => $request->UNIMEDBASE]);
 
             return true;

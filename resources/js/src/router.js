@@ -117,6 +117,12 @@ const router = new Router({
                     component: () =>
                         import("./views/Mantenedor/StockMinMax.vue")
                 },
+                {
+                    path: "/Mantenedor/StockMinMaxMed",
+                    name: "/Mantenedor/StockMinMaxMed",
+                    component: () =>
+                        import("./views/Mantenedor/StockMinMaxMed.vue")
+                },
                 //Router de Recepcion
                 {
                     path: "/Recepcion/Recepcion",

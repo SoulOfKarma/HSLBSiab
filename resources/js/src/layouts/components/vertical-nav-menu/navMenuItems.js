@@ -100,8 +100,14 @@ export default [
             },
             {
                 url: "/Mantenedor/StockMinMax",
-                name: "StockMinMax",
+                name: "Stock Insumo/Economato",
                 slug: "/Mantenedor/StockMinMax",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Mantenedor/StockMinMaxMed",
+                name: "Stock Medicamentos",
+                slug: "/Mantenedor/StockMinMaxMed",
                 icon: "HomeIcon"
             }
         ]

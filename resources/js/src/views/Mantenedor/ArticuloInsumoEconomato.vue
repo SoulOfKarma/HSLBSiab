@@ -47,11 +47,11 @@
                                             props.row.idBodega,
                                             props.row.idZona,
                                             props.row.CANTXENB,
-                                            props.row.idFam1,
-                                            props.row.idFam2,
-                                            props.row.idFam3,
-                                            props.row.idFam4,
-                                            props.row.idFam5,
+                                            props.row.NOMFAM1,
+                                            props.row.NOMFAM2,
+                                            props.row.NOMFAM3,
+                                            props.row.NOMFAM4,
+                                            props.row.NOMFAM5,
                                             props.row.idACT_FECVEN,
                                             props.row.idACTLOTE
                                         )
@@ -75,11 +75,11 @@
                                             props.row.idBodega,
                                             props.row.idZona,
                                             props.row.CANTXENB,
-                                            props.row.idFam1,
-                                            props.row.idFam2,
-                                            props.row.idFam3,
-                                            props.row.idFam4,
-                                            props.row.idFam5,
+                                            props.row.NOMFAM1,
+                                            props.row.NOMFAM2,
+                                            props.row.NOMFAM3,
+                                            props.row.NOMFAM4,
+                                            props.row.NOMFAM5,
                                             props.row.idACT_FECVEN,
                                             props.row.idACTLOTE
                                         )
@@ -1171,11 +1171,11 @@ export default {
             idBodega,
             idZona,
             CANTXENB,
-            idFam1,
-            idFam2,
-            idFam3,
-            idFam4,
-            idFam5,
+            NOMFAM1,
+            NOMFAM2,
+            NOMFAM3,
+            NOMFAM4,
+            NOMFAM5,
             idACT_FECVEN,
             idACTLOTE
         ) {
@@ -1257,7 +1257,7 @@ export default {
                 c = this.listaTempFamilia1;
 
                 c.forEach((value, index) => {
-                    if (idFam1 == value.id) {
+                    if (NOMFAM1 == value.descripcionFamilia) {
                         this.seleccionFamilia1.id = value.id;
                         this.seleccionFamilia1.idBodega = value.idBodega;
                         this.seleccionFamilia1.descripcionFamilia =
@@ -1270,7 +1270,7 @@ export default {
                 c = this.listaTempFamilia2;
 
                 c.forEach((value, index) => {
-                    if (idFam2 == value.id) {
+                    if (NOMFAM2 == value.descripcionFamilia) {
                         this.seleccionFamilia2.id = value.id;
                         this.seleccionFamilia2.idDesFam = value.idDesFam;
                         this.seleccionFamilia2.descripcionFamilia =
@@ -1283,7 +1283,7 @@ export default {
                 c = this.listaTempFamilia3;
 
                 c.forEach((value, index) => {
-                    if (idFam3 == value.id) {
+                    if (NOMFAM3 == value.descripcionFamilia) {
                         this.seleccionFamilia3.id = value.id;
                         this.seleccionFamilia3.idDesFam01 = value.idDesFam01;
                         this.seleccionFamilia3.descripcionFamilia =
@@ -1296,7 +1296,7 @@ export default {
                 c = this.listaTempFamilia4;
 
                 c.forEach((value, index) => {
-                    if (idFam4 == value.id) {
+                    if (NOMFAM4 == value.descripcionFamilia) {
                         this.seleccionFamilia4.id = value.id;
                         this.seleccionFamilia4.idDesFam02 = value.idDesFam02;
                         this.seleccionFamilia4.descripcionFamilia =
@@ -1309,7 +1309,7 @@ export default {
                 c = this.listaTempFamilia5;
 
                 c.forEach((value, index) => {
-                    if (idFam5 == value.id) {
+                    if (NOMFAM5 == value.descripcionFamilia) {
                         this.seleccionFamilia5.id = value.id;
                         this.seleccionFamilia5.idDesFam03 = value.idDesFam03;
                         this.seleccionFamilia5.descripcionFamilia =
@@ -1334,11 +1334,11 @@ export default {
             idBodega,
             idZona,
             CANTXENB,
-            idFam1,
-            idFam2,
-            idFam3,
-            idFam4,
-            idFam5,
+            NOMFAM1,
+            NOMFAM2,
+            NOMFAM3,
+            NOMFAM4,
+            NOMFAM5,
             idACT_FECVEN,
             idACTLOTE
         ) {
@@ -1419,7 +1419,7 @@ export default {
                 c = this.listaTempFamilia1;
 
                 c.forEach((value, index) => {
-                    if (idFam1 == value.id) {
+                    if (NOMFAM1 == value.descripcionFamilia) {
                         this.seleccionFamilia1.id = value.id;
                         this.seleccionFamilia1.idBodega = value.idBodega;
                         this.seleccionFamilia1.descripcionFamilia =
@@ -1432,7 +1432,7 @@ export default {
                 c = this.listaTempFamilia2;
 
                 c.forEach((value, index) => {
-                    if (idFam2 == value.id) {
+                    if (NOMFAM2 == value.descripcionFamilia) {
                         this.seleccionFamilia2.id = value.id;
                         this.seleccionFamilia2.idDesFam = value.idDesFam;
                         this.seleccionFamilia2.descripcionFamilia =
@@ -1445,7 +1445,7 @@ export default {
                 c = this.listaTempFamilia3;
 
                 c.forEach((value, index) => {
-                    if (idFam3 == value.id) {
+                    if (NOMFAM3 == value.descripcionFamilia) {
                         this.seleccionFamilia3.id = value.id;
                         this.seleccionFamilia3.idDesFam01 = value.idDesFam01;
                         this.seleccionFamilia3.descripcionFamilia =
@@ -1458,7 +1458,7 @@ export default {
                 c = this.listaTempFamilia4;
 
                 c.forEach((value, index) => {
-                    if (idFam4 == value.id) {
+                    if (NOMFAM4 == value.descripcionFamilia) {
                         this.seleccionFamilia4.id = value.id;
                         this.seleccionFamilia4.idDesFam02 = value.idDesFam02;
                         this.seleccionFamilia4.descripcionFamilia =
@@ -1471,7 +1471,7 @@ export default {
                 c = this.listaTempFamilia5;
 
                 c.forEach((value, index) => {
-                    if (idFam5 == value.id) {
+                    if (NOMFAM5 == value.descripcionFamilia) {
                         this.seleccionFamilia5.id = value.id;
                         this.seleccionFamilia5.idDesFam03 = value.idDesFam03;
                         this.seleccionFamilia5.descripcionFamilia =
@@ -1748,11 +1748,11 @@ export default {
                     idZona: this.seleccionZona.id,
                     SECTOR: this.sector,
                     UBICACION: this.ubicacion,
-                    idFam1: this.seleccionFamilia1.id,
-                    idFam2: this.seleccionFamilia2.id,
-                    idFam3: this.seleccionFamilia3.id,
-                    idFam4: this.seleccionFamilia4.id,
-                    idFam5: this.seleccionFamilia5.id,
+                    NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
+                    NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
+                    NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
+                    NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
+                    NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
                     UNIMEDBASE: this.unidadMedidaBase
                 };
                 const dat = data;
@@ -1827,11 +1827,11 @@ export default {
                     idZona: this.seleccionZona.id,
                     SECTOR: this.sector,
                     UBICACION: this.ubicacion,
-                    idFam1: this.seleccionFamilia1.id,
-                    idFam2: this.seleccionFamilia2.id,
-                    idFam3: this.seleccionFamilia3.id,
-                    idFam4: this.seleccionFamilia4.id,
-                    idFam5: this.seleccionFamilia5.id,
+                    NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
+                    NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
+                    NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
+                    NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
+                    NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
                     UNIMEDBASE: this.unidadMedidaBase
                 };
                 const dat = data;
@@ -1904,11 +1904,11 @@ export default {
                     idZona: this.seleccionZona.id,
                     SECTOR: this.sector,
                     UBICACION: this.ubicacion,
-                    idFam1: this.seleccionFamilia1.id,
-                    idFam2: this.seleccionFamilia2.id,
-                    idFam3: this.seleccionFamilia3.id,
-                    idFam4: this.seleccionFamilia4.id,
-                    idFam5: this.seleccionFamilia5.id,
+                    NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
+                    NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
+                    NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
+                    NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
+                    NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
                     UNIMEDBASE: this.unidadMedidaBase
                 };
                 const dat = data;
