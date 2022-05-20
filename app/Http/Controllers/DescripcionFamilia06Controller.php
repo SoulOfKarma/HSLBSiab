@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\centrocostos;
+use App\DescripcionFamilia06;
 use Illuminate\Http\Request;
 
-class CentrocostosController extends Controller
+class DescripcionFamilia06Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class CentrocostosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\centrocostos  $centrocostos
+     * @param  \App\DescripcionFamilia06  $descripcionFamilia06
      * @return \Illuminate\Http\Response
      */
-    public function show(centrocostos $centrocostos)
+    public function show(DescripcionFamilia06 $descripcionFamilia06)
     {
         //
     }
@@ -52,10 +52,10 @@ class CentrocostosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\centrocostos  $centrocostos
+     * @param  \App\DescripcionFamilia06  $descripcionFamilia06
      * @return \Illuminate\Http\Response
      */
-    public function edit(centrocostos $centrocostos)
+    public function edit(DescripcionFamilia06 $descripcionFamilia06)
     {
         //
     }
@@ -64,10 +64,10 @@ class CentrocostosController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\centrocostos  $centrocostos
+     * @param  \App\DescripcionFamilia06  $descripcionFamilia06
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, centrocostos $centrocostos)
+    public function update(Request $request, DescripcionFamilia06 $descripcionFamilia06)
     {
         //
     }
@@ -75,10 +75,10 @@ class CentrocostosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\centrocostos  $centrocostos
+     * @param  \App\DescripcionFamilia06  $descripcionFamilia06
      * @return \Illuminate\Http\Response
      */
-    public function destroy(centrocostos $centrocostos)
+    public function destroy(DescripcionFamilia06 $descripcionFamilia06)
     {
         //
     }

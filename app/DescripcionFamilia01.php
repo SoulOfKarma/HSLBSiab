@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class DescripcionFamilia01 extends Model
 {
     protected $fillable = [
-        'descripcionFamilia','idDesFam',
+        'descripcionFamilia','CODFAM2','idDesFam',
     ];
 
     protected $table = 'descripcion_familia01';

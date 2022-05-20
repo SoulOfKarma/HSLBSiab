@@ -16,8 +16,8 @@ class CreateDescripcionFamilia03sTable extends Migration
         Schema::create('descripcion_familia03', function (Blueprint $table) {
             $table->id();
             $table->string('descripcionFamilia');
-            $table->BigInteger('idDesFam02')->unsigned();
-            $table->foreign('idDesFam02')->references('id')->on('descripcion_familia02');
+            $table->BigInteger('CODFAM4');
+            $table->BigInteger('idDesFam02');
             $table->timestamps();
         });
     }

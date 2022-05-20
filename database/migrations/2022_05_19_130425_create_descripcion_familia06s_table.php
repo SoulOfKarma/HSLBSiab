@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCentrocostosTable extends Migration
+class CreateDescripcionFamilia06sTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateCentrocostosTable extends Migration
      */
     public function up()
     {
-        Schema::create('centrocosto', function (Blueprint $table) {
+        Schema::create('descripcion_familia06', function (Blueprint $table) {
             $table->id();
-            $table->string('CODCEN')->nullable();
-            $table->string('NOMCEN')->nullable();
+            $table->string('descripcionFamilia');
+            $table->BigInteger('CODFAM7');
+            $table->BigInteger('idDesFam05');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateCentrocostosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('centrocosto');
+        Schema::dropIfExists('descripcion_familia06');
     }
 }

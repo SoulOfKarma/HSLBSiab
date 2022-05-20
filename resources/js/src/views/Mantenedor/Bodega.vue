@@ -809,7 +809,7 @@ export default {
                 let b = this.seleccionBodega.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idBodega) {
                         a.push(value);
                     }
                 });
@@ -826,10 +826,13 @@ export default {
                 let b = this.seleccionBodegaMod.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idBodega) {
+                        console.log(value);
                         a.push(value);
                     }
                 });
+
+                console.log(b);
 
                 this.listaFamilia1 = a;
             } catch (error) {
@@ -843,7 +846,7 @@ export default {
                 let b = this.seleccionFamilia1.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam) {
                         a.push(value);
                     }
                 });
@@ -860,7 +863,7 @@ export default {
                 let b = this.seleccionFamilia1M.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam) {
                         a.push(value);
                     }
                 });
@@ -877,7 +880,7 @@ export default {
                 let b = this.seleccionFamilia2.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam01) {
                         a.push(value);
                     }
                 });
@@ -894,7 +897,7 @@ export default {
                 let b = this.seleccionFamilia2M.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam01) {
                         a.push(value);
                     }
                 });
@@ -911,7 +914,7 @@ export default {
                 let b = this.seleccionFamilia3.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam02) {
                         a.push(value);
                     }
                 });
@@ -928,7 +931,7 @@ export default {
                 let b = this.seleccionFamilia3M.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam02) {
                         a.push(value);
                     }
                 });
@@ -945,7 +948,7 @@ export default {
                 let b = this.seleccionFamilia4.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam03) {
                         a.push(value);
                     }
                 });
@@ -962,7 +965,7 @@ export default {
                 let b = this.seleccionFamilia4M.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam03) {
                         a.push(value);
                     }
                 });
