@@ -36,7 +36,14 @@
                                     @click="
                                         popModificarStockMinMax(
                                             props.row.id,
-                                            props.row.descripcionEstado
+                                            props.row.idBodega,
+                                            props.row.idEstadoStock,
+                                            props.row.CODART,
+                                            props.row.NOMBRE,
+                                            props.row.STOCK_MIN,
+                                            props.row.STOCK_MAX,
+                                            props.row.STOCK_CRI,
+                                            props.row.UNIMEDBASE
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -46,10 +53,7 @@
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        popDesactivarStockMinMax(
-                                            props.row.id,
-                                            props.row.descripcionEstado
-                                        )
+                                        popDesactivarStockMinMax(props.row.id)
                                     "
                                 ></plus-circle-icon>
                             </span>
@@ -143,6 +147,37 @@
                                     type="filled"
                                     class="w-full"
                                     >Agregar Stock Insumo/Economato</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
+            <vs-popup
+                classContent="DesactivarStock"
+                title="Desactivar Stock"
+                :active.sync="popUpDesactivarStockMinMax"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row w-full">
+                            <div class="vx-col w-1/2">
+                                <vs-button
+                                    @click="popUpDesactivarStockMinMax = false"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <vs-button
+                                    @click="DesactivarStock"
+                                    color="success"
+                                    type="filled"
+                                    class="w-full"
+                                    >Desactivar Stock</vs-button
                                 >
                             </div>
                         </div>
@@ -284,7 +319,8 @@
                                                         props.row.NOMBRE,
                                                         props.row.CODART,
                                                         props.row.idEstado,
-                                                        props.row.idBodega
+                                                        props.row.idBodega,
+                                                        props.row.UNIMEDBASE
                                                     )
                                                 "
                                             ></plus-circle-icon>
@@ -415,46 +451,25 @@ export default {
                     }
                 },
                 {
-                    label: "Descripcion Familia 1",
-                    field: "NOMFAM1",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 2",
-                    field: "NOMFAM2",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 3",
-                    field: "NOMFAM3",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 4",
-                    field: "NOMFAM4",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 5",
-                    field: "NOMFAM5",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
                     label: "Opciones",
                     field: "action"
                 }
             ],
             columns: [
+                {
+                    label: "Bodega",
+                    field: "descripcionBodega",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Estado",
+                    field: "descripcionEstado",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
                 {
                     label: "Codigo Interno",
                     field: "CODART",
@@ -556,33 +571,72 @@ export default {
                 console.log(error);
             }
         },
-        popModificarStockMinMax(id, DesEstado) {
+        popModificarStockMinMax(
+            id,
+            idBodega,
+            idEstadoStock,
+            CODART,
+            NOMBRE,
+            STOCK_MIN,
+            STOCK_MAX,
+            STOCK_CRI,
+            UNIMEDBASE
+        ) {
             try {
                 this.limpiarCampos();
                 this.popUpStockMinMaxMod = true;
                 this.idMod = id;
-                this.descripcionEstado = DesEstado;
+                this.CodArt = CODART;
+                this.Nombre = NOMBRE;
+                this.stockMin = STOCK_MIN;
+                this.stockCri = STOCK_CRI;
+                this.UnidadMedida = UNIMEDBASE;
+                let c = this.listaEstado;
+
+                c.forEach((value, index) => {
+                    if (idEstadoStock == value.id) {
+                        this.seleccionEstado.id = value.id;
+                        this.seleccionEstado.descripcionEstado =
+                            value.descripcionEstado;
+                    }
+                });
+
+                c = [];
+
+                this.idBodega = 0;
+
+                c = this.listaBodega;
+
+                c.forEach((value, index) => {
+                    if (idBodega == value.id) {
+                        this.seleccionBodega.id = value.id;
+                        this.seleccionBodega.descripcionBodega =
+                            value.descripcionBodega;
+                    }
+                });
+
+                c = [];
             } catch (error) {
                 console.log(error);
             }
         },
-        popDesactivarStockMinMax(id, DesEstado) {
+        popDesactivarStockMinMax(id) {
             try {
                 this.limpiarCampos();
                 this.popUpDesactivarStockMinMax = true;
                 this.idMod = id;
-                this.descripcionEstado = DesEstado;
             } catch (error) {
                 console.log(error);
             }
         },
-        popAsignarInsumoEco(NOMBRE, CODART, idEstado, idBodega) {
+        popAsignarInsumoEco(NOMBRE, CODART, idEstado, idBodega, unimedbase) {
             try {
                 this.limpiarCampos();
                 this.PopUpListadoArticulos = false;
                 this.popUpStockMinMax = true;
-                this.codigoArticulo = CODART;
-                this.nombre = NOMBRE;
+                this.CodArt = CODART;
+                this.Nombre = NOMBRE;
+                this.UnidadMedida = unimedbase;
                 let c = this.listaEstado;
 
                 c.forEach((value, index) => {
@@ -720,7 +774,14 @@ export default {
         AgregarStockMinMax() {
             try {
                 let data = {
-                    descripcionEstado: this.descripcionEstado
+                    idBodega: this.seleccionBodega.id,
+                    idEstadoStock: 1,
+                    CODART: this.CodArt,
+                    NOMBRE: this.Nombre,
+                    STOCK_MIN: this.stockMin,
+                    STOCK_MAX: 0,
+                    STOCK_CRI: this.stockCri,
+                    UNIMEDBASE: this.UnidadMedida
                 };
 
                 const dat = data;
@@ -739,7 +800,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -749,6 +809,7 @@ export default {
                             });
                             this.popUpStockMinMax = false;
                             this.TraerStockMinMax();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -768,7 +829,14 @@ export default {
             try {
                 let data = {
                     id: this.idMod,
-                    descripcionEstado: this.descripcionEstado
+                    idBodega: this.seleccionBodega.id,
+                    idEstadoStock: 1,
+                    CODART: this.CodArt,
+                    NOMBRE: this.Nombre,
+                    STOCK_MIN: this.stockMin,
+                    STOCK_MAX: 0,
+                    STOCK_CRI: this.stockCri,
+                    UNIMEDBASE: this.UnidadMedida
                 };
 
                 const dat = data;
@@ -787,7 +855,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -797,12 +864,63 @@ export default {
                             });
                             this.popUpStockMinMaxMod = false;
                             this.TraerStockMinMax();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
                                     "No fue posible modificar el Stock Min/Max,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        DesactivarStock() {
+            try {
+                let data = {
+                    id: this.idMod,
+                    idEstadoStock: 2
+                };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/PutDesactivarStockMinMax",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Stock Insumo/Economato Desactivado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpDesactivarStockMinMax = false;
+                            this.TraerStockMinMax();
+                            this.limpiarCampos();
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible desactivar el Insumo/Economato,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });

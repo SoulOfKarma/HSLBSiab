@@ -49,6 +49,20 @@ class SiabArticulosController extends Controller
         }
     }
 
+    public function PostValidarCodBarraMed(Request $request){
+        try {
+            $get =  siab_articulos::firstWhere('CODART_BARR', $request->CODART_BARR);
+            if ($get === null) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function GetMedicamentos(){
         try {
             $get = siab_articulos::select('siab_articulo.id','siab_articulo.CODART_TRACK','siab_articulo.NOMBRE','siab_articulo.GENERICO',

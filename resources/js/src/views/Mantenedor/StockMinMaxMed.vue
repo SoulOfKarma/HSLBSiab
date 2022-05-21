@@ -1,9 +1,12 @@
 <template>
     <div>
-        <vx-card title="Stock Min/Max">
+        <vx-card title="Stock Medicamentos">
             <div>
-                <vs-button color="primary" type="filled" @click="popStockMinMax"
-                    >Agregar Stock Min/Max</vs-button
+                <vs-button
+                    color="primary"
+                    type="filled"
+                    @click="PopUpListadoMedicamentos = true"
+                    >Agregar Stock Medicamentos</vs-button
                 >
             </div>
             <br />
@@ -26,27 +29,31 @@
                             </span>
                             <span v-else-if="props.column.field === 'action'">
                                 <plus-circle-icon
-                                    content="Modificar Stock Min/Max"
+                                    content="Modificar Stock Insumo/Economato"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
                                         popModificarStockMinMax(
                                             props.row.id,
-                                            props.row.descripcionEstado
+                                            props.row.idBodega,
+                                            props.row.idEstadoStock,
+                                            props.row.CODART,
+                                            props.row.NOMBRE,
+                                            props.row.STOCK_MIN,
+                                            props.row.STOCK_MAX,
+                                            props.row.STOCK_CRI,
+                                            props.row.UNIMEDBASE
                                         )
                                     "
                                 ></plus-circle-icon>
                                 <plus-circle-icon
-                                    content="Desactivar Stock Min/Max"
+                                    content="Desactivar Stock Insumo/Economato"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        popDesactivarStockMinMax(
-                                            props.row.id,
-                                            props.row.descripcionEstado
-                                        )
+                                        popDesactivarStockMinMax(props.row.id)
                                     "
                                 ></plus-circle-icon>
                             </span>
@@ -59,9 +66,9 @@
                 </vx-card>
             </div>
             <vs-popup
-                classContent="AgregarStockMinMax"
-                title="Agregar Stock Min/Max"
-                :active.sync="popUpStockMinMax"
+                classContent="AgregarStockMedicamentos"
+                title="Agregar Stock Medicamentos"
+                :active.sync="popUpStockMinMaxMed"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
@@ -126,7 +133,7 @@
                         <div class="vx-row w-full">
                             <div class="vx-col w-1/2">
                                 <vs-button
-                                    @click="popUpStockMinMax = false"
+                                    @click="popStockMinMaxVolver"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
@@ -139,7 +146,7 @@
                                     color="success"
                                     type="filled"
                                     class="w-full"
-                                    >Agregar Stock Min/Max</vs-button
+                                    >Agregar Stock Insumo/Economato</vs-button
                                 >
                             </div>
                         </div>
@@ -148,9 +155,40 @@
                 </div>
             </vs-popup>
             <vs-popup
-                classContent="stockMod"
-                title="Modificar Stock Min/Max"
-                :active.sync="popUpStockMinMaxMod"
+                classContent="DesactivarStock"
+                title="Desactivar Stock"
+                :active.sync="popUpDesactivarStockMinMax"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row w-full">
+                            <div class="vx-col w-1/2">
+                                <vs-button
+                                    @click="popUpDesactivarStockMinMax = false"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/2">
+                                <vs-button
+                                    @click="DesactivarStock"
+                                    color="success"
+                                    type="filled"
+                                    class="w-full"
+                                    >Desactivar Stock</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
+            <vs-popup
+                classContent="stockModInsumoEconomato"
+                title="Modificar Stock Insumo/Economato"
+                :active.sync="popUpStockMinMaxMedMod"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
@@ -215,7 +253,7 @@
                         <div class="vx-row w-full">
                             <div class="vx-col w-1/2">
                                 <vs-button
-                                    @click="popUpStockMinMaxMod = false"
+                                    @click="popUpStockMinMaxMedMod = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
@@ -228,9 +266,76 @@
                                     color="success"
                                     type="filled"
                                     class="w-full"
-                                    >Modificar Stock Min/Max</vs-button
+                                    >Modificar Stock Insumo/Economato</vs-button
                                 >
                             </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
+            <vs-popup
+                classContent="ListadoMedicamentos"
+                title="Listado Articulos Medicamentos"
+                :active.sync="PopUpListadoMedicamentos"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <vx-card>
+                                <vue-good-table
+                                    :columns="col"
+                                    :rows="listaMedicamentos"
+                                    :pagination-options="{
+                                        enabled: true,
+                                        perPage: 10
+                                    }"
+                                >
+                                    <template
+                                        slot="table-row"
+                                        slot-scope="props"
+                                    >
+                                        <!-- Column: Name -->
+                                        <span
+                                            v-if="
+                                                props.column.field ===
+                                                    'fullName'
+                                            "
+                                            class="text-nowrap"
+                                        >
+                                        </span>
+                                        <span
+                                            v-else-if="
+                                                props.column.field === 'action'
+                                            "
+                                        >
+                                            <plus-circle-icon
+                                                content="Asignar Insumo/Economato"
+                                                v-tippy
+                                                size="1.5x"
+                                                class="custom-class"
+                                                @click="
+                                                    popAsignarMedicamentos(
+                                                        props.row.NOMBRE,
+                                                        props.row.CODART,
+                                                        props.row.idEstado,
+                                                        props.row.idBodega,
+                                                        props.row.UNIMEDBASE
+                                                    )
+                                                "
+                                            ></plus-circle-icon>
+                                        </span>
+                                        <!-- Column: Common -->
+                                        <span v-else>
+                                            {{
+                                                props.formattedRow[
+                                                    props.column.field
+                                                ]
+                                            }}
+                                        </span>
+                                    </template>
+                                </vue-good-table>
+                            </vx-card>
                         </div>
                     </vx-card>
                     <div class="vx-row"></div>
@@ -281,9 +386,10 @@ export default {
                 }
             },
             //Datos Campos
-            popUpStockMinMax: false,
-            popUpStockMinMaxMod: false,
+            popUpStockMinMaxMed: false,
+            popUpStockMinMaxMedMod: false,
             popUpDesactivarStockMinMax: false,
+            PopUpListadoMedicamentos: false,
             descripcionEstado: "",
             idMod: 0,
             idBodega: 0,
@@ -300,8 +406,84 @@ export default {
                 id: 0,
                 descripcionEstado: ""
             },
-            //Template Columnas Listado Proveedor
+            //Template Columnas Listado
+            col: [
+                {
+                    label: "Codigo de Barra",
+                    field: "CODART_BARR",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Articulo",
+                    field: "CODART",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Nombre Medicamento",
+                    field: "NOMBRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Generico",
+                    field: "GENERICO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Unidad de Medida",
+                    field: "UNIMEDBASE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Concentracion",
+                    field: "CONCENTRACION",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Laboratorio",
+                    field: "LABORATORIO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Estado",
+                    field: "descripcionEstado",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ],
             columns: [
+                {
+                    label: "Bodega",
+                    field: "descripcionBodega",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Estado",
+                    field: "descripcionEstado",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
                 {
                     label: "Codigo Interno",
                     field: "CODART",
@@ -346,7 +528,8 @@ export default {
             rows: [],
             listaEstado: [],
             listaBodega: [],
-            listaArticulos: []
+            listaArticulos: [],
+            listaMedicamentos: []
         };
     },
     methods: {
@@ -374,39 +557,156 @@ export default {
             try {
                 this.descripcionEstado = "";
                 this.idMod = 0;
+                this.idBodega = 0;
+                this.CodArt = 0;
+                this.Nombre = "";
+                this.UnidadMedida = "";
+                this.stockMin = 0;
+                this.stockCri = 0;
+                this.seleccionBodega = {
+                    id: 0,
+                    descripcionBodega: ""
+                };
+                this.seleccionEstado = {
+                    id: 0,
+                    descripcionEstado: ""
+                };
             } catch (error) {
                 console.log(error);
             }
         },
         //PopUp
-        popStockMinMax() {
-            try {
-                this.popUpStockMinMax = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popModificarStockMinMax(id, DesEstado) {
+        popStockMinMaxVolver() {
             try {
                 this.limpiarCampos();
-                this.popUpStockMinMaxMod = true;
-                this.idMod = id;
-                this.descripcionEstado = DesEstado;
+                this.PopUpListadoMedicamentos = true;
+                this.popUpStockMinMaxMed = false;
             } catch (error) {
                 console.log(error);
             }
         },
-        popDesactivarStockMinMax(id, DesEstado) {
+        popModificarStockMinMax(
+            id,
+            idBodega,
+            idEstadoStock,
+            CODART,
+            NOMBRE,
+            STOCK_MIN,
+            STOCK_MAX,
+            STOCK_CRI,
+            UNIMEDBASE
+        ) {
+            try {
+                this.limpiarCampos();
+                this.popUpStockMinMaxMedMod = true;
+                this.idMod = id;
+                this.CodArt = CODART;
+                this.Nombre = NOMBRE;
+                this.stockMin = STOCK_MIN;
+                this.stockCri = STOCK_CRI;
+                this.UnidadMedida = UNIMEDBASE;
+                let c = this.listaEstado;
+
+                c.forEach((value, index) => {
+                    if (idEstadoStock == value.id) {
+                        this.seleccionEstado.id = value.id;
+                        this.seleccionEstado.descripcionEstado =
+                            value.descripcionEstado;
+                    }
+                });
+
+                c = [];
+
+                this.idBodega = 0;
+
+                c = this.listaBodega;
+
+                c.forEach((value, index) => {
+                    if (idBodega == value.id) {
+                        this.seleccionBodega.id = value.id;
+                        this.seleccionBodega.descripcionBodega =
+                            value.descripcionBodega;
+                    }
+                });
+
+                c = [];
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popDesactivarStockMinMax(id) {
             try {
                 this.limpiarCampos();
                 this.popUpDesactivarStockMinMax = true;
                 this.idMod = id;
-                this.descripcionEstado = DesEstado;
             } catch (error) {
                 console.log(error);
             }
         },
-        //Metodos CRUD Servicios
+        popAsignarMedicamentos(NOMBRE, CODART, idEstado, idBodega, unimedbase) {
+            try {
+                this.limpiarCampos();
+                this.PopUpListadoMedicamentos = false;
+                this.popUpStockMinMaxMed = true;
+                this.CodArt = CODART;
+                this.Nombre = NOMBRE;
+                this.UnidadMedida = unimedbase;
+                let c = this.listaEstado;
+
+                c.forEach((value, index) => {
+                    if (idEstado == value.id) {
+                        this.seleccionEstado.id = value.id;
+                        this.seleccionEstado.descripcionEstado =
+                            value.descripcionEstado;
+                    }
+                });
+
+                c = [];
+
+                this.idBodega = 0;
+
+                c = this.listaBodega;
+
+                c.forEach((value, index) => {
+                    if (idBodega == value.id) {
+                        this.seleccionBodega.id = value.id;
+                        this.seleccionBodega.descripcionBodega =
+                            value.descripcionBodega;
+                    }
+                });
+
+                c = [];
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Metodos CRUD
+        TraerMedicamentos() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetMedicamentos", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaMedicamentos = res.data;
+                        if (this.listaMedicamentos.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerEstado() {
             try {
                 axios
@@ -459,10 +759,10 @@ export default {
                 console.log(error);
             }
         },
-        TraerStockMinMax() {
+        TraerStockMinMaxMed() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetStockMinMax", {
+                    .get(this.localVal + "/api/Mantenedor/GetStockMinMaxMed", {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -488,14 +788,21 @@ export default {
         AgregarStockMinMax() {
             try {
                 let data = {
-                    descripcionEstado: this.descripcionEstado
+                    idBodega: this.seleccionBodega.id,
+                    idEstadoStock: 1,
+                    CODART: this.CodArt,
+                    NOMBRE: this.Nombre,
+                    STOCK_MIN: this.stockMin,
+                    STOCK_MAX: 0,
+                    STOCK_CRI: this.stockCri,
+                    UNIMEDBASE: this.UnidadMedida
                 };
 
                 const dat = data;
 
                 axios
                     .post(
-                        this.localVal + "/api/Mantenedor/PostStockMinMax",
+                        this.localVal + "/api/Mantenedor/PostStockMinMaxMed",
                         dat,
                         {
                             headers: {
@@ -507,16 +814,17 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
-                                text: "Stock Min/Max Ingresado Correctamente",
+                                text:
+                                    "Stock Medicamentos Ingresado Correctamente",
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpStockMinMax = false;
-                            this.TraerStockMinMax();
+                            this.popUpStockMinMaxMed = false;
+                            this.TraerStockMinMaxMed();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -536,14 +844,21 @@ export default {
             try {
                 let data = {
                     id: this.idMod,
-                    descripcionEstado: this.descripcionEstado
+                    idBodega: this.seleccionBodega.id,
+                    idEstadoStock: 1,
+                    CODART: this.CodArt,
+                    NOMBRE: this.Nombre,
+                    STOCK_MIN: this.stockMin,
+                    STOCK_MAX: 0,
+                    STOCK_CRI: this.stockCri,
+                    UNIMEDBASE: this.UnidadMedida
                 };
 
                 const dat = data;
 
                 axios
                     .post(
-                        this.localVal + "/api/Mantenedor/PutStockMinMax",
+                        this.localVal + "/api/Mantenedor/PutStockMinMaxMed",
                         dat,
                         {
                             headers: {
@@ -555,22 +870,73 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
-                                text: "Stock Min/Max Modificado Correctamente",
+                                text:
+                                    "Stock Medicamento Modificado Correctamente",
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpStockMinMaxMod = false;
-                            this.TraerStockMinMax();
+                            this.popUpStockMinMaxMedMod = false;
+                            this.TraerStockMinMaxMed();
+                            this.limpiarCampos();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible modificar el Stock Min/Max,intentelo nuevamente",
+                                    "No fue posible modificar el Stock Medicamentos,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        DesactivarStock() {
+            try {
+                let data = {
+                    id: this.idMod,
+                    idEstadoStock: 2
+                };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/PutDesactivarStockMinMaxMed",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Stock Medicamento Desactivado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpDesactivarStockMinMax = false;
+                            this.TraerStockMinMaxMed();
+                            this.limpiarCampos();
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible desactivar el Medicamento,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -582,7 +948,8 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerStockMinMax();
+        this.TraerMedicamentos();
+        this.TraerStockMinMaxMed();
         this.TraerEstado();
         this.TraerBodega();
         this.openLoadingColor();
@@ -591,6 +958,6 @@ export default {
 </script>
 <style lang="stylus">
 .con-vs-popup .vs-popup {
-  width: 1000px;
+  width: 1300px;
 }
 </style>

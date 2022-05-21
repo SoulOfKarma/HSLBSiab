@@ -697,7 +697,7 @@
                             </div>
                             <div class="vx-col w-1/2 ">
                                 <vs-button
-                                    @click="AgregarCodigoMedicamento"
+                                    @click="ValidarCodigoBarra"
                                     color="warning"
                                     type="filled"
                                     class="w-full m-1"
@@ -1288,127 +1288,246 @@ export default {
         },
         AgregarMedicamento() {
             try {
-                let boolFVen = false;
-                if (this.seleccionFechaVenciminento.id == 1) {
-                    boolFVen = true;
-                } else {
-                    boolFVen = true;
-                }
-
-                let boolFLoteSerie = false;
-                if (this.seleccionLoteSerie.id == 1) {
-                    boolFLoteSerie = true;
-                } else {
-                    boolFLoteSerie = true;
-                }
-
-                let data = {
-                    CODART_BARR: this.codigoBarra,
-                    CODART_TRACK: this.codigoTrack,
-                    CODART_ONU: this.codigoOnu,
-                    CODART: this.codigoArticulo,
-                    NOMBRE: this.nombre,
-                    GENERICO: this.generico,
-                    CAT_FARMACIA: this.categoriaFarmacia,
-                    UNIMEDBASE: this.unidadMedidaBase,
-                    CONCENTRACION: this.concentracion,
-                    idEstado: this.seleccionEstado.id,
-                    ACT_FECVEN: boolFVen,
-                    ACT_LOTE: boolFLoteSerie,
-                    LABORATORIO: this.laboratorio,
-                    CANTXENB: this.cantidadEmbalaje,
-                    idBodega: this.seleccionBodega.id,
-                    idZona: this.seleccionZona.id,
-                    SECTOR: this.sector,
-                    UBICACION: this.ubicacion,
-                    ZGEN: this.zgen
-                };
-
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PostMedicamentos",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Medicamento Ingresado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpMedicamento = false;
-                            this.TraerMedicamentos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar el medicamento,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionBodega.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No hay datos, Revise y intente nuevamente",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.seleccionFamilia1.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No hay datos, Revise y intente nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.nombre == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No hay datos, Revise y intente nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.codigoArticulo == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No hay datos, Revise y intente nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let boolFVen = false;
+                    if (this.seleccionFechaVenciminento.id == 1) {
+                        boolFVen = true;
+                    } else {
+                        boolFVen = true;
+                    }
+
+                    let boolFLoteSerie = false;
+                    if (this.seleccionLoteSerie.id == 1) {
+                        boolFLoteSerie = true;
+                    } else {
+                        boolFLoteSerie = true;
+                    }
+
+                    let data = {
+                        CODART_BARR: this.codigoBarra,
+                        CODART_TRACK: this.codigoTrack,
+                        CODART_ONU: this.codigoOnu,
+                        CODART: this.codigoArticulo,
+                        NOMBRE: this.nombre,
+                        GENERICO: this.generico,
+                        CAT_FARMACIA: this.categoriaFarmacia,
+                        UNIMEDBASE: this.unidadMedidaBase,
+                        CONCENTRACION: this.concentracion,
+                        idEstado: this.seleccionEstado.id,
+                        ACT_FECVEN: boolFVen,
+                        ACT_LOTE: boolFLoteSerie,
+                        LABORATORIO: this.laboratorio,
+                        CANTXENB: this.cantidadEmbalaje,
+                        idBodega: this.seleccionBodega.id,
+                        idZona: this.seleccionZona.id,
+                        SECTOR: this.sector,
+                        UBICACION: this.ubicacion,
+                        ZGEN: this.zgen
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostMedicamentos",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Medicamento Ingresado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpMedicamento = false;
+                                this.TraerMedicamentos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar el medicamento,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarMedicamento() {
             try {
-                let boolFVen = false;
-                if (this.seleccionFechaVenciminento.id == 1) {
-                    boolFVen = true;
+                if (this.seleccionBodega.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No hay datos, Revise y intente nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionFamilia1.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No hay datos, Revise y intente nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.nombre == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No hay datos, Revise y intente nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.codigoArticulo == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No hay datos, Revise y intente nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
-                    boolFVen = true;
-                }
+                    let boolFVen = false;
+                    if (this.seleccionFechaVenciminento.id == 1) {
+                        boolFVen = true;
+                    } else {
+                        boolFVen = true;
+                    }
 
-                let boolFLoteSerie = false;
-                if (this.seleccionLoteSerie.id == 1) {
-                    boolFLoteSerie = true;
-                } else {
-                    boolFLoteSerie = true;
-                }
+                    let boolFLoteSerie = false;
+                    if (this.seleccionLoteSerie.id == 1) {
+                        boolFLoteSerie = true;
+                    } else {
+                        boolFLoteSerie = true;
+                    }
 
+                    let data = {
+                        id: this.idMod,
+                        CODART_BARR: this.codigoBarra,
+                        CODART_TRACK: this.codigoTrack,
+                        CODART_ONU: this.codigoOnu,
+                        CODART: this.codigoArticulo,
+                        NOMBRE: this.nombre,
+                        GENERICO: this.generico,
+                        CAT_FARMACIA: this.categoriaFarmacia,
+                        UNIMEDBASE: this.unidadMedidaBase,
+                        CONCENTRACION: this.concentracion,
+                        idEstado: this.seleccionEstado.id,
+                        ACT_FECVEN: boolFVen,
+                        ACT_LOTE: boolFLoteSerie,
+                        LABORATORIO: this.laboratorio,
+                        CANTXENB: this.cantidadEmbalaje,
+                        idBodega: this.seleccionBodega.id,
+                        idZona: this.seleccionZona.id,
+                        SECTOR: this.sector,
+                        UBICACION: this.ubicacion,
+                        ZGEN: this.zgen
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutMedicamentos",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Medicamento Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpMedicamentoMod = false;
+                                this.TraerMedicamentos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar el medicamento,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ValidarCodigoBarra() {
+            try {
                 let data = {
-                    id: this.idMod,
-                    CODART_BARR: this.codigoBarra,
-                    CODART_TRACK: this.codigoTrack,
-                    CODART_ONU: this.codigoOnu,
-                    CODART: this.codigoArticulo,
-                    NOMBRE: this.nombre,
-                    GENERICO: this.generico,
-                    CAT_FARMACIA: this.categoriaFarmacia,
-                    UNIMEDBASE: this.unidadMedidaBase,
-                    CONCENTRACION: this.concentracion,
-                    idEstado: this.seleccionEstado.id,
-                    ACT_FECVEN: boolFVen,
-                    ACT_LOTE: boolFLoteSerie,
-                    LABORATORIO: this.laboratorio,
-                    CANTXENB: this.cantidadEmbalaje,
-                    idBodega: this.seleccionBodega.id,
-                    idZona: this.seleccionZona.id,
-                    SECTOR: this.sector,
-                    UBICACION: this.ubicacion,
-                    ZGEN: this.zgen
+                    CODART_BARR: this.codigoBarra
                 };
 
                 const dat = data;
 
                 axios
                     .post(
-                        this.localVal + "/api/Mantenedor/PutMedicamentos",
+                        this.localVal +
+                            "/api/Mantenedor/PostValidarCodBarraMed",
                         dat,
                         {
                             headers: {
@@ -1420,22 +1539,13 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Medicamento Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpMedicamentoMod = false;
-                            this.TraerMedicamentos();
+                            this.AgregarCodigoMedicamento();
                         } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No fue posible modificar el medicamento,intentelo nuevamente",
+                                    "No fue Codigo de barra ya ingresado,intente con otro codigo",
                                 color: "danger",
                                 position: "top-right"
                             });

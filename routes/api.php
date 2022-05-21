@@ -43,7 +43,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetInsumoEconomato', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetInsumoEconomato']);    
     Route::get('/Mantenedor/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@GetUsers']);    
     Route::get('/Mantenedor/GetEstado', ['middleware' => 'cors', 'uses' => 'EstadosController@GetEstado']);    
-    Route::get('/Mantenedor/GetStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@GetStockMinMax']);
+    Route::get('/Mantenedor/GetStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@GetStockMinMax']);    
+    Route::get('/Mantenedor/GetStockMinMaxMed', ['middleware' => 'cors', 'uses' => 'StockMinMaxMedicamentosController@GetStockMinMaxMed']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
@@ -69,6 +70,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostSaldoInventario', ['middleware' => 'cors', 'uses' => 'SaldoInventariosController@PostSaldoInventario']);
     Route::post('/Mantenedor/PostEstado', ['middleware' => 'cors', 'uses' => 'EstadosController@PostEstado']);
     Route::post('/Mantenedor/PostStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@PostStockMinMax']);
+    Route::post('/Mantenedor/PostStockMinMaxMed', ['middleware' => 'cors', 'uses' => 'StockMinMaxMedicamentosController@PostStockMinMaxMed']);    
+    Route::post('/Mantenedor/PostValidarCodBarraMed', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostValidarCodBarraMed']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);
@@ -91,6 +94,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PutUsuario', ['middleware' => 'cors', 'uses' => 'LoginController@PutUsuario']);
     Route::post('/Mantenedor/PutEstado', ['middleware' => 'cors', 'uses' => 'EstadosController@PutEstado']);    
     Route::post('/Mantenedor/PutStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@PutStockMinMax']);
+    Route::post('/Mantenedor/PutDesactivarStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@PutDesactivarStockMinMax']);
+    Route::post('/Mantenedor/PutStockMinMaxMed', ['middleware' => 'cors', 'uses' => 'StockMinMaxMedicamentosController@PutStockMinMaxMed']);
+    Route::post('/Mantenedor/PutDesactivarStockMinMaxMed', ['middleware' => 'cors', 'uses' => 'StockMinMaxMedicamentosController@PutDesactivarStockMinMaxMed']);
 
     //Post Documentos
     Route::post('/Mantenedor/PostDocumentoAuthUsuario', ['middleware' => 'cors', 'uses' => 'DocumentacionAuthUsuariosController@PostDocumentoAuthUsuario']);

@@ -1071,7 +1071,7 @@ export default {
                 let b = this.seleccionBodega.id;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idBodega) {
                         a.push(value);
                     }
                 });
@@ -1085,10 +1085,10 @@ export default {
             try {
                 this.listaFamilia2 = [];
                 let c = this.listaTempFamilia2;
-                let b = this.seleccionFamilia1.id;
+                let b = this.seleccionFamilia1.CODFAM1;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam) {
                         a.push(value);
                     }
                 });
@@ -1102,10 +1102,10 @@ export default {
             try {
                 this.listaFamilia3 = [];
                 let c = this.listaTempFamilia3;
-                let b = this.seleccionFamilia2.id;
+                let b = this.seleccionFamilia2.CODFAM2;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam01) {
                         a.push(value);
                     }
                 });
@@ -1119,10 +1119,10 @@ export default {
             try {
                 this.listaFamilia4 = [];
                 let c = this.listaTempFamilia4;
-                let b = this.seleccionFamilia3.id;
+                let b = this.seleccionFamilia3.CODFAM3;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam02) {
                         a.push(value);
                     }
                 });
@@ -1136,10 +1136,10 @@ export default {
             try {
                 this.listaFamilia5 = [];
                 let c = this.listaTempFamilia5;
-                let b = this.seleccionFamilia4.id;
+                let b = this.seleccionFamilia4.CODFAM4;
                 let a = [];
                 c.forEach((value, index) => {
-                    if (b == value.id) {
+                    if (b == value.idDesFam03) {
                         a.push(value);
                     }
                 });
