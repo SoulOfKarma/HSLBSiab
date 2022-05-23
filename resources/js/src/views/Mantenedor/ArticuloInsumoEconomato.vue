@@ -543,7 +543,7 @@
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
+                            <div class="vx-col w-1/4 mt-5">
                                 <h6>Bodega</h6>
 
                                 <v-select
@@ -553,8 +553,37 @@
                                     label="descripcionBodega"
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamilia"
+                                    disabled
                                 ></v-select>
                             </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <h6>Nombre Articulo</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="nombre"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <h6>Codigo Interno</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoArticulo"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <h6>Unidad Medida Base</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="unidadMedidaBase"
+                                    disabled
+                                />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="vx-row">
                             <div class="vx-col w-1/2 mt-5">
                                 <h6>
                                     Codigo de Barra
@@ -564,189 +593,64 @@
                                     v-model="codigoBarra"
                                 />
                             </div>
-                        </div>
-                        <div class="vx-row">
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Codigo Onu</h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="codigoOnu"
-                                    disabled
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Codigo Interno</h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="codigoArticulo"
-                                    disabled
-                                />
-                            </div>
-                        </div>
-                        <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Nombre Articulo</h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="nombre"
-                                    disabled
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Descripcion Familia 1</h6>
-                                <v-select
-                                    v-model="seleccionFamilia1"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionFamilia"
-                                    :options="listaFamilia1"
-                                    @input="cargaItemFamilia1"
-                                    disabled
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Descripcion Familia 2</h6>
-                                <v-select
-                                    v-model="seleccionFamilia2"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionFamilia"
-                                    :options="listaFamilia2"
-                                    @input="cargaItemFamilia2"
-                                    disabled
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Descripcion Familia 3</h6>
-                                <v-select
-                                    v-model="seleccionFamilia3"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionFamilia"
-                                    :options="listaFamilia3"
-                                    @input="cargaItemFamilia3"
-                                    disabled
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Descripcion Familia 4</h6>
-                                <v-select
-                                    v-model="seleccionFamilia4"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionFamilia"
-                                    :options="listaFamilia4"
-                                    @input="cargaItemFamilia4"
-                                    disabled
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Descripcion Familia 5</h6>
-                                <v-select
-                                    v-model="seleccionFamilia5"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionFamilia"
-                                    :options="listaFamilia5"
-                                    disabled
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Unidad Medida Base</h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="unidadMedidaBase"
-                                    disabled
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Estado</h6>
-                                <v-select
-                                    v-model="seleccionEstado"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionEstado"
-                                    :options="listaEstado"
-                                    disabled
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Activacion Fecha Venciminento</h6>
-                                <v-select
-                                    v-model="seleccionFechaVenciminento"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionFVen"
-                                    :options="listaFVenciminento"
-                                    disabled
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Activacion Lote/Serie</h6>
-                                <v-select
-                                    v-model="seleccionLoteSerie"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionLoteSerie"
-                                    :options="listaFLoteSerie"
-                                    disabled
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Cantidad Embalaje</h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="cantidadEmbalaje"
-                                    disabled
-                                />
-                            </div>
-
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Zona</h6>
-                                <v-select
-                                    v-model="seleccionZona"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionZonas"
-                                    :options="listaZona"
-                                    disabled
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Sector</h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="sector"
-                                    disabled
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Ubicacion</h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="ubicacion"
-                                    disabled
-                                />
-                            </div>
-                        </div>
-                        <br />
-                        <div class="vx-row w-full">
-                            <div class="vx-col w-1/2 mt-5">
-                                <vs-button
-                                    @click="popUpCodInsumoEco = false"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Volver</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
+                                <h6>
+                                    Agregar
+                                </h6>
                                 <vs-button
                                     @click="AgregarCodInsumoEco"
                                     color="success"
                                     type="filled"
                                     class="w-full"
                                     >Agregar Codigo Insumo/Economato</vs-button
+                                >
+                            </div>
+                        </div>
+                        <div class="vx-row">
+                            <vx-card>
+                                <vue-good-table
+                                    :columns="col"
+                                    :rows="listaCodNuevo"
+                                    :pagination-options="{
+                                        enabled: true,
+                                        perPage: 10
+                                    }"
+                                >
+                                    <template
+                                        slot="table-row"
+                                        slot-scope="props"
+                                    >
+                                        <!-- Column: Name -->
+                                        <span
+                                            v-if="
+                                                props.column.field ===
+                                                    'fullName'
+                                            "
+                                            class="text-nowrap"
+                                        >
+                                        </span>
+
+                                        <!-- Column: Common -->
+                                        <span v-else>
+                                            {{
+                                                props.formattedRow[
+                                                    props.column.field
+                                                ]
+                                            }}
+                                        </span>
+                                    </template>
+                                </vue-good-table>
+                            </vx-card>
+                        </div>
+                        <br />
+                        <div class="vx-row w-full">
+                            <div class="vx-col w-full mt-5">
+                                <vs-button
+                                    @click="popUpCodInsumoEco = false"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Volver</vs-button
                                 >
                             </div>
                         </div>
@@ -891,7 +795,7 @@ export default {
                     }
                 },
                 {
-                    label: "Nombre Medicamento",
+                    label: "Nombre Articulo",
                     field: "NOMBRE",
                     filterOptions: {
                         enabled: true
@@ -905,47 +809,50 @@ export default {
                     }
                 },
                 {
-                    label: "Descripcion Familia 1",
-                    field: "NOMFAM1",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 2",
-                    field: "NOMFAM2",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 3",
-                    field: "NOMFAM3",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 4",
-                    field: "NOMFAM4",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion Familia 5",
-                    field: "NOMFAM5",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
                     label: "Opciones",
                     field: "action"
                 }
             ],
+            col: [
+                {
+                    label: "Codigo de Barra",
+                    field: "CODART_BARR",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Bodega",
+                    field: "descripcionBodega",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Articulo",
+                    field: "CODART",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Nombre Medicamento",
+                    field: "NOMBRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Unidad de Medida",
+                    field: "UNIMEDBASE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                }
+            ],
             //Datos Listado Proveedor
             rows: [],
+            listaCodNuevo: [],
             listaEstado: [],
             listaBodega: [],
             listaZona: [],
@@ -1480,11 +1387,38 @@ export default {
                 });
 
                 this.unidadMedidaBase = UNIMEDBASE;
+
+                this.TraerDetalleByCodInterno(CODART);
             } catch (error) {
                 console.log(error);
             }
         },
-        //Metodos CRUD Servicios
+        //Metodos CRUD
+        TraerDetalleByCodInterno(codigoInterno) {
+            try {
+                let data = { CODART: codigoInterno };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/GetListadoArticulosByCodInterno",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listaCodNuevo = res.data;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerInsumoEconomato() {
             try {
                 axios
@@ -1927,7 +1861,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1936,7 +1869,7 @@ export default {
                                 position: "top-right"
                             });
                             this.TraerInsumoEconomato();
-                            this.popUpCodInsumoEco = false;
+                            this.TraerDetalleByCodInterno(this.codigoArticulo);
                         } else {
                             this.$vs.notify({
                                 time: 5000,
@@ -1969,6 +1902,6 @@ export default {
 </script>
 <style lang="stylus">
 .con-vs-popup .vs-popup {
-  width: 1000px;
+  width: 1500px;
 }
 </style>

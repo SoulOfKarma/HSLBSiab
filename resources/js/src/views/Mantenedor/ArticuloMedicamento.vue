@@ -298,6 +298,7 @@
                     <div class="vx-row"></div>
                 </div>
             </vs-popup>
+            <!-- Modificar Medicamentos -->
             <vs-popup
                 classContent="ModificarMedicamento"
                 title="Modificar Medicamento"
@@ -503,6 +504,7 @@
                     <div class="vx-row"></div>
                 </div>
             </vs-popup>
+            <!-- Codigo Medicamento -->
             <vs-popup
                 classContent="AgregarCodigoNMedicamento"
                 title="Agregar Nuevo Codigo a Medicamento"
@@ -510,6 +512,46 @@
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
+                        <div class="vx-row">
+                            <div class="vx-col w-1/4 mt-5">
+                                <h6>Bodega</h6>
+
+                                <v-select
+                                    v-model="seleccionBodega"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionBodega"
+                                    :options="listaBodega"
+                                    disabled
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <h6>Nombre Articulo</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="nombre"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <h6>Codigo Interno</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoArticulo"
+                                    disabled
+                                />
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <h6>Unidad Medida Base</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="unidadMedidaBase"
+                                    disabled
+                                />
+                            </div>
+                        </div>
+                        <br />
                         <div class="vx-row">
                             <div class="vx-col w-1/2 mt-5">
                                 <h6>
@@ -521,187 +563,63 @@
                                 />
                             </div>
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Codigo Track</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="codigoTrack"
-                                />
+                                <h6>
+                                    Agregar
+                                </h6>
+                                <vs-button
+                                    @click="ValidarCodigoBarra"
+                                    color="success"
+                                    type="filled"
+                                    class="w-full"
+                                    >Agregar Codigo Medicamento</vs-button
+                                >
                             </div>
                         </div>
                         <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Codigo Onu</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="codigoOnu"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Codigo Interno</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="codigoArticulo"
-                                />
-                            </div>
-                        </div>
-                        <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Nombre Articulo</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="nombre"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Generico</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="generico"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Categoria Farmacia</h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    disabled
-                                    v-model="categoriaFarmacia"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Unidad Medida Base</h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    disabled
-                                    v-model="unidadMedidaBase"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Concentracion</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="concentracion"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Estado</h6>
-                                <v-select
-                                    disabled
-                                    v-model="seleccionEstado"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionEstado"
-                                    :options="listaEstado"
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Activacion Fecha Venciminento</h6>
-                                <v-select
-                                    disabled
-                                    v-model="seleccionFechaVenciminento"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionFVen"
-                                    :options="listaFVenciminento"
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Activacion Lote/Serie</h6>
-                                <v-select
-                                    disabled
-                                    v-model="seleccionLoteSerie"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionLoteSerie"
-                                    :options="listaFLoteSerie"
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Laboratorio</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="laboratorio"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Cantidad Embalaje</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="cantidadEmbalaje"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Bodega</h6>
-                                <v-select
-                                    disabled
-                                    v-model="seleccionBodega"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionBodega"
-                                    :options="listaBodega"
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Zona</h6>
-                                <v-select
-                                    disabled
-                                    v-model="seleccionZona"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="descripcionZonas"
-                                    :options="listaZona"
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Sector</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="sector"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Ubicacion</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="ubicacion"
-                                />
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <h6>Z Gen</h6>
-                                <vs-input
-                                    disabled
-                                    class="inputx w-full  "
-                                    v-model="zgen"
-                                />
-                            </div>
+                            <vx-card>
+                                <vue-good-table
+                                    :columns="col"
+                                    :rows="listaCodNuevo"
+                                    :pagination-options="{
+                                        enabled: true,
+                                        perPage: 10
+                                    }"
+                                >
+                                    <template
+                                        slot="table-row"
+                                        slot-scope="props"
+                                    >
+                                        <!-- Column: Name -->
+                                        <span
+                                            v-if="
+                                                props.column.field ===
+                                                    'fullName'
+                                            "
+                                            class="text-nowrap"
+                                        >
+                                        </span>
+
+                                        <!-- Column: Common -->
+                                        <span v-else>
+                                            {{
+                                                props.formattedRow[
+                                                    props.column.field
+                                                ]
+                                            }}
+                                        </span>
+                                    </template>
+                                </vue-good-table>
+                            </vx-card>
                         </div>
                         <br />
                         <div class="vx-row w-full md-5">
-                            <div class="vx-col w-1/2 ">
+                            <div class="vx-col w-full ">
                                 <vs-button
                                     @click="popUpNCMedicamento = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full m-1"
                                     >Volver</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/2 ">
-                                <vs-button
-                                    @click="ValidarCodigoBarra"
-                                    color="warning"
-                                    type="filled"
-                                    class="w-full m-1"
-                                    >Agregar Codigo Medicamento</vs-button
                                 >
                             </div>
                         </div>
@@ -888,8 +806,53 @@ export default {
                     field: "action"
                 }
             ],
-            //Datos Listado Proveedor
+            col: [
+                {
+                    label: "Codigo de Barra",
+                    field: "CODART_BARR",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Articulo",
+                    field: "CODART",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Nombre Medicamento",
+                    field: "NOMBRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Unidad de Medida",
+                    field: "UNIMEDBASE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Concentracion",
+                    field: "CONCENTRACION",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Laboratorio",
+                    field: "LABORATORIO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                }
+            ],
+            //Datos Listado
             rows: [],
+            listaCodNuevo: [],
             listaEstado: [],
             listaBodega: [],
             listaZona: [],
@@ -1177,11 +1140,38 @@ export default {
                 this.sector = SECTOR;
                 this.ubicacion = UBICACION;
                 this.zgen = ZGEN;
+
+                this.TraerDetalleByCodInterno(CODART);
             } catch (error) {
                 console.log(error);
             }
         },
-        //Metodos CRUD Servicios
+        //Metodos CRUD
+        TraerDetalleByCodInterno(codigoInterno) {
+            try {
+                let data = { CODART: codigoInterno };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/GetListadoMedicamentosByCodInterno",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listaCodNuevo = res.data;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerMedicamentos() {
             try {
                 axios
@@ -1609,7 +1599,6 @@ export default {
                     .then(res => {
                         const solicitudServer = res.data;
                         if (solicitudServer == true) {
-                            this.limpiarCampos();
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Completado",
@@ -1618,8 +1607,8 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
-                            this.popUpMedicamentoMod = false;
                             this.TraerMedicamentos();
+                            this.TraerDetalleByCodInterno(this.codigoArticulo);
                         } else {
                             this.$vs.notify({
                                 time: 5000,
