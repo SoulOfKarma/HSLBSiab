@@ -45,6 +45,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetEstado', ['middleware' => 'cors', 'uses' => 'EstadosController@GetEstado']);    
     Route::get('/Mantenedor/GetStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@GetStockMinMax']);    
     Route::get('/Mantenedor/GetStockMinMaxMed', ['middleware' => 'cors', 'uses' => 'StockMinMaxMedicamentosController@GetStockMinMaxMed']);
+    Route::get('/Mantenedor/GetAllArticulos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetAllArticulos']);
+    Route::get('/Mantenedor/GetSaldoInventario', ['middleware' => 'cors', 'uses' => 'SaldoInventariosController@GetSaldoInventario']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);

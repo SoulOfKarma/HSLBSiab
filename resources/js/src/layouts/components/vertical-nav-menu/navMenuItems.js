@@ -109,6 +109,12 @@ export default [
                 name: "Stock Medicamentos",
                 slug: "/Mantenedor/StockMinMaxMed",
                 icon: "HomeIcon"
+            },
+            {
+                url: "/Mantenedor/SaldoInventario",
+                name: "Saldo Inventario",
+                slug: "/Mantenedor/SaldoInventario",
+                icon: "HomeIcon"
             }
         ]
     },

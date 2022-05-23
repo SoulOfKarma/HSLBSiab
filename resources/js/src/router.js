@@ -123,6 +123,12 @@ const router = new Router({
                     component: () =>
                         import("./views/Mantenedor/StockMinMaxMed.vue")
                 },
+                {
+                    path: "/Mantenedor/SaldoInventario",
+                    name: "/Mantenedor/SaldoInventario",
+                    component: () =>
+                        import("./views/Mantenedor/SaldoInventario.vue")
+                },
                 //Router de Recepcion
                 {
                     path: "/Recepcion/Recepcion",
