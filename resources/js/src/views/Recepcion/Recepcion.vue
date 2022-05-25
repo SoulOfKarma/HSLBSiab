@@ -12,7 +12,7 @@
                             >Buscar Articulo</vs-button
                         >
                     </div>
-                    <div class="vx-col w-1/8 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -22,17 +22,17 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/8 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Fecha Inicio</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
-                            v-model="fechaInicio"
+                            v-model="fechaRecepcion"
                             placeholder="Fecha Inicio"
                             @on-change="onFromChange"
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/8 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Proveedor</h6>
                         <v-select
                             v-model="seleccionProveedores"
@@ -43,7 +43,7 @@
                             @input="setProveedor"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/8 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Nombre Proveedor</h6>
                         <vs-input
                             class="inputx w-full  "
@@ -51,18 +51,24 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/8 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Tipo Documento</h6>
                         <v-select
-                            v-model="seleccionProveedores"
+                            v-model="seleccionTipoDocumento"
                             placeholder="Activo"
                             class="w-full select-large"
-                            label="RUTPROV"
-                            :options="listadoProveedores"
-                            @input="setProveedor"
+                            label="descripcionDocumento"
+                            :options="listaTipoDocumento"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/8 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
+                        <h6>N° Documento</h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="ndocumento"
+                        />
+                    </div>
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Documento</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -71,14 +77,14 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/8 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>N° Orden Compra</h6>
                         <vs-input
                             class="inputx w-full  "
                             v-model="nordencompra"
                         />
                     </div>
-                    <div class="vx-col w-1/8 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>N° RIB</h6>
                         <vs-input class="inputx w-full  " v-model="nrib" />
                     </div>
@@ -97,9 +103,9 @@
                     </div>
                     <div class="vx-col w-1/3 mt-5">
                         <h6>
-                            Saldo
+                            Cantidad
                         </h6>
-                        <vs-input class="inputx w-full  " v-model="saldo" />
+                        <vs-input class="inputx w-full  " v-model="cantidad" />
                     </div>
                     <div class="vx-col w-1/3 mt-5">
                         <h6>
@@ -107,6 +113,21 @@
                         </h6>
                         <vs-input class="inputx w-full  " v-model="precio" />
                     </div>
+
+                    <div
+                        class="vx-col w-full mt-5"
+                        v-if="seleccionFechaVencimiento.id == 1"
+                    >
+                        <h6>Fecha Venciminento</h6>
+                        <flat-pickr
+                            :config="configTodateTimePicker"
+                            v-model="fechaVencimiento"
+                            @on-change="onFromChange"
+                            class="w-full "
+                        />
+                    </div>
+
+                    <br />
                     <div class="vx-col w-1/2 mt-5">
                         <vs-button
                             @click="limpiarCampos"
@@ -127,12 +148,14 @@
                     </div>
                 </div>
                 <br />
+
+                <!-- Detalles Articulos -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
                             <vue-good-table
-                                :columns="col"
-                                :rows="listaCodNuevo"
+                                :columns="colDetalle"
+                                :rows="listaDetalleRecepcion"
                                 :pagination-options="{
                                     enabled: true,
                                     perPage: 10
@@ -151,27 +174,11 @@
                                         "
                                     >
                                         <plus-circle-icon
-                                            content="Agregar Articulo al listado"
+                                            content="Modificar Detalle"
                                             v-tippy
                                             size="1.5x"
                                             class="custom-class"
-                                            @click="
-                                                popAgregarArticulo(
-                                                    props.row.NOMBRE,
-                                                    props.row.UNIMEDBASE,
-                                                    props.row.CODART_ONU,
-                                                    props.row.CODART,
-                                                    props.row.CODART_BARR,
-                                                    props.row.idEstado,
-                                                    props.row.UBICACION,
-                                                    props.row.SECTOR,
-                                                    props.row.idBodega,
-                                                    props.row.idZona,
-                                                    props.row.CANTXENB,
-                                                    props.row.idACT_FECVEN,
-                                                    props.row.idACTLOTE
-                                                )
-                                            "
+                                            @click="popModDetalle(props.row.id)"
                                         ></plus-circle-icon>
                                     </span>
                                     <!-- Column: Common -->
@@ -188,9 +195,102 @@
                     </vx-card>
                     <div class="vx-row"></div>
                 </div>
+                <!-- Calculos -->
+                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <vue-good-table
+                                class="w-full"
+                                :columns="colTotal"
+                                :rows="listaRecepcion"
+                                :pagination-options="{
+                                    enabled: true,
+                                    perPage: 10
+                                }"
+                            >
+                                <template slot="table-row" slot-scope="props">
+                                    <!-- Column: Name -->
+                                    <span
+                                        v-if="props.column.field === 'fullName'"
+                                        class="text-nowrap"
+                                    >
+                                    </span>
+                                    <!-- Column: Common -->
+                                    <span v-else>
+                                        {{
+                                            props.formattedRow[
+                                                props.column.field
+                                            ]
+                                        }}
+                                    </span>
+                                </template>
+                            </vue-good-table>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <h6>Observaciones</h6>
+                            <br /><br />
+                            <quill-editor
+                                class="w-full"
+                                v-model="Observaciones"
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
+                        </div>
+                        <br /><br />
+                    </vx-card>
+                </div>
+                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <div class="vx-col w-1/4 mt-5">
+                                <vs-button
+                                    @click="ActualizarListado"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Actualizar</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <vs-button
+                                    @click="ImprimirDatos"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Imprimir</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <vs-button
+                                    @click="volver"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <vs-button
+                                    @click="CerrarRecepcion"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Cerrar Recepcion</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                </div>
             </vx-card>
             <div class="vx-row"></div>
         </div>
+        <!-- Listado Articulos -->
         <vs-popup
             classContent="ListadoArticulos"
             title="Listado Articulos"
@@ -202,7 +302,7 @@
                         <vx-card>
                             <vue-good-table
                                 :columns="col"
-                                :rows="listaCodNuevo"
+                                :rows="listaArticulos"
                                 :pagination-options="{
                                     enabled: true,
                                     perPage: 10
@@ -309,13 +409,18 @@ export default {
             },
             //Datos Campos
             popUpArticulos: false,
+            codInternoRecepcion: 0,
             descripcionServicio: "",
-            saldo: 0,
+            ndocumento: "",
+            cantidad: 0,
             precio: 0,
+            numint: 0,
             fechaSistema: null,
-            fechaInicio: null,
+            fechaRecepcion: null,
             fechaDocumento: null,
+            fechaVencimiento: null,
             codigoBarra: "",
+            Observaciones: "",
             nordencompra: "",
             nrib: "",
             codigoTrack: "",
@@ -348,7 +453,7 @@ export default {
                 id: 0,
                 descripcionZonas: ""
             },
-            seleccionFechaVenciminento: {
+            seleccionFechaVencimiento: {
                 id: 0,
                 descripcionFVen: "Seleccione Fecha Venciminento"
             },
@@ -360,6 +465,10 @@ export default {
                 id: 0,
                 RUTPROV: "Ej. 22222222-2",
                 NOMRAZSOC: ""
+            },
+            seleccionTipoDocumento: {
+                id: 0,
+                descripcionDocumento: ""
             },
             idMod: 0,
             //Datos Fechas
@@ -415,6 +524,7 @@ export default {
             },
             configTodateTimePicker: {
                 minDate: null,
+                dateFormat: "d/m/Y",
                 locale: {
                     firstDayOfWeek: 1,
                     weekdays: {
@@ -475,6 +585,92 @@ export default {
                 dateFormat: "H:i"
             },
             //Configuracion Columnas
+            colDetalle: [
+                {
+                    label: "Codigo Interno",
+                    field: "CODART",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Especificacion Comprador",
+                    field: "PRODUCTO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Barra",
+                    field: "CODBAR",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Unidad Medida",
+                    field: "UNIMED",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Vencimiento Activo?",
+                    field: "ACT_FECVEN",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha Vencimiento",
+                    field: "FECVEN",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Lote",
+                    field: "LOTE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Cantidad Recepcionada",
+                    field: "CANREC",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Cantidad Rechazada",
+                    field: "CANRECH",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Cantidad Pendiente",
+                    field: "PENDIENTE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Precio Unitario",
+                    field: "PREUNI",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Total Recepcionado",
+                    field: "TOTREC",
+                    filterOptions: {
+                        enabled: true
+                    }
+                }
+            ],
             col: [
                 {
                     label: "Codigo de Barra",
@@ -516,11 +712,65 @@ export default {
                     field: "action"
                 }
             ],
+            colTotal: [
+                {
+                    label: "NETO",
+                    field: "NETO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descuento",
+                    field: "DCTO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Cargos",
+                    field: "CARGO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Sub Total",
+                    field: "SUBTOTAL",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "19% Iva",
+                    field: "SUBTOTAL",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Ajuste",
+                    field: "AJUSTE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Total",
+                    field: "TOTAL",
+                    filterOptions: {
+                        enabled: true
+                    }
+                }
+            ],
             //Datos Listado
             rows: [],
-            listaCodNuevo: [],
+            listaArticulos: [],
+            listaDetalleRecepcion: [],
+            listaRecepcion: [],
             listaEstado: [],
             listaBodega: [],
+            listaTipoDocumento: [],
             listaZona: [],
             listadoProveedores: [],
             listaFVenciminento: [
@@ -571,7 +821,7 @@ export default {
         },
         limpiarCampos() {
             try {
-                this.saldo = 0;
+                this.cantidad = 0;
                 this.precio = 0;
                 this.codigoBarra = "";
                 this.codigoOnu = "";
@@ -581,7 +831,7 @@ export default {
                     id: 0,
                     descripcionEstado: ""
                 };
-                this.seleccionFechaVenciminento = {
+                this.seleccionFechaVencimiento = {
                     id: 0,
                     descripcionFVen: "Seleccione Fecha Venciminento"
                 };
@@ -616,10 +866,46 @@ export default {
                 console.log(error);
             }
         },
+        //Funciones Finales Recepcion
+        ActualizarListado() {
+            try {
+                console.log("Ha ha");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ImprimirDatos() {
+            try {
+                console.log("Ha ha");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        volver() {
+            try {
+                console.log("Ha ha");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        CerrarRecepcion() {
+            try {
+                console.log("Ha ha");
+            } catch (error) {
+                console.log(error);
+            }
+        },
         //PopUp
         popArticulos() {
             try {
                 this.popUpArticulos = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popModDetalle(id) {
+            try {
+                console.log(id);
             } catch (error) {
                 console.log(error);
             }
@@ -657,17 +943,18 @@ export default {
                 });
 
                 c = [];
-
                 if (idACT_FECVEN == 1) {
-                    this.seleccionFechaVenciminento = {
+                    this.seleccionFechaVencimiento = {
                         id: 1,
                         descripcionFVen: "Si"
                     };
                 } else {
-                    this.seleccionFechaVenciminento = {
+                    this.seleccionFechaVencimiento = {
                         id: 2,
                         descripcionFVen: "No"
                     };
+
+                    this.fechaVencimiento = null;
                 }
 
                 if (idACTLOTE == 1) {
@@ -730,8 +1017,8 @@ export default {
                         }
                     })
                     .then(res => {
-                        this.listaCodNuevo = res.data;
-                        if (this.listaCodNuevo.length < 0) {
+                        this.listaArticulos = res.data;
+                        if (this.listaArticulos.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
@@ -758,6 +1045,32 @@ export default {
                     .then(res => {
                         this.listadoProveedores = res.data;
                         if (this.listadoProveedores.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los proveedores correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerTipoDocumentos() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetTipoDocumentos", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaTipoDocumento = res.data;
+                        if (this.listaTipoDocumento.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
@@ -850,44 +1163,58 @@ export default {
                 console.log(error);
             }
         },
-
+        TraerUltimoNInterno() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetUltimoNInterno", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let data = res.data;
+                        if (
+                            data == 0 ||
+                            data == null ||
+                            data == [] ||
+                            data == {}
+                        ) {
+                            this.numint = 1;
+                        } else {
+                            this.numint = data + 1;
+                        }
+                        console.log(this.numint);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         AgregarArticuloDetalle() {
             try {
-                let boolFVen = false;
-                if (this.seleccionFechaVenciminento.id == 1) {
-                    boolFVen = true;
-                } else {
-                    boolFVen = true;
-                }
-
-                let boolFLoteSerie = false;
-                if (this.seleccionLoteSerie.id == 1) {
-                    boolFLoteSerie = true;
-                } else {
-                    boolFLoteSerie = true;
-                }
-
                 let data = {
-                    CODART_BARR: this.codigoBarra,
-                    CODART_ONU: this.codigoOnu,
+                    NUMINT: this.numint,
+                    FECSYS: this.fechaSistema,
+                    FECDES: this.fechaRecepcion,
+                    RUTPRO: this.seleccionProveedores.RUTPROV,
+                    NOMPRO: this.seleccionProveedores.NOMRAZSOC,
+                    TIPDOC: this.seleccionTipoDocumento.id,
+                    NUMDOC: this.ndocumento,
+                    FECDOC: this.fechaDocumento,
+                    NUMFAC: this.nordencompra,
+                    NUMRIB: this.nrib,
                     CODART: this.codigoArticulo,
-                    NOMBRE: this.nombre,
-                    idEstado: this.seleccionEstado.id,
-                    ACT_FECVEN: boolFVen,
-                    ACT_LOTE: boolFLoteSerie,
-                    CANTXENB: this.cantidadEmbalaje,
-                    idBodega: this.seleccionBodega.id,
-                    idZona: this.seleccionZona.id,
-                    SECTOR: this.sector,
-                    UBICACION: this.ubicacion,
-                    NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
-                    NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
-                    NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
-                    NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
-                    NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                    UNIMEDBASE: this.unidadMedidaBase,
-                    PRECIO: this.precio,
-                    SALDO: this.saldo
+                    PRODUCTO: this.nombre,
+                    CODBAR: this.codigoBarra,
+                    UNIMED: this.unidadMedidaBase,
+                    ACT_FECVEN: this.seleccionFechaVencimiento.id,
+                    FECVEN: this.fechaVencimiento,
+                    LOTE: this.seleccionLoteSerie.id,
+                    CANREC: this.cantidad,
+                    CANRECH: 0,
+                    PENDIENTE: 0,
+                    PREUNI: this.precio,
+                    VALTOT: this.precio * this.cantidad
                 };
                 const dat = data;
                 axios
@@ -930,9 +1257,10 @@ export default {
         cargarHoras() {
             try {
                 let date = moment().endOf("day");
-                this.fechaInicio = date.format("DD/MM/YYYY").toString();
+                this.fechaRecepcion = date.format("DD/MM/YYYY").toString();
                 this.fechaSistema = date.format("DD/MM/YYYY").toString();
                 this.fechaDocumento = date.format("DD/MM/YYYY").toString();
+                this.fechaVencimiento = date.format("DD/MM/YYYY").toString();
             } catch (error) {
                 console.log("No se cargo la ISO hora");
                 console.log(error);
@@ -940,6 +1268,8 @@ export default {
         }
     },
     beforeMount() {
+        this.TraerUltimoNInterno();
+        this.TraerTipoDocumentos();
         this.TraerProveedores();
         this.TraerArticulos();
         this.TraerEstado();
