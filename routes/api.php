@@ -49,6 +49,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetSaldoInventario', ['middleware' => 'cors', 'uses' => 'SaldoInventariosController@GetSaldoInventario']);
     Route::get('/Mantenedor/GetTipoDocumentos', ['middleware' => 'cors', 'uses' => 'TipoDocumentosController@GetTipoDocumentos']);
     Route::get('/Mantenedor/GetUltimoNInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetUltimoNInterno']);
+    Route::get('/Mantenedor/GetRecepcionAbiertas', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetRecepcionAbiertas']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
@@ -78,10 +79,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostValidarCodBarraMed', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostValidarCodBarraMed']);
     Route::post('/Mantenedor/PostTipoDocumentos', ['middleware' => 'cors', 'uses' => 'TipoDocumentosController@PostTipoDocumentos']);
     Route::post('/Mantenedor/PostArticuloDetalle', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostArticuloDetalle']);
+    Route::post('/Mantenedor/PostArticuloDetalleCodInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostArticuloDetalleCodInterno']);
 
     //Post Como Get
     Route::post('/Mantenedor/GetListadoArticulosByCodInterno', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetListadoArticulosByCodInterno']);
     Route::post('/Mantenedor/GetListadoMedicamentosByCodInterno', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetListadoMedicamentosByCodInterno']);
+    Route::post('/Mantenedor/GetArticulosIngresadosByCodInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetArticulosIngresadosByCodInterno']);
+    Route::post('/Mantenedor/GetRecepcionIngresadaByCodInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetRecepcionIngresadaByCodInterno']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);

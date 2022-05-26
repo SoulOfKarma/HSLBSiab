@@ -30,6 +30,7 @@
                             placeholder="Fecha Inicio"
                             @on-change="onFromChange"
                             class="w-full "
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/4 mt-5">
@@ -41,6 +42,7 @@
                             label="RUTPROV"
                             :options="listadoProveedores"
                             @input="setProveedor"
+                            disabled
                         ></v-select>
                     </div>
                     <div class="vx-col w-1/4 mt-5">
@@ -59,6 +61,7 @@
                             class="w-full select-large"
                             label="descripcionDocumento"
                             :options="listaTipoDocumento"
+                            disabled
                         ></v-select>
                     </div>
                     <div class="vx-col w-1/5 mt-5">
@@ -66,6 +69,7 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="ndocumento"
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/5 mt-5">
@@ -75,6 +79,7 @@
                             v-model="fechaDocumento"
                             @on-change="onFromChange"
                             class="w-full "
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/5 mt-5">
@@ -82,11 +87,16 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="nordencompra"
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/5 mt-5">
                         <h6>N° RIB</h6>
-                        <vs-input class="inputx w-full  " v-model="nrib" />
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="nrib"
+                            disabled
+                        />
                     </div>
                 </div>
                 <br />
@@ -416,7 +426,6 @@ export default {
             precio: 0,
             numint: 0,
             valorTotal: 0,
-            contador: 0,
             fechaSistema: null,
             fechaRecepcion: null,
             fechaDocumento: null,
@@ -878,8 +887,7 @@ export default {
         },
         ImprimirDatos() {
             try {
-                let total = this.precio * this.cantidad;
-                console.log(total);
+                console.log("Ha ha");
             } catch (error) {
                 console.log(error);
             }
@@ -1041,8 +1049,10 @@ export default {
         TraerDetalleRecepcion() {
             try {
                 let data = {
-                    NUMINT: this.numint
+                    NUMINT: this.$route.params.NUMINT
                 };
+
+                this.numint = this.$route.params.NUMINT;
 
                 axios
                     .post(
@@ -1083,7 +1093,7 @@ export default {
         TraerRecepcion() {
             try {
                 let data = {
-                    NUMINT: this.numint
+                    NUMINT: this.$route.params.NUMINT
                 };
                 axios
                     .post(
@@ -1278,32 +1288,6 @@ export default {
                 console.log(error);
             }
         },
-        TraerUltimoNInterno() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetUltimoNInterno", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let data = res.data;
-                        if (
-                            data == 0 ||
-                            data == null ||
-                            data == [] ||
-                            data == {}
-                        ) {
-                            this.numint = 1;
-                        } else {
-                            this.numint = data + 1;
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
         AgregarArticuloDetalle() {
             try {
                 let total = this.precio * this.cantidad;
@@ -1347,84 +1331,42 @@ export default {
                 };
                 const dat = data;
 
-                if (this.contador > 0) {
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostArticuloDetalleCodInterno",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/PostArticuloDetalleCodInterno",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
                             }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Articulo Ingresado al detalle Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.TraerDetalleRecepcion();
-                                this.TraerRecepcion();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
-                } else {
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostArticuloDetalle",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Articulo Ingresado al detalle Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.TraerDetalleRecepcion();
-                                this.TraerRecepcion();
-                                this.contador = 1;
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
-                }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Articulo Ingresado al detalle Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.TraerDetalleRecepcion();
+                            this.TraerRecepcion();
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
@@ -1443,13 +1385,17 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerUltimoNInterno();
         this.TraerTipoDocumentos();
         this.TraerProveedores();
         this.TraerArticulos();
         this.TraerEstado();
         this.TraerBodega();
         this.TraerZona();
+        setTimeout(() => {
+            this.TraerDetalleRecepcion();
+            this.TraerRecepcion();
+        }, 2000);
+
         this.cargarHoras();
         this.openLoadingColor();
     }

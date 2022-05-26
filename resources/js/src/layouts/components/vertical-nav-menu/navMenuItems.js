@@ -131,6 +131,12 @@ export default [
                 icon: "HomeIcon"
             },
             {
+                url: "/Recepcion/ListadoRecepcionAbierta",
+                name: "Rec. Abiertas",
+                slug: "/Recepcion/ListadoRecepcionAbierta",
+                icon: "HomeIcon"
+            },
+            {
                 url: "/Recepcion/OrdenCompra",
                 name: "OrdenCompra",
                 slug: "/Recepcion/OrdenCompra",

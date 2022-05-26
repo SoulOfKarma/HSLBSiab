@@ -140,6 +140,18 @@ const router = new Router({
                     name: "/Recepcion/OrdenCompra",
                     component: () => import("./views/Recepcion/OrdenCompra.vue")
                 },
+                {
+                    path: "/Recepcion/ListadoRecepcionAbierta",
+                    name: "/Recepcion/ListadoRecepcionAbierta",
+                    component: () =>
+                        import("./views/Recepcion/ListadoRecepcionAbierta.vue")
+                },
+                {
+                    path: "/Recepcion/RecepcionAbierta/:NUMINT",
+                    name: "RecepcionAbierta",
+                    component: () =>
+                        import("./views/Recepcion/RecepcionAbierta.vue")
+                },
                 //Router de Consumo Inmediato
                 {
                     path: "/ConsumoInmediato/Recepcion",
