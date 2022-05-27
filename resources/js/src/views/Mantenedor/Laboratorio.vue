@@ -297,48 +297,67 @@ export default {
         },
         AgregarLaboratorio() {
             try {
-                let data = {
-                    LABORATORIO: this.nomLaboratorio,
-                    RAZONSOCIAL: this.razonSocial
-                };
-
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PostLaboratorio",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Laboratorio Ingresado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpLaboratorio = false;
-                            this.TraerLaboratorios();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar al Laboratorio,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.nomLaboratorio == "" || this.nomLaboratorio == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un laboratorio",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.razonSocial == "" || this.razonSocial == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una razon social",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        LABORATORIO: this.nomLaboratorio,
+                        RAZONSOCIAL: this.razonSocial
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostLaboratorio",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Laboratorio Ingresado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpLaboratorio = false;
+                                this.TraerLaboratorios();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar al Laboratorio,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }

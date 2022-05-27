@@ -1041,77 +1041,105 @@ export default {
 
         AgregarSaldoInventario() {
             try {
-                let boolFVen = false;
-                if (this.seleccionFechaVenciminento.id == 1) {
-                    boolFVen = true;
-                } else {
-                    boolFVen = true;
-                }
-
-                let boolFLoteSerie = false;
-                if (this.seleccionLoteSerie.id == 1) {
-                    boolFLoteSerie = true;
-                } else {
-                    boolFLoteSerie = true;
-                }
-
-                let data = {
-                    CODART_BARR: this.codigoBarra,
-                    CODART_ONU: this.codigoOnu,
-                    CODART: this.codigoArticulo,
-                    NOMBRE: this.nombre,
-                    idEstado: this.seleccionEstado.id,
-                    ACT_FECVEN: boolFVen,
-                    ACT_LOTE: boolFLoteSerie,
-                    CANTXENB: this.cantidadEmbalaje,
-                    idBodega: this.seleccionBodega.id,
-                    idZona: this.seleccionZona.id,
-                    SECTOR: this.sector,
-                    UBICACION: this.ubicacion,
-                    NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
-                    NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
-                    NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
-                    NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
-                    NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                    UNIMEDBASE: this.unidadMedidaBase,
-                    PRECIO: this.precio,
-                    SALDO: this.saldo
-                };
-                const dat = data;
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PostSaldoInventario",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text:
-                                    "Saldo Inventario Ingresado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerSaldoInventario();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible agregar el codigo de Insumo/Economato,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.codigoBarra == "" || this.codigoBarra == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un articulo",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.saldo == 0 || this.saldo < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un saldo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.precio == 0 || this.precio < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un precio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let boolFVen = false;
+                    if (this.seleccionFechaVenciminento.id == 1) {
+                        boolFVen = true;
+                    } else {
+                        boolFVen = true;
+                    }
+
+                    let boolFLoteSerie = false;
+                    if (this.seleccionLoteSerie.id == 1) {
+                        boolFLoteSerie = true;
+                    } else {
+                        boolFLoteSerie = true;
+                    }
+
+                    let data = {
+                        CODART_BARR: this.codigoBarra,
+                        CODART_ONU: this.codigoOnu,
+                        CODART: this.codigoArticulo,
+                        NOMBRE: this.nombre,
+                        idEstado: this.seleccionEstado.id,
+                        ACT_FECVEN: boolFVen,
+                        ACT_LOTE: boolFLoteSerie,
+                        CANTXENB: this.cantidadEmbalaje,
+                        idBodega: this.seleccionBodega.id,
+                        idZona: this.seleccionZona.id,
+                        SECTOR: this.sector,
+                        UBICACION: this.ubicacion,
+                        NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
+                        NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
+                        NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
+                        NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
+                        NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
+                        UNIMEDBASE: this.unidadMedidaBase,
+                        PRECIO: this.precio,
+                        SALDO: this.saldo
+                    };
+                    const dat = data;
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Mantenedor/PostSaldoInventario",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Saldo Inventario Ingresado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerSaldoInventario();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible agregar el codigo de Insumo/Economato,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }

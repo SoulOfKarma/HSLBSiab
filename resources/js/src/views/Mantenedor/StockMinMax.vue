@@ -773,109 +773,149 @@ export default {
         },
         AgregarStockMinMax() {
             try {
-                let data = {
-                    idBodega: this.seleccionBodega.id,
-                    idEstadoStock: 1,
-                    CODART: this.CodArt,
-                    NOMBRE: this.Nombre,
-                    STOCK_MIN: this.stockMin,
-                    STOCK_MAX: 0,
-                    STOCK_CRI: this.stockCri,
-                    UNIMEDBASE: this.UnidadMedida
-                };
-
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PostStockMinMax",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Stock Min/Max Ingresado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpStockMinMax = false;
-                            this.TraerStockMinMax();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar el Stock Min/Max,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.stockMin == 0 || this.stockMin < 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un stock Minimo",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.stockCri == 0 || this.stockCri < 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un stock Critico",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        idBodega: this.seleccionBodega.id,
+                        idEstadoStock: 1,
+                        CODART: this.CodArt,
+                        NOMBRE: this.Nombre,
+                        STOCK_MIN: this.stockMin,
+                        STOCK_MAX: 0,
+                        STOCK_CRI: this.stockCri,
+                        UNIMEDBASE: this.UnidadMedida
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostStockMinMax",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Stock Min/Max Ingresado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpStockMinMax = false;
+                                this.TraerStockMinMax();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar el Stock Min/Max,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarStockMinMax() {
             try {
-                let data = {
-                    id: this.idMod,
-                    idBodega: this.seleccionBodega.id,
-                    idEstadoStock: 1,
-                    CODART: this.CodArt,
-                    NOMBRE: this.Nombre,
-                    STOCK_MIN: this.stockMin,
-                    STOCK_MAX: 0,
-                    STOCK_CRI: this.stockCri,
-                    UNIMEDBASE: this.UnidadMedida
-                };
-
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PutStockMinMax",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Stock Min/Max Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpStockMinMaxMod = false;
-                            this.TraerStockMinMax();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar el Stock Min/Max,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.stockMin == 0 || this.stockMin < 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un stock Minimo",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.stockCri == 0 || this.stockCri < 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un stock Critico",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        idBodega: this.seleccionBodega.id,
+                        idEstadoStock: 1,
+                        CODART: this.CodArt,
+                        NOMBRE: this.Nombre,
+                        STOCK_MIN: this.stockMin,
+                        STOCK_MAX: 0,
+                        STOCK_CRI: this.stockCri,
+                        UNIMEDBASE: this.UnidadMedida
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutStockMinMax",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Stock Min/Max Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpStockMinMaxMod = false;
+                                this.TraerStockMinMax();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar el Stock Min/Max,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }

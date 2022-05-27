@@ -494,129 +494,171 @@ export default {
 
         AgregarProveedor() {
             try {
-                let data = {
-                    RUTPROV: this.rutProveedor,
-                    NOMRAZSOC: this.razonSocial,
-                    DIRPROV: this.direccionProveedor,
-                    TELPROV: this.telefonoProveedor,
-                    CELPROV: this.celularProveedor,
-                    EMAILPROV: this.emailProveedor,
-                    NOMVENPROV: this.vendedorProveedor,
-                    LLAVEPROVEEDOR: "-",
-                    CODFORMAPAGO: "-",
-                    CODCOM: "-",
-                    CODCIU: "-",
-                    CODRUB: "-",
-                    CODSIT: "-",
-                    CODEST: "-",
-                    NUMCRE: "-",
-                    NOMFAN: "-",
-                    CTACTEPROV: "-",
-                    FAXPROV: "-",
-                    CODBAN: "-",
-                    NOMPERPOD: "-"
-                };
-
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PostProveedor",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Proveedor Ingresado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpProveedor = false;
-                            this.TraerProveedores();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar al proveedor,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.rutProveedor == "" || this.rutProveedor == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un rut de proveedor",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.razonSocial == "" || this.razonSocial == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una razon social de proveedor",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        RUTPROV: this.rutProveedor,
+                        NOMRAZSOC: this.razonSocial,
+                        DIRPROV: this.direccionProveedor,
+                        TELPROV: this.telefonoProveedor,
+                        CELPROV: this.celularProveedor,
+                        EMAILPROV: this.emailProveedor,
+                        NOMVENPROV: this.vendedorProveedor,
+                        LLAVEPROVEEDOR: "-",
+                        CODFORMAPAGO: "-",
+                        CODCOM: "-",
+                        CODCIU: "-",
+                        CODRUB: "-",
+                        CODSIT: "-",
+                        CODEST: "-",
+                        NUMCRE: "-",
+                        NOMFAN: "-",
+                        CTACTEPROV: "-",
+                        FAXPROV: "-",
+                        CODBAN: "-",
+                        NOMPERPOD: "-"
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostProveedor",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Proveedor Ingresado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpProveedor = false;
+                                this.TraerProveedores();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar al proveedor,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarProveedor() {
             try {
-                let data = {
-                    id: this.idMod,
-                    RUTPROV: this.rutProveedor,
-                    NOMRAZSOC: this.razonSocial,
-                    DIRPROV: this.direccionProveedor,
-                    TELPROV: this.telefonoProveedor,
-                    CELPROV: this.celularProveedor,
-                    EMAILPROV: this.emailProveedor,
-                    NOMVENPROV: this.vendedorProveedor,
-                    LLAVEPROVEEDOR: "-",
-                    CODFORMAPAGO: "-",
-                    CODCOM: "-",
-                    CODCIU: "-",
-                    CODRUB: "-",
-                    CODSIT: "-",
-                    CODEST: "-",
-                    NUMCRE: "-",
-                    NOMFAN: "-",
-                    CTACTEPROV: "-",
-                    FAXPROV: "-",
-                    CODBAN: "-",
-                    NOMPERPOD: "-"
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PutProveedor", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Proveedor Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpProveedor = false;
-                            this.TraerProveedores();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible Modificar al proveedor,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.rutProveedor == "" || this.rutProveedor == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un rut de proveedor",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.razonSocial == "" || this.razonSocial == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una razon social de proveedor",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        RUTPROV: this.rutProveedor,
+                        NOMRAZSOC: this.razonSocial,
+                        DIRPROV: this.direccionProveedor,
+                        TELPROV: this.telefonoProveedor,
+                        CELPROV: this.celularProveedor,
+                        EMAILPROV: this.emailProveedor,
+                        NOMVENPROV: this.vendedorProveedor,
+                        LLAVEPROVEEDOR: "-",
+                        CODFORMAPAGO: "-",
+                        CODCOM: "-",
+                        CODCIU: "-",
+                        CODRUB: "-",
+                        CODSIT: "-",
+                        CODEST: "-",
+                        NUMCRE: "-",
+                        NOMFAN: "-",
+                        CTACTEPROV: "-",
+                        FAXPROV: "-",
+                        CODBAN: "-",
+                        NOMPERPOD: "-"
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutProveedor",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Proveedor Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpProveedor = false;
+                                this.TraerProveedores();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible Modificar al proveedor,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }

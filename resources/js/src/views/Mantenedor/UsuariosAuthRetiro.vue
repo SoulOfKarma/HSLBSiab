@@ -739,117 +739,219 @@ export default {
         },
         AgregarAuthUsuario() {
             try {
-                let data = {
-                    RUN: this.rutUsuario,
-                    NOMBRES: this.nombreUsuario,
-                    APELLIDOS: this.apellidoUsuario,
-                    FECINI: this.fechaInicio,
-                    FECFIN: null,
-                    idEstado: this.seleccionEstado.id,
-                    idServicio: this.seleccionServicio.id
-                };
-
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PostAuthUsuario",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        this.idMod = res.data;
-                        if (this.idMod > 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text:
-                                    "Usuario Autorizado Ingresado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpUsuario = false;
-                            if (this.val_doc == 1) {
-                                this.uploadImage();
-                            } else {
-                                this.TraerAuthUsuario();
-                                this.limpiarCampos();
-                            }
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar el usuario,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.rutUsuario == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un rut",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.nombreUsuario == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un nombre",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.apellidoUsuario == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un apellido",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.fechaInicio == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una fecha",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionEstado.id) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe selecionar un estado",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionServicio.id) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un servicio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        RUN: this.rutUsuario,
+                        NOMBRES: this.nombreUsuario,
+                        APELLIDOS: this.apellidoUsuario,
+                        FECINI: this.fechaInicio,
+                        FECFIN: null,
+                        idEstado: this.seleccionEstado.id,
+                        idServicio: this.seleccionServicio.id
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostAuthUsuario",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.idMod = res.data;
+                            if (this.idMod > 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Usuario Autorizado Ingresado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpUsuario = false;
+                                if (this.val_doc == 1) {
+                                    this.uploadImage();
+                                } else {
+                                    this.TraerAuthUsuario();
+                                    this.limpiarCampos();
+                                }
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar el usuario,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarAuthUsuario() {
             try {
-                let data = {
-                    id: this.idMod,
-                    RUN: this.rutUsuario,
-                    NOMBRES: this.nombreUsuario,
-                    APELLIDOS: this.apellidoUsuario,
-                    FECINI: this.fechaInicio,
-                    FECFIN: null,
-                    idEstado: this.seleccionEstado.id,
-                    idServicio: this.seleccionServicio.id
-                };
+                if (this.rutUsuario == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un rut",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.nombreUsuario == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un nombre",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.apellidoUsuario == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un apellido",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.fechaInicio == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una fecha",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionEstado.id) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe selecionar un estado",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionServicio.id) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un servicio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        RUN: this.rutUsuario,
+                        NOMBRES: this.nombreUsuario,
+                        APELLIDOS: this.apellidoUsuario,
+                        FECINI: this.fechaInicio,
+                        FECFIN: null,
+                        idEstado: this.seleccionEstado.id,
+                        idServicio: this.seleccionServicio.id
+                    };
 
-                const dat = data;
+                    const dat = data;
 
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PutAuthUsuario",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutAuthUsuario",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
                             }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            if (this.val_doc == 1) {
-                                this.uploadImageMod();
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                if (this.val_doc == 1) {
+                                    this.uploadImageMod();
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Usuario Autorizado Modificado Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                } else {
+                                    this.TraerAuthUsuario();
+                                    this.limpiarCampos();
+                                    this.popUpUsuarioMod = false;
+                                }
+                            } else {
                                 this.$vs.notify({
                                     time: 5000,
-                                    title: "Completado",
+                                    title: "Error",
                                     text:
-                                        "Usuario Autorizado Modificado Correctamente",
-                                    color: "success",
+                                        "No fue posible registrar el usuario,intentelo nuevamente",
+                                    color: "danger",
                                     position: "top-right"
                                 });
-                            } else {
-                                this.TraerAuthUsuario();
-                                this.limpiarCampos();
-                                this.popUpUsuarioMod = false;
                             }
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar el usuario,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }

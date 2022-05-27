@@ -343,101 +343,155 @@ export default {
         },
         AgregarLabUsuario() {
             try {
-                let data = {
-                    RUN: this.runUsuario,
-                    nombreUsuLab: this.nombreUsuario,
-                    apellidoUsuLab: this.apellidoUsuario
-                };
-
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PostLabUsuario",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text:
-                                    "Usuario de Laboratorio Ingresado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpLabUsuario = false;
-                            this.TraerLabUsuario();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar el Servicio,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.runUsuario == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un Rut",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.nombreUsuLab == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un nombre",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.apellidoUsuLab == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un apellido",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        RUN: this.runUsuario,
+                        nombreUsuLab: this.nombreUsuario,
+                        apellidoUsuLab: this.apellidoUsuario
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostLabUsuario",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Usuario de Laboratorio Ingresado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpLabUsuario = false;
+                                this.TraerLabUsuario();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar el Servicio,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarLabUsuario() {
             try {
-                let data = {
-                    id: this.idMod,
-                    RUN: this.runUsuario,
-                    nombreUsuLab: this.nombreUsuario,
-                    apellidoUsuLab: this.apellidoUsuario
-                };
-
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PutLabUsuario",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text:
-                                    "Usuario de Laboratorio Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpLabUsuarioMod = false;
-                            this.TraerLabUsuario();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar al usuario,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.runUsuario == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un Rut",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.nombreUsuLab == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un nombre",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.apellidoUsuLab == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un apellido",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        RUN: this.runUsuario,
+                        nombreUsuLab: this.nombreUsuario,
+                        apellidoUsuLab: this.apellidoUsuario
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutLabUsuario",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Usuario de Laboratorio Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpLabUsuarioMod = false;
+                                this.TraerLabUsuario();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar al usuario,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }

@@ -272,87 +272,107 @@ export default {
         },
         AgregarZona() {
             try {
-                let data = {
-                    descripcionZonas: this.descripcionZona
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PostZona", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Zona Ingresada Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpZona = false;
-                            this.TraerZona();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar la Zona,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.descripcionZona == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una zona",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else {
+                    let data = {
+                        descripcionZonas: this.descripcionZona
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(this.localVal + "/api/Mantenedor/PostZona", dat, {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Zona Ingresada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpZona = false;
+                                this.TraerZona();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar la Zona,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarZona() {
             try {
-                let data = {
-                    id: this.idMod,
-                    descripcionZonas: this.descripcionZona
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PutZona", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Zona Modificada Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpZonaMod = false;
-                            this.TraerZona();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar la Zona,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.descripcionZona == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una zona",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        descripcionZonas: this.descripcionZona
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(this.localVal + "/api/Mantenedor/PutZona", dat, {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        })
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Zona Modificada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpZonaMod = false;
+                                this.TraerZona();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar la Zona,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }

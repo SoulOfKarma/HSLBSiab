@@ -82,7 +82,9 @@ class RecepcionesController extends Controller
         try {
             recepcionDetalles::create($request->all());
             recepciones::where('NUMINT',$request->NUMINT)
-            ->update(['SUBTOTAL' => $request->SUBTOTAL,'DCTO' => $request->DCTO,
+            ->update(['RUTPRO' => $request->RUTPRO,'NOMPRO' => $request->NOMPRO,'SUBTOTAL' => $request->SUBTOTAL,
+            'DCTO' => $request->DCTO,'TIPDOC' => $request->TIPDOC,'NUMDOC' => $request->NUMDOC,'FECDOC' => $request->FECDOC,
+            'NUMFAC' => $request->NUMFAC,'NUMRIB' => $request->NUMRIB,'USUMOD' => $request->USUMOD,
             'OBS' => $request->OBS,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE]);
             return true;
         } catch (\Throwable $th) {

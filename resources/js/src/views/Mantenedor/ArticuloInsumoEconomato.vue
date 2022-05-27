@@ -1655,232 +1655,476 @@ export default {
         },
         AgregarInsumoEco() {
             try {
-                let boolFVen = false;
-                if (this.seleccionFechaVenciminento.id == 1) {
-                    boolFVen = true;
-                } else {
-                    boolFVen = true;
-                }
-
-                let boolFLoteSerie = false;
-                if (this.seleccionLoteSerie.id == 1) {
-                    boolFLoteSerie = true;
-                } else {
-                    boolFLoteSerie = true;
-                }
-
-                let data = {
-                    CODART_BARR: this.codigoBarra,
-                    CODART_ONU: this.codigoOnu,
-                    CODART: this.codigoArticulo,
-                    NOMBRE: this.nombre,
-                    idEstado: this.seleccionEstado.id,
-                    ACT_FECVEN: boolFVen,
-                    ACT_LOTE: boolFLoteSerie,
-                    CANTXENB: this.cantidadEmbalaje,
-                    idBodega: this.seleccionBodega.id,
-                    idZona: this.seleccionZona.id,
-                    SECTOR: this.sector,
-                    UBICACION: this.ubicacion,
-                    NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
-                    NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
-                    NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
-                    NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
-                    NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                    UNIMEDBASE: this.unidadMedidaBase
-                };
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PostInsumoEconomato",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text:
-                                    "Insumo/Economato Ingresado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpInsumoEco = false;
-                            this.TraerInsumoEconomato();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionBodega.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una bodega",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.seleccionFamilia1.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.codigoBarra == "" || this.codigoBarra == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un codigo de barra",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.codigoArticulo == "" ||
+                    this.codigoArticulo == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un codigo de articulo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.nombre == "" || this.nombre == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un nombre de articulo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.unidadMedidaBase == "" ||
+                    this.unidadMedidaBase == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una unidad de medida base",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionFechaVenciminento.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe selecciona una fecha de vencimiento",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionLoteSerie.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una fecha de lote/serie",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.cantidadEmbalaje < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingregar una cantidad de embalaje",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let boolFVen = false;
+                    if (this.seleccionFechaVenciminento.id == 1) {
+                        boolFVen = true;
+                    }
+
+                    let boolFLoteSerie = false;
+                    if (this.seleccionLoteSerie.id == 1) {
+                        boolFLoteSerie = true;
+                    }
+
+                    let data = {
+                        CODART_BARR: this.codigoBarra,
+                        CODART_ONU: this.codigoOnu,
+                        CODART: this.codigoArticulo,
+                        NOMBRE: this.nombre,
+                        idEstado: this.seleccionEstado.id,
+                        ACT_FECVEN: boolFVen,
+                        ACT_LOTE: boolFLoteSerie,
+                        CANTXENB: this.cantidadEmbalaje,
+                        idBodega: this.seleccionBodega.id,
+                        idZona: this.seleccionZona.id,
+                        SECTOR: this.sector,
+                        UBICACION: this.ubicacion,
+                        NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
+                        NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
+                        NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
+                        NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
+                        NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
+                        UNIMEDBASE: this.unidadMedidaBase
+                    };
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Mantenedor/PostInsumoEconomato",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Insumo/Economato Ingresado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpInsumoEco = false;
+                                this.TraerInsumoEconomato();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarInsumoEco() {
             try {
-                let boolFVen = false;
-                if (this.seleccionFechaVenciminento.id == 1) {
-                    boolFVen = true;
-                } else {
-                    boolFVen = true;
-                }
-
-                let boolFLoteSerie = false;
-                if (this.seleccionLoteSerie.id == 1) {
-                    boolFLoteSerie = true;
-                } else {
-                    boolFLoteSerie = true;
-                }
-
-                let data = {
-                    id: this.idMod,
-                    CODART_BARR: this.codigoBarra,
-                    CODART_ONU: this.codigoOnu,
-                    CODART: this.codigoArticulo,
-                    NOMBRE: this.nombre,
-                    idEstado: this.seleccionEstado.id,
-                    ACT_FECVEN: boolFVen,
-                    ACT_LOTE: boolFLoteSerie,
-                    CANTXENB: this.cantidadEmbalaje,
-                    idBodega: this.seleccionBodega.id,
-                    idZona: this.seleccionZona.id,
-                    SECTOR: this.sector,
-                    UBICACION: this.ubicacion,
-                    NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
-                    NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
-                    NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
-                    NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
-                    NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                    UNIMEDBASE: this.unidadMedidaBase
-                };
-                const dat = data;
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/PutInsumoEconomato",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text:
-                                    "Insumo/Economato Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerInsumoEconomato();
-                            this.popUpInsumoEcoMod = false;
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar el Insumo/Economato,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionBodega.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una bodega",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.seleccionFamilia1.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.codigoBarra == "" || this.codigoBarra == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un codigo de barra",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.codigoArticulo == "" ||
+                    this.codigoArticulo == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un codigo de articulo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.nombre == "" || this.nombre == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un nombre de articulo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.unidadMedidaBase == "" ||
+                    this.unidadMedidaBase == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una unidad de medida base",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionFechaVenciminento.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe selecciona una fecha de vencimiento",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionLoteSerie.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una fecha de lote/serie",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.cantidadEmbalaje < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingregar una cantidad de embalaje",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let boolFVen = false;
+                    if (this.seleccionFechaVenciminento.id == 1) {
+                        boolFVen = true;
+                    } else {
+                        boolFVen = true;
+                    }
+
+                    let boolFLoteSerie = false;
+                    if (this.seleccionLoteSerie.id == 1) {
+                        boolFLoteSerie = true;
+                    } else {
+                        boolFLoteSerie = true;
+                    }
+
+                    let data = {
+                        id: this.idMod,
+                        CODART_BARR: this.codigoBarra,
+                        CODART_ONU: this.codigoOnu,
+                        CODART: this.codigoArticulo,
+                        NOMBRE: this.nombre,
+                        idEstado: this.seleccionEstado.id,
+                        ACT_FECVEN: boolFVen,
+                        ACT_LOTE: boolFLoteSerie,
+                        CANTXENB: this.cantidadEmbalaje,
+                        idBodega: this.seleccionBodega.id,
+                        idZona: this.seleccionZona.id,
+                        SECTOR: this.sector,
+                        UBICACION: this.ubicacion,
+                        NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
+                        NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
+                        NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
+                        NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
+                        NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
+                        UNIMEDBASE: this.unidadMedidaBase
+                    };
+                    const dat = data;
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Mantenedor/PutInsumoEconomato",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Insumo/Economato Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerInsumoEconomato();
+                                this.popUpInsumoEcoMod = false;
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar el Insumo/Economato,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         AgregarCodInsumoEco() {
             try {
-                let boolFVen = false;
-                if (this.seleccionFechaVenciminento.id == 1) {
-                    boolFVen = true;
-                } else {
-                    boolFVen = true;
-                }
-
-                let boolFLoteSerie = false;
-                if (this.seleccionLoteSerie.id == 1) {
-                    boolFLoteSerie = true;
-                } else {
-                    boolFLoteSerie = true;
-                }
-
-                let data = {
-                    CODART_BARR: this.codigoBarra,
-                    CODART_ONU: this.codigoOnu,
-                    CODART: this.codigoArticulo,
-                    NOMBRE: this.nombre,
-                    idEstado: this.seleccionEstado.id,
-                    ACT_FECVEN: boolFVen,
-                    ACT_LOTE: boolFLoteSerie,
-                    CANTXENB: this.cantidadEmbalaje,
-                    idBodega: this.seleccionBodega.id,
-                    idZona: this.seleccionZona.id,
-                    SECTOR: this.sector,
-                    UBICACION: this.ubicacion,
-                    NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
-                    NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
-                    NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
-                    NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
-                    NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                    UNIMEDBASE: this.unidadMedidaBase
-                };
-                const dat = data;
-                axios
-                    .post(
-                        this.localVal +
-                            "/api/Mantenedor/PostCodInsumoEconomato",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Codigo Insumo/Economato Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerInsumoEconomato();
-                            this.TraerDetalleByCodInterno(this.codigoArticulo);
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible agregar el codigo de Insumo/Economato,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionBodega.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una bodega",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.seleccionFamilia1.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.codigoBarra == "" || this.codigoBarra == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un codigo de barra",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.codigoArticulo == "" ||
+                    this.codigoArticulo == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un codigo de articulo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.nombre == "" || this.nombre == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un nombre de articulo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.unidadMedidaBase == "" ||
+                    this.unidadMedidaBase == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una unidad de medida base",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionFechaVenciminento.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe selecciona una fecha de vencimiento",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionLoteSerie.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una fecha de lote/serie",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.cantidadEmbalaje < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingregar una cantidad de embalaje",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let boolFVen = false;
+                    if (this.seleccionFechaVenciminento.id == 1) {
+                        boolFVen = true;
+                    } else {
+                        boolFVen = true;
+                    }
+
+                    let boolFLoteSerie = false;
+                    if (this.seleccionLoteSerie.id == 1) {
+                        boolFLoteSerie = true;
+                    } else {
+                        boolFLoteSerie = true;
+                    }
+
+                    let data = {
+                        CODART_BARR: this.codigoBarra,
+                        CODART_ONU: this.codigoOnu,
+                        CODART: this.codigoArticulo,
+                        NOMBRE: this.nombre,
+                        idEstado: this.seleccionEstado.id,
+                        ACT_FECVEN: boolFVen,
+                        ACT_LOTE: boolFLoteSerie,
+                        CANTXENB: this.cantidadEmbalaje,
+                        idBodega: this.seleccionBodega.id,
+                        idZona: this.seleccionZona.id,
+                        SECTOR: this.sector,
+                        UBICACION: this.ubicacion,
+                        NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
+                        NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
+                        NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
+                        NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
+                        NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
+                        UNIMEDBASE: this.unidadMedidaBase
+                    };
+                    const dat = data;
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Mantenedor/PostCodInsumoEconomato",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Codigo Insumo/Economato Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerInsumoEconomato();
+                                this.TraerDetalleByCodInterno(
+                                    this.codigoArticulo
+                                );
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible agregar el codigo de Insumo/Economato,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }

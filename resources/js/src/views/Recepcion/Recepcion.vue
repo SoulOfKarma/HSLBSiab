@@ -1306,124 +1306,194 @@ export default {
         },
         AgregarArticuloDetalle() {
             try {
-                let total = this.precio * this.cantidad;
-                let valorT = total + parseInt(this.valorTotal);
-                let data = {
-                    NUMINT: this.numint,
-                    FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
-                        "YYYY-MM-DD"
-                    ),
-                    FECDES: moment(this.fechaRecepcion, "DD-MM-YYYY").format(
-                        "YYYY-MM-DD"
-                    ),
-                    RUTPRO: this.seleccionProveedores.RUTPROV,
-                    NOMPRO: this.seleccionProveedores.NOMRAZSOC,
-                    TIPDOC: this.seleccionTipoDocumento.id,
-                    NUMDOC: this.ndocumento,
-                    FECDOC: moment(this.fechaDocumento, "DD-MM-YYYY").format(
-                        "YYYY-MM-DD"
-                    ),
-                    NUMFAC: this.nordencompra,
-                    NUMRIB: this.nrib,
-                    CODART: this.codigoArticulo,
-                    PRODUCTO: this.nombre,
-                    CODBAR: this.codigoBarra,
-                    UNIMED: this.unidadMedidaBase,
-                    ACT_FECVEN: this.seleccionFechaVencimiento.id,
-                    FECVEN: moment(this.fechaVencimiento, "DD-MM-YYYY").format(
-                        "YYYY-MM-DD"
-                    ),
-                    LOTE: this.seleccionLoteSerie.id,
-                    CANREC: this.cantidad,
-                    CANRECH: 0,
-                    PENDIENTE: 0,
-                    PREUNI: this.precio,
-                    VALTOT: total,
-                    DCTO: 0,
-                    OBS: "",
-                    CARGO: 0,
-                    SUBTOTAL: valorT,
-                    AJUSTE: 0
-                };
-                const dat = data;
-
-                if (this.contador > 0) {
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostArticuloDetalleCodInterno",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Articulo Ingresado al detalle Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.TraerDetalleRecepcion();
-                                this.TraerRecepcion();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
+                if (this.precio == null || this.precio < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe Ingresar un Precio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.cantidad == null || this.cantidad < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe Ingresar una cantidad",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.fechaRecepcion == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una fecha de recepcion",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionProveedores.id == 0 ||
+                    this.seleccionProveedores.id == null ||
+                    this.seleccionProveedores.id == ""
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un proveedor",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.codigoBarra == null || this.codigoBarra == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un articulo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.cantidad == null || this.cantidad < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una cantidad no menor a 1",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.precio == null || this.precio < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un precio no menor a 1",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostArticuloDetalle",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                    let total = this.precio * this.cantidad;
+                    let valorT = total + parseInt(this.valorTotal);
+                    let nombreUsuario =
+                        sessionStorage.getItem("nombre") +
+                        " " +
+                        sessionStorage.getItem("apellido");
+                    let data = {
+                        NUMINT: this.numint,
+                        FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
+                            "YYYY-MM-DD"
+                        ),
+                        FECDES: moment(
+                            this.fechaRecepcion,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        RUTPRO: this.seleccionProveedores.RUTPROV,
+                        NOMPRO: this.seleccionProveedores.NOMRAZSOC,
+                        TIPDOC: this.seleccionTipoDocumento.id,
+                        NUMDOC: this.ndocumento,
+                        FECDOC: moment(
+                            this.fechaDocumento,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        NUMFAC: this.nordencompra,
+                        NUMRIB: this.nrib,
+                        CODART: this.codigoArticulo,
+                        PRODUCTO: this.nombre,
+                        CODBAR: this.codigoBarra,
+                        UNIMED: this.unidadMedidaBase,
+                        ACT_FECVEN: this.seleccionFechaVencimiento.id,
+                        FECVEN: moment(
+                            this.fechaVencimiento,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        LOTE: this.seleccionLoteSerie.id,
+                        CANREC: this.cantidad,
+                        CANRECH: 0,
+                        PENDIENTE: 0,
+                        PREUNI: this.precio,
+                        VALTOT: total,
+                        DCTO: 0,
+                        OBS: "",
+                        CARGO: 0,
+                        SUBTOTAL: valorT,
+                        AJUSTE: 0,
+                        USUING: nombreUsuario
+                    };
+                    const dat = data;
+
+                    if (this.contador > 0) {
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Mantenedor/PostArticuloDetalleCodInterno",
+                                dat,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Articulo Ingresado al detalle Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.TraerDetalleRecepcion();
-                                this.TraerRecepcion();
-                                this.contador = 1;
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                if (solicitudServer == true) {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Articulo Ingresado al detalle Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.TraerDetalleRecepcion();
+                                    this.TraerRecepcion();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Mantenedor/PostArticuloDetalle",
+                                dat,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                if (solicitudServer == true) {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Articulo Ingresado al detalle Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.TraerDetalleRecepcion();
+                                    this.TraerRecepcion();
+                                    this.contador = 1;
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    }
                 }
             } catch (error) {
                 console.log(error);

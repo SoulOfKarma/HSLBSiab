@@ -1427,549 +1427,815 @@ export default {
         },
         AgregarBodega() {
             try {
-                let data = {
-                    descripcionBodega: this.descripcionBodega
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PostBodega", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Bodega Ingresada Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerBodega();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (
+                    this.descripcionBodega == "" ||
+                    this.descripcionBodega == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de bodega",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else {
+                    let data = {
+                        descripcionBodega: this.descripcionBodega
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostBodega",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Bodega Ingresada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerBodega();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarBodega() {
             try {
-                let data = {
-                    id: this.idMod,
-                    descripcionBodega: this.descripcionBodegaMod
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PutBodega", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Bodega Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.seleccionBodega = {
-                                id: data.id,
-                                descripcionBodega: data.descripcionBodega
-                            };
-                            this.TraerBodega();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (
+                    this.descripcionBodega == "" ||
+                    this.descripcionBodega == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de bodega",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        descripcionBodega: this.descripcionBodegaMod
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutBodega",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Bodega Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.seleccionBodega = {
+                                    id: data.id,
+                                    descripcionBodega: data.descripcionBodega
+                                };
+                                this.TraerBodega();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         AgregarFamilia1() {
             try {
-                let data = {
-                    idBodega: this.seleccionBodega1.id,
-                    descripcionFamilia: this.descripcionFamilia1
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PostFamilia1", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Familia Ingresada Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerFamilia1();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionBodega.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una bodega",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia1 == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        idBodega: this.seleccionBodega1.id,
+                        descripcionFamilia: this.descripcionFamilia1
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostFamilia1",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Familia Ingresada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerFamilia1();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarFamilia1() {
             try {
-                let data = {
-                    id: this.idMod,
-                    idBodega: this.seleccionBodegaMod1.id,
-                    descripcionFamilia: this.descripcionFamilia1Mod
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PutFamilia1", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Bodega Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.seleccionFamilia1 = {
-                                id: data.id,
-                                idBodega: data.idBodega,
-                                descripcionFamilia: data.descripcionFamilia
-                            };
-                            this.TraerFamilia1();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionBodega.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una bodega",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia1 == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        idBodega: this.seleccionBodegaMod1.id,
+                        descripcionFamilia: this.descripcionFamilia1Mod
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutFamilia1",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Bodega Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.seleccionFamilia1 = {
+                                    id: data.id,
+                                    idBodega: data.idBodega,
+                                    descripcionFamilia: data.descripcionFamilia
+                                };
+                                this.TraerFamilia1();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         AgregarFamilia2() {
             try {
-                let data = {
-                    idDesFam: this.seleccionFamilia1A.id,
-                    descripcionFamilia: this.descripcionFamilia2
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PostFamilia2", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Familia Ingresada Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerFamilia2();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionFamilia1A.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar la familia 1",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia2 == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        idDesFam: this.seleccionFamilia1A.id,
+                        descripcionFamilia: this.descripcionFamilia2
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostFamilia2",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Familia Ingresada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerFamilia2();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarFamilia2() {
             try {
-                let data = {
-                    id: this.idMod,
-                    idDesFam: this.seleccionFamilia2M.idDesFam,
-                    descripcionFamilia: this.descripcionFamilia2Mod
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PutFamilia2", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Bodega Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.seleccionFamilia2 = {
-                                id: data.id,
-                                idDesFam: data.idDesFam,
-                                descripcionFamilia: data.descripcionFamilia
-                            };
-                            this.TraerFamilia2();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionFamilia2M.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar la familia 2",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia2Mod == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        idDesFam: this.seleccionFamilia2M.idDesFam,
+                        descripcionFamilia: this.descripcionFamilia2Mod
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutFamilia2",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Bodega Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.seleccionFamilia2 = {
+                                    id: data.id,
+                                    idDesFam: data.idDesFam,
+                                    descripcionFamilia: data.descripcionFamilia
+                                };
+                                this.TraerFamilia2();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         AgregarFamilia3() {
             try {
-                let data = {
-                    idDesFam01: this.seleccionFamilia2.id,
-                    descripcionFamilia: this.descripcionFamilia3
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PostFamilia3", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Familia Ingresada Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerFamilia3();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionFamilia2.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar la familia 2",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia3 == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        idDesFam01: this.seleccionFamilia2.id,
+                        descripcionFamilia: this.descripcionFamilia3
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostFamilia3",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Familia Ingresada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerFamilia3();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarFamilia3() {
             try {
-                let data = {
-                    id: this.idMod,
-                    idDesFam01: this.seleccionFamilia3M.id,
-                    descripcionFamilia: this.descripcionFamilia3Mod
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PutFamilia3", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Bodega Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.seleccionFamilia3 = {
-                                id: data.id,
-                                idDesFam01: data.id,
-                                descripcionFamilia: data.descripcionFamilia
-                            };
-                            this.TraerFamilia3();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionFamilia3M.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar la familia 3",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia3Mod == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        idDesFam01: this.seleccionFamilia3M.id,
+                        descripcionFamilia: this.descripcionFamilia3Mod
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutFamilia3",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Bodega Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.seleccionFamilia3 = {
+                                    id: data.id,
+                                    idDesFam01: data.id,
+                                    descripcionFamilia: data.descripcionFamilia
+                                };
+                                this.TraerFamilia3();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         AgregarFamilia4() {
             try {
-                let data = {
-                    idDesFam02: this.seleccionFamilia3.id,
-                    descripcionFamilia: this.descripcionFamilia4
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PostFamilia4", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Familia Ingresada Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerFamilia4();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionFamilia3.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar la familia 3",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia4 == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        idDesFam02: this.seleccionFamilia3.id,
+                        descripcionFamilia: this.descripcionFamilia4
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostFamilia4",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Familia Ingresada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerFamilia4();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarFamilia4() {
             try {
-                let data = {
-                    id: this.idMod,
-                    idDesFam02: this.seleccionFamilia4M.id,
-                    descripcionFamilia: this.descripcionFamilia4Mod
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PutFamilia4", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Bodega Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.seleccionFamilia4 = {
-                                id: data.id,
-                                idDesFam02: data.id,
-                                descripcionFamilia: data.descripcionFamilia
-                            };
-                            this.TraerFamilia4();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionFamilia4M.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar la familia 4",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia4Mod == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        idDesFam02: this.seleccionFamilia4M.id,
+                        descripcionFamilia: this.descripcionFamilia4Mod
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutFamilia4",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Bodega Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.seleccionFamilia4 = {
+                                    id: data.id,
+                                    idDesFam02: data.id,
+                                    descripcionFamilia: data.descripcionFamilia
+                                };
+                                this.TraerFamilia4();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         AgregarFamilia5() {
             try {
-                let data = {
-                    idDesFam03: this.seleccionFamilia4.id,
-                    descripcionFamilia: this.descripcionFamilia5
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PostFamilia5", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Familia Ingresada Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerFamilia5();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionFamilia4.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar la familia 4",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia5 == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        idDesFam03: this.seleccionFamilia4.id,
+                        descripcionFamilia: this.descripcionFamilia5
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PostFamilia5",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Familia Ingresada Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerFamilia5();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarFamilia5() {
             try {
-                let data = {
-                    id: this.idMod,
-                    idDesFam03: this.seleccionFamilia5M.id,
-                    descripcionFamilia: this.descripcionFamilia5Mod
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PutFamilia5", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Bodega Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.seleccionFamilia5 = {
-                                id: data.id,
-                                idDesFam: data.id,
-                                descripcionFamilia: data.descripcionFamilia
-                            };
-                            this.TraerFamilia5();
-                            this.limpiarCampos();
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar la Bodega,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.seleccionFamilia5M.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar la familia 5",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (this.descripcionFamilia5Mod == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una descripcion de familia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        idDesFam03: this.seleccionFamilia5M.id,
+                        descripcionFamilia: this.descripcionFamilia5Mod
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutFamilia5",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Bodega Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.seleccionFamilia5 = {
+                                    id: data.id,
+                                    idDesFam: data.id,
+                                    descripcionFamilia: data.descripcionFamilia
+                                };
+                                this.TraerFamilia5();
+                                this.limpiarCampos();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar la Bodega,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }

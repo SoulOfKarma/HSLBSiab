@@ -432,107 +432,231 @@ export default {
         //Metodos para Agregar Datos
         AgregarUsuario() {
             try {
-                let data = {
-                    run_usuario: this.run_usuario,
-                    correo_usuario: this.correo_usuario,
-                    nombre_usuario: this.nombre_usuario,
-                    apellido_usuario: this.apellido_usuario,
-                    anexo: this.anexo,
-                    password: this.password,
-                    CB_PERIFERICA: "-",
-                    NB_PERIFERICA: "-",
-                    permiso_usuario: 1,
-                    estado_login: 1
-                };
-
-                const dat = data;
-
-                axios
-                    .post(
-                        this.localVal + "/api/Mantenedor/RegistrarUsuario",
-                        dat,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Usuario Registrado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpUsuario = false;
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible registrar al usuario,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.run_usuario == "" || this.run_usuario == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un rut de usuario",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (
+                    this.correo_usuario == "" ||
+                    this.correo_usuario == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un correo del usuario",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.nombre_usuario == "" ||
+                    this.nombre_usuario == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un nombre",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.apellido_usuario == "" ||
+                    this.apellido_usuario == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un apellido",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.anexo == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un anexo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.password == "" || this.password == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una contraseña",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        run_usuario: this.run_usuario,
+                        correo_usuario: this.correo_usuario,
+                        nombre_usuario: this.nombre_usuario,
+                        apellido_usuario: this.apellido_usuario,
+                        anexo: this.anexo,
+                        password: this.password,
+                        CB_PERIFERICA: "-",
+                        NB_PERIFERICA: "-",
+                        permiso_usuario: 1,
+                        estado_login: 1
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/RegistrarUsuario",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Usuario Registrado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpUsuario = false;
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible registrar al usuario,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         ModificarUsuario() {
             try {
-                let data = {
-                    id: this.idMod,
-                    run_usuario: this.run_usuario,
-                    correo_usuario: this.correo_usuario,
-                    nombre_usuario: this.nombre_usuario,
-                    apellido_usuario: this.apellido_usuario,
-                    anexo: this.anexo,
-                    password: this.password,
-                    CB_PERIFERICA: "-",
-                    NB_PERIFERICA: "-",
-                    permiso_usuario: 1,
-                    estado_login: 1
-                };
-
-                const dat = data;
-
-                axios
-                    .post(this.localVal + "/api/Mantenedor/PutUsuario", dat, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        const solicitudServer = res.data;
-                        if (solicitudServer == true) {
-                            this.limpiarCampos();
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Completado",
-                                text: "Usuario Modificado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpUsuarioMod = false;
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No fue posible modificar al usuario,intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
+                if (this.run_usuario == "" || this.run_usuario == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un rut de usuario",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else if (
+                    this.correo_usuario == "" ||
+                    this.correo_usuario == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un correo del usuario",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.nombre_usuario == "" ||
+                    this.nombre_usuario == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un nombre",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.apellido_usuario == "" ||
+                    this.apellido_usuario == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un apellido",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.anexo == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un anexo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.password == "" || this.password == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una contraseña",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        id: this.idMod,
+                        run_usuario: this.run_usuario,
+                        correo_usuario: this.correo_usuario,
+                        nombre_usuario: this.nombre_usuario,
+                        apellido_usuario: this.apellido_usuario,
+                        anexo: this.anexo,
+                        password: this.password,
+                        CB_PERIFERICA: "-",
+                        NB_PERIFERICA: "-",
+                        permiso_usuario: 1,
+                        estado_login: 1
+                    };
+
+                    const dat = data;
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Mantenedor/PutUsuario",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.limpiarCampos();
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Usuario Modificado Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.popUpUsuarioMod = false;
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar al usuario,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
