@@ -50,6 +50,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetTipoDocumentos', ['middleware' => 'cors', 'uses' => 'TipoDocumentosController@GetTipoDocumentos']);
     Route::get('/Mantenedor/GetUltimoNInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetUltimoNInterno']);
     Route::get('/Mantenedor/GetRecepcionAbiertas', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetRecepcionAbiertas']);
+    Route::get('/Mantenedor/GetUltimoNFolio', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetUltimoNFolio']);
+    Route::get('/Mantenedor/GetRecepcionCerradas', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetRecepcionCerradas']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
@@ -112,6 +114,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PutStockMinMaxMed', ['middleware' => 'cors', 'uses' => 'StockMinMaxMedicamentosController@PutStockMinMaxMed']);
     Route::post('/Mantenedor/PutDesactivarStockMinMaxMed', ['middleware' => 'cors', 'uses' => 'StockMinMaxMedicamentosController@PutDesactivarStockMinMaxMed']);
     Route::post('/Mantenedor/PutTipoDocumentos', ['middleware' => 'cors', 'uses' => 'TipoDocumentosController@PutTipoDocumentos']);
+    Route::post('/Mantenedor/PostCerrarRecepcion', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostCerrarRecepcion']);
 
     //Post Documentos
     Route::post('/Mantenedor/PostDocumentoAuthUsuario', ['middleware' => 'cors', 'uses' => 'DocumentacionAuthUsuariosController@PostDocumentoAuthUsuario']);

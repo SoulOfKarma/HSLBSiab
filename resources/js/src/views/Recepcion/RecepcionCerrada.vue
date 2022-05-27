@@ -3,23 +3,19 @@
         <div class="vx-col md:w-1/1 w-full mb-base">
             <vx-card title="Recepcion">
                 <div class="vx-row">
-                    <div class="vx-col w-full mt-5">
-                        <vs-button
-                            @click="popArticulos"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Buscar Articulo</vs-button
-                        >
-                    </div>
-                    <div
-                        class="vx-col w-full mt-5"
-                        v-if="listaDetalleRecepcion.length > 0"
-                    >
+                    <div class="vx-col w-1/2 mt-5">
                         <h6>N° Interno</h6>
                         <vs-input
                             class="inputx w-full  "
                             v-model="numint"
+                            disabled
+                        />
+                    </div>
+                    <div class="vx-col w-1/2 mt-5">
+                        <h6>N° Folio</h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="folio"
                             disabled
                         />
                     </div>
@@ -41,6 +37,7 @@
                             placeholder="Fecha Inicio"
                             @on-change="onFromChange"
                             class="w-full "
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/4 mt-5">
@@ -52,6 +49,7 @@
                             label="RUTPROV"
                             :options="listadoProveedores"
                             @input="setProveedor"
+                            disabled
                         ></v-select>
                     </div>
                     <div class="vx-col w-1/4 mt-5">
@@ -70,6 +68,7 @@
                             class="w-full select-large"
                             label="descripcionDocumento"
                             :options="listaTipoDocumento"
+                            disabled
                         ></v-select>
                     </div>
                     <div class="vx-col w-1/5 mt-5">
@@ -77,6 +76,7 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="ndocumento"
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/5 mt-5">
@@ -86,6 +86,7 @@
                             v-model="fechaDocumento"
                             @on-change="onFromChange"
                             class="w-full "
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/5 mt-5">
@@ -93,69 +94,16 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="nordencompra"
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/5 mt-5">
                         <h6>N° RIB</h6>
-                        <vs-input class="inputx w-full  " v-model="nrib" />
-                    </div>
-                </div>
-                <br />
-                <div class="vx-row">
-                    <div class="vx-col w-1/3 mt-5">
-                        <h6>
-                            Codigo de Barra
-                        </h6>
                         <vs-input
                             class="inputx w-full  "
-                            v-model="codigoBarra"
+                            v-model="nrib"
                             disabled
                         />
-                    </div>
-                    <div class="vx-col w-1/3 mt-5">
-                        <h6>
-                            Cantidad
-                        </h6>
-                        <vs-input class="inputx w-full  " v-model="cantidad" />
-                    </div>
-                    <div class="vx-col w-1/3 mt-5">
-                        <h6>
-                            Precio
-                        </h6>
-                        <vs-input class="inputx w-full  " v-model="precio" />
-                    </div>
-
-                    <div
-                        class="vx-col w-full mt-5"
-                        v-if="seleccionFechaVencimiento.id == 1"
-                    >
-                        <h6>Fecha Venciminento</h6>
-                        <flat-pickr
-                            :config="configTodateTimePicker"
-                            v-model="fechaVencimiento"
-                            @on-change="onFromChange"
-                            class="w-full "
-                        />
-                    </div>
-
-                    <br />
-                    <div class="vx-col w-1/2 mt-5">
-                        <vs-button
-                            @click="limpiarCampos"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Limpiar Campos</vs-button
-                        >
-                    </div>
-                    <div class="vx-col w-1/2 mt-5">
-                        <vs-button
-                            @click="AgregarArticuloDetalle"
-                            color="success"
-                            type="filled"
-                            class="w-full"
-                            >Agregar Articulo</vs-button
-                        >
                     </div>
                 </div>
                 <br />
@@ -184,13 +132,6 @@
                                             props.column.field === 'action'
                                         "
                                     >
-                                        <plus-circle-icon
-                                            content="Modificar Detalle"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="popModDetalle(props.row.id)"
-                                        ></plus-circle-icon>
                                     </span>
                                     <!-- Column: Common -->
                                     <span v-else>
@@ -254,45 +195,14 @@
                             </quill-editor>
                         </div>
                         <br /><br />
-                    </vx-card>
-                </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="ActualizarListado"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Actualizar</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="ImprimirDatos"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Imprimir</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
+                            <div class="vx-col w-full mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
                                     >Volver</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="CerrarRecepcion"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Cerrar Recepcion</vs-button
                                 >
                             </div>
                         </div>
@@ -426,8 +336,8 @@ export default {
             cantidad: 0,
             precio: 0,
             numint: 0,
+            folio: 0,
             valorTotal: 0,
-            contador: 0,
             fechaSistema: null,
             fechaRecepcion: null,
             fechaDocumento: null,
@@ -448,7 +358,6 @@ export default {
             actLoteSerie: false,
             cantidadEmbalaje: "",
             idBodega: "",
-            folio: 0,
             idZona: "",
             sector: "",
             ubicacion: "",
@@ -890,8 +799,7 @@ export default {
         },
         ImprimirDatos() {
             try {
-                let total = this.precio * this.cantidad;
-                console.log(total);
+                console.log("Ha ha");
             } catch (error) {
                 console.log(error);
             }
@@ -899,66 +807,8 @@ export default {
         volver() {
             try {
                 this.$router.push({
-                    name: "home"
+                    name: "ListadoRecepcionCerrada"
                 });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        CerrarRecepcion() {
-            try {
-                if (this.listaDetalleRecepcion.length < 1) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text:
-                            "No existen datos en el detalle de articulos para generar un N° de Folio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.folio == 0) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "No se pudo generar un N° de Folio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else {
-                    let data = {
-                        NUMINT: this.numint,
-                        FOLIO: this.folio
-                    };
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostCerrarRecepcion",
-                            data,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            let data = res.data;
-                            if (data == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Finalizado",
-                                    text:
-                                        "Recepcion Cerrada, se recargara la ventana",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.$router.push({
-                                    name: "ListadoRecepcionAbierta"
-                                });
-                            }
-                        });
-                }
             } catch (error) {
                 console.log(error);
             }
@@ -1104,8 +954,10 @@ export default {
         TraerDetalleRecepcion() {
             try {
                 let data = {
-                    NUMINT: this.numint
+                    NUMINT: this.$route.params.NUMINT
                 };
+
+                this.numint = this.$route.params.NUMINT;
 
                 axios
                     .post(
@@ -1146,7 +998,7 @@ export default {
         TraerRecepcion() {
             try {
                 let data = {
-                    NUMINT: this.numint
+                    NUMINT: this.$route.params.NUMINT
                 };
                 axios
                     .post(
@@ -1193,6 +1045,7 @@ export default {
                                     .toString();
                                 this.nordencompra = value.NUMFAC;
                                 this.nrib = value.NUMRIB;
+                                this.folio = value.FOLIO;
                             });
 
                             c = [];
@@ -1341,58 +1194,6 @@ export default {
                 console.log(error);
             }
         },
-        TraerUltimoNInterno() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetUltimoNInterno", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let data = res.data;
-                        if (
-                            data == 0 ||
-                            data == null ||
-                            data == [] ||
-                            data == {}
-                        ) {
-                            this.numint = 1;
-                        } else {
-                            this.numint = data + 1;
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        TraerUltimoNFolio() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetUltimoNFolio", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let data = res.data;
-                        if (
-                            data == 0 ||
-                            data == null ||
-                            data == [] ||
-                            data == {}
-                        ) {
-                            this.folio = 1;
-                        } else {
-                            this.folio = data + 1;
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
         AgregarArticuloDetalle() {
             try {
                 if (this.precio == null || this.precio < 1) {
@@ -1501,88 +1302,47 @@ export default {
                         CARGO: 0,
                         SUBTOTAL: valorT,
                         AJUSTE: 0,
-                        USUING: nombreUsuario
+                        USUMOD: nombreUsuario
                     };
                     const dat = data;
 
-                    if (this.contador > 0) {
-                        axios
-                            .post(
-                                this.localVal +
-                                    "/api/Mantenedor/PostArticuloDetalleCodInterno",
-                                dat,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
-                                    }
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Mantenedor/PostArticuloDetalleCodInterno",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
                                 }
-                            )
-                            .then(res => {
-                                const solicitudServer = res.data;
-                                if (solicitudServer == true) {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Completado",
-                                        text:
-                                            "Articulo Ingresado al detalle Correctamente",
-                                        color: "success",
-                                        position: "top-right"
-                                    });
-                                    this.TraerDetalleRecepcion();
-                                    this.TraerRecepcion();
-                                } else {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Error",
-                                        text:
-                                            "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                        color: "danger",
-                                        position: "top-right"
-                                    });
-                                }
-                            });
-                    } else {
-                        axios
-                            .post(
-                                this.localVal +
-                                    "/api/Mantenedor/PostArticuloDetalle",
-                                dat,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
-                                    }
-                                }
-                            )
-                            .then(res => {
-                                const solicitudServer = res.data;
-                                if (solicitudServer == true) {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Completado",
-                                        text:
-                                            "Articulo Ingresado al detalle Correctamente",
-                                        color: "success",
-                                        position: "top-right"
-                                    });
-                                    this.TraerDetalleRecepcion();
-                                    this.TraerRecepcion();
-                                    this.contador = 1;
-                                } else {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Error",
-                                        text:
-                                            "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                        color: "danger",
-                                        position: "top-right"
-                                    });
-                                }
-                            });
-                    }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Articulo Ingresado al detalle Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerDetalleRecepcion();
+                                this.TraerRecepcion();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
                 }
             } catch (error) {
                 console.log(error);
@@ -1602,14 +1362,17 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerUltimoNInterno();
-        this.TraerUltimoNFolio();
         this.TraerTipoDocumentos();
         this.TraerProveedores();
         this.TraerArticulos();
         this.TraerEstado();
         this.TraerBodega();
         this.TraerZona();
+        setTimeout(() => {
+            this.TraerDetalleRecepcion();
+            this.TraerRecepcion();
+        }, 2000);
+
         this.cargarHoras();
         this.openLoadingColor();
     }

@@ -142,7 +142,7 @@ const router = new Router({
                 },
                 {
                     path: "/Recepcion/ListadoRecepcionAbierta",
-                    name: "/Recepcion/ListadoRecepcionAbierta",
+                    name: "ListadoRecepcionAbierta",
                     component: () =>
                         import("./views/Recepcion/ListadoRecepcionAbierta.vue")
                 },
@@ -151,6 +151,18 @@ const router = new Router({
                     name: "RecepcionAbierta",
                     component: () =>
                         import("./views/Recepcion/RecepcionAbierta.vue")
+                },
+                {
+                    path: "/Recepcion/ListadoRecepcionCerrada",
+                    name: "ListadoRecepcionCerrada",
+                    component: () =>
+                        import("./views/Recepcion/ListadoRecepcionCerrada.vue")
+                },
+                {
+                    path: "/Recepcion/RecepcionCerrada/:NUMINT",
+                    name: "RecepcionCerrada",
+                    component: () =>
+                        import("./views/Recepcion/RecepcionCerrada.vue")
                 },
                 //Router de Consumo Inmediato
                 {

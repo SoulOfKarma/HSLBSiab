@@ -12,6 +12,17 @@
                             >Buscar Articulo</vs-button
                         >
                     </div>
+                    <div
+                        class="vx-col w-full mt-5"
+                        v-if="listaDetalleRecepcion.length > 0"
+                    >
+                        <h6>N° Interno</h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="numint"
+                            disabled
+                        />
+                    </div>
                     <div class="vx-col w-1/4 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
@@ -415,6 +426,7 @@ export default {
             cantidad: 0,
             precio: 0,
             numint: 0,
+            folio: 0,
             valorTotal: 0,
             fechaSistema: null,
             fechaRecepcion: null,
@@ -893,7 +905,58 @@ export default {
         },
         CerrarRecepcion() {
             try {
-                console.log("Ha ha");
+                if (this.listaDetalleRecepcion.length < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "No existen datos en el detalle de articulos para generar un N° de Folio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.folio == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No se pudo generar un N° de Folio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        NUMINT: this.numint,
+                        FOLIO: this.folio
+                    };
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Mantenedor/PostCerrarRecepcion",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            if (data == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Finalizado",
+                                    text:
+                                        "Recepcion Cerrada, se recargara la ventana",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.$router.push({
+                                    name: "ListadoRecepcionAbierta"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -1278,6 +1341,32 @@ export default {
                 console.log(error);
             }
         },
+        TraerUltimoNFolio() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetUltimoNFolio", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let data = res.data;
+                        if (
+                            data == 0 ||
+                            data == null ||
+                            data == [] ||
+                            data == {}
+                        ) {
+                            this.folio = 1;
+                        } else {
+                            this.folio = data + 1;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         AgregarArticuloDetalle() {
             try {
                 if (this.precio == null || this.precio < 1) {
@@ -1447,6 +1536,7 @@ export default {
     },
     beforeMount() {
         this.TraerTipoDocumentos();
+        this.TraerUltimoNFolio();
         this.TraerProveedores();
         this.TraerArticulos();
         this.TraerEstado();
