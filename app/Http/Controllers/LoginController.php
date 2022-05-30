@@ -99,6 +99,7 @@ class LoginController extends Controller
                    'apellido_usuario' => $request->apellido_usuario,
                    'anexo' => $request->anexo,
                    'password' => Hash::make($request->password),
+                   'idServicio' => $request->idServicio,
                    'CB_PERIFERICA' => $request->CB_PERIFERICA,
                    'NB_PERIFERICA' => $request->NB_PERIFERICA,
                    'api_token' => Str::random(60),
@@ -122,7 +123,10 @@ class LoginController extends Controller
 
     public function GetUsers(){
         try {
-            $get = Users::all();
+            $get = Users::select('users.run','users.nombre_usuario','users.apellido_usuario','users.anexo',
+            'users.correo_usuario','servicios.descripcionServicio')
+            ->join('servicios', 'users.idServicio','=','servicios.id')
+            ->get();
             return $get;
         } catch (\Throwable $th) {
             log::info($th);
@@ -139,7 +143,7 @@ class LoginController extends Controller
                 Users::where('id',$request->id)
                     ->update(['run' => $run,'correo_usuario' => $request->correo_usuario,'nombre_usuario' => $request->nombre_usuario,
                     'apellido_usuario' => $request->apellido_usuario,'anexo' => $request->anexo,'password' => Hash::make($request->password),
-                    'CB_PERIFERICA' => $request->CB_PERIFERICA,'NB_PERIFERICA' => $request->NB_PERIFERICA]);
+                    'idServicio' => $request->idServicio,'CB_PERIFERICA' => $request->CB_PERIFERICA,'NB_PERIFERICA' => $request->NB_PERIFERICA]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);

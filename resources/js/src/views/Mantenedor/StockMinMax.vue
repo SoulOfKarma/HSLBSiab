@@ -793,12 +793,12 @@ export default {
                     let data = {
                         idBodega: this.seleccionBodega.id,
                         idEstadoStock: 1,
-                        CODART: this.CodArt,
-                        NOMBRE: this.Nombre,
+                        CODART: this.CodArt.toUpperCase(),
+                        NOMBRE: this.Nombre.toUpperCase(),
                         STOCK_MIN: this.stockMin,
                         STOCK_MAX: 0,
                         STOCK_CRI: this.stockCri,
-                        UNIMEDBASE: this.UnidadMedida
+                        UNIMEDBASE: this.UnidadMedida.toUpperCase()
                     };
 
                     const dat = data;
@@ -868,12 +868,12 @@ export default {
                         id: this.idMod,
                         idBodega: this.seleccionBodega.id,
                         idEstadoStock: 1,
-                        CODART: this.CodArt,
-                        NOMBRE: this.Nombre,
+                        CODART: this.CodArt.toUpperCase(),
+                        NOMBRE: this.Nombre.toUpperCase(),
                         STOCK_MIN: this.stockMin,
                         STOCK_MAX: 0,
                         STOCK_CRI: this.stockCri,
-                        UNIMEDBASE: this.UnidadMedida
+                        UNIMEDBASE: this.UnidadMedida.toUpperCase()
                     };
 
                     const dat = data;

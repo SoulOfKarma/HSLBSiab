@@ -285,7 +285,7 @@ export default {
                     });
                 } else {
                     let data = {
-                        descripcionServicio: this.descripcionServicio
+                        descripcionServicio: this.descripcionServicio.toUpperCase()
                     };
 
                     const dat = data;
@@ -347,7 +347,7 @@ export default {
                 } else {
                     let data = {
                         id: this.idMod,
-                        descripcionServicio: this.descripcionServicio
+                        descripcionServicio: this.descripcionServicio.toUpperCase()
                     };
 
                     const dat = data;

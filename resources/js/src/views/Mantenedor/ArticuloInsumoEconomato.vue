@@ -1745,24 +1745,24 @@ export default {
                     }
 
                     let data = {
-                        CODART_BARR: this.codigoBarra,
-                        CODART_ONU: this.codigoOnu,
-                        CODART: this.codigoArticulo,
-                        NOMBRE: this.nombre,
+                        CODART_BARR: this.codigoBarra.toUpperCase(),
+                        CODART_ONU: this.codigoOnu.toUpperCase(),
+                        CODART: this.codigoArticulo.toUpperCase(),
+                        NOMBRE: this.nombre.toUpperCase(),
                         idEstado: this.seleccionEstado.id,
                         ACT_FECVEN: boolFVen,
                         ACT_LOTE: boolFLoteSerie,
                         CANTXENB: this.cantidadEmbalaje,
                         idBodega: this.seleccionBodega.id,
                         idZona: this.seleccionZona.id,
-                        SECTOR: this.sector,
-                        UBICACION: this.ubicacion,
+                        SECTOR: this.sector.toUpperCase(),
+                        UBICACION: this.ubicacion.toUpperCase(),
                         NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
                         NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
                         NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
                         NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
                         NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                        UNIMEDBASE: this.unidadMedidaBase
+                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase()
                     };
                     const dat = data;
 
@@ -1906,24 +1906,24 @@ export default {
 
                     let data = {
                         id: this.idMod,
-                        CODART_BARR: this.codigoBarra,
-                        CODART_ONU: this.codigoOnu,
-                        CODART: this.codigoArticulo,
-                        NOMBRE: this.nombre,
+                        CODART_BARR: this.codigoBarra.toUpperCase(),
+                        CODART_ONU: this.codigoOnu.toUpperCase(),
+                        CODART: this.codigoArticulo.toUpperCase(),
+                        NOMBRE: this.nombre.toUpperCase(),
                         idEstado: this.seleccionEstado.id,
                         ACT_FECVEN: boolFVen,
                         ACT_LOTE: boolFLoteSerie,
                         CANTXENB: this.cantidadEmbalaje,
                         idBodega: this.seleccionBodega.id,
                         idZona: this.seleccionZona.id,
-                        SECTOR: this.sector,
-                        UBICACION: this.ubicacion,
+                        SECTOR: this.sector.toUpperCase(),
+                        UBICACION: this.ubicacion.toUpperCase(),
                         NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
                         NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
                         NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
                         NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
                         NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                        UNIMEDBASE: this.unidadMedidaBase
+                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase()
                     };
                     const dat = data;
                     axios
@@ -2065,24 +2065,24 @@ export default {
                     }
 
                     let data = {
-                        CODART_BARR: this.codigoBarra,
-                        CODART_ONU: this.codigoOnu,
-                        CODART: this.codigoArticulo,
-                        NOMBRE: this.nombre,
+                        CODART_BARR: this.codigoBarra.toUpperCase(),
+                        CODART_ONU: this.codigoOnu.toUpperCase(),
+                        CODART: this.codigoArticulo.toUpperCase(),
+                        NOMBRE: this.nombre.toUpperCase(),
                         idEstado: this.seleccionEstado.id,
                         ACT_FECVEN: boolFVen,
                         ACT_LOTE: boolFLoteSerie,
                         CANTXENB: this.cantidadEmbalaje,
                         idBodega: this.seleccionBodega.id,
                         idZona: this.seleccionZona.id,
-                        SECTOR: this.sector,
-                        UBICACION: this.ubicacion,
+                        SECTOR: this.sector.toUpperCase(),
+                        UBICACION: this.ubicacion.toUpperCase(),
                         NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
                         NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
                         NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
                         NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
                         NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                        UNIMEDBASE: this.unidadMedidaBase
+                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase()
                     };
                     const dat = data;
                     axios

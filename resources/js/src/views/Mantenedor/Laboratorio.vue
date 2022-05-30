@@ -315,8 +315,8 @@ export default {
                     });
                 } else {
                     let data = {
-                        LABORATORIO: this.nomLaboratorio,
-                        RAZONSOCIAL: this.razonSocial
+                        LABORATORIO: this.nomLaboratorio.toUpperCase(),
+                        RAZONSOCIAL: this.razonSocial.toUpperCase()
                     };
 
                     const dat = data;
@@ -366,8 +366,8 @@ export default {
             try {
                 let data = {
                     id: this.idMod,
-                    LABORATORIO: this.nomLaboratorio,
-                    RAZONSOCIAL: this.razonSocial
+                    LABORATORIO: this.nomLaboratorio.toUpperCase(),
+                    RAZONSOCIAL: this.razonSocial.toUpperCase()
                 };
 
                 const dat = data;

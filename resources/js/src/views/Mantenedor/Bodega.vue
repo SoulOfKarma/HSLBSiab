@@ -1440,7 +1440,7 @@ export default {
                     });
                 } else {
                     let data = {
-                        descripcionBodega: this.descripcionBodega
+                        descripcionBodega: this.descripcionBodega.toUpperCase()
                     };
 
                     const dat = data;
@@ -1501,7 +1501,7 @@ export default {
                 } else {
                     let data = {
                         id: this.idMod,
-                        descripcionBodega: this.descripcionBodegaMod
+                        descripcionBodega: this.descripcionBodegaMod.toUpperCase()
                     };
 
                     const dat = data;
@@ -1571,7 +1571,7 @@ export default {
                 } else {
                     let data = {
                         idBodega: this.seleccionBodega1.id,
-                        descripcionFamilia: this.descripcionFamilia1
+                        descripcionFamilia: this.descripcionFamilia1.toUpperCase()
                     };
 
                     const dat = data;
@@ -1638,7 +1638,7 @@ export default {
                     let data = {
                         id: this.idMod,
                         idBodega: this.seleccionBodegaMod1.id,
-                        descripcionFamilia: this.descripcionFamilia1Mod
+                        descripcionFamilia: this.descripcionFamilia1Mod.toUpperCase()
                     };
 
                     const dat = data;
@@ -1709,7 +1709,7 @@ export default {
                 } else {
                     let data = {
                         idDesFam: this.seleccionFamilia1A.id,
-                        descripcionFamilia: this.descripcionFamilia2
+                        descripcionFamilia: this.descripcionFamilia2.toUpperCase()
                     };
 
                     const dat = data;
@@ -1776,7 +1776,7 @@ export default {
                     let data = {
                         id: this.idMod,
                         idDesFam: this.seleccionFamilia2M.idDesFam,
-                        descripcionFamilia: this.descripcionFamilia2Mod
+                        descripcionFamilia: this.descripcionFamilia2Mod.toUpperCase()
                     };
 
                     const dat = data;
@@ -1847,7 +1847,7 @@ export default {
                 } else {
                     let data = {
                         idDesFam01: this.seleccionFamilia2.id,
-                        descripcionFamilia: this.descripcionFamilia3
+                        descripcionFamilia: this.descripcionFamilia3.toUpperCase()
                     };
 
                     const dat = data;
@@ -1914,7 +1914,7 @@ export default {
                     let data = {
                         id: this.idMod,
                         idDesFam01: this.seleccionFamilia3M.id,
-                        descripcionFamilia: this.descripcionFamilia3Mod
+                        descripcionFamilia: this.descripcionFamilia3Mod.toUpperCase()
                     };
 
                     const dat = data;
@@ -1985,7 +1985,7 @@ export default {
                 } else {
                     let data = {
                         idDesFam02: this.seleccionFamilia3.id,
-                        descripcionFamilia: this.descripcionFamilia4
+                        descripcionFamilia: this.descripcionFamilia4.toUpperCase()
                     };
 
                     const dat = data;
@@ -2052,7 +2052,7 @@ export default {
                     let data = {
                         id: this.idMod,
                         idDesFam02: this.seleccionFamilia4M.id,
-                        descripcionFamilia: this.descripcionFamilia4Mod
+                        descripcionFamilia: this.descripcionFamilia4Mod.toUpperCase()
                     };
 
                     const dat = data;
@@ -2123,7 +2123,7 @@ export default {
                 } else {
                     let data = {
                         idDesFam03: this.seleccionFamilia4.id,
-                        descripcionFamilia: this.descripcionFamilia5
+                        descripcionFamilia: this.descripcionFamilia5.toUpperCase()
                     };
 
                     const dat = data;
@@ -2190,7 +2190,7 @@ export default {
                     let data = {
                         id: this.idMod,
                         idDesFam03: this.seleccionFamilia5M.id,
-                        descripcionFamilia: this.descripcionFamilia5Mod
+                        descripcionFamilia: this.descripcionFamilia5Mod.toUpperCase()
                     };
 
                     const dat = data;

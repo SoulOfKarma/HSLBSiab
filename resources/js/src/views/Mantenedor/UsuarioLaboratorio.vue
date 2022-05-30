@@ -370,8 +370,8 @@ export default {
                 } else {
                     let data = {
                         RUN: this.runUsuario,
-                        nombreUsuLab: this.nombreUsuario,
-                        apellidoUsuLab: this.apellidoUsuario
+                        nombreUsuLab: this.nombreUsuario.toUpperCase(),
+                        apellidoUsuLab: this.apellidoUsuario.toUpperCase()
                     };
 
                     const dat = data;
@@ -448,8 +448,8 @@ export default {
                     let data = {
                         id: this.idMod,
                         RUN: this.runUsuario,
-                        nombreUsuLab: this.nombreUsuario,
-                        apellidoUsuLab: this.apellidoUsuario
+                        nombreUsuLab: this.nombreUsuario.toUpperCase(),
+                        apellidoUsuLab: this.apellidoUsuario.toUpperCase()
                     };
 
                     const dat = data;

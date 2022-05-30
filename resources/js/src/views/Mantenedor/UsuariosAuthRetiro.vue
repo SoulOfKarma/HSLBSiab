@@ -790,8 +790,8 @@ export default {
                 } else {
                     let data = {
                         RUN: this.rutUsuario,
-                        NOMBRES: this.nombreUsuario,
-                        APELLIDOS: this.apellidoUsuario,
+                        NOMBRES: this.nombreUsuario.toUpperCase(),
+                        APELLIDOS: this.apellidoUsuario.toUpperCase(),
                         FECINI: this.fechaInicio,
                         FECFIN: null,
                         idEstado: this.seleccionEstado.id,
@@ -900,8 +900,8 @@ export default {
                     let data = {
                         id: this.idMod,
                         RUN: this.rutUsuario,
-                        NOMBRES: this.nombreUsuario,
-                        APELLIDOS: this.apellidoUsuario,
+                        NOMBRES: this.nombreUsuario.toUpperCase(),
+                        APELLIDOS: this.apellidoUsuario.toUpperCase(),
                         FECINI: this.fechaInicio,
                         FECFIN: null,
                         idEstado: this.seleccionEstado.id,

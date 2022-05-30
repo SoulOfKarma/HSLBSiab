@@ -282,7 +282,7 @@ export default {
                     });
                 } else {
                     let data = {
-                        descripcionZonas: this.descripcionZona
+                        descripcionZonas: this.descripcionZona.toUpperCase()
                     };
 
                     const dat = data;
@@ -336,7 +336,7 @@ export default {
                 } else {
                     let data = {
                         id: this.idMod,
-                        descripcionZonas: this.descripcionZona
+                        descripcionZonas: this.descripcionZona.toUpperCase()
                     };
 
                     const dat = data;

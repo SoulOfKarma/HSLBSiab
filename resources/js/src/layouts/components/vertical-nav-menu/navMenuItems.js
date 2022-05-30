@@ -45,12 +45,6 @@ export default [
                 icon: "HomeIcon"
             },
             {
-                url: "/Mantenedor/UsuarioLaboratorio",
-                name: "Usuario Laboratorio",
-                slug: "/Mantenedor/UsuarioLaboratorio",
-                icon: "HomeIcon"
-            },
-            {
                 url: "/Mantenedor/UsuariosAuthRetiro",
                 name: "Autorizado Retiro",
                 slug: "/Mantenedor/UsuariosAuthRetiro",
@@ -90,12 +84,6 @@ export default [
                 url: "/Mantenedor/ArticuloInsumoEconomato",
                 name: "Articulo Insumo Economato",
                 slug: "/Mantenedor/ArticuloInsumoEconomato",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/Mantenedor/Zona",
-                name: "Zonas",
-                slug: "/Mantenedor/Zona",
                 icon: "HomeIcon"
             },
             {

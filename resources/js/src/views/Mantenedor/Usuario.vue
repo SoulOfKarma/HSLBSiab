@@ -63,7 +63,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. 18499714-2"
                                     v-model="run_usuario"
                                     v-on:blur="formatear_run"
                                 />
@@ -78,7 +78,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. Ricardo"
                                     v-model="nombre_usuario"
                                 />
                             </div>
@@ -89,7 +89,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. Soto"
                                     v-model="apellido_usuario"
                                 />
                             </div>
@@ -98,7 +98,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. 222222"
                                     v-model="anexo"
                                 />
                             </div>
@@ -107,19 +107,31 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. ricardoarturo.soto@redsalud.gob.cl"
                                     v-model="correo_usuario"
                                 />
                             </div>
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Password</h6>
+                                <h6>Contraseña</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder=""
                                     v-model="password"
                                     type="password"
                                 />
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>Servicio</h6>
+                                <br />
+                                <v-select
+                                    taggable
+                                    v-model="seleccionServicio"
+                                    placeholder="Servicio"
+                                    class="w-full select-large"
+                                    label="descripcionServicio"
+                                    :options="listadoServicios"
+                                ></v-select>
                             </div>
                         </div>
 
@@ -160,7 +172,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. 18499714-2"
                                     v-model="run_usuario"
                                     v-on:blur="formatear_run"
                                 />
@@ -175,7 +187,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. Ricardo"
                                     v-model="nombre_usuario"
                                 />
                             </div>
@@ -186,7 +198,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. Soto"
                                     v-model="apellido_usuario"
                                 />
                             </div>
@@ -195,7 +207,7 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. 222222"
                                     v-model="anexo"
                                 />
                             </div>
@@ -204,19 +216,31 @@
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder="Ej. ricardoarturo.soto@redsalud.gob.cl"
                                     v-model="correo_usuario"
                                 />
                             </div>
                             <div class="vx-col w-1/2 mt-5">
-                                <h6>Password</h6>
+                                <h6>Contraseña</h6>
                                 <br />
                                 <vs-input
                                     class="inputx w-full mb-6 "
-                                    placeholder="Placeholder"
+                                    placeholder=""
                                     v-model="password"
                                     type="password"
                                 />
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>Servicio</h6>
+                                <br />
+                                <v-select
+                                    taggable
+                                    v-model="seleccionServicio"
+                                    placeholder="Servicio"
+                                    class="w-full select-large"
+                                    label="descripcionServicio"
+                                    :options="listadoServicios"
+                                ></v-select>
                             </div>
                         </div>
 
@@ -299,7 +323,12 @@ export default {
             correo_usuario: "",
             password: "",
             idMod: 0,
+            idServicio: 0,
             val_run: false,
+            seleccionServicio: {
+                id: 0,
+                descripcionServicio: ""
+            },
             //Template Columnas Listado Proveedor
             columns: [
                 {
@@ -331,12 +360,20 @@ export default {
                     }
                 },
                 {
+                    label: "Servicio",
+                    field: "descripcionServicio",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
                     label: "Opciones",
                     field: "action"
                 }
             ],
             //Datos Listado Proveedor
-            rows: []
+            rows: [],
+            listadoServicios: []
         };
     },
     methods: {
@@ -403,6 +440,32 @@ export default {
             }
         },
         //Carga de Datos
+        TraerServicio() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoServicios = res.data;
+                        if (this.listadoServicios.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerUsuarios() {
             try {
                 axios
@@ -489,14 +552,23 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (this.seleccionServicio.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un servicio",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
                         run_usuario: this.run_usuario,
-                        correo_usuario: this.correo_usuario,
-                        nombre_usuario: this.nombre_usuario,
-                        apellido_usuario: this.apellido_usuario,
+                        correo_usuario: this.correo_usuario.toUpperCase(),
+                        nombre_usuario: this.nombre_usuario.toUpperCase(),
+                        apellido_usuario: this.apellido_usuario.toUpperCase(),
                         anexo: this.anexo,
                         password: this.password,
+                        idServicio: this.seleccionServicio.id,
                         CB_PERIFERICA: "-",
                         NB_PERIFERICA: "-",
                         permiso_usuario: 1,
@@ -529,6 +601,7 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpUsuario = false;
+                                this.TraerUsuarios();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -604,13 +677,22 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (this.seleccionServicio.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un servicio",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
                         id: this.idMod,
                         run_usuario: this.run_usuario,
-                        correo_usuario: this.correo_usuario,
-                        nombre_usuario: this.nombre_usuario,
-                        apellido_usuario: this.apellido_usuario,
+                        correo_usuario: this.correo_usuario.toUpperCase(),
+                        nombre_usuario: this.nombre_usuario.toUpperCase(),
+                        apellido_usuario: this.apellido_usuario.toUpperCase(),
+                        idServicio: this.seleccionServicio.id,
                         anexo: this.anexo,
                         password: this.password,
                         CB_PERIFERICA: "-",
@@ -645,6 +727,7 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpUsuarioMod = false;
+                                this.TraerUsuarios();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -663,6 +746,7 @@ export default {
         }
     },
     beforeMount() {
+        this.TraerServicio();
         this.TraerUsuarios();
         this.openLoadingColor();
     }

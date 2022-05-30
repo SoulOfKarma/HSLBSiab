@@ -1326,25 +1326,25 @@ export default {
                     }
 
                     let data = {
-                        CODART_BARR: this.codigoBarra,
-                        CODART_TRACK: this.codigoTrack,
-                        CODART_ONU: this.codigoOnu,
-                        CODART: this.codigoArticulo,
-                        NOMBRE: this.nombre,
-                        GENERICO: this.generico,
-                        CAT_FARMACIA: this.categoriaFarmacia,
-                        UNIMEDBASE: this.unidadMedidaBase,
-                        CONCENTRACION: this.concentracion,
+                        CODART_BARR: this.codigoBarra.toUpperCase(),
+                        CODART_TRACK: this.codigoTrack.toUpperCase(),
+                        CODART_ONU: this.codigoOnu.toUpperCase(),
+                        CODART: this.codigoArticulo.toUpperCase(),
+                        NOMBRE: this.nombre.toUpperCase(),
+                        GENERICO: this.generico.toUpperCase(),
+                        CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                        CONCENTRACION: this.concentracion.toUpperCase(),
                         idEstado: this.seleccionEstado.id,
                         ACT_FECVEN: boolFVen,
                         ACT_LOTE: boolFLoteSerie,
-                        LABORATORIO: this.laboratorio,
+                        LABORATORIO: this.laboratorio.toUpperCase(),
                         CANTXENB: this.cantidadEmbalaje,
                         idBodega: this.seleccionBodega.id,
                         idZona: this.seleccionZona.id,
-                        SECTOR: this.sector,
-                        UBICACION: this.ubicacion,
-                        ZGEN: this.zgen
+                        SECTOR: this.sector.toUpperCase(),
+                        UBICACION: this.ubicacion.toUpperCase(),
+                        ZGEN: this.zgen.toUpperCase()
                     };
 
                     const dat = data;
@@ -1441,25 +1441,25 @@ export default {
 
                     let data = {
                         id: this.idMod,
-                        CODART_BARR: this.codigoBarra,
-                        CODART_TRACK: this.codigoTrack,
-                        CODART_ONU: this.codigoOnu,
-                        CODART: this.codigoArticulo,
-                        NOMBRE: this.nombre,
-                        GENERICO: this.generico,
-                        CAT_FARMACIA: this.categoriaFarmacia,
-                        UNIMEDBASE: this.unidadMedidaBase,
-                        CONCENTRACION: this.concentracion,
+                        CODART_BARR: this.codigoBarra.toUpperCase(),
+                        CODART_TRACK: this.codigoTrack.toUpperCase(),
+                        CODART_ONU: this.codigoOnu.toUpperCase(),
+                        CODART: this.codigoArticulo.toUpperCase(),
+                        NOMBRE: this.nombre.toUpperCase(),
+                        GENERICO: this.generico.toUpperCase(),
+                        CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                        CONCENTRACION: this.concentracion.toUpperCase(),
                         idEstado: this.seleccionEstado.id,
                         ACT_FECVEN: boolFVen,
                         ACT_LOTE: boolFLoteSerie,
-                        LABORATORIO: this.laboratorio,
+                        LABORATORIO: this.laboratorio.toUpperCase(),
                         CANTXENB: this.cantidadEmbalaje,
                         idBodega: this.seleccionBodega.id,
                         idZona: this.seleccionZona.id,
-                        SECTOR: this.sector,
-                        UBICACION: this.ubicacion,
-                        ZGEN: this.zgen
+                        SECTOR: this.sector.toUpperCase(),
+                        UBICACION: this.ubicacion.toUpperCase(),
+                        ZGEN: this.zgen.toUpperCase()
                     };
 
                     const dat = data;
@@ -1562,25 +1562,25 @@ export default {
                 }
 
                 let data = {
-                    CODART_BARR: this.codigoBarra,
-                    CODART_TRACK: this.codigoTrack,
-                    CODART_ONU: this.codigoOnu,
-                    CODART: this.codigoArticulo,
-                    NOMBRE: this.nombre,
-                    GENERICO: this.generico,
-                    CAT_FARMACIA: this.categoriaFarmacia,
-                    UNIMEDBASE: this.unidadMedidaBase,
-                    CONCENTRACION: this.concentracion,
+                    CODART_BARR: this.codigoBarra.toUpperCase(),
+                    CODART_TRACK: this.codigoTrack.toUpperCase(),
+                    CODART_ONU: this.codigoOnu.toUpperCase(),
+                    CODART: this.codigoArticulo.toUpperCase(),
+                    NOMBRE: this.nombre.toUpperCase(),
+                    GENERICO: this.generico.toUpperCase(),
+                    CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                    UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                    CONCENTRACION: this.concentracion.toUpperCase(),
                     idEstado: this.seleccionEstado.id,
                     ACT_FECVEN: boolFVen,
                     ACT_LOTE: boolFLoteSerie,
-                    LABORATORIO: this.laboratorio,
+                    LABORATORIO: this.laboratorio.toUpperCase(),
                     CANTXENB: this.cantidadEmbalaje,
                     idBodega: this.seleccionBodega.id,
                     idZona: this.seleccionZona.id,
-                    SECTOR: this.sector,
-                    UBICACION: this.ubicacion,
-                    ZGEN: this.zgen
+                    SECTOR: this.sector.toUpperCase(),
+                    UBICACION: this.ubicacion.toUpperCase(),
+                    ZGEN: this.zgen.toUpperCase()
                 };
 
                 const dat = data;

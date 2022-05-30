@@ -1472,19 +1472,19 @@ export default {
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
                         RUTPRO: this.seleccionProveedores.RUTPROV,
-                        NOMPRO: this.seleccionProveedores.NOMRAZSOC,
+                        NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
                         TIPDOC: this.seleccionTipoDocumento.id,
                         NUMDOC: this.ndocumento,
                         FECDOC: moment(
                             this.fechaDocumento,
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
-                        NUMFAC: this.nordencompra,
-                        NUMRIB: this.nrib,
-                        CODART: this.codigoArticulo,
-                        PRODUCTO: this.nombre,
-                        CODBAR: this.codigoBarra,
-                        UNIMED: this.unidadMedidaBase,
+                        NUMFAC: this.nordencompra.toUpperCase(),
+                        NUMRIB: this.nrib.toUpperCase(),
+                        CODART: this.codigoArticulo.toUpperCase(),
+                        PRODUCTO: this.nombre.toUpperCase(),
+                        CODBAR: this.codigoBarra.toUpperCase(),
+                        UNIMED: this.unidadMedidaBase.toUpperCase(),
                         ACT_FECVEN: this.seleccionFechaVencimiento.id,
                         FECVEN: moment(
                             this.fechaVencimiento,
@@ -1497,11 +1497,11 @@ export default {
                         PREUNI: this.precio,
                         VALTOT: total,
                         DCTO: 0,
-                        OBS: "",
+                        OBS: this.Observaciones.toUpperCase(),
                         CARGO: 0,
                         SUBTOTAL: valorT,
                         AJUSTE: 0,
-                        USUING: nombreUsuario
+                        USUING: nombreUsuario.toUpperCase()
                     };
                     const dat = data;
 

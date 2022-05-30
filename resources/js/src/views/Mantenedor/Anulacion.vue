@@ -320,8 +320,8 @@ export default {
                     });
                 } else {
                     let data = {
-                        CODMOT: this.codAnulacion,
-                        NOMMOT: this.motAnulacion
+                        CODMOT: this.codAnulacion.toUpperCase(),
+                        NOMMOT: this.motAnulacion.toUpperCase()
                     };
 
                     const dat = data;
@@ -392,8 +392,8 @@ export default {
                 } else {
                     let data = {
                         id: this.idMod,
-                        CODMOT: this.codAnulacion,
-                        NOMMOT: this.motAnulacion
+                        CODMOT: this.codAnulacion.toUpperCase(),
+                        NOMMOT: this.motAnulacion.toUpperCase()
                     };
 
                     const dat = data;
