@@ -129,6 +129,91 @@
                                     </span>
                                     <span
                                         v-else-if="
+                                            props.column.field === 'CODBAR'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.CODBAR"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'FECVEN'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.FECVEN"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'LOTE'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.LOTE"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'CANREC'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.CANREC"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'CANRECH'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.CANRECH"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'PENDIENTE'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.PENDIENTE"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'PREUNI'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.PREUNI"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+
+                                    <span
+                                        v-else-if="
                                             props.column.field === 'action'
                                         "
                                     >
@@ -1280,7 +1365,7 @@ export default {
                             this.fechaDocumento,
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
-                        NUMFAC: this.nordencompra.toUpperCase(),
+                        NUMORD: this.nordencompra.toUpperCase(),
                         NUMRIB: this.nrib.toUpperCase(),
                         CODART: this.codigoArticulo.toUpperCase(),
                         PRODUCTO: this.nombre.toUpperCase(),
@@ -1302,7 +1387,10 @@ export default {
                         CARGO: 0,
                         SUBTOTAL: valorT,
                         AJUSTE: 0,
-                        USUMOD: nombreUsuario.toUpperCase()
+                        USUMOD: nombreUsuario.toUpperCase(),
+                        idServicio: this.seleccionServicio.id,
+                        NUMLIBPED: this.numeroLibroPedido,
+                        TIPRECEPCION: this.tiporecepcion
                     };
                     const dat = data;
 

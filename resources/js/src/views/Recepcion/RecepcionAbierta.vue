@@ -125,6 +125,27 @@
                         <vs-input class="inputx w-full  " v-model="precio" />
                     </div>
 
+                    <div class="vx-col w-1/2 mt-5">
+                        <h6>Servicio</h6>
+                        <v-select
+                            taggable
+                            v-model="seleccionServicio"
+                            placeholder="Servicio"
+                            class="w-full select-large"
+                            label="descripcionServicio"
+                            :options="listadoServicios"
+                        ></v-select>
+                    </div>
+                    <div class="vx-col w-1/2 mt-5">
+                        <h6>
+                            N° Libro Pedido
+                        </h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="numeroLibroPedido"
+                        />
+                    </div>
+
                     <div
                         class="vx-col w-full mt-5"
                         v-if="seleccionFechaVencimiento.id == 1"
@@ -181,6 +202,90 @@
                                     </span>
                                     <span
                                         v-else-if="
+                                            props.column.field === 'CODBAR'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.CODBAR"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'FECVEN'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.FECVEN"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'LOTE'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.LOTE"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'CANREC'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.CANREC"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'CANRECH'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.CANRECH"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'PENDIENTE'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.PENDIENTE"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'PREUNI'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.PREUNI"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
                                             props.column.field === 'action'
                                         "
                                     >
@@ -192,6 +297,7 @@
                                             @click="popModDetalle(props.row.id)"
                                         ></plus-circle-icon>
                                     </span>
+
                                     <!-- Column: Common -->
                                     <span v-else>
                                         {{
@@ -454,6 +560,8 @@ export default {
             unidadMedidaBase: "",
             descripcionProveedor: "",
             zgen: "",
+            numeroLibroPedido: "",
+            tiporecepcion: "",
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -482,6 +590,10 @@ export default {
             seleccionTipoDocumento: {
                 id: 0,
                 descripcionDocumento: ""
+            },
+            seleccionServicio: {
+                id: 0,
+                descripcionServicio: ""
             },
             idMod: 0,
             //Datos Fechas
@@ -786,6 +898,7 @@ export default {
             listaTipoDocumento: [],
             listaZona: [],
             listadoProveedores: [],
+            listadoServicios: [],
             listaFVenciminento: [
                 {
                     id: 1,
@@ -1143,6 +1256,32 @@ export default {
                 console.log(error);
             }
         },
+        TraerServicio() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoServicios = res.data;
+                        if (this.listadoServicios.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerRecepcion() {
             try {
                 let data = {
@@ -1193,6 +1332,7 @@ export default {
                                     .toString();
                                 this.nordencompra = value.NUMFAC;
                                 this.nrib = value.NUMRIB;
+                                this.tiporecepcion = value.TIPRECEPCION;
                             });
 
                             c = [];
@@ -1453,7 +1593,7 @@ export default {
                             this.fechaDocumento,
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
-                        NUMFAC: this.nordencompra.toUpperCase(),
+                        NUMORD: this.nordencompra.toUpperCase(),
                         NUMRIB: this.nrib.toUpperCase(),
                         CODART: this.codigoArticulo.toUpperCase(),
                         PRODUCTO: this.nombre.toUpperCase(),
@@ -1475,7 +1615,10 @@ export default {
                         CARGO: 0,
                         SUBTOTAL: valorT,
                         AJUSTE: 0,
-                        USUMOD: nombreUsuario.toUpperCase()
+                        USUMOD: nombreUsuario.toUpperCase(),
+                        idServicio: this.seleccionServicio.id,
+                        NUMLIBPED: this.numeroLibroPedido,
+                        TIPRECEPCION: this.tiporecepcion
                     };
                     const dat = data;
 
@@ -1535,6 +1678,7 @@ export default {
         }
     },
     beforeMount() {
+        this.TraerServicio();
         this.TraerTipoDocumentos();
         this.TraerUltimoNFolio();
         this.TraerProveedores();

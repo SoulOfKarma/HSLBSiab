@@ -77,7 +77,7 @@ class RecepcionesController extends Controller
     public function GetRecepcionIngresadaByCodInterno(Request $request){
         try {
             $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC','TIPDOC','FECDOC','DCTO',
-            'OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD','FECSYS','NUMINT','NUMRIB',
+            'OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD','FECSYS','NUMINT','NUMRIB','TIPRECEPCION',
             DB::raw("SUBTOTAL as NETO"),DB::raw("(SUBTOTAL*0.19) as IVA"),DB::raw("(SUBTOTAL*0.19) + SUBTOTAL as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
             ->get();
@@ -106,7 +106,8 @@ class RecepcionesController extends Controller
             ->update(['RUTPRO' => $request->RUTPRO,'NOMPRO' => $request->NOMPRO,'SUBTOTAL' => $request->SUBTOTAL,
             'DCTO' => $request->DCTO,'TIPDOC' => $request->TIPDOC,'NUMDOC' => $request->NUMDOC,'FECDOC' => $request->FECDOC,
             'NUMFAC' => $request->NUMFAC,'NUMRIB' => $request->NUMRIB,'USUMOD' => $request->USUMOD,
-            'OBS' => $request->OBS,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE]);
+            'OBS' => $request->OBS,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'idServicio' => $request->idServicio,
+            'NUMLIBPED' => $request->NUMLIBPED,'TIPRECEPCION' => $request->TIPRECEPCION]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);
