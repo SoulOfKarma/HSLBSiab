@@ -153,7 +153,7 @@
                         class="vx-col w-1/2 mt-5"
                         v-if="seleccionFechaVencimiento.id == 1"
                     >
-                        <h6>Fecha Venciminento</h6>
+                        <h6>Fecha Vencimiento</h6>
                         <flat-pickr
                             :config="configTodateTimePicker"
                             v-model="fechaVencimiento"
@@ -226,15 +226,40 @@
                                     </span>
                                     <span
                                         v-else-if="
+                                            props.column.field === 'ACT_FECVEN'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-chip
+                                            color="success"
+                                            v-if="props.row.ACT_FECVEN == 1"
+                                            v-model="FVEN1"
+                                            type="text"
+                                            style="width:100px"
+                                            >Si</vs-chip
+                                        >
+                                        <vs-chip
+                                            v-else
+                                            color="primary"
+                                            v-model="FVEN2"
+                                            type="text"
+                                            style="width:100px"
+                                            >No</vs-chip
+                                        >
+                                    </span>
+                                    <span
+                                        v-else-if="
                                             props.column.field === 'FECVEN'
                                         "
                                         class="text-nowrap"
                                     >
-                                        <vs-input
-                                            v-model="props.row.FECVEN"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
+                                        <flat-pickr
+                                            :config="configFromdateTimePicker"
+                                            v-model="fechaRecepcion"
+                                            placeholder="Fecha Inicio"
+                                            @on-change="onFromChange"
+                                            class="w-full "
+                                        />
                                     </span>
                                     <span
                                         v-else-if="
@@ -642,15 +667,40 @@
                                     </span>
                                     <span
                                         v-else-if="
+                                            props.column.field === 'ACT_FECVEN'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-chip
+                                            color="success"
+                                            v-if="props.row.ACT_FECVEN == 1"
+                                            v-model="FVEN1"
+                                            type="text"
+                                            style="width:100px"
+                                            >Si</vs-chip
+                                        >
+                                        <vs-chip
+                                            v-else
+                                            color="primary"
+                                            v-model="FVEN2"
+                                            type="text"
+                                            style="width:100px"
+                                            >No</vs-chip
+                                        >
+                                    </span>
+                                    <span
+                                        v-else-if="
                                             props.column.field === 'FECVEN'
                                         "
                                         class="text-nowrap"
                                     >
-                                        <vs-input
-                                            v-model="props.row.FECVEN"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
+                                        <flat-pickr
+                                            :config="configFromdateTimePicker"
+                                            v-model="fechaRecepcion"
+                                            placeholder="Fecha Inicio"
+                                            @on-change="onFromChange"
+                                            class="w-full "
+                                        />
                                     </span>
                                     <span
                                         v-else-if="
@@ -951,6 +1001,8 @@ export default {
                 }
             },
             //Datos Campos
+            FVEN1: "Si",
+            FVEN2: "No",
             popUpArticulos: false,
             recepcion: false,
             consumoi: false,
@@ -1323,6 +1375,7 @@ export default {
             rows: [],
             listaArticulos: [],
             listaDetalleRecepcion: [],
+            listaDetalleRecepcionAct: [],
             listaRecepcion: [],
             listaEstado: [],
             listaBodega: [],
@@ -1431,6 +1484,7 @@ export default {
                 this.ubicacion = "";
                 this.unidadMedidaBase = "";
                 this.idMod = 0;
+                this.lote = "";
             } catch (error) {
                 console.log(error);
             }
@@ -1446,7 +1500,8 @@ export default {
         //Funciones Finales Recepcion
         ActualizarListado() {
             try {
-                console.log("Ha ha");
+                this.listaDetalleRecepcionAct = this.listaDetalleRecepcion;
+                console.log(this.listaDetalleRecepcionAct);
             } catch (error) {
                 console.log(error);
             }
@@ -2079,7 +2134,7 @@ export default {
                             this.fechaVencimiento,
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
-                        LOTE: this.seleccionLoteSerie.id,
+                        LOTE: this.lote,
                         CANREC: this.cantidad,
                         CANRECH: 0,
                         PENDIENTE: 0,

@@ -147,7 +147,7 @@
                     </div>
 
                     <div
-                        class="vx-col w-full mt-5"
+                        class="vx-col w-1/2 mt-5"
                         v-if="seleccionFechaVencimiento.id == 1"
                     >
                         <h6>Fecha Venciminento</h6>
@@ -157,6 +157,15 @@
                             @on-change="onFromChange"
                             class="w-full "
                         />
+                    </div>
+                    <div
+                        class="vx-col w-1/2 mt-5"
+                        v-if="seleccionLoteSerie.id == 1"
+                    >
+                        <h6>
+                            Lote/Serie
+                        </h6>
+                        <vs-input class="inputx w-full  " v-model="lote" />
                     </div>
 
                     <br />
@@ -207,6 +216,12 @@
                                         class="text-nowrap"
                                     >
                                         <vs-input
+                                            v-on:blur="
+                                                ActCodigoBarra(
+                                                    props.row.id,
+                                                    props.row.CODBAR
+                                                )
+                                            "
                                             v-model="props.row.CODBAR"
                                             type="text"
                                             style="width:100px"
@@ -214,15 +229,41 @@
                                     </span>
                                     <span
                                         v-else-if="
+                                            props.column.field === 'ACT_FECVEN'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-chip
+                                            color="success"
+                                            v-if="props.row.ACT_FECVEN == 1"
+                                            v-model="FVEN1"
+                                            type="text"
+                                            style="width:100px"
+                                            >Si</vs-chip
+                                        >
+                                        <vs-chip
+                                            v-else
+                                            color="primary"
+                                            v-model="FVEN2"
+                                            type="text"
+                                            style="width:100px"
+                                            >No</vs-chip
+                                        >
+                                    </span>
+                                    <span
+                                        v-else-if="
                                             props.column.field === 'FECVEN'
                                         "
                                         class="text-nowrap"
                                     >
-                                        <vs-input
-                                            v-model="props.row.FECVEN"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
+                                        <vs-button
+                                            @click="popFechaVen(props.row.id)"
+                                            color="primary"
+                                            type="filled"
+                                            class="w-full"
+                                            >Cambiar Fecha
+                                            Vencimiento</vs-button
+                                        >
                                     </span>
                                     <span
                                         v-else-if="
@@ -231,6 +272,12 @@
                                         class="text-nowrap"
                                     >
                                         <vs-input
+                                            v-on:blur="
+                                                ActLote(
+                                                    props.row.id,
+                                                    props.row.LOTE
+                                                )
+                                            "
                                             v-model="props.row.LOTE"
                                             type="text"
                                             style="width:100px"
@@ -477,6 +524,50 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="Cambiar Fecha Vencimiento"
+            title="Fecha Vencimiento"
+            :active.sync="popUpFechaVen"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Fecha Vencimiento</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaRecepcionAct"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                            <br />
+                        </div>
+                    </div>
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpFechaVen = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="ActFechaVencimiento"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Guardar</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -525,7 +616,12 @@ export default {
                 }
             },
             //Datos Campos
+            FVEN1: "Si",
+            FVEN2: "No",
+            idFecha: 0,
+            fechaAct: null,
             popUpArticulos: false,
+            popUpFechaVen: false,
             codInternoRecepcion: 0,
             descripcionServicio: "",
             ndocumento: "",
@@ -538,6 +634,7 @@ export default {
             fechaRecepcion: null,
             fechaDocumento: null,
             fechaVencimiento: null,
+            fechaRecepcionAct: null,
             codigoBarra: "",
             Observaciones: "",
             nordencompra: "",
@@ -550,6 +647,7 @@ export default {
             generico: "",
             categoriaFarmacia: "",
             concentracion: "",
+            lote: "",
             actFechaVencimiento: false,
             actLoteSerie: false,
             cantidadEmbalaje: "",
@@ -925,6 +1023,7 @@ export default {
         //Metodos Reusables
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
+            this.fechaAct = dateStr;
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
@@ -980,6 +1079,7 @@ export default {
                 this.ubicacion = "";
                 this.unidadMedidaBase = "";
                 this.idMod = 0;
+                this.lote = "";
             } catch (error) {
                 console.log(error);
             }
@@ -995,7 +1095,7 @@ export default {
         //Funciones Finales Recepcion
         ActualizarListado() {
             try {
-                console.log("Ha ha");
+                console.log(this.listaDetalleRecepcionAct);
             } catch (error) {
                 console.log(error);
             }
@@ -1012,6 +1112,55 @@ export default {
                 this.$router.push({
                     name: "home"
                 });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ActLote(id, lote) {
+            try {
+                let c = this.listaDetalleRecepcionAct;
+
+                c.forEach((value, index) => {
+                    if (id == value.id) {
+                        value.LOTE = lote;
+                    }
+                });
+
+                this.listaDetalleRecepcionAct = c;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ActCodigoBarra(id, codigoBarra) {
+            try {
+                let c = this.listaDetalleRecepcionAct;
+
+                c.forEach((value, index) => {
+                    if (id == value.id) {
+                        value.CODBAR = codigoBarra;
+                    }
+                });
+
+                this.listaDetalleRecepcionAct = c;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ActFechaVencimiento() {
+            try {
+                let id = this.idFecha;
+                let c = this.listaDetalleRecepcionAct;
+                c.forEach((value, index) => {
+                    if (id == value.id) {
+                        value.FECVEN = moment(
+                            this.fechaAct,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD");
+                    }
+                });
+
+                this.listaDetalleRecepcionAct = c;
+                this.popUpFechaVen = false;
             } catch (error) {
                 console.log(error);
             }
@@ -1082,9 +1231,10 @@ export default {
                 console.log(error);
             }
         },
-        popModDetalle(id) {
+        popFechaVen(id) {
             try {
-                console.log(id);
+                this.idFecha = id;
+                this.popUpFechaVen = true;
             } catch (error) {
                 console.log(error);
             }
@@ -1234,6 +1384,7 @@ export default {
                     )
                     .then(res => {
                         this.listaDetalleRecepcion = res.data;
+                        this.listaDetalleRecepcionAct = res.data;
                         if (this.listaDetalleRecepcion.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
@@ -1604,7 +1755,7 @@ export default {
                             this.fechaVencimiento,
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
-                        LOTE: this.seleccionLoteSerie.id,
+                        LOTE: this.lote,
                         CANREC: this.cantidad,
                         CANRECH: 0,
                         PENDIENTE: 0,

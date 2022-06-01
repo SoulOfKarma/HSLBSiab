@@ -141,15 +141,40 @@
                                     </span>
                                     <span
                                         v-else-if="
+                                            props.column.field === 'ACT_FECVEN'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-chip
+                                            color="success"
+                                            v-if="props.row.ACT_FECVEN == 1"
+                                            v-model="FVEN1"
+                                            type="text"
+                                            style="width:100px"
+                                            >Si</vs-chip
+                                        >
+                                        <vs-chip
+                                            v-else
+                                            color="primary"
+                                            v-model="FVEN2"
+                                            type="text"
+                                            style="width:100px"
+                                            >No</vs-chip
+                                        >
+                                    </span>
+                                    <span
+                                        v-else-if="
                                             props.column.field === 'FECVEN'
                                         "
                                         class="text-nowrap"
                                     >
-                                        <vs-input
-                                            v-model="props.row.FECVEN"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
+                                        <flat-pickr
+                                            :config="configFromdateTimePicker"
+                                            v-model="fechaRecepcion"
+                                            placeholder="Fecha Inicio"
+                                            @on-change="onFromChange"
+                                            class="w-full "
+                                        />
                                     </span>
                                     <span
                                         v-else-if="
@@ -414,6 +439,8 @@ export default {
                 }
             },
             //Datos Campos
+            FVEN1: "Si",
+            FVEN2: "No",
             popUpArticulos: false,
             codInternoRecepcion: 0,
             descripcionServicio: "",
@@ -439,6 +466,7 @@ export default {
             generico: "",
             categoriaFarmacia: "",
             concentracion: "",
+            lote: "",
             actFechaVencimiento: false,
             actLoteSerie: false,
             cantidadEmbalaje: "",
@@ -862,6 +890,7 @@ export default {
                 this.ubicacion = "";
                 this.unidadMedidaBase = "";
                 this.idMod = 0;
+                this.lote = "";
             } catch (error) {
                 console.log(error);
             }
