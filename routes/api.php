@@ -115,6 +115,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PutDesactivarStockMinMaxMed', ['middleware' => 'cors', 'uses' => 'StockMinMaxMedicamentosController@PutDesactivarStockMinMaxMed']);
     Route::post('/Mantenedor/PutTipoDocumentos', ['middleware' => 'cors', 'uses' => 'TipoDocumentosController@PutTipoDocumentos']);
     Route::post('/Mantenedor/PostCerrarRecepcion', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostCerrarRecepcion']);
+    Route::post('/Mantenedor/PutListadoArticulosRecepcion', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PutListadoArticulosRecepcion']);
+    Route::post('/Mantenedor/PutRecepcionTotal', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PutRecepcionTotal']);
+
+    //Post como Delete
+    Route::post('/Mantenedor/DeleteArticuloDetalle', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DeleteArticuloDetalle']);
 
     //Post Documentos
     Route::post('/Mantenedor/PostDocumentoAuthUsuario', ['middleware' => 'cors', 'uses' => 'DocumentacionAuthUsuariosController@PostDocumentoAuthUsuario']);
@@ -124,4 +129,4 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 });
 
 //Generar PDF
-Route::get('/Bodega/ActaEntregaPDF/{idSolicitud}/{idCategoria}/{nombre}', ['middleware' => 'cors', 'uses' => 'MaterialInventariosController@ActaEntregaPDF']);
+Route::get('/Recepcion/RecepcionPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GenerarImpresion']);

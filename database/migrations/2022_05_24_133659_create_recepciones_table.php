@@ -32,7 +32,7 @@ class CreateRecepcionesTable extends Migration
             $table->string('DCTO')->nullable();
             $table->string('OBS')->nullable();
             $table->string('CARGO')->nullable();
-            $table->string('SUBTOTAL')->nullable();
+            $table->decimal('SUBTOTAL',16,2)->nullable();
             $table->string('AJUSTE')->nullable();
             $table->string('USUING')->nullable();
             $table->string('USUMOD')->nullable();

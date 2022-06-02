@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\recepcionDetalles;
 use DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
 
 class RecepcionesController extends Controller
 {
@@ -78,7 +79,7 @@ class RecepcionesController extends Controller
         try {
             $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC','TIPDOC','FECDOC','DCTO',
             'OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD','FECSYS','NUMINT','NUMRIB','TIPRECEPCION',
-            DB::raw("SUBTOTAL as NETO"),DB::raw("(SUBTOTAL*0.19) as IVA"),DB::raw("(SUBTOTAL*0.19) + SUBTOTAL as TOTAL"))
+            DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
             ->get();
             return $get;
@@ -125,6 +126,66 @@ class RecepcionesController extends Controller
         } catch (\Throwable $th) {
             log::info($th);
             return false;
+        }
+    }
+
+    public function PutListadoArticulosRecepcion(Request $request){
+        try {
+                $lista = $request->all();
+            
+                foreach($lista as $e => $req ){                           
+                    recepcionDetalles::where('id',$req["id"])
+                    ->update(['CODBAR' => $req["CODBAR"],'FECVEN' => $req["FECVEN"],'LOTE' => $req["LOTE"],
+                    'CANREC' => $req["CANREC"],'PREUNI' => $req["PREUNI"],'VALTOT' => $req["VALTOT"]]);
+                    
+                }
+              return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PutRecepcionTotal(Request $request){
+        try {
+            recepciones::where('NUMINT',$request->NUMINT)
+            ->update(['SUBTOTAL' => $request->SUBTOTAL]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function DeleteArticuloDetalle(Request $request){
+        try {
+           recepcionDetalles::where('id', $request->id)->delete();
+           return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;       
+        }
+    }
+
+    public function GenerarImpresion($NUMINT){
+        try {
+            $getDet = recepcionDetalles::where('NUMINT',$NUMINT)
+            ->get();
+
+            $getRec = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMORD','TIPDOC','FECDOC','DCTO',
+            'OBS','CARGO','SUBTOTAL','AJUSTE','USUING','USUMOD','FECSYS','NUMINT','NUMRIB','TIPRECEPCION',
+            DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
+            ->where('NUMINT',$NUMINT)
+            ->get();
+
+            $pdf = App::make("dompdf.wrapper");
+            $pdf->loadView('Recepcion', compact ('getDet','getRec'));
+            $pdf->setOptions(['isJavascriptEnabled' => true]);
+            $pdf->setOptions(['isRemoteEnabled' => true]);
+            return $pdf->stream("Recepcion.pdf", array("Attachment" => 0));
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;  
         }
     }
 }

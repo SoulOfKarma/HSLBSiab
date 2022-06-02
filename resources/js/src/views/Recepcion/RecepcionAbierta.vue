@@ -97,7 +97,11 @@
                     </div>
                     <div class="vx-col w-1/5 mt-5">
                         <h6>N° RIB</h6>
-                        <vs-input class="inputx w-full  " v-model="nrib" />
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="nrib"
+                            @keypress="isNumber($event)"
+                        />
                     </div>
                 </div>
                 <br />
@@ -116,13 +120,21 @@
                         <h6>
                             Cantidad
                         </h6>
-                        <vs-input class="inputx w-full  " v-model="cantidad" />
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="cantidad"
+                            @keypress="isNumber($event)"
+                        />
                     </div>
                     <div class="vx-col w-1/3 mt-5">
                         <h6>
                             Precio
                         </h6>
-                        <vs-input class="inputx w-full  " v-model="precio" />
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="precio"
+                            @keypress="isNumber($event)"
+                        />
                     </div>
 
                     <div class="vx-col w-1/2 mt-5">
@@ -256,13 +268,14 @@
                                         "
                                         class="text-nowrap"
                                     >
-                                        <vs-button
-                                            @click="popFechaVen(props.row.id)"
+                                        <vs-chip
+                                            @click.native="
+                                                popFechaVen(props.row.id)
+                                            "
                                             color="primary"
                                             type="filled"
                                             class="w-full"
-                                            >Cambiar Fecha
-                                            Vencimiento</vs-button
+                                            >{{ props.row.FECVEN }}</vs-chip
                                         >
                                     </span>
                                     <span
@@ -290,32 +303,16 @@
                                         class="text-nowrap"
                                     >
                                         <vs-input
+                                            v-on:blur="
+                                                ActCantRecepcionada(
+                                                    props.row.id,
+                                                    props.row.CANREC,
+                                                    props.row.PREUNI
+                                                )
+                                            "
                                             v-model="props.row.CANREC"
                                             type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CANRECH'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.CANRECH"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'PENDIENTE'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.PENDIENTE"
-                                            type="text"
+                                            @keypress="isNumber($event)"
                                             style="width:100px"
                                         ></vs-input>
                                     </span>
@@ -326,8 +323,16 @@
                                         class="text-nowrap"
                                     >
                                         <vs-input
+                                            v-on:blur="
+                                                ActPrecioUnitario(
+                                                    props.row.id,
+                                                    props.row.CANREC,
+                                                    props.row.PREUNI
+                                                )
+                                            "
                                             v-model="props.row.PREUNI"
                                             type="text"
+                                            @keypress="isNumber($event)"
                                             style="width:100px"
                                         ></vs-input>
                                     </span>
@@ -337,11 +342,11 @@
                                         "
                                     >
                                         <plus-circle-icon
-                                            content="Modificar Detalle"
+                                            content="Eliminar Articulo del Detalle"
                                             v-tippy
                                             size="1.5x"
                                             class="custom-class"
-                                            @click="popModDetalle(props.row.id)"
+                                            @click="popDelDetalle(props.row.id)"
                                         ></plus-circle-icon>
                                     </span>
 
@@ -568,6 +573,37 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="RemoverArticulo"
+            title="Remover Articulo"
+            :active.sync="popUpDelArt"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpDelArt = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="RemoverArticuloDetalle"
+                                color="danger"
+                                type="filled"
+                                class="w-full"
+                                >Remover</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -619,9 +655,13 @@ export default {
             FVEN1: "Si",
             FVEN2: "No",
             idFecha: 0,
+            idRemoverArt: 0,
             fechaAct: null,
             popUpArticulos: false,
             popUpFechaVen: false,
+            popUpDelArt: false,
+            recepcion: false,
+            consumoi: false,
             codInternoRecepcion: 0,
             descripcionServicio: "",
             ndocumento: "",
@@ -630,6 +670,8 @@ export default {
             numint: 0,
             folio: 0,
             valorTotal: 0,
+            contador: 0,
+            idServicio: 0,
             fechaSistema: null,
             fechaRecepcion: null,
             fechaDocumento: null,
@@ -866,20 +908,6 @@ export default {
                     }
                 },
                 {
-                    label: "Cantidad Rechazada",
-                    field: "CANRECH",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cantidad Pendiente",
-                    field: "PENDIENTE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
                     label: "Precio Unitario",
                     field: "PREUNI",
                     filterOptions: {
@@ -892,6 +920,10 @@ export default {
                     filterOptions: {
                         enabled: true
                     }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
                 }
             ],
             col: [
@@ -1052,6 +1084,7 @@ export default {
                 this.codigoOnu = "";
                 this.codigoArticulo = "";
                 this.nombre = "";
+                this.nordencompra = "";
                 this.seleccionEstado = {
                     id: 0,
                     descripcionEstado: ""
@@ -1092,17 +1125,13 @@ export default {
                 console.log(error);
             }
         },
-        //Funciones Finales Recepcion
-        ActualizarListado() {
-            try {
-                console.log(this.listaDetalleRecepcionAct);
-            } catch (error) {
-                console.log(error);
-            }
-        },
         ImprimirDatos() {
             try {
-                console.log("Ha ha");
+                const url =
+                    this.localVal +
+                    "/api/Recepcion/RecepcionPDF/" +
+                    this.numint;
+                window.open(url, "_blank");
             } catch (error) {
                 console.log(error);
             }
@@ -1118,7 +1147,7 @@ export default {
         },
         ActLote(id, lote) {
             try {
-                let c = this.listaDetalleRecepcionAct;
+                let c = this.listaDetalleRecepcion;
 
                 c.forEach((value, index) => {
                     if (id == value.id) {
@@ -1126,14 +1155,14 @@ export default {
                     }
                 });
 
-                this.listaDetalleRecepcionAct = c;
+                this.listaDetalleRecepcion = c;
             } catch (error) {
                 console.log(error);
             }
         },
         ActCodigoBarra(id, codigoBarra) {
             try {
-                let c = this.listaDetalleRecepcionAct;
+                let c = this.listaDetalleRecepcion;
 
                 c.forEach((value, index) => {
                     if (id == value.id) {
@@ -1141,7 +1170,7 @@ export default {
                     }
                 });
 
-                this.listaDetalleRecepcionAct = c;
+                this.listaDetalleRecepcion = c;
             } catch (error) {
                 console.log(error);
             }
@@ -1149,7 +1178,7 @@ export default {
         ActFechaVencimiento() {
             try {
                 let id = this.idFecha;
-                let c = this.listaDetalleRecepcionAct;
+                let c = this.listaDetalleRecepcion;
                 c.forEach((value, index) => {
                     if (id == value.id) {
                         value.FECVEN = moment(
@@ -1159,66 +1188,42 @@ export default {
                     }
                 });
 
-                this.listaDetalleRecepcionAct = c;
+                this.listaDetalleRecepcion = c;
                 this.popUpFechaVen = false;
             } catch (error) {
                 console.log(error);
             }
         },
-        CerrarRecepcion() {
+        ActCantRecepcionada(id, cantRecepcionada, precioUnitario) {
             try {
-                if (this.listaDetalleRecepcion.length < 1) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text:
-                            "No existen datos en el detalle de articulos para generar un N° de Folio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.folio == 0) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "No se pudo generar un N° de Folio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else {
-                    let data = {
-                        NUMINT: this.numint,
-                        FOLIO: this.folio
-                    };
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostCerrarRecepcion",
-                            data,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            let data = res.data;
-                            if (data == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Finalizado",
-                                    text:
-                                        "Recepcion Cerrada, se recargara la ventana",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.$router.push({
-                                    name: "ListadoRecepcionAbierta"
-                                });
-                            }
-                        });
-                }
+                let c = this.listaDetalleRecepcion;
+                let total =
+                    parseInt(cantRecepcionada) * parseInt(precioUnitario);
+                c.forEach((value, index) => {
+                    if (id == value.id) {
+                        value.CANREC = cantRecepcionada;
+                        value.VALTOT = total;
+                    }
+                });
+
+                this.listaDetalleRecepcion = c;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ActPrecioUnitario(id, cantRecepcionada, precioUnitario) {
+            try {
+                let c = this.listaDetalleRecepcion;
+                let total =
+                    parseInt(cantRecepcionada) * parseInt(precioUnitario);
+                c.forEach((value, index) => {
+                    if (id == value.id) {
+                        value.PREUNI = precioUnitario;
+                        value.VALTOT = total;
+                    }
+                });
+
+                this.listaDetalleRecepcion = c;
             } catch (error) {
                 console.log(error);
             }
@@ -1235,6 +1240,14 @@ export default {
             try {
                 this.idFecha = id;
                 this.popUpFechaVen = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popDelDetalle(id) {
+            try {
+                this.idRemoverArt = id;
+                this.popUpDelArt = true;
             } catch (error) {
                 console.log(error);
             }
@@ -1727,6 +1740,7 @@ export default {
                         sessionStorage.getItem("nombre") +
                         " " +
                         sessionStorage.getItem("apellido");
+
                     let data = {
                         NUMINT: this.numint,
                         FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
@@ -1807,6 +1821,175 @@ export default {
                                         "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
                                     color: "danger",
                                     position: "top-right"
+                                });
+                            }
+                        });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        RemoverArticuloDetalle() {
+            try {
+                let data = { id: this.idRemoverArt };
+                axios
+                    .post(
+                        this.localVal + "/api/Mantenedor/DeleteArticuloDetalle",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let resp = res.data;
+                        if (resp == true) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text: "Articulo Removido Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.TraerDetalleRecepcion();
+                            this.popUpDelArt = false;
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible remover el articulo,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ActualizarListado() {
+            try {
+                let c = this.listaDetalleRecepcion;
+                let subtotal = 0;
+                c.forEach((value, index) => {
+                    subtotal = subtotal + parseInt(value.VALTOT);
+                });
+
+                let data = this.listaDetalleRecepcion;
+                let dat = {
+                    NUMINT: this.numint,
+                    SUBTOTAL: subtotal
+                };
+
+                axios
+                    .all([
+                        axios.post(
+                            this.localVal +
+                                "/api/Mantenedor/PutListadoArticulosRecepcion",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.post(
+                            this.localVal + "/api/Mantenedor/PutRecepcionTotal",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                    ])
+                    .then(
+                        axios.spread((res1, res2) => {
+                            let resp1 = res1.data;
+                            let resp2 = res2.data;
+                            if (resp1 == true && resp2 == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text: "Articulos modificados Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerRecepcion();
+                                this.TraerDetalleRecepcion();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible modificar los articulos,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        })
+                    );
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        CerrarRecepcion() {
+            try {
+                if (this.listaDetalleRecepcion.length < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "No existen datos en el detalle de articulos para generar un N° de Folio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.folio == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No se pudo generar un N° de Folio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        NUMINT: this.numint,
+                        FOLIO: this.folio
+                    };
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Mantenedor/PostCerrarRecepcion",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            if (data == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Finalizado",
+                                    text:
+                                        "Recepcion Cerrada, se recargara la ventana",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.$router.push({
+                                    name: "ListadoRecepcionAbierta"
                                 });
                             }
                         });
