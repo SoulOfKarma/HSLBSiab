@@ -1462,7 +1462,11 @@ pre code {
 .bg-primary {
     background-color: #007bff !important;
 }
-
+#OrdenTabla{
+  text-align: center;
+  max-height: 200px !important;
+  height: 200px !important;
+}
         </style>
     </head>
               @php
@@ -1510,10 +1514,10 @@ pre code {
     <body>
         <div class="container-fluid">
             <div class="row">
-              <div class="col-xs-2"> <img src="http://127.0.0.1:8000/Documentos/users/Documentacion/1.jpg"></div>
-                <div class="col-xs-10">
-                  <h3 id="tituloOrd"><b>Recepcion</b> </h3>
-                  <h4 id="subOrd"><b>N°{{$nfolio}}</b> </h4>                  
+              <div class="col-xs-2"> <img src="http://10.5.23.248:9000/Documentos/users/Documentacion/1.jpg"></div>
+                <div class="col-xs-10 text-center">
+                  <h3 id="tituloOrd" class="text-center"><b>Recepcion</b> </h3>
+                  <h4 id="subOrd" class="text-center"><b>N°{{$nfolio}}</b> </h4>                  
                 </div>
                 <div class="col-xs-2"></div>            
             </div>
@@ -1618,10 +1622,10 @@ pre code {
             <div class="row table-responsive-xl">
               <table class="table table-bordered table-sm">
                <tbody>
-                <tr>
-                  <td><h6>{{$observacion}}</h6></td>
-                  <td><h6>{{$observacion}}</h6></td>
-                  <td><h6>{{$observacion}}</h6></td>
+                <tr id="OrdenTabla">
+                  <td><h6>.</h6></td>
+                  <td><h6>.</h6></td>
+                  <td><h6>.</h6></td>
                 </tr>
                 <tr>
                  <td><h6>Encargado Seccion Bodega</h6></td>
