@@ -132,7 +132,7 @@ export default [
             },
             {
                 url: "/Recepcion/OrdenCompra",
-                name: "OrdenCompra",
+                name: "Ordenes de Compra",
                 slug: "/Recepcion/OrdenCompra",
                 icon: "HomeIcon"
             }

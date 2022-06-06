@@ -177,6 +177,16 @@ mark {
     max-width: 100%;
     height: auto;
 }
+.badge-secondary {
+    color: #fff;
+    background-color: #6c757d;
+}
+.badge-secondary[href]:focus,
+.badge-secondary[href]:hover {
+    color: #fff;
+    text-decoration: none;
+    background-color: #545b62;
+}
 .figure {
     display: inline-block;
 }
@@ -1514,26 +1524,36 @@ pre code {
     <body>
         <div class="container-fluid">
             <div class="row">
-              <div class="col-xs-2"> <img src="http://10.5.23.248:9000/Documentos/users/Documentacion/1.jpg"></div>
-                <div class="col-xs-10 text-center">
-                  <h3 id="tituloOrd" class="text-center"><b>Recepcion</b> </h3>
-                  <h4 id="subOrd" class="text-center"><b>N°{{$nfolio}}</b> </h4>                  
-                </div>
-                <div class="col-xs-2"></div>            
+                <table class="table table-borderless table-sm">
+                    <tbody>
+                      <tr>
+                        <td><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/1.jpg"></td>
+                        <td><b>Recepcion </b>
+                            <b>N° {{$nfolio}}</b><br><br>
+                            <h5>{{$nroordencompra}}</h5></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+               </table>     
             </div>
             <div class="row table-responsive-xl">
               <table class="table table-bordered table-sm">
                <tbody>
                  <tr>
-                   <td><h6>Fecha Sistema</h6></td>
-                   <td><h6>Fecha Recepcion</h6></td>
-                   <td><h6>Rut Proveedor</h6></td>
-                    <td><h6>Nombre Proveedor</h6></td>
-                    <td><h6>Tipo Documento</h6></td>
-                    <td><h6>N° Documento</h6></td>
-                    <td><h6>Fecha Documento</h6></td>
-                    <td><h6>N° Orden Compra</h6></td>
-                    <td><h6>N° RIB</h6></td>
+                   <td class="badge badge-secondary"><h6>Fecha Sistema</h6></td>
+                   <td class="badge badge-secondary"><h6>Fecha Recepcion</h6></td>
+                   <td class="badge badge-secondary"><h6>Rut Proveedor</h6></td>
+                    <td class="badge badge-secondary"><h6>Nombre Proveedor</h6></td>
+                    <td class="badge badge-secondary"><h6>Tipo Documento</h6></td>
+                    <td class="badge badge-secondary"><h6>N° Documento</h6></td>
+                    <td class="badge badge-secondary"><h6>Fecha Documento</h6></td>
+                    <td class="badge badge-secondary"><h6>N° Orden Compra</h6></td>
+                    <td class="badge badge-secondary"><h6>N° RIB</h6></td>
                  </tr>
                  <tr>
                   <td><h6>{{$fechaSistema}}</h6></td>
@@ -1554,14 +1574,14 @@ pre code {
               <table class="table table-bordered table-sm">
               <tbody>
                  <tr>
-                   <td><h6>Codigo Interno</h6></td>
-                   <td><h6>Producto</h6></td>
-                   <td><h6>Unidad Medida</h6></td>
-                   <td><h6>Lote</h6></td>
-                   <td><h6>Fecha Vencimiento</h6></td>
-                   <td><h6>Cantidad Recepcionada</h6></td>
-                   <td><h6>Precio Unitario</h6></td>
-                   <td><h6>Total Recepcionado</h6></td>
+                   <td class="badge badge-secondary" style="width: 7.33%"><h6>Codigo Interno</h6></td>
+                   <td class="badge badge-secondary"><h6>Producto</h6></td>
+                   <td class="badge badge-secondary" style="width: 5.33%"><h6>Unidad Medida</h6></td>
+                   <td class="badge badge-secondary" style="width: 8.33%"><h6>Lote</h6></td>
+                   <td class="badge badge-secondary" style="width: 8.33%"><h6>Fecha Vencimiento</h6></td>
+                   <td class="badge badge-secondary" style="width: 8.33%"><h6>Cantidad Recepcionada</h6></td>
+                   <td class="badge badge-secondary" style="width: 5.33%"><h6>Precio Unitario</h6></td>
+                   <td class="badge badge-secondary" style="width: 10.33%"><h6>Total</h6></td>
                  </tr>
                  @foreach ($getDet as $dat)
                 
@@ -1585,13 +1605,13 @@ pre code {
               <table class="table table-bordered table-sm">
                <tbody>
                  <tr>
-                   <td><h6>Neto</h6></td>
-                   <td><h6>DCTO</h6></td>
-                   <td><h6>Cargos</h6></td>
-                    <td><h6>Subtotal</h6></td>
-                    <td><h6>Iva</h6></td>
-                    <td><h6>Ajuste</h6></td>
-                    <td><h6>Total</h6></td>
+                   <td class="badge badge-secondary"><h6>Neto</h6></td>
+                   <td class="badge badge-secondary"><h6>DCTO</h6></td>
+                   <td class="badge badge-secondary"><h6>Cargos</h6></td>
+                    <td class="badge badge-secondary"><h6>Subtotal</h6></td>
+                    <td class="badge badge-secondary"><h6>Iva</h6></td>
+                    <td class="badge badge-secondary"><h6>Ajuste</h6></td>
+                    <td class="badge badge-secondary"><h6>Total</h6></td>
                  </tr>
                  <tr>
                   <td><h6>{{$neto}}</h6></td>
@@ -1610,10 +1630,10 @@ pre code {
               <table class="table table-bordered table-sm">
                <tbody>
                 <tr>
-                 <td><h6>Observaciones</h6></td>
+                 <td class="badge badge-secondary"><h6>Observaciones</h6></td>
                   </tr>
                   <tr>
-                      <td ><h6>{{$observacion}}</h6></td>
+                      <td style="height: 7.33%"><h6>{{$observacion}}</h6></td>
                      </tr>
                </tbody>
               </table>
@@ -1623,14 +1643,14 @@ pre code {
               <table class="table table-bordered table-sm">
                <tbody>
                 <tr id="OrdenTabla">
-                  <td><h6>.</h6></td>
-                  <td><h6>.</h6></td>
-                  <td><h6>.</h6></td>
+                  <td style="height: 7.33%"><h6 ></h6></td>
+                  <td style="height: 7.33%"><h6></h6></td>
+                  <td style="height: 7.33%"><h6></h6></td>
                 </tr>
                 <tr>
-                 <td><h6>Encargado Seccion Bodega</h6></td>
-                 <td><h6>Jefe Bodega</h6></td>
-                 <td><h6>Nombre y Firma Autorizado Retiro</h6></td>                 
+                 <td class="badge badge-secondary"><h6>Encargado Seccion Bodega</h6></td>
+                 <td class="badge badge-secondary"><h6>Jefe Bodega</h6></td>
+                 <td class="badge badge-secondary"><h6>Jefe Abastecimiento</h6></td>                 
                 </tr>
                </tbody>
               </table>

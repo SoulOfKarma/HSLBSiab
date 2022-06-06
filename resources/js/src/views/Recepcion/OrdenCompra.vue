@@ -1,31 +1,8 @@
 <template>
     <div>
         <div class="vx-col md:w-1/1 w-full mb-base">
-            <vx-card title="Recepciones">
-                <div class="vx-row">
-                    <div class="vx-col w-1/2 mt-5">
-                        <vs-button
-                            @click="FormRecepcion"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Formulario Recepcion</vs-button
-                        >
-                    </div>
-                    <div class="vx-col w-1/2 mt-5">
-                        <vs-button
-                            @click="FormConsumoI"
-                            color="success"
-                            type="filled"
-                            class="w-full"
-                            >Formulario Consumo Inmediato</vs-button
-                        >
-                    </div>
-                </div>
-            </vx-card>
-            <br />
-            <!-- Recepcion -->
-            <vx-card title="Recepcion Normal" v-if="recepcion">
+            <!-- Orden de Compra -->
+            <vx-card title="Orden de Compra">
                 <div class="vx-row">
                     <div class="vx-col w-full mt-5">
                         <vs-button
@@ -47,7 +24,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -57,7 +34,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Inicio</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -67,7 +44,7 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Proveedor</h6>
                         <v-select
                             v-model="seleccionProveedores"
@@ -78,7 +55,7 @@
                             @input="setProveedor"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Nombre Proveedor</h6>
                         <vs-input
                             class="inputx w-full  "
@@ -87,79 +64,39 @@
                         />
                     </div>
                     <div class="vx-col w-1/5 mt-5">
-                        <h6>Tipo Documento</h6>
-                        <v-select
-                            v-model="seleccionTipoDocumento"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="descripcionDocumento"
-                            :options="listaTipoDocumento"
-                        ></v-select>
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° Documento</h6>
+                        <h6>Sigfe</h6>
                         <vs-input
                             class="inputx w-full  "
                             v-model="ndocumento"
                         />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Documento</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaDocumento"
-                            @on-change="onFromChange"
-                            class="w-full "
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° Orden Compra</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nordencompra"
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° RIB</h6>
-                        <vs-input class="inputx w-full  " v-model="nrib" />
                     </div>
                 </div>
                 <br />
                 <div class="vx-row">
                     <div class="vx-col w-1/3 mt-5">
                         <h6>
-                            Codigo de Barra
+                            Folio Recepcionado
                         </h6>
                         <vs-input
                             class="inputx w-full  "
                             v-model="codigoBarra"
-                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/3 mt-5">
                         <h6>
-                            Cantidad
+                            Año
                         </h6>
                         <vs-input class="inputx w-full  " v-model="cantidad" />
                     </div>
                     <div class="vx-col w-1/3 mt-5">
-                        <h6>
-                            Precio
-                        </h6>
-                        <vs-input class="inputx w-full  " v-model="precio" />
-                    </div>
-
-                    <div
-                        class="vx-col w-full mt-5"
-                        v-if="seleccionFechaVencimiento.id == 1"
-                    >
-                        <h6>Fecha Venciminento</h6>
-                        <flat-pickr
-                            :config="configTodateTimePicker"
-                            v-model="fechaVencimiento"
-                            @on-change="onFromChange"
-                            class="w-full "
-                        />
+                        <h6>Consumo Inmediato?</h6>
+                        <v-select
+                            v-model="seleccionConsumoInmediato"
+                            placeholder="Activo"
+                            class="w-full select-large"
+                            label="descripcionConsumoInmediato"
+                            :options="listaConsumoInmediato"
+                        ></v-select>
                     </div>
 
                     <br />
@@ -178,7 +115,7 @@
                             color="success"
                             type="filled"
                             class="w-full"
-                            >Agregar Articulo</vs-button
+                            >Añadir</vs-button
                         >
                     </div>
                 </div>
@@ -189,6 +126,7 @@
                     <vx-card title="">
                         <div class="vx-row">
                             <vue-good-table
+                                class="w-full"
                                 :columns="colDetalle"
                                 :rows="listaDetalleRecepcion"
                                 :pagination-options="{
@@ -209,7 +147,7 @@
                                         "
                                     >
                                         <plus-circle-icon
-                                            content="Modificar Detalle"
+                                            content="Modificar Orden Compra"
                                             v-tippy
                                             size="1.5x"
                                             class="custom-class"
@@ -230,387 +168,29 @@
                     </vx-card>
                     <div class="vx-row"></div>
                 </div>
-                <!-- Calculos -->
+                <!-- Observaciones y totales -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
-                            <vue-good-table
-                                class="w-full"
-                                :columns="colTotal"
-                                :rows="listaRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <h6>Observaciones</h6>
-                            <br /><br />
-                            <quill-editor
-                                class="w-full"
-                                v-model="Observaciones"
-                                :options="editorOption"
-                            >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
-                        </div>
-                        <br /><br />
-                    </vx-card>
-                </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="ActualizarListado"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Actualizar</vs-button
-                                >
+                            <div class="vx-col w-full mt-5">
+                                <h6>
+                                    Total
+                                </h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="cantidad"
+                                />
                             </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="ImprimirDatos"
-                                    color="primary"
-                                    type="filled"
+                            <div class="vx-col w-full mt-5">
+                                <h6>Observaciones</h6>
+                                <quill-editor
                                     class="w-full"
-                                    >Imprimir</vs-button
+                                    v-model="Observaciones"
+                                    :options="editorOption"
                                 >
+                                    <div id="toolbar" slot="toolbar"></div>
+                                </quill-editor>
                             </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="volver"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Volver</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="CerrarRecepcion"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Cerrar Recepcion</vs-button
-                                >
-                            </div>
-                        </div>
-                    </vx-card>
-                </div>
-            </vx-card>
-            <!-- Consumo Inmediato -->
-            <vx-card title="Consumo Inmediato" v-if="consumoi">
-                <div class="vx-row">
-                    <div class="vx-col w-full mt-5">
-                        <vs-button
-                            @click="popArticulos"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Buscar Articulo</vs-button
-                        >
-                    </div>
-                    <div
-                        class="vx-col w-full mt-5"
-                        v-if="listaDetalleRecepcion.length > 0"
-                    >
-                        <h6>N° Interno</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="numint"
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/4 mt-5">
-                        <h6>Fecha Sistema</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaSistema"
-                            placeholder="Fecha Sistema"
-                            class="w-full "
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/4 mt-5">
-                        <h6>Fecha Inicio</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaRecepcion"
-                            placeholder="Fecha Inicio"
-                            @on-change="onFromChange"
-                            class="w-full "
-                        />
-                    </div>
-                    <div class="vx-col w-1/4 mt-5">
-                        <h6>Proveedor</h6>
-                        <v-select
-                            v-model="seleccionProveedores"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="RUTPROV"
-                            :options="listadoProveedores"
-                            @input="setProveedor"
-                        ></v-select>
-                    </div>
-                    <div class="vx-col w-1/4 mt-5">
-                        <h6>Nombre Proveedor</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="descripcionProveedor"
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Tipo Documento</h6>
-                        <v-select
-                            v-model="seleccionTipoDocumento"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="descripcionDocumento"
-                            :options="listaTipoDocumento"
-                        ></v-select>
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° Documento</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="ndocumento"
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Documento</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaDocumento"
-                            @on-change="onFromChange"
-                            class="w-full "
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° Orden Compra</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nordencompra"
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° RIB</h6>
-                        <vs-input class="inputx w-full  " v-model="nrib" />
-                    </div>
-                </div>
-                <br />
-                <div class="vx-row">
-                    <div class="vx-col w-1/2 mt-5">
-                        <h6>Servicio</h6>
-                        <v-select
-                            taggable
-                            v-model="seleccionServicio"
-                            placeholder="Servicio"
-                            class="w-full select-large"
-                            label="descripcionServicio"
-                            :options="listadoServicios"
-                        ></v-select>
-                    </div>
-                    <div class="vx-col w-1/2 mt-5">
-                        <h6>
-                            N° Libro Pedido
-                        </h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="numeroLibroPedido"
-                        />
-                    </div>
-                </div>
-                <div
-                    class="vx-col w-full mt-5"
-                    v-if="seleccionFechaVencimiento.id == 1"
-                >
-                    <h6>Fecha Venciminento</h6>
-                    <flat-pickr
-                        :config="configTodateTimePicker"
-                        v-model="fechaVencimiento"
-                        @on-change="onFromChange"
-                        class="w-full "
-                    />
-                </div>
-
-                <br />
-                <div class="vx-row">
-                    <div class="vx-col w-1/3 mt-5">
-                        <h6>
-                            Codigo de Barra
-                        </h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="codigoBarra"
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/3 mt-5">
-                        <h6>
-                            Cantidad
-                        </h6>
-                        <vs-input class="inputx w-full  " v-model="cantidad" />
-                    </div>
-                    <div class="vx-col w-1/3 mt-5">
-                        <h6>
-                            Precio
-                        </h6>
-                        <vs-input class="inputx w-full  " v-model="precio" />
-                    </div>
-
-                    <div
-                        class="vx-col w-full mt-5"
-                        v-if="seleccionFechaVencimiento.id == 1"
-                    >
-                        <h6>Fecha Venciminento</h6>
-                        <flat-pickr
-                            :config="configTodateTimePicker"
-                            v-model="fechaVencimiento"
-                            @on-change="onFromChange"
-                            class="w-full "
-                        />
-                    </div>
-
-                    <br />
-                    <div class="vx-col w-1/2 mt-5">
-                        <vs-button
-                            @click="limpiarCampos"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Limpiar Campos</vs-button
-                        >
-                    </div>
-                    <div class="vx-col w-1/2 mt-5">
-                        <vs-button
-                            @click="AgregarArticuloDetalle"
-                            color="success"
-                            type="filled"
-                            class="w-full"
-                            >Agregar Articulo</vs-button
-                        >
-                    </div>
-                </div>
-                <br />
-
-                <!-- Detalles Articulos -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vue-good-table
-                                :columns="colDetalle"
-                                :rows="listaDetalleRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            content="Modificar Detalle"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="popModDetalle(props.row.id)"
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-                <!-- Calculos -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vue-good-table
-                                class="w-full"
-                                :columns="colTotal"
-                                :rows="listaRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <h6>Observaciones</h6>
-                            <br /><br />
-                            <quill-editor
-                                class="w-full"
-                                v-model="Observaciones"
-                                :options="editorOption"
-                            >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
                         </div>
                         <br /><br />
                     </vx-card>
@@ -778,8 +358,6 @@ export default {
             },
             //Datos Campos
             popUpArticulos: false,
-            recepcion: false,
-            consumoi: false,
             codInternoRecepcion: 0,
             descripcionServicio: "",
             ndocumento: "",
@@ -791,12 +369,9 @@ export default {
             idServicio: 0,
             fechaSistema: null,
             fechaRecepcion: null,
-            fechaDocumento: null,
             fechaVencimiento: null,
             codigoBarra: "",
             Observaciones: "",
-            nordencompra: "",
-            nrib: "",
             codigoTrack: "",
             codigoOnu: "",
             codigoArticulo: "",
@@ -817,7 +392,6 @@ export default {
             descripcionProveedor: "",
             zgen: "",
             numeroLibroPedido: "",
-            tiporecepcion: "",
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -830,22 +404,14 @@ export default {
                 id: 0,
                 descripcionZonas: ""
             },
-            seleccionFechaVencimiento: {
+            seleccionConsumoInmediato: {
                 id: 0,
-                descripcionFVen: "Seleccione Fecha Venciminento"
-            },
-            seleccionLoteSerie: {
-                id: 0,
-                descripcionLoteSerie: "Seleccione Lote/Serie"
+                descripcionConsumoInmediato: "Seleccione Consumo Inmediato"
             },
             seleccionProveedores: {
                 id: 0,
                 RUTPROV: "Ej. 22222222-2",
                 NOMRAZSOC: ""
-            },
-            seleccionTipoDocumento: {
-                id: 0,
-                descripcionDocumento: ""
             },
             seleccionServicio: {
                 id: 0,
@@ -968,85 +534,43 @@ export default {
             //Configuracion Columnas
             colDetalle: [
                 {
-                    label: "Codigo Interno",
+                    label: "Folio Recepcion",
                     field: "CODART",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Especificacion Comprador",
+                    label: "Tipo Documento",
                     field: "PRODUCTO",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Codigo Barra",
+                    label: "N° Documento",
                     field: "CODBAR",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Unidad Medida",
+                    label: "Fecha Documento",
                     field: "UNIMED",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Vencimiento Activo?",
+                    label: "OC Recepcion",
                     field: "ACT_FECVEN",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Fecha Vencimiento",
+                    label: "Total",
                     field: "FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cantidad Recepcionada",
-                    field: "CANREC",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cantidad Rechazada",
-                    field: "CANRECH",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cantidad Pendiente",
-                    field: "PENDIENTE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Precio Unitario",
-                    field: "PREUNI",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Total Recepcionado",
-                    field: "VALTOT",
                     filterOptions: {
                         enabled: true
                     }
@@ -1093,57 +617,6 @@ export default {
                     field: "action"
                 }
             ],
-            colTotal: [
-                {
-                    label: "NETO",
-                    field: "NETO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descuento",
-                    field: "DCTO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cargos",
-                    field: "CARGO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Sub Total",
-                    field: "SUBTOTAL",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "19% Iva",
-                    field: "IVA",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Ajuste",
-                    field: "AJUSTE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Total",
-                    field: "TOTAL",
-                    filterOptions: {
-                        enabled: true
-                    }
-                }
-            ],
             //Datos Listado
             rows: [],
             listaArticulos: [],
@@ -1151,28 +624,17 @@ export default {
             listaRecepcion: [],
             listaEstado: [],
             listaBodega: [],
-            listaTipoDocumento: [],
             listaZona: [],
             listadoProveedores: [],
             listadoServicios: [],
-            listaFVenciminento: [
+            listaConsumoInmediato: [
                 {
                     id: 1,
-                    descripcionFVen: "Si"
+                    descripcionConsumoInmediato: "Si"
                 },
                 {
                     id: 2,
-                    descripcionFVen: "No"
-                }
-            ],
-            listaFLoteSerie: [
-                {
-                    id: 1,
-                    descripcionLoteSerie: "Si"
-                },
-                {
-                    id: 2,
-                    descripcionLoteSerie: "No"
+                    descripcionConsumoInmediato: "No"
                 }
             ]
         };
@@ -1201,26 +663,6 @@ export default {
                 return true;
             }
         },
-        FormRecepcion() {
-            try {
-                this.recepcion = true;
-                this.consumoi = false;
-                this.limpiarCampos();
-                this.tiporecepcion = "Recepcion";
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        FormConsumoI() {
-            try {
-                this.consumoi = true;
-                this.recepcion = false;
-                this.limpiarCampos();
-                this.tiporecepcion = "Consumo Inmediato";
-            } catch (error) {
-                console.log(error);
-            }
-        },
         limpiarCampos() {
             try {
                 this.cantidad = 0;
@@ -1236,10 +678,6 @@ export default {
                 this.seleccionFechaVencimiento = {
                     id: 0,
                     descripcionFVen: "Seleccione Fecha Venciminento"
-                };
-                this.seleccionLoteSerie = {
-                    id: 0,
-                    descripcionLoteSerie: "Seleccione Lote/Serie"
                 };
                 this.cantidadEmbalaje = "";
                 this.idBodega = 0;
@@ -1378,8 +816,7 @@ export default {
             idBodega,
             idZona,
             CANTXENB,
-            idACT_FECVEN,
-            idACTLOTE
+            idACT_FECVEN
         ) {
             try {
                 this.limpiarCampos();
@@ -1411,18 +848,6 @@ export default {
                     };
 
                     this.fechaVencimiento = null;
-                }
-
-                if (idACTLOTE == 1) {
-                    this.seleccionLoteSerie = {
-                        id: 1,
-                        descripcionLoteSerie: "Si"
-                    };
-                } else {
-                    this.seleccionLoteSerie = {
-                        id: 2,
-                        descripcionLoteSerie: "No"
-                    };
                 }
 
                 this.cantidadEmbalaje = CANTXENB;
@@ -1602,23 +1027,9 @@ export default {
                                 this.descripcionProveedor = value.NOMPRO;
                                 idDoc = value.TIPDOC;
                                 this.ndocumento = value.NUMDOC;
-                                this.fechaDocumento = moment(value.FECDOC)
-                                    .format("DD/MM/YYYY")
-                                    .toString();
-                                this.nordencompra = value.NUMFAC;
-                                this.nrib = value.NUMRIB;
                             });
 
                             c = [];
-
-                            c = this.listaTipoDocumento;
-                            c.forEach((value, index) => {
-                                if (idDoc == value.id) {
-                                    this.seleccionTipoDocumento.id;
-                                    this.seleccionTipoDocumento.descripcionDocumento =
-                                        value.descripcionDocumento;
-                                }
-                            });
                         }
                     });
             } catch (error) {
@@ -1637,32 +1048,6 @@ export default {
                     .then(res => {
                         this.listadoProveedores = res.data;
                         if (this.listadoProveedores.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los proveedores correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        TraerTipoDocumentos() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetTipoDocumentos", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaTipoDocumento = res.data;
-                        if (this.listaTipoDocumento.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
@@ -1887,14 +1272,7 @@ export default {
                         ).format("YYYY-MM-DD"),
                         RUTPRO: this.seleccionProveedores.RUTPROV,
                         NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
-                        TIPDOC: this.seleccionTipoDocumento.id,
                         NUMDOC: this.ndocumento,
-                        FECDOC: moment(
-                            this.fechaDocumento,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        NUMORD: this.nordencompra.toUpperCase(),
-                        NUMRIB: this.nrib.toUpperCase(),
                         CODART: this.codigoArticulo.toUpperCase(),
                         PRODUCTO: this.nombre.toUpperCase(),
                         CODBAR: this.codigoBarra.toUpperCase(),
@@ -1904,7 +1282,6 @@ export default {
                             this.fechaVencimiento,
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
-                        LOTE: this.seleccionLoteSerie.id,
                         CANREC: this.cantidad,
                         CANRECH: 0,
                         PENDIENTE: 0,
@@ -2010,7 +1387,6 @@ export default {
                 let date = moment().endOf("day");
                 this.fechaRecepcion = date.format("DD/MM/YYYY").toString();
                 this.fechaSistema = date.format("DD/MM/YYYY").toString();
-                this.fechaDocumento = date.format("DD/MM/YYYY").toString();
                 this.fechaVencimiento = date.format("DD/MM/YYYY").toString();
             } catch (error) {
                 console.log("No se cargo la ISO hora");
@@ -2022,7 +1398,6 @@ export default {
         this.TraerServicio();
         this.TraerUltimoNInterno();
         this.TraerUltimoNFolio();
-        this.TraerTipoDocumentos();
         this.TraerProveedores();
         this.TraerArticulos();
         this.TraerEstado();
