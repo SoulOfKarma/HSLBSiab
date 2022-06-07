@@ -15,11 +15,11 @@ class CreateOrdenComprasTable extends Migration
     {
         Schema::create('orden_compras', function (Blueprint $table) {
             $table->id();
-            $table->string('FOLIO')->nullable();
+            $table->string('FOLIO')->unique()->nullable();
             $table->string('RUTPRO')->nullable();
             $table->string('NOMPRO')->nullable();
             $table->date('FECORD')->nullable();
-            $table->string('NUMINT')->nullable();
+            $table->string('NUMINT')->unique()->nullable();
             $table->string('NUMSIGFE')->nullable();
             $table->date('FECSYS')->nullable();
             $table->string('OBS')->nullable();

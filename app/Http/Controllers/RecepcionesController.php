@@ -78,9 +78,27 @@ class RecepcionesController extends Controller
     public function GetRecepcionIngresadaByCodInterno(Request $request){
         try {
             $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC','TIPDOC','FECDOC','DCTO',
-            'OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD','FECSYS','NUMINT','NUMRIB','TIPRECEPCION',
+            'OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD','FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD',
             DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
+            ->get();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function GetRecepcionIngresadaOrdenCompra(){
+        try {
+            $get = recepciones::select('recepciones.FOLIO','recepciones.FECSYS','recepciones.FECDES','recepciones.RUTPRO',
+            'recepciones.NOMPRO','recepciones.NUMDOC','recepciones.NUMFAC','tipo_documentos.descripcionDocumento','recepciones.FECDOC','recepciones.DCTO',
+            'recepciones.OBS','recepciones.CARGO','recepciones.SUBTOTAL','recepciones.AJUSTE','recepciones.FECSYS','recepciones.USUING',
+            'recepciones.USUMOD','recepciones.FECSYS','recepciones.NUMINT','recepciones.NUMRIB','recepciones.TIPRECEPCION','recepciones.NUMORD',
+            DB::raw("recepciones.SUBTOTAL as NETO"),DB::raw("ROUND((recepciones.SUBTOTAL*0.19),2) as IVA"),
+            DB::raw("ROUND((recepciones.SUBTOTAL*0.19) + recepciones.SUBTOTAL,2) as TOTAL"))
+            ->join('tipo_documentos','recepciones.TIPDOC','=','tipo_documentos.id')
+            ->whereNotNull('FOLIO')
             ->get();
             return $get;
         } catch (\Throwable $th) {

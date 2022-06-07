@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vx-card title="Listado Recepciones Cerradas">
+        <vx-card title="Listado Orden Compra Abiertas">
             <br />
             <div>
                 <vx-card>
@@ -21,7 +21,7 @@
                             </span>
                             <span v-else-if="props.column.field === 'action'">
                                 <plus-circle-icon
-                                    content="Ir a la Recepcion Cerrada"
+                                    content="Ir a la Recepcion"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
@@ -72,27 +72,6 @@ export default {
                     }
                 },
                 {
-                    label: "Folio",
-                    field: "FOLIO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "N° Orden Compra",
-                    field: "NUMORD",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Fecha Recepcion",
-                    field: "FECDES",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
                     label: "Rut Proveedor",
                     field: "RUTPRO",
                     filterOptions: {
@@ -107,29 +86,15 @@ export default {
                     }
                 },
                 {
-                    label: "N° Documento",
-                    field: "NUMDOC",
+                    label: "Fecha Orden Compra",
+                    field: "FECORD",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "N° RIB",
-                    field: "NUMINT",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Usuario",
-                    field: "USUING",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Observaciones",
-                    field: "OBS",
+                    label: "Sigfe",
+                    field: "NUMSIGFE",
                     filterOptions: {
                         enabled: true
                     }
@@ -152,18 +117,15 @@ export default {
             }, 1000);
         },
         //Metodos CRUD
-        TraerRecepcionesCerradas() {
+        TraerRecepcionesAbiertas() {
             try {
                 axios
-                    .get(
-                        this.localVal + "/api/Mantenedor/GetRecepcionCerradas",
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
+                    .get(this.localVal + "/api/Mantenedor/GetOCAbiertas", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
                         }
-                    )
+                    })
                     .then(res => {
                         this.rows = res.data;
                         if (this.rows.length < 0) {
@@ -184,7 +146,7 @@ export default {
         redireccionarRecepcion(numinterno) {
             try {
                 this.$router.push({
-                    name: "RecepcionCerrada",
+                    name: "OrdenCompraAbierta",
                     params: {
                         NUMINT: `${numinterno}`
                     }
@@ -195,7 +157,7 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerRecepcionesCerradas();
+        this.TraerRecepcionesAbiertas();
         this.openLoadingColor();
     }
 };

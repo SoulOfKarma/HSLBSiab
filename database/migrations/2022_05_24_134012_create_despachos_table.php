@@ -15,7 +15,7 @@ class CreateDespachosTable extends Migration
     {
         Schema::create('despachos', function (Blueprint $table) {
             $table->id();
-            $table->string('FOLIO')->nullable();
+            $table->string('FOLIO')->unique()->nullable();
             $table->date('FECSYS')->nullable();
             $table->date('FECDES')->nullable();
             $table->bigInteger('idServicio')->nullable();
@@ -30,7 +30,7 @@ class CreateDespachosTable extends Migration
             $table->string('CODART_ONU')->nullable();
             $table->string('USUING')->nullable();
             $table->string('USUMOD')->nullable();
-            $table->string('NUMINT')->nullable();
+            $table->string('NUMINT')->unique()->nullable();
             $table->string('FOLIO_FCIA')->nullable();
             $table->string('FOLIO_SOL')->nullable();
             $table->string('TIPDESP')->nullable();

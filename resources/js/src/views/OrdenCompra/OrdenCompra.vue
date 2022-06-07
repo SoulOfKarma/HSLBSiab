@@ -6,16 +6,16 @@
                 <div class="vx-row">
                     <div class="vx-col w-full mt-5">
                         <vs-button
-                            @click="popArticulos"
+                            @click="popRecepciones"
                             color="primary"
                             type="filled"
                             class="w-full"
-                            >Buscar Articulo</vs-button
+                            >Buscar Recepciones</vs-button
                         >
                     </div>
                     <div
                         class="vx-col w-full mt-5"
-                        v-if="listaDetalleRecepcion.length > 0"
+                        v-if="listaDetalleOrdenCompra.length > 0"
                     >
                         <h6>N° Interno</h6>
                         <vs-input
@@ -38,7 +38,7 @@
                         <h6>Fecha Inicio</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
-                            v-model="fechaRecepcion"
+                            v-model="fechaOrdenCompra"
                             placeholder="Fecha Inicio"
                             @on-change="onFromChange"
                             class="w-full "
@@ -65,10 +65,7 @@
                     </div>
                     <div class="vx-col w-1/5 mt-5">
                         <h6>Sigfe</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="ndocumento"
-                        />
+                        <vs-input class="inputx w-full  " v-model="nsigfe" />
                     </div>
                 </div>
                 <br />
@@ -79,14 +76,14 @@
                         </h6>
                         <vs-input
                             class="inputx w-full  "
-                            v-model="codigoBarra"
+                            v-model="nfoliorecepcionado"
                         />
                     </div>
                     <div class="vx-col w-1/3 mt-5">
                         <h6>
                             Año
                         </h6>
-                        <vs-input class="inputx w-full  " v-model="cantidad" />
+                        <vs-input class="inputx w-full  " v-model="anio" />
                     </div>
                     <div class="vx-col w-1/3 mt-5">
                         <h6>Consumo Inmediato?</h6>
@@ -111,7 +108,7 @@
                     </div>
                     <div class="vx-col w-1/2 mt-5">
                         <vs-button
-                            @click="AgregarArticuloDetalle"
+                            @click="AgregarRecepcionCerrada"
                             color="success"
                             type="filled"
                             class="w-full"
@@ -121,14 +118,14 @@
                 </div>
                 <br />
 
-                <!-- Detalles Articulos -->
+                <!-- Detalles Orden Compra -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
                             <vue-good-table
                                 class="w-full"
                                 :columns="colDetalle"
-                                :rows="listaDetalleRecepcion"
+                                :rows="listaDetalleOrdenCompra"
                                 :pagination-options="{
                                     enabled: true,
                                     perPage: 10
@@ -178,7 +175,7 @@
                                 </h6>
                                 <vs-input
                                     class="inputx w-full  "
-                                    v-model="cantidad"
+                                    v-model="valorTotal"
                                 />
                             </div>
                             <div class="vx-col w-full mt-5">
@@ -227,11 +224,11 @@
                             </div>
                             <div class="vx-col w-1/4 mt-5">
                                 <vs-button
-                                    @click="CerrarRecepcion"
+                                    @click="CerrarOrdenCompra"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
-                                    >Cerrar Recepcion</vs-button
+                                    >Cerrar Orden Compra</vs-button
                                 >
                             </div>
                         </div>
@@ -239,11 +236,11 @@
                 </div>
             </vx-card>
         </div>
-        <!-- Listado Articulos -->
+        <!-- Listado Recepciones -->
         <vs-popup
-            classContent="ListadoArticulos"
-            title="Listado Articulos"
-            :active.sync="popUpArticulos"
+            classContent="ListadoRecepcionesCerradas"
+            title="Recepciones Cerradas"
+            :active.sync="popUpRecepciones"
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="">
@@ -251,7 +248,7 @@
                         <vx-card>
                             <vue-good-table
                                 :columns="col"
-                                :rows="listaArticulos"
+                                :rows="listaRecepcion"
                                 :pagination-options="{
                                     enabled: true,
                                     perPage: 10
@@ -270,25 +267,13 @@
                                         "
                                     >
                                         <plus-circle-icon
-                                            content="Agregar Articulo al listado"
+                                            content="Agregar Recepcion al listado"
                                             v-tippy
                                             size="1.5x"
                                             class="custom-class"
                                             @click="
-                                                popAgregarArticulo(
-                                                    props.row.NOMBRE,
-                                                    props.row.UNIMEDBASE,
-                                                    props.row.CODART_ONU,
-                                                    props.row.CODART,
-                                                    props.row.CODART_BARR,
-                                                    props.row.idEstado,
-                                                    props.row.UBICACION,
-                                                    props.row.SECTOR,
-                                                    props.row.idBodega,
-                                                    props.row.idZona,
-                                                    props.row.CANTXENB,
-                                                    props.row.idACT_FECVEN,
-                                                    props.row.idACTLOTE
+                                                AgregarOrdenCompraDetalle(
+                                                    props.row.id
                                                 )
                                             "
                                         ></plus-circle-icon>
@@ -357,53 +342,23 @@ export default {
                 }
             },
             //Datos Campos
-            popUpArticulos: false,
+            popUpRecepciones: false,
             codInternoRecepcion: 0,
             descripcionServicio: "",
-            ndocumento: "",
-            cantidad: 0,
-            precio: 0,
+            nsigfe: "",
+            anio: 0,
             numint: 0,
             valorTotal: 0,
+            totalRecepcion: 0,
             contador: 0,
-            idServicio: 0,
             fechaSistema: null,
-            fechaRecepcion: null,
-            fechaVencimiento: null,
-            codigoBarra: "",
+            fechaOrdenCompra: null,
+            nfoliorecepcionado: "",
             Observaciones: "",
-            codigoTrack: "",
-            codigoOnu: "",
-            codigoArticulo: "",
             nombre: "",
-            idEstado: "",
-            generico: "",
-            categoriaFarmacia: "",
-            concentracion: "",
-            actFechaVencimiento: false,
-            actLoteSerie: false,
-            cantidadEmbalaje: "",
-            idBodega: "",
+            tipoDocumento: "",
             folio: 0,
-            idZona: "",
-            sector: "",
-            ubicacion: "",
-            unidadMedidaBase: "",
             descripcionProveedor: "",
-            zgen: "",
-            numeroLibroPedido: "",
-            seleccionEstado: {
-                id: 0,
-                descripcionEstado: ""
-            },
-            seleccionBodega: {
-                id: 0,
-                descripcionBodega: ""
-            },
-            seleccionZona: {
-                id: 0,
-                descripcionZonas: ""
-            },
             seleccionConsumoInmediato: {
                 id: 0,
                 descripcionConsumoInmediato: "Seleccione Consumo Inmediato"
@@ -412,10 +367,6 @@ export default {
                 id: 0,
                 RUTPROV: "Ej. 22222222-2",
                 NOMRAZSOC: ""
-            },
-            seleccionServicio: {
-                id: 0,
-                descripcionServicio: ""
             },
             idMod: 0,
             //Datos Fechas
@@ -535,42 +486,42 @@ export default {
             colDetalle: [
                 {
                     label: "Folio Recepcion",
-                    field: "CODART",
+                    field: "FOLREC",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "Tipo Documento",
-                    field: "PRODUCTO",
+                    field: "TIPDOC",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "N° Documento",
-                    field: "CODBAR",
+                    field: "NUMDOC",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "Fecha Documento",
-                    field: "UNIMED",
+                    field: "FECDOC",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "OC Recepcion",
-                    field: "ACT_FECVEN",
+                    field: "NOMORD",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "Total",
-                    field: "FECVEN",
+                    field: "TOTAL",
                     filterOptions: {
                         enabled: true
                     }
@@ -578,36 +529,50 @@ export default {
             ],
             col: [
                 {
-                    label: "Codigo de Barra",
-                    field: "CODART_BARR",
+                    label: "Folio",
+                    field: "FOLIO",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Bodega",
-                    field: "descripcionBodega",
+                    label: "N° Orden Compra",
+                    field: "NUMORD",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Codigo Articulo",
-                    field: "CODART",
+                    label: "Fecha Recepcion",
+                    field: "FECDES",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Nombre Articulo",
-                    field: "NOMBRE",
+                    label: "Rut Proveedor",
+                    field: "RUTPRO",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Unidad de Medida",
-                    field: "UNIMEDBASE",
+                    label: "Nombre Proveedor",
+                    field: "NOMPRO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "N° Documento",
+                    field: "NUMDOC",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Usuario",
+                    field: "USUING",
                     filterOptions: {
                         enabled: true
                     }
@@ -619,14 +584,9 @@ export default {
             ],
             //Datos Listado
             rows: [],
-            listaArticulos: [],
-            listaDetalleRecepcion: [],
+            listaDetalleOrdenCompra: [],
             listaRecepcion: [],
-            listaEstado: [],
-            listaBodega: [],
-            listaZona: [],
             listadoProveedores: [],
-            listadoServicios: [],
             listaConsumoInmediato: [
                 {
                     id: 1,
@@ -665,34 +625,29 @@ export default {
         },
         limpiarCampos() {
             try {
-                this.cantidad = 0;
-                this.precio = 0;
-                this.codigoBarra = "";
-                this.codigoOnu = "";
-                this.codigoArticulo = "";
+                this.popUpRecepciones = false;
+                this.codInternoRecepcion = 0;
+                this.descripcionServicio = "";
+                this.nsigfe = "";
+                this.anio = 0;
+                this.valorTotal = 0;
+                this.totalRecepcion = 0;
+                this.fechaSistema = null;
+                this.fechaOrdenCompra = null;
+                this.nfoliorecepcionado = "";
+                this.Observaciones = "";
                 this.nombre = "";
-                this.seleccionEstado = {
+                this.tipoDocumento = "";
+                this.descripcionProveedor = "";
+                this.seleccionConsumoInmediato = {
                     id: 0,
-                    descripcionEstado: ""
+                    descripcionConsumoInmediato: "Seleccione Consumo Inmediato"
                 };
-                this.seleccionFechaVencimiento = {
+                this.seleccionProveedores = {
                     id: 0,
-                    descripcionFVen: "Seleccione Fecha Venciminento"
+                    RUTPROV: "Ej. 22222222-2",
+                    NOMRAZSOC: ""
                 };
-                this.cantidadEmbalaje = "";
-                this.idBodega = 0;
-                this.seleccionBodega = {
-                    id: 0,
-                    descripcionBodega: ""
-                };
-                this.idZona = 0;
-                this.seleccionZona = {
-                    id: 0,
-                    descripcionZonas: ""
-                };
-                this.sector = "";
-                this.ubicacion = "";
-                this.unidadMedidaBase = "";
                 this.idMod = 0;
             } catch (error) {
                 console.log(error);
@@ -716,8 +671,7 @@ export default {
         },
         ImprimirDatos() {
             try {
-                let total = this.precio * this.cantidad;
-                console.log(total);
+                console.log("Mensaje");
             } catch (error) {
                 console.log(error);
             }
@@ -731,14 +685,46 @@ export default {
                 console.log(error);
             }
         },
-        CerrarRecepcion() {
+        AgregarOrdenCompraDetalle(id) {
             try {
-                if (this.listaDetalleRecepcion.length < 1) {
+                let c = this.listaRecepcion;
+                c.forEach((value, index) => {
+                    if (id == value.id) {
+                        this.fechaSistema = moment(value.FECSYS)
+                            .format("DD/MM/YYYY")
+                            .toString();
+                        this.fechaOrdenCompra = moment(value.FECDES)
+                            .format("DD/MM/YYYY")
+                            .toString();
+                        this.nfoliorecepcionado = value.FOLIO;
+                        this.seleccionProveedores.RUTPROV = value.RUTPRO;
+                        this.seleccionProveedores.NOMRAZSOC = value.NOMPRO;
+                        this.descripcionProveedor = value.NOMPRO;
+                        this.tipoDocumento = value.descripcionDocumento;
+                        this.ndocumento = value.NUMDOC;
+                        this.fechaDocumento = moment(value.FECDOC)
+                            .format("DD/MM/YYYY")
+                            .toString();
+                        this.nordencompra = value.NUMORD;
+                        this.totalRecepcion = value.TOTAL;
+                    }
+                });
+
+                c = [];
+
+                this.popUpRecepciones = false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        CerrarOrdenCompra() {
+            try {
+                if (this.listaDetalleOrdenCompra.length < 1) {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
                         text:
-                            "No existen datos en el detalle de articulos para generar un N° de Folio",
+                            "No existen datos en el detalle de ordenes de compra para generar un N° de Folio",
                         color: "danger",
                         position: "top-right"
                     });
@@ -758,7 +744,7 @@ export default {
                     axios
                         .post(
                             this.localVal +
-                                "/api/Mantenedor/PostCerrarRecepcion",
+                                "/api/Mantenedor/PostCerrarOrdenCompra",
                             data,
                             {
                                 headers: {
@@ -775,12 +761,12 @@ export default {
                                     time: 5000,
                                     title: "Finalizado",
                                     text:
-                                        "Recepcion Cerrada, se recargara la ventana",
+                                        "Orden de Compra Cerrada, se recargara la ventana",
                                     color: "success",
                                     position: "top-right"
                                 });
                                 this.$router.push({
-                                    name: "ListadoRecepcionAbierta"
+                                    name: "ListadoOrdenCompraAbierta"
                                 });
                             }
                         });
@@ -790,157 +776,15 @@ export default {
             }
         },
         //PopUp
-        popArticulos() {
+        popRecepciones() {
             try {
-                this.popUpArticulos = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popModDetalle(id) {
-            try {
-                console.log(id);
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popAgregarArticulo(
-            NOMBRE,
-            UNIMEDBASE,
-            CODART_ONU,
-            CODART,
-            CODART_BARR,
-            idEstado,
-            UBICACION,
-            SECTOR,
-            idBodega,
-            idZona,
-            CANTXENB,
-            idACT_FECVEN
-        ) {
-            try {
-                this.limpiarCampos();
-                this.popUpCodInsumoEco = true;
-                this.codigoBarra = CODART_BARR;
-                this.codigoOnu = CODART_ONU;
-                this.codigoArticulo = CODART;
-                this.nombre = NOMBRE;
-                let c = this.listaEstado;
-
-                c.forEach((value, index) => {
-                    if (idEstado == value.id) {
-                        this.seleccionEstado.id = value.id;
-                        this.seleccionEstado.descripcionEstado =
-                            value.descripcionEstado;
-                    }
-                });
-
-                c = [];
-                if (idACT_FECVEN == 1) {
-                    this.seleccionFechaVencimiento = {
-                        id: 1,
-                        descripcionFVen: "Si"
-                    };
-                } else {
-                    this.seleccionFechaVencimiento = {
-                        id: 2,
-                        descripcionFVen: "No"
-                    };
-
-                    this.fechaVencimiento = null;
-                }
-
-                this.cantidadEmbalaje = CANTXENB;
-                this.idBodega = 0;
-
-                c = this.listaBodega;
-
-                c.forEach((value, index) => {
-                    if (idBodega == value.id) {
-                        this.seleccionBodega.id = value.id;
-                        this.seleccionBodega.descripcionBodega =
-                            value.descripcionBodega;
-                    }
-                });
-
-                c = [];
-
-                this.idZona = 0;
-
-                c = this.listaZona;
-
-                c.forEach((value, index) => {
-                    if (idZona == value.id) {
-                        this.seleccionZona.id = value.id;
-                        this.seleccionZona.descripcionZonas =
-                            value.descripcionZonas;
-                    }
-                });
-
-                c = [];
-                this.sector = SECTOR;
-                this.ubicacion = UBICACION;
-
-                this.unidadMedidaBase = UNIMEDBASE;
-                this.popUpArticulos = false;
+                this.popUpRecepciones = true;
             } catch (error) {
                 console.log(error);
             }
         },
         //Metodos CRUD
-        TraerServicio() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listadoServicios = res.data;
-                        if (this.listadoServicios.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        TraerArticulos() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetAllArticulos", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaArticulos = res.data;
-                        if (this.listaArticulos.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        TraerDetalleRecepcion() {
+        TraerDetalleOrdenCompra() {
             try {
                 let data = {
                     NUMINT: this.numint
@@ -949,7 +793,7 @@ export default {
                 axios
                     .post(
                         this.localVal +
-                            "/api/Mantenedor/GetArticulosIngresadosByCodInterno",
+                            "/api/Mantenedor/GetOrdenCompraIngresadosByCodInterno",
                         data,
                         {
                             headers: {
@@ -959,8 +803,8 @@ export default {
                         }
                     )
                     .then(res => {
-                        this.listaDetalleRecepcion = res.data;
-                        if (this.listaDetalleRecepcion.length < 0) {
+                        this.listaDetalleOrdenCompra = res.data;
+                        if (this.listaDetalleOrdenCompra.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
@@ -970,7 +814,7 @@ export default {
                                 position: "top-right"
                             });
                         } else {
-                            let c = this.listaDetalleRecepcion;
+                            let c = this.listaDetalleOrdenCompra;
                             let a = 0;
                             c.forEach((value, index) => {
                                 a = a + parseInt(value.VALTOT);
@@ -984,14 +828,10 @@ export default {
         },
         TraerRecepcion() {
             try {
-                let data = {
-                    NUMINT: this.numint
-                };
                 axios
-                    .post(
+                    .get(
                         this.localVal +
-                            "/api/Mantenedor/GetRecepcionIngresadaByCodInterno",
-                        data,
+                            "/api/Mantenedor/GetRecepcionIngresadaOrdenCompra",
                         {
                             headers: {
                                 Authorization:
@@ -1010,26 +850,6 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                        } else {
-                            let c = this.listaRecepcion;
-                            let idDoc = 0;
-                            c.forEach((value, index) => {
-                                this.fechaSistema = moment(value.FECSYS)
-                                    .format("DD/MM/YYYY")
-                                    .toString();
-                                this.fechaRecepcion = moment(value.FECDES)
-                                    .format("DD/MM/YYYY")
-                                    .toString();
-                                this.seleccionProveedores.RUTPROV =
-                                    value.RUTPRO;
-                                this.seleccionProveedores.NOMRAZSOC =
-                                    value.NOMPRO;
-                                this.descripcionProveedor = value.NOMPRO;
-                                idDoc = value.TIPDOC;
-                                this.ndocumento = value.NUMDOC;
-                            });
-
-                            c = [];
                         }
                     });
             } catch (error) {
@@ -1062,93 +882,18 @@ export default {
                 console.log(error);
             }
         },
-        TraerEstado() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetAuthEstado", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaEstado = res.data;
-                        if (this.listaEstado.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de Estado correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        TraerBodega() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetBodega", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaBodega = res.data;
-                        if (this.listaBodega.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de las Bodegas correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        TraerZona() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetZona", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaZona = res.data;
-                        if (this.listaZona.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
         TraerUltimoNInterno() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetUltimoNInterno", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                    .get(
+                        this.localVal + "/api/Mantenedor/GetUltimoNInternoOC",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         let data = res.data;
                         if (
@@ -1169,7 +914,7 @@ export default {
         TraerUltimoNFolio() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetUltimoNFolio", {
+                    .get(this.localVal + "/api/Mantenedor/GetUltimoNFolioOC", {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -1192,25 +937,17 @@ export default {
                 console.log(error);
             }
         },
-        AgregarArticuloDetalle() {
+        AgregarRecepcionCerrada() {
             try {
-                if (this.precio == null || this.precio < 1) {
+                if (this.anio == null || this.anio < 1) {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
-                        text: "Debe Ingresar un Precio",
+                        text: "Debe Ingresar un año",
                         color: "danger",
                         position: "top-right"
                     });
-                } else if (this.cantidad == null || this.cantidad < 1) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe Ingresar una cantidad",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.fechaRecepcion == null) {
+                } else if (this.fechaOrdenCompra == null) {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
@@ -1219,18 +956,9 @@ export default {
                         position: "top-right"
                     });
                 } else if (
-                    this.seleccionProveedores.id == 0 ||
-                    this.seleccionProveedores.id == null ||
-                    this.seleccionProveedores.id == ""
+                    this.nfoliorecepcionado == null ||
+                    this.nfoliorecepcionado == ""
                 ) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe seleccionar un proveedor",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.codigoBarra == null || this.codigoBarra == "") {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
@@ -1238,25 +966,59 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
-                } else if (this.cantidad == null || this.cantidad < 1) {
+                } else if (
+                    this.tipoDocumento == null ||
+                    this.tipoDocumento == ""
+                ) {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
-                        text: "Debe ingresar una cantidad no menor a 1",
+                        text: "Tipo Documento no Existe",
                         color: "danger",
                         position: "top-right"
                     });
-                } else if (this.precio == null || this.precio < 1) {
+                } else if (this.ndocumento == null || this.ndocumento == "") {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
-                        text: "Debe ingresar un precio no menor a 1",
+                        text: "N° Documento no Existe",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.fechaDocumento == null ||
+                    this.fechaDocumento == ""
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Fecha Documento no Existe",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.nordencompra == null ||
+                    this.nordencompra == ""
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "N° Orden Compra no existe",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.totalRecepcion == null ||
+                    this.totalRecepcion == ""
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Total recepcion no existe",
                         color: "danger",
                         position: "top-right"
                     });
                 } else {
-                    let total = this.precio * this.cantidad;
-                    let valorT = total + parseInt(this.valorTotal);
                     let nombreUsuario =
                         sessionStorage.getItem("nombre") +
                         " " +
@@ -1266,36 +1028,25 @@ export default {
                         FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
                             "YYYY-MM-DD"
                         ),
-                        FECDES: moment(
-                            this.fechaRecepcion,
+                        FECORD: moment(
+                            this.fechaOrdenCompra,
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
                         RUTPRO: this.seleccionProveedores.RUTPROV,
                         NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
+                        NUMSIGFE: this.nsigfe,
+
+                        OBS: this.Observaciones.toUpperCase(),
+                        USUING: nombreUsuario.toUpperCase(),
+                        TIPDOC: this.tipoDocumento,
                         NUMDOC: this.ndocumento,
-                        CODART: this.codigoArticulo.toUpperCase(),
-                        PRODUCTO: this.nombre.toUpperCase(),
-                        CODBAR: this.codigoBarra.toUpperCase(),
-                        UNIMED: this.unidadMedidaBase.toUpperCase(),
-                        ACT_FECVEN: this.seleccionFechaVencimiento.id,
-                        FECVEN: moment(
-                            this.fechaVencimiento,
+                        FECDOC: moment(
+                            this.fechaDocumento,
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
-                        CANREC: this.cantidad,
-                        CANRECH: 0,
-                        PENDIENTE: 0,
-                        PREUNI: this.precio,
-                        VALTOT: total,
-                        DCTO: 0,
-                        OBS: this.Observaciones.toUpperCase(),
-                        CARGO: 0,
-                        SUBTOTAL: valorT,
-                        AJUSTE: 0,
-                        USUING: nombreUsuario.toUpperCase(),
-                        idServicio: this.seleccionServicio.id,
-                        NUMLIBPED: this.numeroLibroPedido,
-                        TIPRECEPCION: this.tiporecepcion
+                        TOTAL: parseInt(this.totalRecepcion),
+                        FOLREC: this.nfoliorecepcionado,
+                        NOMORD: this.nordencompra
                     };
                     const dat = data;
 
@@ -1303,7 +1054,7 @@ export default {
                         axios
                             .post(
                                 this.localVal +
-                                    "/api/Mantenedor/PostArticuloDetalleCodInterno",
+                                    "/api/Mantenedor/PostOrdenComprasDetalleByCodInterno",
                                 dat,
                                 {
                                     headers: {
@@ -1320,18 +1071,17 @@ export default {
                                         time: 5000,
                                         title: "Completado",
                                         text:
-                                            "Articulo Ingresado al detalle Correctamente",
+                                            "Recepcion ingresada al detalle Correctamente",
                                         color: "success",
                                         position: "top-right"
                                     });
-                                    this.TraerDetalleRecepcion();
-                                    this.TraerRecepcion();
+                                    this.TraerDetalleOrdenCompra();
                                 } else {
                                     this.$vs.notify({
                                         time: 5000,
                                         title: "Error",
                                         text:
-                                            "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                            "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
                                         color: "danger",
                                         position: "top-right"
                                     });
@@ -1341,7 +1091,7 @@ export default {
                         axios
                             .post(
                                 this.localVal +
-                                    "/api/Mantenedor/PostArticuloDetalle",
+                                    "/api/Mantenedor/PostOrdenCompras",
                                 dat,
                                 {
                                     headers: {
@@ -1358,19 +1108,18 @@ export default {
                                         time: 5000,
                                         title: "Completado",
                                         text:
-                                            "Articulo Ingresado al detalle Correctamente",
+                                            "Recepcion fue ingresado al detalle Correctamente",
                                         color: "success",
                                         position: "top-right"
                                     });
-                                    this.TraerDetalleRecepcion();
-                                    this.TraerRecepcion();
-                                    this.contador = 1;
+                                    this.contador = parseInt(this.contador + 1);
+                                    this.TraerDetalleOrdenCompra();
                                 } else {
                                     this.$vs.notify({
                                         time: 5000,
                                         title: "Error",
                                         text:
-                                            "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                            "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
                                         color: "danger",
                                         position: "top-right"
                                     });
@@ -1385,9 +1134,8 @@ export default {
         cargarHoras() {
             try {
                 let date = moment().endOf("day");
-                this.fechaRecepcion = date.format("DD/MM/YYYY").toString();
+                this.fechaOrdenCompra = date.format("DD/MM/YYYY").toString();
                 this.fechaSistema = date.format("DD/MM/YYYY").toString();
-                this.fechaVencimiento = date.format("DD/MM/YYYY").toString();
             } catch (error) {
                 console.log("No se cargo la ISO hora");
                 console.log(error);
@@ -1395,14 +1143,10 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerServicio();
+        this.TraerRecepcion();
         this.TraerUltimoNInterno();
         this.TraerUltimoNFolio();
         this.TraerProveedores();
-        this.TraerArticulos();
-        this.TraerEstado();
-        this.TraerBodega();
-        this.TraerZona();
         this.cargarHoras();
         this.openLoadingColor();
     }

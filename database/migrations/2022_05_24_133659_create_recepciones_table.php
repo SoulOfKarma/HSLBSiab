@@ -15,7 +15,7 @@ class CreateRecepcionesTable extends Migration
     {
         Schema::create('recepciones', function (Blueprint $table) {
             $table->id();
-            $table->string('FOLIO')->nullable();
+            $table->string('FOLIO')->unique()->nullable();
             $table->date('FECSYS')->nullable();
             $table->date('FECDES')->nullable();
             $table->string('RUTPRO')->nullable();
@@ -36,7 +36,7 @@ class CreateRecepcionesTable extends Migration
             $table->string('AJUSTE')->nullable();
             $table->string('USUING')->nullable();
             $table->string('USUMOD')->nullable();
-            $table->string('NUMINT')->nullable();
+            $table->string('NUMINT')->unique()->nullable();
             $table->string('NUMREC_RF')->nullable();
             $table->string('NOTCRE_RF')->nullable();
             $table->string('NUMRIB')->nullable();

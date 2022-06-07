@@ -129,31 +129,31 @@ export default [
                 name: "Rec. Cerradas",
                 slug: "/Recepcion/ListadoRecepcionCerrada",
                 icon: "HomeIcon"
-            },
-            {
-                url: "/Recepcion/OrdenCompra",
-                name: "Ordenes de Compra",
-                slug: "/Recepcion/OrdenCompra",
-                icon: "HomeIcon"
             }
         ]
     },
     {
         url: null,
-        name: "Consumo Inmediato",
-        slug: "consumoinmediato",
+        name: "Orden Compra",
+        slug: "OrdenCompra",
         icon: "HomeIcon",
         submenu: [
             {
-                url: "/ConsumoInmediato/Recepcion",
-                name: "Recepcion",
-                slug: "/ConsumoInmediato/Recepcion",
+                url: "/OrdenCompra/OrdenCompra",
+                name: "Orden Compra",
+                slug: "/OrdenCompra/OrdenCompra",
                 icon: "HomeIcon"
             },
             {
-                url: "/ConsumoInmediato/ListaRecepcion",
-                name: "ListaRecepcion",
-                slug: "/ConsumoInmediato/ListaRecepcion",
+                url: "/OrdenCompra/ListadoOrdenCompraAbierta",
+                name: "Orden Compra Abierta",
+                slug: "/OrdenCompra/ListadoOrdenCompraAbierta",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/OrdenCompra/ListadoOrdenCompraCerrada",
+                name: "Orden Compra Cerrada",
+                slug: "/OrdenCompra/ListadoOrdenCompraCerrada",
                 icon: "HomeIcon"
             }
         ]

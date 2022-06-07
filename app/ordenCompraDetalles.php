@@ -8,6 +8,6 @@ class ordenCompraDetalles extends Model
 {
     protected $fillable = [
         'FOLIO','RUTPRO','NOMPRO','FECORD','NUMINT','NUMSIGFE',
-        'TIPDOC','NUMDOC','FECDOC','TOTAL','LINEA','FECSYS','FOLREC','NOMORD',    
+        'TIPDOC','NUMDOC','FECDOC','TOTAL','FECSYS','FOLREC','NOMORD',    
     ];
 }

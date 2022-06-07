@@ -80,7 +80,7 @@ export default {
                 },
                 {
                     label: "N° Orden Compra",
-                    field: "NUMFAC",
+                    field: "NUMORD",
                     filterOptions: {
                         enabled: true
                     }

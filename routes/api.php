@@ -52,6 +52,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetRecepcionAbiertas', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetRecepcionAbiertas']);
     Route::get('/Mantenedor/GetUltimoNFolio', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetUltimoNFolio']);
     Route::get('/Mantenedor/GetRecepcionCerradas', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetRecepcionCerradas']);
+    Route::get('/Mantenedor/GetRecepcionIngresadaOrdenCompra', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetRecepcionIngresadaOrdenCompra']);
+    Route::get('/Mantenedor/GetUltimoNInternoOC', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetUltimoNInterno']);
+    Route::get('/Mantenedor/GetUltimoNFolioOC', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetUltimoNFolio']);
+    Route::get('/Mantenedor/GetOCAbiertas', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetOCAbiertas']);
+    Route::get('/Mantenedor/GetOCCerradas', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetOCCerradas']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
@@ -82,12 +87,15 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostTipoDocumentos', ['middleware' => 'cors', 'uses' => 'TipoDocumentosController@PostTipoDocumentos']);
     Route::post('/Mantenedor/PostArticuloDetalle', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostArticuloDetalle']);
     Route::post('/Mantenedor/PostArticuloDetalleCodInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostArticuloDetalleCodInterno']);
+    Route::post('/Mantenedor/PostOrdenCompras', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@PostOrdenCompras']);
+    Route::post('/Mantenedor/PostOrdenComprasDetalleByCodInterno', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@PostOrdenComprasDetalleByCodInterno']);
 
     //Post Como Get
     Route::post('/Mantenedor/GetListadoArticulosByCodInterno', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetListadoArticulosByCodInterno']);
     Route::post('/Mantenedor/GetListadoMedicamentosByCodInterno', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetListadoMedicamentosByCodInterno']);
     Route::post('/Mantenedor/GetArticulosIngresadosByCodInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetArticulosIngresadosByCodInterno']);
     Route::post('/Mantenedor/GetRecepcionIngresadaByCodInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetRecepcionIngresadaByCodInterno']);
+    Route::post('/Mantenedor/GetOrdenCompraIngresadosByCodInterno', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetOrdenCompraIngresadosByCodInterno']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);
@@ -117,6 +125,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostCerrarRecepcion', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostCerrarRecepcion']);
     Route::post('/Mantenedor/PutListadoArticulosRecepcion', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PutListadoArticulosRecepcion']);
     Route::post('/Mantenedor/PutRecepcionTotal', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PutRecepcionTotal']);
+    Route::post('/Mantenedor/PostCerrarOrdenCompra', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@PostCerrarOrdenCompra']);
 
     //Post como Delete
     Route::post('/Mantenedor/DeleteArticuloDetalle', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DeleteArticuloDetalle']);

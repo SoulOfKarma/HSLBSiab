@@ -138,7 +138,8 @@ const router = new Router({
                 {
                     path: "/Recepcion/OrdenCompra",
                     name: "/Recepcion/OrdenCompra",
-                    component: () => import("./views/Recepcion/OrdenCompra.vue")
+                    component: () =>
+                        import("./views/OrdenCompra/OrdenCompra.vue")
                 },
                 {
                     path: "/Recepcion/ListadoRecepcionAbierta",
@@ -164,18 +165,28 @@ const router = new Router({
                     component: () =>
                         import("./views/Recepcion/RecepcionCerrada.vue")
                 },
-                //Router de Consumo Inmediato
+                //Router de Orden Compra
                 {
-                    path: "/ConsumoInmediato/Recepcion",
-                    name: "/ConsumoInmediato/Recepcion",
+                    path: "/OrdenCompra/OrdenCompra",
+                    name: "OrdenCompra",
                     component: () =>
-                        import("./views/ConsumoInmediato/Recepcion.vue")
+                        import("./views/OrdenCompra/OrdenCompra.vue")
                 },
                 {
-                    path: "/ConsumoInmediato/ListaRecepcion",
-                    name: "/ConsumoInmediato/ListaRecepcion",
+                    path: "/OrdenCompra/ListadoOrdenCompraAbierta",
+                    name: "OrdenCompraAbierta",
                     component: () =>
-                        import("./views/ConsumoInmediato/ListaRecepcion.vue")
+                        import(
+                            "./views/OrdenCompra/ListadoOrdenCompraAbierta.vue"
+                        )
+                },
+                {
+                    path: "/OrdenCompra/ListadoOrdenCompraCerrada",
+                    name: "ListadoOrdenCompraCerrada",
+                    component: () =>
+                        import(
+                            "./views/OrdenCompra/ListadoOrdenCompraCerrada.vue"
+                        )
                 },
                 //Router de Despacho
                 {
