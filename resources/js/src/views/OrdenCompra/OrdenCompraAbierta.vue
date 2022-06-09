@@ -176,6 +176,7 @@
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="valorTotal"
+                                    disabled
                                 />
                             </div>
                             <div class="vx-col w-full mt-5">
@@ -709,9 +710,6 @@ export default {
                             .format("DD/MM/YYYY")
                             .toString();
                         this.nfoliorecepcionado = value.FOLIO;
-                        this.seleccionProveedores.RUTPROV = value.RUTPRO;
-                        this.seleccionProveedores.NOMRAZSOC = value.NOMPRO;
-                        this.descripcionProveedor = value.NOMPRO;
                         this.tipoDocumento = value.descripcionDocumento;
                         this.ndocumento = value.NUMDOC;
                         this.fechaDocumento = moment(value.FECDOC)
@@ -796,48 +794,6 @@ export default {
             }
         },
         //Metodos CRUD
-        TraerDetalleOrdenCompra() {
-            try {
-                let data = {
-                    NUMINT: this.numint
-                };
-
-                axios
-                    .post(
-                        this.localVal +
-                            "/api/Mantenedor/GetOrdenCompraDetallesIngresadosByCodInterno",
-                        data,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        this.listaDetalleOrdenCompra = res.data;
-                        if (this.listaDetalleOrdenCompra.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else {
-                            let c = this.listaDetalleOrdenCompra;
-                            let a = 0;
-                            c.forEach((value, index) => {
-                                a = a + parseInt(value.VALTOT);
-                            });
-                            this.valorTotal = a;
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
         TraerRecepcion() {
             try {
                 axios
@@ -868,6 +824,95 @@ export default {
                 console.log(error);
             }
         },
+        TraerOrdenCompra() {
+            try {
+                let data = {
+                    NUMINT: this.$route.params.NUMINT
+                };
+
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/GetOrdenCompraIngresadosByCodInterno",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let listaOC = res.data;
+                        if (listaOC.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            let c = listaOC;
+                            c.forEach((value, index) => {
+                                this.seleccionProveedores.RUTPROV =
+                                    value.RUTPRO;
+                                this.seleccionProveedores.NOMRAZSOC =
+                                    value.NOMPRO;
+                                this.descripcionProveedor = value.NOMPRO;
+                                this.nsigfe = value.NUMSIGFE;
+                            });
+
+                            c = [];
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerDetalleOrdenCompra() {
+            try {
+                let data = {
+                    NUMINT: this.$route.params.NUMINT
+                };
+
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/GetOrdenCompraDetallesIngresadosByCodInterno",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listaDetalleOrdenCompra = res.data;
+                        if (this.listaDetalleOrdenCompra.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            let c = this.listaDetalleOrdenCompra;
+                            let a = 0;
+                            c.forEach((value, index) => {
+                                a = parseInt(a + value.VALTOT);
+                            });
+                            this.valorTotal = a;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerProveedores() {
             try {
                 axios
@@ -888,35 +933,6 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        TraerUltimoNInterno() {
-            try {
-                axios
-                    .get(
-                        this.localVal + "/api/Mantenedor/GetUltimoNInternoOC",
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        let data = res.data;
-                        if (
-                            data == 0 ||
-                            data == null ||
-                            data == [] ||
-                            data == {}
-                        ) {
-                            this.numint = 1;
-                        } else {
-                            this.numint = data + 1;
                         }
                     });
             } catch (error) {
@@ -1062,82 +1078,42 @@ export default {
                     };
                     const dat = data;
 
-                    if (this.contador > 0) {
-                        axios
-                            .post(
-                                this.localVal +
-                                    "/api/Mantenedor/PostOrdenComprasDetalleByCodInterno",
-                                dat,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
-                                    }
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Mantenedor/PostOrdenComprasDetalleByCodInterno",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
                                 }
-                            )
-                            .then(res => {
-                                const solicitudServer = res.data;
-                                if (solicitudServer == true) {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Completado",
-                                        text:
-                                            "Recepcion ingresada al detalle Correctamente",
-                                        color: "success",
-                                        position: "top-right"
-                                    });
-                                    this.TraerDetalleOrdenCompra();
-                                } else {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Error",
-                                        text:
-                                            "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
-                                        color: "danger",
-                                        position: "top-right"
-                                    });
-                                }
-                            });
-                    } else {
-                        axios
-                            .post(
-                                this.localVal +
-                                    "/api/Mantenedor/PostOrdenCompras",
-                                dat,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
-                                    }
-                                }
-                            )
-                            .then(res => {
-                                const solicitudServer = res.data;
-                                if (solicitudServer == true) {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Completado",
-                                        text:
-                                            "Recepcion fue ingresado al detalle Correctamente",
-                                        color: "success",
-                                        position: "top-right"
-                                    });
-                                    this.contador = parseInt(this.contador + 1);
-                                    this.TraerDetalleOrdenCompra();
-                                } else {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Error",
-                                        text:
-                                            "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
-                                        color: "danger",
-                                        position: "top-right"
-                                    });
-                                }
-                            });
-                    }
+                            }
+                        )
+                        .then(res => {
+                            const solicitudServer = res.data;
+                            if (solicitudServer == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Completado",
+                                    text:
+                                        "Recepcion ingresada al detalle Correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerDetalleOrdenCompra();
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
                 }
             } catch (error) {
                 console.log(error);
@@ -1156,11 +1132,13 @@ export default {
     },
     beforeMount() {
         this.TraerRecepcion();
-        this.TraerUltimoNInterno();
+        this.TraerOrdenCompra();
+        this.TraerDetalleOrdenCompra();
         this.TraerUltimoNFolio();
         this.TraerProveedores();
         this.cargarHoras();
         this.openLoadingColor();
+        this.numint = this.$route.params.NUMINT;
     }
 };
 </script>

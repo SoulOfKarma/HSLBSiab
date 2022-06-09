@@ -21,12 +21,14 @@
                             </span>
                             <span v-else-if="props.column.field === 'action'">
                                 <plus-circle-icon
-                                    content="Ir a la Recepcion"
+                                    content="Ir a la Orden de Compra"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        redireccionarRecepcion(props.row.NUMINT)
+                                        redireccionarOrdenCompra(
+                                            props.row.NUMINT
+                                        )
                                     "
                                 ></plus-circle-icon>
                             </span>
@@ -117,7 +119,7 @@ export default {
             }, 1000);
         },
         //Metodos CRUD
-        TraerRecepcionesAbiertas() {
+        TraerOCAbiertas() {
             try {
                 axios
                     .get(this.localVal + "/api/Mantenedor/GetOCAbiertas", {
@@ -143,7 +145,7 @@ export default {
                 console.log(error);
             }
         },
-        redireccionarRecepcion(numinterno) {
+        redireccionarOrdenCompra(numinterno) {
             try {
                 this.$router.push({
                     name: "OrdenCompraAbierta",
@@ -157,7 +159,7 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerRecepcionesAbiertas();
+        this.TraerOCAbiertas();
         this.openLoadingColor();
     }
 };

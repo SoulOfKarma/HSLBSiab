@@ -87,18 +87,6 @@ class OrdenComprasController extends Controller
         }
     }
 
-    public function PutOrdenCompras(Request $request){
-        try {
-            ordenCompras::where('id',$request->id)
-            ->update(['FOLIO' => $request->FOLIO,'RUTPRO' => $request->RUTPRO,'NOMPRO' => $request->NOMPRO,
-            'FECORD' => $request->FECORD,'NUMINT' => $request->NUMINT,'NUMSIGFE' => $request->NUMSIGFE,
-            'FECSYS' => $request->FECSYS,'OBS' => $request->OBS]);
-        } catch (\Throwable $th) {
-            log::info($th);
-            return false;
-        }
-    }
-
     public function PostCerrarOrdenCompra(Request $request){
         try {
             ordenCompraDetalles::where('NUMINT',$request->NUMINT)
@@ -114,10 +102,50 @@ class OrdenComprasController extends Controller
 
     public function GetOrdenCompraIngresadosByCodInterno(Request $request){
         try {
+            $get = ordenCompras::select('FOLIO','RUTPRO','NOMPRO','FECORD','NUMINT','NUMSIGFE','FECSYS','OBS')
+            ->where('NUMINT',$request->NUMINT)
+            ->get();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function GetOrdenCompraDetallesIngresadosByCodInterno(Request $request){
+        try {
             $get = ordenCompraDetalles::select('FOLREC','TIPDOC','NUMDOC','FECDOC','NOMORD','TOTAL')
             ->where('NUMINT',$request->NUMINT)
             ->get();
             return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PutListadoOrdenCompra(Request $request){
+        try {
+                $lista = $request->all();
+            
+                foreach($lista as $e => $req ){                           
+                    ordenCompraDetalles::where('id',$req["id"])
+                    ->update(['FOLREC' => $req["FOLREC"],'TIPDOC' => $req["TIPDOC"],'NUMDOC' => $req["NUMDOC"],
+                    'FECDOC' => $req["FECDOC"],'NOMORD' => $req["NOMORD"],'TOTAL' => $req["TOTAL"]]);
+                    
+                }
+              return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PutOrdenCompras(Request $request){
+        try {
+            ordenCompras::where('NUMINT',$request->NUMINT)
+            ->update(['NUMSIGFE' => $request->NUMSIGFE]);
+            return true;
         } catch (\Throwable $th) {
             log::info($th);
             return false;

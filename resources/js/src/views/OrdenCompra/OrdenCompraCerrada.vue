@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="vx-col md:w-1/1 w-full mb-base">
-            <!-- Despacho -->
-            <vx-card title="Despacho">
+            <!-- Orden de Compra -->
+            <vx-card title="Orden de Compra">
                 <div class="vx-row">
                     <div
                         class="vx-col w-full mt-5"
-                        v-if="listaDespachoArticulos.length > 0"
+                        v-if="listaDetalleOrdenCompra.length > 0"
                     >
                         <h6>N° Interno</h6>
                         <vs-input
@@ -15,7 +15,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -25,69 +25,89 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
-                        <h6>Fecha Despacho</h6>
+                    <div class="vx-col w-1/5 mt-5">
+                        <h6>Fecha Inicio</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
-                            v-model="fechaDespacho"
-                            placeholder="Fecha Despacho"
+                            v-model="fechaOrdenCompra"
+                            placeholder="Fecha Inicio"
                             @on-change="onFromChange"
                             class="w-full "
+                            disabled
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
-                        <h6>Servicio</h6>
+                    <div class="vx-col w-1/5 mt-5">
+                        <h6>Proveedor</h6>
                         <v-select
-                            v-model="seleccionServicio"
+                            v-model="seleccionProveedores"
                             placeholder="Activo"
                             class="w-full select-large"
-                            label="descripcionServicio"
-                            :options="listadoServicios"
+                            label="RUTPROV"
+                            :options="listadoProveedores"
+                            disabled
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
-                        <h6>N° Libro Pedido</h6>
+                    <div class="vx-col w-1/5 mt-5">
+                        <h6>Nombre Proveedor</h6>
                         <vs-input
                             class="inputx w-full  "
-                            v-model="nlibropedido"
+                            v-model="descripcionProveedor"
+                            disabled
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
-                        <h6>Tipo Despacho</h6>
-                        <v-select
-                            v-model="seleccionTipoDespacho"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="descripcionTipoDespacho"
-                            :options="listadoTipoDespacho"
-                        ></v-select>
-                    </div>
-                    <div class="vx-col w-1/6 mt-5">
-                        <h6>N° Solicitud</h6>
+                    <div class="vx-col w-1/5 mt-5">
+                        <h6>Sigfe</h6>
                         <vs-input
                             class="inputx w-full  "
-                            v-model="nsolicitud"
+                            v-model="nsigfe"
+                            disabled
                         />
-                    </div>
-                    <div class="vx-col w-full mt-5">
-                        <vs-button
-                            @click="popArticulosDisponibles"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Agregar Articulos</vs-button
-                        >
                     </div>
                 </div>
                 <br />
-                <!-- Detalles Articulos -->
+                <div class="vx-row">
+                    <div class="vx-col w-1/3 mt-5">
+                        <h6>
+                            Folio Recepcionado
+                        </h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="nfoliorecepcionado"
+                            disabled
+                        />
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
+                        <h6>
+                            Año
+                        </h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="anio"
+                            disabled
+                        />
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
+                        <h6>Consumo Inmediato?</h6>
+                        <v-select
+                            v-model="seleccionConsumoInmediato"
+                            placeholder="Activo"
+                            class="w-full select-large"
+                            label="descripcionConsumoInmediato"
+                            :options="listaConsumoInmediato"
+                            disabled
+                        ></v-select>
+                    </div>
+                </div>
+                <br />
+
+                <!-- Detalles Orden Compra -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
                             <vue-good-table
                                 class="w-full"
-                                :columns="colDespachoArticulos"
-                                :rows="listaDespachoArticulos"
+                                :columns="colDetalle"
+                                :rows="listaDetalleOrdenCompra"
                                 :pagination-options="{
                                     enabled: true,
                                     perPage: 10
@@ -99,23 +119,6 @@
                                         v-if="props.column.field === 'fullName'"
                                         class="text-nowrap"
                                     >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            content="Quitar de la Lista"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                popDelDetalleArticulo(
-                                                    props.row.id
-                                                )
-                                            "
-                                        ></plus-circle-icon>
                                     </span>
                                     <!-- Column: Common -->
                                     <span v-else>
@@ -136,16 +139,6 @@
                     <vx-card title="">
                         <div class="vx-row">
                             <div class="vx-col w-full mt-5">
-                                <h6>Observaciones</h6>
-                                <quill-editor
-                                    class="w-full"
-                                    v-model="Observaciones"
-                                    :options="editorOption"
-                                >
-                                    <div id="toolbar" slot="toolbar"></div>
-                                </quill-editor>
-                            </div>
-                            <div class="vx-col w-full mt-5">
                                 <h6>
                                     Total
                                 </h6>
@@ -155,6 +148,17 @@
                                     disabled
                                 />
                             </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>Observaciones</h6>
+                                <quill-editor
+                                    class="w-full"
+                                    v-model="Observaciones"
+                                    :options="editorOption"
+                                    disabled
+                                >
+                                    <div id="toolbar" slot="toolbar"></div>
+                                </quill-editor>
+                            </div>
                         </div>
                         <br /><br />
                     </vx-card>
@@ -162,16 +166,7 @@
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="ActualizarListado"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Actualizar</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
+                            <div class="vx-col w-full mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
@@ -180,86 +175,11 @@
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="RecargarPagina"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Hacer Otro Despacho</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="CerrarDespacho"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Cerrar Despacho</vs-button
-                                >
-                            </div>
                         </div>
                     </vx-card>
                 </div>
             </vx-card>
         </div>
-        <vs-popup
-            classContent="ListadoArticulosDisponibles"
-            title="Listado Articulos Disponibles"
-            :active.sync="popUpArticulosDisponibles"
-        >
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="">
-                    <div class="vx-row">
-                        <vx-card>
-                            <vue-good-table
-                                :columns="colArticulosDisponibles"
-                                :rows="listaArticulosDisponibles"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            content="Agregar Articulo al listado"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                AgregarArticuloDisponible(
-                                                    props.row.id
-                                                )
-                                            "
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </vx-card>
-                    </div>
-                </vx-card>
-                <div class="vx-row"></div>
-            </div>
-        </vs-popup>
     </div>
 </template>
 <script>
@@ -279,6 +199,7 @@ import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
+
 export default {
     components: {
         VueGoodTable,
@@ -306,6 +227,34 @@ export default {
                     ]
                 }
             },
+            //Datos Campos
+            popUpRecepciones: false,
+            codInternoRecepcion: 0,
+            descripcionServicio: "",
+            nsigfe: "",
+            anio: 0,
+            numint: 0,
+            valorTotal: 0,
+            totalRecepcion: 0,
+            contador: 0,
+            fechaSistema: null,
+            fechaOrdenCompra: null,
+            nfoliorecepcionado: "",
+            Observaciones: "",
+            nombre: "",
+            tipoDocumento: "",
+            folio: 0,
+            descripcionProveedor: "",
+            seleccionConsumoInmediato: {
+                id: 0,
+                descripcionConsumoInmediato: "Seleccione Consumo Inmediato"
+            },
+            seleccionProveedores: {
+                id: 0,
+                RUTPROV: "Ej. 22222222-2",
+                NOMRAZSOC: ""
+            },
+            idMod: 0,
             //Datos Fechas
             configFromdateTimePicker: {
                 minDate: null,
@@ -419,194 +368,124 @@ export default {
                 time_24hr: true,
                 dateFormat: "H:i"
             },
-            //Datos Generales
-            popUpArticulosDisponibles: false,
-            numint: 0,
-            fechaSistema: null,
-            fechaDespacho: null,
-            nlibropedido: "",
-            nsolicitud: "",
-            Observaciones: "",
-            valorTotal: 0,
-            //Selecciones de Datos
-            seleccionServicio: {
-                id: 0,
-                descripcionServicio: ""
-            },
-            seleccionTipoDespacho: {
-                id: 0,
-                descripcionTipoDespacho: ""
-            },
-            //Columnas Lista de Datos
-            colDespachoArticulos: [
+            //Configuracion Columnas
+            colDetalle: [
                 {
-                    label: "N° Interno",
-                    field: "CODART",
+                    label: "Folio Recepcion",
+                    field: "FOLREC",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Codigo Barra",
-                    field: "CODBAR",
+                    label: "Tipo Documento",
+                    field: "TIPDOC",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Descripcion",
-                    field: "NOMART",
+                    label: "N° Documento",
+                    field: "NUMDOC",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Unidad Medida",
-                    field: "UNIMED",
+                    label: "Fecha Documento",
+                    field: "FECDOC",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Precio Unitario",
-                    field: "PRECIO",
+                    label: "OC Recepcion",
+                    field: "NOMORD",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Fecha Vencimiento",
-                    field: "FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cantidad Despachada",
-                    field: "CANTIDAD",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Valor Total Despacho",
-                    field: "VALORTOTALDESP",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Saldo Restante",
-                    field: "SALDOREST",
+                    label: "Total",
+                    field: "TOTAL",
                     filterOptions: {
                         enabled: true
                     }
                 }
             ],
-            colArticulosDisponibles: [
+            col: [
                 {
-                    label: "N° Interno",
-                    field: "CODART",
+                    label: "Folio",
+                    field: "FOLIO",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Descripcion",
-                    field: "NOMART",
+                    label: "N° Orden Compra",
+                    field: "NUMORD",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Fecha Vencimiento",
-                    field: "FECVEN",
+                    label: "Fecha Recepcion",
+                    field: "FECDES",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Unidad Medida",
-                    field: "UNIMED",
+                    label: "Rut Proveedor",
+                    field: "RUTPRO",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Precio Unitario",
-                    field: "PRECIO",
+                    label: "Nombre Proveedor",
+                    field: "NOMPRO",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Fecha Venciminento",
-                    field: "FECVEN",
+                    label: "N° Documento",
+                    field: "NUMDOC",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Alerta",
-                    field: "ALERTA",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Saldo",
-                    field: "SALDO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cantidad a Despachar",
-                    field: "CANTIDAD",
+                    label: "Usuario",
+                    field: "USUING",
                     filterOptions: {
                         enabled: true
                     }
                 }
             ],
-            //Listado de Datos
-            listadoServicios: [],
-            listaDespachoArticulos: [],
-            listaArticulosDisponibles: [],
-            listadoTipoDespacho: [
+            //Datos Listado
+            rows: [],
+            listaDetalleOrdenCompra: [],
+            listaRecepcion: [],
+            listadoProveedores: [],
+            listaConsumoInmediato: [
                 {
                     id: 1,
-                    descripcionTipoDespacho: "Solicitud Pedidos"
+                    descripcionConsumoInmediato: "Si"
                 },
                 {
                     id: 2,
-                    descripcionTipoDespacho: "Pedido Especial"
+                    descripcionConsumoInmediato: "No"
                 }
             ]
         };
     },
     methods: {
         //Metodos Reusables
+        onFromChange(selectedDates, dateStr, instance) {
+            this.$set(this.configTodateTimePicker, "minDate", dateStr);
+        },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
             setTimeout(() => {
@@ -626,9 +505,7 @@ export default {
                 return true;
             }
         },
-        onFromChange(selectedDates, dateStr, instance) {
-            this.$set(this.configTodateTimePicker, "minDate", dateStr);
-        },
+        //Funciones Finales Recepcion
         volver() {
             try {
                 this.$router.push({
@@ -638,68 +515,121 @@ export default {
                 console.log(error);
             }
         },
-        RecargarPagina() {
+        //PopUp
+        popRecepciones() {
             try {
-                this.$router.push({
-                    name: "SolicitudPedidos"
-                });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popDelDetalleArticulo() {
-            try {
-                console.log("Mensaje");
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        ActualizarListado() {
-            try {
-                console.log("Mensaje");
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        CerrarDespacho() {
-            try {
-                console.log("Mensaje");
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popArticulosDisponibles() {
-            try {
-                this.popUpArticulosDisponibles = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        AgregarArticuloDisponible() {
-            try {
-                console.log("Mensaje");
+                this.popUpRecepciones = true;
             } catch (error) {
                 console.log(error);
             }
         },
         //Metodos CRUD
-        TraerServicio() {
+        TraerOrdenCompra() {
+            try {
+                let data = {
+                    NUMINT: this.$route.params.NUMINT
+                };
+
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/GetOrdenCompraIngresadosByCodInterno",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let listaOC = res.data;
+                        if (listaOC.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            let c = listaOC;
+                            c.forEach((value, index) => {
+                                this.seleccionProveedores.RUTPROV =
+                                    value.RUTPRO;
+                                this.seleccionProveedores.NOMRAZSOC =
+                                    value.NOMPRO;
+                                this.descripcionProveedor = value.NOMPRO;
+                                this.nsigfe = value.NUMSIGFE;
+                            });
+
+                            c = [];
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerDetalleOrdenCompra() {
+            try {
+                let data = {
+                    NUMINT: this.$route.params.NUMINT
+                };
+
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Mantenedor/GetOrdenCompraDetallesIngresadosByCodInterno",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listaDetalleOrdenCompra = res.data;
+                        if (this.listaDetalleOrdenCompra.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            let c = this.listaDetalleOrdenCompra;
+                            let a = 0;
+                            c.forEach((value, index) => {
+                                a = parseInt(a) + parseInt(value.TOTAL);
+                            });
+                            this.valorTotal = a;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerProveedores() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
+                    .get(this.localVal + "/api/Mantenedor/GetProveedor", {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
                         }
                     })
                     .then(res => {
-                        this.listadoServicios = res.data;
-                        if (this.listadoServicios.length < 0) {
+                        this.listadoProveedores = res.data;
+                        if (this.listadoProveedores.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                    "No hay datos o no se cargaron los proveedores correctamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -708,11 +638,25 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        cargarHoras() {
+            try {
+                let date = moment().endOf("day");
+                this.fechaOrdenCompra = date.format("DD/MM/YYYY").toString();
+                this.fechaSistema = date.format("DD/MM/YYYY").toString();
+            } catch (error) {
+                console.log("No se cargo la ISO hora");
+                console.log(error);
+            }
         }
     },
     beforeMount() {
-        this.TraerServicio();
+        this.TraerOrdenCompra();
+        this.TraerDetalleOrdenCompra();
+        this.TraerProveedores();
+        this.cargarHoras();
         this.openLoadingColor();
+        this.numint = this.$route.params.NUMINT;
     }
 };
 </script>

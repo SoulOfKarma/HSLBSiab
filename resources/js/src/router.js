@@ -174,7 +174,7 @@ const router = new Router({
                 },
                 {
                     path: "/OrdenCompra/ListadoOrdenCompraAbierta",
-                    name: "OrdenCompraAbierta",
+                    name: "ListadoOrdenCompraAbierta",
                     component: () =>
                         import(
                             "./views/OrdenCompra/ListadoOrdenCompraAbierta.vue"
@@ -188,6 +188,18 @@ const router = new Router({
                             "./views/OrdenCompra/ListadoOrdenCompraCerrada.vue"
                         )
                 },
+                {
+                    path: "/OrdenCompra/OrdenCompraAbierta/:NUMINT",
+                    name: "OrdenCompraAbierta",
+                    component: () =>
+                        import("./views/OrdenCompra/OrdenCompraAbierta.vue")
+                },
+                {
+                    path: "/OrdenCompra/OrdenCompraCerrada/:NUMINT",
+                    name: "OrdenCompraCerrada",
+                    component: () =>
+                        import("./views/OrdenCompra/OrdenCompraCerrada.vue")
+                },
                 //Router de Despacho
                 {
                     path: "/Despacho/DespachoPEspeciales",
@@ -197,7 +209,7 @@ const router = new Router({
                 },
                 {
                     path: "/Despacho/SolicitudPedidos",
-                    name: "/Despacho/SolicitudPedidos",
+                    name: "SolicitudPedidos",
                     component: () =>
                         import("./views/Despacho/SolicitudPedidos.vue")
                 },

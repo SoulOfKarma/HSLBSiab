@@ -26,7 +26,7 @@ class CreateOrdenCompraDetallesTable extends Migration
             $table->date('FECDOC')->nullable();
             $table->decimal('TOTAL',12,2)->nullable();
             $table->date('FECSYS')->nullable();
-            $table->string('FOLREC')->nullable();
+            $table->string('FOLREC')->unique()->nullable();
             $table->string('NOMORD')->nullable();
             $table->timestamps();
         });

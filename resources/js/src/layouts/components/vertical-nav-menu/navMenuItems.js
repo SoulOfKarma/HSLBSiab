@@ -146,13 +146,13 @@ export default [
             },
             {
                 url: "/OrdenCompra/ListadoOrdenCompraAbierta",
-                name: "Orden Compra Abierta",
+                name: "Lista OC Abierta",
                 slug: "/OrdenCompra/ListadoOrdenCompraAbierta",
                 icon: "HomeIcon"
             },
             {
                 url: "/OrdenCompra/ListadoOrdenCompraCerrada",
-                name: "Orden Compra Cerrada",
+                name: "Lista OC Cerrada",
                 slug: "/OrdenCompra/ListadoOrdenCompraCerrada",
                 icon: "HomeIcon"
             }
