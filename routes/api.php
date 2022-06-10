@@ -57,6 +57,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetUltimoNFolioOC', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetUltimoNFolio']);
     Route::get('/Mantenedor/GetOCAbiertas', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetOCAbiertas']);
     Route::get('/Mantenedor/GetOCCerradas', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetOCCerradas']);
+    Route::get('/Despachos/GetDetallesArticulosDisponibles', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDetallesArticulosDisponibles']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);

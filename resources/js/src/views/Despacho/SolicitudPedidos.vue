@@ -229,6 +229,61 @@
                                     </span>
                                     <span
                                         v-else-if="
+                                            props.column.field ===
+                                                'diasVencimiento'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-chip
+                                            color="danger"
+                                            v-if="
+                                                props.row.diasVencimiento < 91
+                                            "
+                                            type="text"
+                                            style="width:100px"
+                                            >{{
+                                                props.row.diasVencimiento
+                                            }}</vs-chip
+                                        >
+                                        <vs-chip
+                                            v-else-if="
+                                                props.row.diasVencimiento >
+                                                    90 &&
+                                                    props.row.diasVencimiento <
+                                                        181
+                                            "
+                                            color="warning"
+                                            type="text"
+                                            style="width:100px"
+                                            >{{
+                                                props.row.diasVencimiento
+                                            }}</vs-chip
+                                        >
+                                        <vs-chip
+                                            v-else
+                                            color="success"
+                                            type="text"
+                                            style="width:100px"
+                                            >{{
+                                                props.row.diasVencimiento
+                                            }}</vs-chip
+                                        >
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'CANTIDAD'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-model="props.row.CANTIDAD"
+                                            type="text"
+                                            style="width:100px"
+                                            @keypress="isNumber($event)"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
                                             props.column.field === 'action'
                                         "
                                     >
@@ -239,7 +294,15 @@
                                             class="custom-class"
                                             @click="
                                                 AgregarArticuloDisponible(
-                                                    props.row.id
+                                                    props.row.saldoCorrecto,
+                                                    props.row.NOMBRE,
+                                                    props.row.CODBAR,
+                                                    props.row.LOTE,
+                                                    props.row.UNIMED,
+                                                    props.row.CODART,
+                                                    props.row.diasVencimiento,
+                                                    props.row.fechaVencimiento,
+                                                    props.row.PREUNI
                                                 )
                                             "
                                         ></plus-circle-icon>
@@ -428,6 +491,15 @@ export default {
             nsolicitud: "",
             Observaciones: "",
             valorTotal: 0,
+            saldoCorrecto: 0,
+            NOMBRE: "",
+            CODBAR: "",
+            LOTE: "",
+            UNIMED: "",
+            CODART: "",
+            diasVencimiento: 0,
+            fechaVencimiento: 0,
+            PREUNI: 0,
             //Selecciones de Datos
             seleccionServicio: {
                 id: 0,
@@ -520,14 +592,7 @@ export default {
                 },
                 {
                     label: "Descripcion",
-                    field: "NOMART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Fecha Vencimiento",
-                    field: "FECVEN",
+                    field: "NOMBRE",
                     filterOptions: {
                         enabled: true
                     }
@@ -540,22 +605,15 @@ export default {
                     }
                 },
                 {
-                    label: "Precio Unitario",
-                    field: "PRECIO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Fecha Venciminento",
-                    field: "FECVEN",
+                    label: "Fecha Vencimiento",
+                    field: "fechaVencimiento",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
                     label: "Alerta",
-                    field: "ALERTA",
+                    field: "diasVencimiento",
                     filterOptions: {
                         enabled: true
                     }
@@ -576,7 +634,7 @@ export default {
                 },
                 {
                     label: "Saldo",
-                    field: "SALDO",
+                    field: "saldoCorrecto",
                     filterOptions: {
                         enabled: true
                     }
@@ -587,6 +645,10 @@ export default {
                     filterOptions: {
                         enabled: true
                     }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
                 }
             ],
             //Listado de Datos
@@ -675,9 +737,41 @@ export default {
                 console.log(error);
             }
         },
-        AgregarArticuloDisponible() {
+        AgregarArticuloDisponible(
+            saldoCorrecto,
+            NOMBRE,
+            CODBAR,
+            LOTE,
+            UNIMED,
+            CODART,
+            diasVencimiento,
+            fechaVencimiento,
+            PREUNI
+        ) {
             try {
-                console.log("Mensaje");
+                this.saldoCorrecto = saldoCorrecto;
+                this.NOMBRE = NOMBRE;
+                this.CODBAR = CODBAR;
+                this.LOTE = LOTE;
+                this.UNIMED = UNIMED;
+                this.CODART = CODART;
+                this.diasVencimiento = diasVencimiento;
+                this.fechaVencimiento = fechaVencimiento;
+                this.PREUNI = PREUNI;
+
+                let data = {
+                    saldoCorrecto: saldoCorrecto,
+                    NOMBRE: NOMBRE,
+                    CODBAR: CODBAR,
+                    LOTE: LOTE,
+                    UNIMED: UNIMED,
+                    CODART: CODART,
+                    diasVencimiento: diasVencimiento,
+                    fechaVencimiento: fechaVencimiento,
+                    PREUNI: PREUNI
+                };
+
+                console.log(data);
             } catch (error) {
                 console.log(error);
             }
@@ -708,10 +802,41 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        TraerArticulosDisponibles() {
+            try {
+                axios
+                    .get(
+                        this.localVal +
+                            "/api/Despachos/GetDetallesArticulosDisponibles",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listaArticulosDisponibles = res.data;
+                        if (this.listaArticulosDisponibles.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     beforeMount() {
         this.TraerServicio();
+        this.TraerArticulosDisponibles();
         this.openLoadingColor();
     }
 };
