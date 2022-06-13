@@ -813,11 +813,12 @@ export default {
                                     NUMSOL: this.nsolicitud,
                                     NUMLIBRO: this.nlibropedido,
                                     saldoCorrecto: saldoCorrecto,
-                                    NOMART: NOMBRE,
+                                    NOMBRE: NOMBRE,
                                     CODBAR: CODBAR,
                                     LOTE: LOTE,
                                     UNIMED: UNIMED,
                                     CODART: CODART,
+                                    diasVencimiento: diasVencimiento,
                                     FECVEN: moment(
                                         fechaVencimiento,
                                         "DD-MM-YYYY"
@@ -885,7 +886,7 @@ export default {
                                     NUMSOL: this.nsolicitud,
                                     NUMLIBRO: this.nlibropedido,
                                     saldoCorrecto: saldoCorrecto,
-                                    NOMART: NOMBRE,
+                                    NOMBRE: NOMBRE,
                                     CODBAR: CODBAR,
                                     LOTE: LOTE,
                                     UNIMED: UNIMED,
@@ -952,7 +953,7 @@ export default {
                             "YYYY-MM-DD"
                         ),
                         saldoCorrecto: saldoCorrecto,
-                        NOMART: NOMBRE,
+                        NOMBRE: NOMBRE,
                         CODBAR: CODBAR,
                         LOTE: LOTE,
                         UNIMED: UNIMED,
@@ -1009,10 +1010,83 @@ export default {
             }
         },
         //Metodos CRUD
+        TraerServicio() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoServicios = res.data;
+                        if (this.listadoServicios.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerDespacho() {
+            try {
+                let numint = {
+                    NUMINT: this.$route.params.NUMINT
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Despachos/GetDespachos",
+                        numint,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let data = res.data;
+                        if (data.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.numint = 0;
+                            this.fechaSistema = null;
+                            this.fechaDespacho = null;
+                            this.nlibropedido = "";
+                            this.nsolicitud = "";
+                            this.seleccionServicio = {
+                                id: 0,
+                                descripcionServicio: ""
+                            };
+                            this.seleccionTipoDespacho = {
+                                id: 0,
+                                descripcionTipoDespacho: ""
+                            };
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerDetalleDespacho() {
             try {
                 let numint = {
-                    NUMINT: this.numint
+                    NUMINT: this.$route.params.NUMINT
                 };
                 axios
                     .post(
@@ -1033,32 +1107,6 @@ export default {
                                 title: "Error",
                                 text:
                                     "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        TraerServicio() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listadoServicios = res.data;
-                        if (this.listadoServicios.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -1112,6 +1160,8 @@ export default {
     beforeMount() {
         this.TraerServicio();
         this.TraerArticulosDisponibles();
+        this.TraerDespacho();
+        this.TraerDetalleDespacho();
         this.cargarHoras();
         this.openLoadingColor();
     }

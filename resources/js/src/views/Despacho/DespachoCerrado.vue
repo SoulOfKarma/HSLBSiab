@@ -813,15 +813,13 @@ export default {
                                     NUMSOL: this.nsolicitud,
                                     NUMLIBRO: this.nlibropedido,
                                     saldoCorrecto: saldoCorrecto,
-                                    NOMART: NOMBRE,
+                                    NOMBRE: NOMBRE,
                                     CODBAR: CODBAR,
                                     LOTE: LOTE,
                                     UNIMED: UNIMED,
                                     CODART: CODART,
-                                    FECVEN: moment(
-                                        fechaVencimiento,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
+                                    diasVencimiento: diasVencimiento,
+                                    fechaVencimiento: fechaVencimiento,
                                     PRECIO: PRECIO,
                                     CANTIDAD: cantidad,
                                     USUING: nombreUsuario.toUpperCase()
@@ -862,9 +860,6 @@ export default {
                                                 color: "success",
                                                 position: "top-right"
                                             });
-                                            this.popUpArticulosDisponibles = false;
-                                            this.TraerArticulosDisponibles();
-                                            this.TraerDetalleDespacho();
                                         }
                                     });
                             } else {
@@ -885,16 +880,13 @@ export default {
                                     NUMSOL: this.nsolicitud,
                                     NUMLIBRO: this.nlibropedido,
                                     saldoCorrecto: saldoCorrecto,
-                                    NOMART: NOMBRE,
+                                    NOMBRE: NOMBRE,
                                     CODBAR: CODBAR,
                                     LOTE: LOTE,
                                     UNIMED: UNIMED,
                                     CODART: CODART,
                                     diasVencimiento: diasVencimiento,
-                                    FECVEN: moment(
-                                        fechaVencimiento,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
+                                    fechaVencimiento: fechaVencimiento,
                                     PRECIO: PRECIO,
                                     CANTIDAD: cantidad,
                                     USUING: nombreUsuario.toUpperCase()
@@ -935,9 +927,6 @@ export default {
                                                 color: "success",
                                                 position: "top-right"
                                             });
-                                            this.popUpArticulosDisponibles = false;
-                                            this.TraerArticulosDisponibles();
-                                            this.TraerDetalleDespacho();
                                         }
                                     });
                             }
@@ -952,15 +941,13 @@ export default {
                             "YYYY-MM-DD"
                         ),
                         saldoCorrecto: saldoCorrecto,
-                        NOMART: NOMBRE,
+                        NOMBRE: NOMBRE,
                         CODBAR: CODBAR,
                         LOTE: LOTE,
                         UNIMED: UNIMED,
                         CODART: CODART,
                         diasVencimiento: diasVencimiento,
-                        FECVEN: moment(fechaVencimiento, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
+                        fechaVencimiento: fechaVencimiento,
                         PRECIO: PRECIO,
                         CANTIDAD: cantidad,
                         USUING: nombreUsuario.toUpperCase()
@@ -998,9 +985,6 @@ export default {
                                     color: "success",
                                     position: "top-right"
                                 });
-                                this.popUpArticulosDisponibles = false;
-                                this.TraerArticulosDisponibles();
-                                this.TraerDetalleDespacho();
                             }
                         });
                 }
@@ -1009,39 +993,6 @@ export default {
             }
         },
         //Metodos CRUD
-        TraerDetalleDespacho() {
-            try {
-                let numint = {
-                    NUMINT: this.numint
-                };
-                axios
-                    .post(
-                        this.localVal + "/api/Despachos/GetDespachoDetalles",
-                        numint,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        this.listaDespachoArticulos = res.data;
-                        if (this.listaDespachoArticulos.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
         TraerServicio() {
             try {
                 axios

@@ -202,18 +202,30 @@ const router = new Router({
                 },
                 //Router de Despacho
                 {
-                    path: "/Despacho/DespachoPEspeciales",
-                    name: "/Despacho/DespachoPEspeciales",
-                    component: () =>
-                        import("./views/Despacho/DespachoPEspeciales.vue")
-                },
-                {
                     path: "/Despacho/SolicitudPedidos",
                     name: "SolicitudPedidos",
                     component: () =>
                         import("./views/Despacho/SolicitudPedidos.vue")
                 },
-                //Router de Despacho
+                {
+                    path: "/Despacho/ListadoDespachoAbierto",
+                    name: "ListadoDespachoAbierto",
+                    component: () =>
+                        import("./views/Despacho/ListadoDespachoAbierto.vue")
+                },
+                {
+                    path: "/Despacho/DespachoAbierto/:NUMINT",
+                    name: "DespachoAbierto",
+                    component: () =>
+                        import("./views/Despacho/DespachoAbierto.vue")
+                },
+                {
+                    path: "/Despacho/DespachoCerrado/:NUMINT",
+                    name: "DespachoCerrado",
+                    component: () =>
+                        import("./views/Despacho/DespachoCerrado.vue")
+                },
+                //Router de Reportes
                 {
                     path: "/Reportes/SaldoXProducto",
                     name: "/Reportes/SaldoXProducto",

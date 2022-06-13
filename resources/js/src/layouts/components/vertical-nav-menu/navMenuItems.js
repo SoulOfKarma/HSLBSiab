@@ -165,15 +165,15 @@ export default [
         icon: "HomeIcon",
         submenu: [
             {
-                url: "/Despacho/DespachoPEspeciales",
-                name: "DespachoPEspeciales",
-                slug: "/Despacho/DespachoPEspeciales",
+                url: "/Despacho/SolicitudPedidos",
+                name: "Solicitud Pedidos",
+                slug: "/Despacho/SolicitudPedidos",
                 icon: "HomeIcon"
             },
             {
-                url: "/Despacho/SolicitudPedidos",
-                name: "SolicitudPedidos",
-                slug: "/Despacho/SolicitudPedidos",
+                url: "/Despacho/ListadoDespachoAbierto",
+                name: "Despachos Abiertos",
+                slug: "/Despacho/ListadoDespachoAbierto",
                 icon: "HomeIcon"
             }
         ]
