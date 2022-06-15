@@ -700,9 +700,32 @@ export default {
         },
         RecargarPagina() {
             try {
-                this.$router.push({
-                    name: "SolicitudPedidos"
-                });
+                this.limpiarCampos();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        limpiarCampos() {
+            try {
+                this.nlibropedido = "";
+                this.nsolicitud = "";
+                this.Observaciones = "";
+                this.valorTotal = 0;
+                this.saldoCorrecto = 0;
+                this.NOMBRE = "";
+                this.CODBAR = "";
+                this.LOTE = "";
+                this.UNIMED = "";
+                this.CODART = "";
+                this.PREUNI = 0;
+                this.seleccionServicio = {
+                    id: 0,
+                    descripcionServicio: ""
+                };
+                this.seleccionTipoDespacho = {
+                    id: 0,
+                    descripcionTipoDespacho: ""
+                };
             } catch (error) {
                 console.log(error);
             }
@@ -753,47 +776,64 @@ export default {
         },
         ActualizarListado() {
             try {
-                let data = {
-                    NUMINT: this.numint,
-                    FECDES: moment(this.fechaDespacho, "DD-MM-YYYY").format(
-                        "YYYY-MM-DD"
-                    ),
-                    idServicio: this.seleccionServicio.id,
-                    NUMLIBRO: this.nlibropedido,
-                    TIPDESP: this.seleccionTipoDespacho.descripcionTipoDespacho,
-                    NUMSOL: this.nsolicitud,
-                    OBS: this.Observaciones.toUpperCase()
-                };
-
-                axios
-                    .post(this.localVal + "/api/Despachos/PutDespacho", data, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let dat = res.data;
-                        if (dat == false) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "Error al Actualizar los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Actualizado",
-                                text: "Datos actualizados correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.TraerDespacho();
-                        }
+                if (this.numint == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Se debe crear un numero interno para realizar modificaciones",
+                        color: "danger",
+                        position: "top-right"
                     });
+                } else {
+                    let data = {
+                        NUMINT: this.numint,
+                        FECDES: moment(this.fechaDespacho, "DD-MM-YYYY").format(
+                            "YYYY-MM-DD"
+                        ),
+                        idServicio: this.seleccionServicio.id,
+                        NUMLIBRO: this.nlibropedido,
+                        TIPDESP: this.seleccionTipoDespacho
+                            .descripcionTipoDespacho,
+                        NUMSOL: this.nsolicitud,
+                        OBS: this.Observaciones.toUpperCase()
+                    };
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Despachos/PutDespacho",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let dat = res.data;
+                            if (dat == false) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "Error al Actualizar los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Actualizado",
+                                    text: "Datos actualizados correctamente",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.TraerDespacho();
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -1251,6 +1291,69 @@ export default {
             }
         },
         //Metodos CRUD
+        TraerDespacho() {
+            try {
+                let numint = {
+                    NUMINT: this.numint
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Despachos/GetDespachos",
+                        numint,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let data = res.data;
+                        if (data.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            data.forEach((value, index) => {
+                                this.numint = this.$route.params.NUMINT;
+                                this.fechaSistema = moment(value.FECSYS)
+                                    .format("DD/MM/YYYY")
+                                    .toString();
+                                this.fechaDespacho = moment(value.FECDES)
+                                    .format("DD/MM/YYYY")
+                                    .toString();
+                                this.nlibropedido = value.NUMLIBRO;
+                                this.nsolicitud = value.NUMSOL;
+                                this.seleccionServicio = {
+                                    id: value.idServicio,
+                                    descripcionServicio:
+                                        value.descripcionServicio
+                                };
+                                if (value.TIPDESP == "Solicitud Pedidos") {
+                                    this.seleccionTipoDespacho = {
+                                        id: 1,
+                                        descripcionTipoDespacho:
+                                            "Solicitud Pedidos"
+                                    };
+                                } else {
+                                    this.seleccionTipoDespacho = {
+                                        id: 2,
+                                        descripcionTipoDespacho:
+                                            "Pedido Especial"
+                                    };
+                                }
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerDetalleDespacho() {
             try {
                 let numint = {
