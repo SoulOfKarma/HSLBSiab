@@ -175,6 +175,12 @@ export default [
                 name: "Despachos Abiertos",
                 slug: "/Despacho/ListadoDespachoAbierto",
                 icon: "HomeIcon"
+            },
+            {
+                url: "/Despacho/ListadoDespachosCerrados",
+                name: "Despachos Cerrados",
+                slug: "/Despacho/ListadoDespachosCerrados",
+                icon: "HomeIcon"
             }
         ]
     },

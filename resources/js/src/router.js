@@ -214,6 +214,12 @@ const router = new Router({
                         import("./views/Despacho/ListadoDespachoAbierto.vue")
                 },
                 {
+                    path: "/Despacho/ListadoDespachosCerrados",
+                    name: "ListadoDespachosCerrados",
+                    component: () =>
+                        import("./views/Despacho/ListadoDespachosCerrados.vue")
+                },
+                {
                     path: "/Despacho/DespachoAbierto/:NUMINT",
                     name: "DespachoAbierto",
                     component: () =>

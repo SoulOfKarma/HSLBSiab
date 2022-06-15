@@ -1127,11 +1127,21 @@ export default {
         },
         ImprimirDatos() {
             try {
-                const url =
-                    this.localVal +
-                    "/api/Recepcion/RecepcionPDF/" +
-                    this.numint;
-                window.open(url, "_blank");
+                if (this.numint != 0) {
+                    const url =
+                        this.localVal +
+                        "/api/Recepcion/RecepcionPDF/" +
+                        this.numint;
+                    window.open(url, "_blank");
+                } else {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No esta creado el Numero Interno",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                }
             } catch (error) {
                 console.log(error);
             }

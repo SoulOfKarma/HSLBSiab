@@ -2,7 +2,7 @@
     <div>
         <div class="vx-col md:w-1/1 w-full mb-base">
             <!-- Despacho -->
-            <vx-card title="Despacho">
+            <vx-card title="Despacho Cerrado">
                 <div class="vx-row">
                     <div
                         class="vx-col w-full mt-5"
@@ -32,6 +32,7 @@
                             v-model="fechaDespacho"
                             placeholder="Fecha Despacho"
                             @on-change="onFromChange"
+                            disabled
                             class="w-full "
                         />
                     </div>
@@ -43,6 +44,7 @@
                             class="w-full select-large"
                             label="descripcionServicio"
                             :options="listadoServicios"
+                            disabled
                         ></v-select>
                     </div>
                     <div class="vx-col w-1/6 mt-5">
@@ -50,6 +52,7 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="nlibropedido"
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/6 mt-5">
@@ -60,6 +63,7 @@
                             class="w-full select-large"
                             label="descripcionTipoDespacho"
                             :options="listadoTipoDespacho"
+                            disabled
                         ></v-select>
                     </div>
                     <div class="vx-col w-1/6 mt-5">
@@ -67,16 +71,8 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="nsolicitud"
+                            disabled
                         />
-                    </div>
-                    <div class="vx-col w-full mt-5">
-                        <vs-button
-                            @click="popArticulosDisponibles"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Agregar Articulos</vs-button
-                        >
                     </div>
                 </div>
                 <br />
@@ -106,14 +102,12 @@
                                         "
                                     >
                                         <plus-circle-icon
-                                            content="Quitar de la Lista"
+                                            content="Anular Articulo"
                                             v-tippy
                                             size="1.5x"
                                             class="custom-class"
                                             @click="
-                                                popDelDetalleArticulo(
-                                                    props.row.id
-                                                )
+                                                popAnularArticulo(props.row.id)
                                             "
                                         ></plus-circle-icon>
                                     </span>
@@ -141,6 +135,7 @@
                                     class="w-full"
                                     v-model="Observaciones"
                                     :options="editorOption"
+                                    disabled
                                 >
                                     <div id="toolbar" slot="toolbar"></div>
                                 </quill-editor>
@@ -162,16 +157,7 @@
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="ActualizarListado"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Actualizar</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
+                            <div class="vx-col w-1/3 mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
@@ -180,7 +166,16 @@
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/4 mt-5">
+                            <div class="vx-col w-1/3 mt-5">
+                                <vs-button
+                                    @click="ImprimirDatos"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Imprimir</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/3 mt-5">
                                 <vs-button
                                     @click="RecargarPagina"
                                     color="primary"
@@ -189,141 +184,43 @@
                                     >Hacer Otro Despacho</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="CerrarDespacho"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Cerrar Despacho</vs-button
-                                >
-                            </div>
                         </div>
                     </vx-card>
                 </div>
             </vx-card>
+            <vs-popup
+                classContent="Anulacion"
+                title="Anulacion"
+                :active.sync="popUpAnularArticulo"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <div class="vx-col w-full mt-5">
+                                <h6>Seleccione Tipo de Anulacion</h6>
+                                <v-select
+                                    v-model="seleccionAnulacion"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="NOMMOT"
+                                    :options="listadoAnulacion"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <vs-button
+                                    @click="popAnularDetalleArticulo"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Anular</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
         </div>
-        <vs-popup
-            classContent="ListadoArticulosDisponibles"
-            title="Listado Articulos Disponibles"
-            :active.sync="popUpArticulosDisponibles"
-        >
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="">
-                    <div class="vx-row">
-                        <vx-card>
-                            <vue-good-table
-                                :columns="colArticulosDisponibles"
-                                :rows="listaArticulosDisponibles"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field ===
-                                                'diasVencimiento'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-chip
-                                            color="danger"
-                                            v-if="
-                                                props.row.diasVencimiento < 91
-                                            "
-                                            type="text"
-                                            style="width:100px"
-                                            >{{
-                                                props.row.diasVencimiento
-                                            }}</vs-chip
-                                        >
-                                        <vs-chip
-                                            v-else-if="
-                                                props.row.diasVencimiento >
-                                                    90 &&
-                                                    props.row.diasVencimiento <
-                                                        181
-                                            "
-                                            color="warning"
-                                            type="text"
-                                            style="width:100px"
-                                            >{{
-                                                props.row.diasVencimiento
-                                            }}</vs-chip
-                                        >
-                                        <vs-chip
-                                            v-else
-                                            color="success"
-                                            type="text"
-                                            style="width:100px"
-                                            >{{
-                                                props.row.diasVencimiento
-                                            }}</vs-chip
-                                        >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CANTIDAD'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.CANTIDAD"
-                                            type="text"
-                                            style="width:100px"
-                                            @keypress="isNumber($event)"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            content="Agregar Articulo al listado"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                AgregarArticuloDisponible(
-                                                    props.row.saldoCorrecto,
-                                                    props.row.NOMBRE,
-                                                    props.row.CODBAR,
-                                                    props.row.LOTE,
-                                                    props.row.UNIMED,
-                                                    props.row.CODART,
-                                                    props.row.diasVencimiento,
-                                                    props.row.fechaVencimiento,
-                                                    props.row.PREUNI,
-                                                    props.row.CANTIDAD
-                                                )
-                                            "
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </vx-card>
-                    </div>
-                </vx-card>
-                <div class="vx-row"></div>
-            </div>
-        </vs-popup>
     </div>
 </template>
 <script>
@@ -484,7 +381,7 @@ export default {
                 dateFormat: "H:i"
             },
             //Datos Generales
-            popUpArticulosDisponibles: false,
+            popUpAnularArticulo: false,
             numint: 0,
             fechaSistema: null,
             fechaDespacho: null,
@@ -501,6 +398,7 @@ export default {
             diasVencimiento: 0,
             fechaVencimiento: 0,
             PREUNI: 0,
+            idAnulacion: 0,
             //Selecciones de Datos
             seleccionServicio: {
                 id: 0,
@@ -509,6 +407,11 @@ export default {
             seleccionTipoDespacho: {
                 id: 0,
                 descripcionTipoDespacho: ""
+            },
+            seleccionAnulacion: {
+                id: 0,
+                CODMOT: "",
+                NOMMOT: ""
             },
             //Columnas Lista de Datos
             colDespachoArticulos: [
@@ -576,73 +479,8 @@ export default {
                     }
                 },
                 {
-                    label: "Saldo Restante",
-                    field: "SALDOREST",
-                    filterOptions: {
-                        enabled: true
-                    }
-                }
-            ],
-            colArticulosDisponibles: [
-                {
-                    label: "N° Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Unidad Medida",
-                    field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Fecha Vencimiento",
-                    field: "fechaVencimiento",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Alerta",
-                    field: "diasVencimiento",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Saldo",
-                    field: "saldoCorrecto",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cantidad a Despachar",
-                    field: "CANTIDAD",
+                    label: "Anulado?",
+                    field: "NOMMOT",
                     filterOptions: {
                         enabled: true
                     }
@@ -655,7 +493,7 @@ export default {
             //Listado de Datos
             listadoServicios: [],
             listaDespachoArticulos: [],
-            listaArticulosDisponibles: [],
+            listadoAnulacion: [],
             listadoTipoDespacho: [
                 {
                     id: 1,
@@ -695,7 +533,7 @@ export default {
         volver() {
             try {
                 this.$router.push({
-                    name: "home"
+                    name: "ListadoDespachosCerrados"
                 });
             } catch (error) {
                 console.log(error);
@@ -710,41 +548,28 @@ export default {
                 console.log(error);
             }
         },
-        popDelDetalleArticulo() {
+        popAnularArticulo(id) {
             try {
-                console.log("Mensaje");
+                this.idAnulacion = 0;
+                this.idAnulacion = id;
+                this.popUpAnularArticulo = true;
             } catch (error) {
                 console.log(error);
             }
         },
-        ActualizarListado() {
+        ImprimirDatos() {
             try {
-                console.log("Mensaje");
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        CerrarDespacho() {
-            try {
-                console.log("Mensaje");
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popArticulosDisponibles() {
-            try {
-                if (
-                    this.fechaDespacho != null &&
-                    this.seleccionTipoDespacho.id != 0 &&
-                    this.seleccionServicio.id != 0
-                ) {
-                    this.popUpArticulosDisponibles = true;
+                if (this.numint != 0) {
+                    const url =
+                        this.localVal +
+                        "/api/Despacho/DespachoPDF/" +
+                        this.numint;
+                    window.open(url, "_blank");
                 } else {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
-                        text:
-                            "Debe seleccionar la Fecha de despacho, Servicio y Tipo de Despacho para poder agregar articulos",
+                        text: "No esta creado el Numero Interno",
                         color: "danger",
                         position: "top-right"
                     });
@@ -753,241 +578,46 @@ export default {
                 console.log(error);
             }
         },
-        AgregarArticuloDisponible(
-            saldoCorrecto,
-            NOMBRE,
-            CODBAR,
-            LOTE,
-            UNIMED,
-            CODART,
-            diasVencimiento,
-            fechaVencimiento,
-            PRECIO,
-            cantidad
-        ) {
+        popAnularDetalleArticulo() {
             try {
-                let nombreUsuario =
-                    sessionStorage.getItem("nombre") +
-                    " " +
-                    sessionStorage.getItem("apellido");
-                if (
-                    this.numint == 0 &&
-                    this.fechaDespacho != null &&
-                    this.seleccionTipoDespacho.id != 0 &&
-                    this.seleccionServicio.id != 0
-                ) {
-                    axios
-                        .get(
-                            this.localVal +
-                                "/api/Despachos/GetUltimoNInternoDespacho",
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
+                let data = {
+                    id: this.idAnulacion,
+                    CODMOT: this.seleccionAnulacion.CODMOT,
+                    NOMMOT: this.seleccionAnulacion.NOMMOT
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Despachos/PostAnularArticulo",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
                             }
-                        )
-                        .then(res => {
-                            let nint = res.data;
-                            if (
-                                nint == 0 ||
-                                nint == null ||
-                                nint == [] ||
-                                nint == {}
-                            ) {
-                                this.numint = 1;
-                                let data = {
-                                    NUMINT: this.numint,
-                                    FECSYS: moment(
-                                        this.fechaSistema,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    FECDES: moment(
-                                        this.fechaDespacho,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    idServicio: this.seleccionServicio.id,
-                                    TIPDESP: this.seleccionTipoDespacho
-                                        .descripcionTipoDespacho,
-                                    NUMSOL: this.nsolicitud,
-                                    NUMLIBRO: this.nlibropedido,
-                                    saldoCorrecto: saldoCorrecto,
-                                    NOMBRE: NOMBRE,
-                                    CODBAR: CODBAR,
-                                    LOTE: LOTE,
-                                    UNIMED: UNIMED,
-                                    CODART: CODART,
-                                    diasVencimiento: diasVencimiento,
-                                    fechaVencimiento: fechaVencimiento,
-                                    PRECIO: PRECIO,
-                                    CANTIDAD: cantidad,
-                                    USUING: nombreUsuario.toUpperCase()
-                                };
-
-                                axios
-                                    .post(
-                                        this.localVal +
-                                            "/api/Despachos/PostDespacho",
-                                        data,
-                                        {
-                                            headers: {
-                                                Authorization:
-                                                    `Bearer ` +
-                                                    sessionStorage.getItem(
-                                                        "token"
-                                                    )
-                                            }
-                                        }
-                                    )
-                                    .then(res => {
-                                        let dat = res.data;
-                                        if (dat == false) {
-                                            this.$vs.notify({
-                                                time: 5000,
-                                                title: "Error",
-                                                text:
-                                                    "Se no guardaron los datos, intentelo nuevamente",
-                                                color: "danger",
-                                                position: "top-right"
-                                            });
-                                        } else {
-                                            this.$vs.notify({
-                                                time: 5000,
-                                                title: "Finalizado",
-                                                text:
-                                                    "Datos Guardados Correctamente",
-                                                color: "success",
-                                                position: "top-right"
-                                            });
-                                        }
-                                    });
-                            } else {
-                                this.numint = nint + 1;
-                                let data = {
-                                    NUMINT: this.numint,
-                                    FECSYS: moment(
-                                        this.fechaSistema,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    FECDES: moment(
-                                        this.fechaDespacho,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    idServicio: this.seleccionServicio.id,
-                                    TIPDESP: this.seleccionTipoDespacho
-                                        .descripcionTipoDespacho,
-                                    NUMSOL: this.nsolicitud,
-                                    NUMLIBRO: this.nlibropedido,
-                                    saldoCorrecto: saldoCorrecto,
-                                    NOMBRE: NOMBRE,
-                                    CODBAR: CODBAR,
-                                    LOTE: LOTE,
-                                    UNIMED: UNIMED,
-                                    CODART: CODART,
-                                    diasVencimiento: diasVencimiento,
-                                    fechaVencimiento: fechaVencimiento,
-                                    PRECIO: PRECIO,
-                                    CANTIDAD: cantidad,
-                                    USUING: nombreUsuario.toUpperCase()
-                                };
-
-                                axios
-                                    .post(
-                                        this.localVal +
-                                            "/api/Despachos/PostDespacho",
-                                        data,
-                                        {
-                                            headers: {
-                                                Authorization:
-                                                    `Bearer ` +
-                                                    sessionStorage.getItem(
-                                                        "token"
-                                                    )
-                                            }
-                                        }
-                                    )
-                                    .then(res => {
-                                        let dat = res.data;
-                                        if (dat == false) {
-                                            this.$vs.notify({
-                                                time: 5000,
-                                                title: "Error",
-                                                text:
-                                                    "Se no guardaron los datos, intentelo nuevamente",
-                                                color: "danger",
-                                                position: "top-right"
-                                            });
-                                        } else {
-                                            this.$vs.notify({
-                                                time: 5000,
-                                                title: "Finalizado",
-                                                text:
-                                                    "Datos Guardados Correctamente",
-                                                color: "success",
-                                                position: "top-right"
-                                            });
-                                        }
-                                    });
-                            }
-                        });
-                } else {
-                    let data = {
-                        NUMINT: this.numint,
-                        FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
-                        FECDES: moment(this.fechaDespacho, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
-                        saldoCorrecto: saldoCorrecto,
-                        NOMBRE: NOMBRE,
-                        CODBAR: CODBAR,
-                        LOTE: LOTE,
-                        UNIMED: UNIMED,
-                        CODART: CODART,
-                        diasVencimiento: diasVencimiento,
-                        fechaVencimiento: fechaVencimiento,
-                        PRECIO: PRECIO,
-                        CANTIDAD: cantidad,
-                        USUING: nombreUsuario.toUpperCase()
-                    };
-
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Despachos/PostDetalleDespacho",
-                            data,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            let dat = res.data;
-                            if (dat == false) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "Se no guardaron los datos, intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Finalizado",
-                                    text: "Datos Guardados Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                            }
-                        });
-                }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo anular el articulo, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text: "Articulo anulado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.TraerDetalleDespacho();
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
@@ -1019,22 +649,18 @@ export default {
                 console.log(error);
             }
         },
-        TraerArticulosDisponibles() {
+        TraerAnulaciones() {
             try {
                 axios
-                    .get(
-                        this.localVal +
-                            "/api/Despachos/GetDetallesArticulosDisponibles",
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
-                            }
+                    .get(this.localVal + "/api/Mantenedor/GetAnulacion", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
                         }
-                    )
+                    })
                     .then(res => {
-                        this.listaArticulosDisponibles = res.data;
-                        if (this.listaArticulosDisponibles.length < 0) {
+                        this.listadoAnulacion = res.data;
+                        if (this.listadoAnulacion.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
@@ -1049,21 +675,117 @@ export default {
                 console.log(error);
             }
         },
-        cargarHoras() {
+        TraerDespacho() {
             try {
-                let date = moment().endOf("day");
-                this.fechaDespacho = date.format("DD/MM/YYYY").toString();
-                this.fechaSistema = date.format("DD/MM/YYYY").toString();
+                let numint = {
+                    NUMINT: this.$route.params.NUMINT
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Despachos/GetDespachos",
+                        numint,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let data = res.data;
+                        if (data.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            data.forEach((value, index) => {
+                                this.numint = this.$route.params.NUMINT;
+                                this.fechaSistema = moment(value.FECSYS)
+                                    .format("DD/MM/YYYY")
+                                    .toString();
+                                this.fechaDespacho = moment(value.FECDES)
+                                    .format("DD/MM/YYYY")
+                                    .toString();
+                                this.nlibropedido = value.NUMLIBRO;
+                                this.nsolicitud = value.NUMSOL;
+                                this.seleccionServicio = {
+                                    id: value.idServicio,
+                                    descripcionServicio:
+                                        value.descripcionServicio
+                                };
+                                if (value.TIPDESP == "Solicitud Pedidos") {
+                                    this.seleccionTipoDespacho = {
+                                        id: 1,
+                                        descripcionTipoDespacho:
+                                            "Solicitud Pedidos"
+                                    };
+                                } else {
+                                    this.seleccionTipoDespacho = {
+                                        id: 2,
+                                        descripcionTipoDespacho:
+                                            "Pedido Especial"
+                                    };
+                                }
+                            });
+                        }
+                    });
             } catch (error) {
-                console.log("No se cargo la ISO hora");
+                console.log(error);
+            }
+        },
+        TraerDetalleDespacho() {
+            try {
+                let numint = {
+                    NUMINT: this.$route.params.NUMINT
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Despachos/GetDespachoDetalles",
+                        numint,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listaDespachoArticulos = res.data;
+                        if (this.listaDespachoArticulos.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.valorTotal = 0;
+                            this.listaDespachoArticulos.forEach(
+                                (value, index) => {
+                                    this.valorTotal =
+                                        parseInt(this.valorTotal) +
+                                        parseInt(value.VALORTOTALDESP);
+                                }
+                            );
+                        }
+                    });
+            } catch (error) {
                 console.log(error);
             }
         }
     },
     beforeMount() {
         this.TraerServicio();
-        this.TraerArticulosDisponibles();
-        this.cargarHoras();
+        this.TraerDespacho();
+        this.TraerDetalleDespacho();
+        this.TraerAnulaciones();
         this.openLoadingColor();
     }
 };

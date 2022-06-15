@@ -96,6 +96,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostOrdenComprasDetalleByCodInterno', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@PostOrdenComprasDetalleByCodInterno']);
     Route::post('/Despachos/PostDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@PostDespacho']);
     Route::post('/Despachos/PostDetalleDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@PostDetalleDespacho']);
+    Route::post('/Despachos/PostQuitarArticuloDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@PostQuitarArticuloDespacho']);
 
     //Post Como Get
     Route::post('/Mantenedor/GetListadoArticulosByCodInterno', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetListadoArticulosByCodInterno']);
@@ -138,6 +139,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostCerrarOrdenCompra', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@PostCerrarOrdenCompra']);
     Route::post('/Mantenedor/PutListadoOrdenCompra', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@PutListadoOrdenCompra']);
     Route::post('/Mantenedor/PutOrdenCompras', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@PutOrdenCompras']);
+    Route::post('/Despachos/PutDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@PutDespacho']);
+    Route::post('/Despachos/CerrarDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@CerrarDespacho']);
+    Route::post('/Despachos/PostAnularArticulo', ['middleware' => 'cors', 'uses' => 'DespachosController@PostAnularArticulo']);
 
     //Post como Delete
     Route::post('/Mantenedor/DeleteArticuloDetalle', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DeleteArticuloDetalle']);
@@ -151,3 +155,4 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
 //Generar PDF
 Route::get('/Recepcion/RecepcionPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GenerarImpresion']);
+Route::get('/Despacho/DespachoPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'DespachosController@GenerarImpresion']);

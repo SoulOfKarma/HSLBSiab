@@ -576,11 +576,8 @@ export default {
                     }
                 },
                 {
-                    label: "Saldo Restante",
-                    field: "SALDOREST",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    label: "Opciones",
+                    field: "action"
                 }
             ],
             colArticulosDisponibles: [
@@ -710,23 +707,181 @@ export default {
                 console.log(error);
             }
         },
-        popDelDetalleArticulo() {
+        popDelDetalleArticulo(idArt) {
             try {
-                console.log("Mensaje");
+                let data = {
+                    id: idArt
+                };
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Despachos/PostQuitarArticuloDespacho",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Se no quito el articulo, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text: "Articulo quitado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.TraerDetalleDespacho();
+                            this.TraerArticulosDisponibles();
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
         },
         ActualizarListado() {
             try {
-                console.log("Mensaje");
+                let data = {
+                    NUMINT: this.numint,
+                    FECDES: moment(this.fechaDespacho, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    idServicio: this.seleccionServicio.id,
+                    NUMLIBRO: this.nlibropedido,
+                    TIPDESP: this.seleccionTipoDespacho.descripcionTipoDespacho,
+                    NUMSOL: this.nsolicitud,
+                    OBS: this.Observaciones.toUpperCase()
+                };
+
+                axios
+                    .post(this.localVal + "/api/Despachos/PutDespacho", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Error al Actualizar los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Actualizado",
+                                text: "Datos actualizados correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.TraerDespacho();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerUltimoNFolio() {
+            try {
+                axios
+                    .get(
+                        this.localVal +
+                            "/api/Despachos/GetUltimoNFolioDespacho",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let data = res.data;
+                        if (
+                            data == 0 ||
+                            data == null ||
+                            data == [] ||
+                            data == {}
+                        ) {
+                            this.folio = 1;
+                        } else {
+                            this.folio = data + 1;
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
         },
         CerrarDespacho() {
             try {
-                console.log("Mensaje");
+                this.TraerUltimoNFolio();
+                if (this.listaDespachoArticulos.length < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "No existen datos en el detalle para generar un N° de Folio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.folio == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No se pudo generar un N° de Folio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        NUMINT: this.numint,
+                        FOLIO: this.folio
+                    };
+                    axios
+                        .post(
+                            this.localVal + "/api/Despachos/CerrarDespacho",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let data = res.data;
+                            if (data == true) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Finalizado",
+                                    text:
+                                        "Despacho Cerrado, sera redirigido a otra ventana",
+                                    color: "success",
+                                    position: "top-right"
+                                });
+                                this.$router.push({
+                                    name: "ListadoDespachosCerrados"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -797,35 +952,65 @@ export default {
                                 nint == {}
                             ) {
                                 this.numint = 1;
-                                let data = {
-                                    NUMINT: this.numint,
-                                    FECSYS: moment(
-                                        this.fechaSistema,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    FECDES: moment(
-                                        this.fechaDespacho,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    idServicio: this.seleccionServicio.id,
-                                    TIPDESP: this.seleccionTipoDespacho
-                                        .descripcionTipoDespacho,
-                                    NUMSOL: this.nsolicitud,
-                                    NUMLIBRO: this.nlibropedido,
-                                    saldoCorrecto: saldoCorrecto,
-                                    NOMART: NOMBRE,
-                                    CODBAR: CODBAR,
-                                    LOTE: LOTE,
-                                    UNIMED: UNIMED,
-                                    CODART: CODART,
-                                    FECVEN: moment(
-                                        fechaVencimiento,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    PRECIO: PRECIO,
-                                    CANTIDAD: cantidad,
-                                    USUING: nombreUsuario.toUpperCase()
-                                };
+                                let data = {};
+                                if (fechaVencimiento == "No tiene Fecha") {
+                                    data = {
+                                        NUMINT: this.numint,
+                                        FECSYS: moment(
+                                            this.fechaSistema,
+                                            "DD-MM-YYYY"
+                                        ).format("YYYY-MM-DD"),
+                                        FECDES: moment(
+                                            this.fechaDespacho,
+                                            "DD-MM-YYYY"
+                                        ).format("YYYY-MM-DD"),
+                                        idServicio: this.seleccionServicio.id,
+                                        TIPDESP: this.seleccionTipoDespacho
+                                            .descripcionTipoDespacho,
+                                        NUMSOL: this.nsolicitud,
+                                        NUMLIBRO: this.nlibropedido,
+                                        saldoCorrecto: saldoCorrecto,
+                                        NOMART: NOMBRE,
+                                        CODBAR: CODBAR,
+                                        LOTE: LOTE,
+                                        UNIMED: UNIMED,
+                                        CODART: CODART,
+                                        diasVencimiento: diasVencimiento,
+                                        PRECIO: PRECIO,
+                                        CANTIDAD: cantidad,
+                                        USUING: nombreUsuario.toUpperCase()
+                                    };
+                                } else {
+                                    data = {
+                                        NUMINT: this.numint,
+                                        FECSYS: moment(
+                                            this.fechaSistema,
+                                            "DD-MM-YYYY"
+                                        ).format("YYYY-MM-DD"),
+                                        FECDES: moment(
+                                            this.fechaDespacho,
+                                            "DD-MM-YYYY"
+                                        ).format("YYYY-MM-DD"),
+                                        idServicio: this.seleccionServicio.id,
+                                        TIPDESP: this.seleccionTipoDespacho
+                                            .descripcionTipoDespacho,
+                                        NUMSOL: this.nsolicitud,
+                                        NUMLIBRO: this.nlibropedido,
+                                        saldoCorrecto: saldoCorrecto,
+                                        NOMART: NOMBRE,
+                                        CODBAR: CODBAR,
+                                        LOTE: LOTE,
+                                        UNIMED: UNIMED,
+                                        CODART: CODART,
+                                        diasVencimiento: diasVencimiento,
+                                        FECVEN: moment(fechaVencimiento).format(
+                                            "YYYY-MM-DD"
+                                        ),
+                                        PRECIO: PRECIO,
+                                        CANTIDAD: cantidad,
+                                        USUING: nombreUsuario.toUpperCase()
+                                    };
+                                }
 
                                 axios
                                     .post(
@@ -869,36 +1054,65 @@ export default {
                                     });
                             } else {
                                 this.numint = nint + 1;
-                                let data = {
-                                    NUMINT: this.numint,
-                                    FECSYS: moment(
-                                        this.fechaSistema,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    FECDES: moment(
-                                        this.fechaDespacho,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    idServicio: this.seleccionServicio.id,
-                                    TIPDESP: this.seleccionTipoDespacho
-                                        .descripcionTipoDespacho,
-                                    NUMSOL: this.nsolicitud,
-                                    NUMLIBRO: this.nlibropedido,
-                                    saldoCorrecto: saldoCorrecto,
-                                    NOMART: NOMBRE,
-                                    CODBAR: CODBAR,
-                                    LOTE: LOTE,
-                                    UNIMED: UNIMED,
-                                    CODART: CODART,
-                                    diasVencimiento: diasVencimiento,
-                                    FECVEN: moment(
-                                        fechaVencimiento,
-                                        "DD-MM-YYYY"
-                                    ).format("YYYY-MM-DD"),
-                                    PRECIO: PRECIO,
-                                    CANTIDAD: cantidad,
-                                    USUING: nombreUsuario.toUpperCase()
-                                };
+                                let data = {};
+                                if (fechaVencimiento == "No tiene Fecha") {
+                                    data = {
+                                        NUMINT: this.numint,
+                                        FECSYS: moment(
+                                            this.fechaSistema,
+                                            "DD-MM-YYYY"
+                                        ).format("YYYY-MM-DD"),
+                                        FECDES: moment(
+                                            this.fechaDespacho,
+                                            "DD-MM-YYYY"
+                                        ).format("YYYY-MM-DD"),
+                                        idServicio: this.seleccionServicio.id,
+                                        TIPDESP: this.seleccionTipoDespacho
+                                            .descripcionTipoDespacho,
+                                        NUMSOL: this.nsolicitud,
+                                        NUMLIBRO: this.nlibropedido,
+                                        saldoCorrecto: saldoCorrecto,
+                                        NOMART: NOMBRE,
+                                        CODBAR: CODBAR,
+                                        LOTE: LOTE,
+                                        UNIMED: UNIMED,
+                                        CODART: CODART,
+                                        diasVencimiento: diasVencimiento,
+                                        PRECIO: PRECIO,
+                                        CANTIDAD: cantidad,
+                                        USUING: nombreUsuario.toUpperCase()
+                                    };
+                                } else {
+                                    data = {
+                                        NUMINT: this.numint,
+                                        FECSYS: moment(
+                                            this.fechaSistema,
+                                            "DD-MM-YYYY"
+                                        ).format("YYYY-MM-DD"),
+                                        FECDES: moment(
+                                            this.fechaDespacho,
+                                            "DD-MM-YYYY"
+                                        ).format("YYYY-MM-DD"),
+                                        idServicio: this.seleccionServicio.id,
+                                        TIPDESP: this.seleccionTipoDespacho
+                                            .descripcionTipoDespacho,
+                                        NUMSOL: this.nsolicitud,
+                                        NUMLIBRO: this.nlibropedido,
+                                        saldoCorrecto: saldoCorrecto,
+                                        NOMART: NOMBRE,
+                                        CODBAR: CODBAR,
+                                        LOTE: LOTE,
+                                        UNIMED: UNIMED,
+                                        CODART: CODART,
+                                        diasVencimiento: diasVencimiento,
+                                        FECVEN: moment(fechaVencimiento).format(
+                                            "YYYY-MM-DD"
+                                        ),
+                                        PRECIO: PRECIO,
+                                        CANTIDAD: cantidad,
+                                        USUING: nombreUsuario.toUpperCase()
+                                    };
+                                }
 
                                 axios
                                     .post(
@@ -943,28 +1157,56 @@ export default {
                             }
                         });
                 } else {
-                    let data = {
-                        NUMINT: this.numint,
-                        FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
-                        FECDES: moment(this.fechaDespacho, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
-                        saldoCorrecto: saldoCorrecto,
-                        NOMART: NOMBRE,
-                        CODBAR: CODBAR,
-                        LOTE: LOTE,
-                        UNIMED: UNIMED,
-                        CODART: CODART,
-                        diasVencimiento: diasVencimiento,
-                        FECVEN: moment(fechaVencimiento, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
-                        PRECIO: PRECIO,
-                        CANTIDAD: cantidad,
-                        USUING: nombreUsuario.toUpperCase()
-                    };
+                    let data = {};
+                    if (fechaVencimiento == "No tiene Fecha") {
+                        data = {
+                            NUMINT: this.numint,
+                            FECSYS: moment(
+                                this.fechaSistema,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            FECDES: moment(
+                                this.fechaDespacho,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            saldoCorrecto: saldoCorrecto,
+                            NOMART: NOMBRE,
+                            CODBAR: CODBAR,
+                            LOTE: LOTE,
+                            UNIMED: UNIMED,
+                            CODART: CODART,
+                            diasVencimiento: diasVencimiento,
+                            PRECIO: PRECIO,
+                            CANTIDAD: cantidad,
+                            USUING: nombreUsuario.toUpperCase()
+                        };
+                    } else {
+                        data = {
+                            NUMINT: this.numint,
+                            FECSYS: moment(
+                                this.fechaSistema,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            FECDES: moment(
+                                this.fechaDespacho,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            saldoCorrecto: saldoCorrecto,
+                            NOMART: NOMBRE,
+                            CODBAR: CODBAR,
+                            LOTE: LOTE,
+                            UNIMED: UNIMED,
+                            CODART: CODART,
+                            diasVencimiento: diasVencimiento,
+
+                            FECVEN: moment(fechaVencimiento).format(
+                                "YYYY-MM-DD"
+                            ),
+                            PRECIO: PRECIO,
+                            CANTIDAD: cantidad,
+                            USUING: nombreUsuario.toUpperCase()
+                        };
+                    }
 
                     axios
                         .post(
@@ -1036,6 +1278,15 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
+                        } else {
+                            this.valorTotal = 0;
+                            this.listaDespachoArticulos.forEach(
+                                (value, index) => {
+                                    this.valorTotal =
+                                        parseInt(this.valorTotal) +
+                                        parseInt(value.VALORTOTALDESP);
+                                }
+                            );
                         }
                     });
             } catch (error) {
