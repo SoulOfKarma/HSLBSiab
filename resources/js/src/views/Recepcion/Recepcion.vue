@@ -1430,52 +1430,31 @@ export default {
             colTotal: [
                 {
                     label: "NETO",
-                    field: "NETO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "NETO"
                 },
                 {
                     label: "Descuento",
-                    field: "DCTO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "DCTO"
                 },
                 {
                     label: "Cargos",
-                    field: "CARGO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CARGO"
                 },
                 {
                     label: "Sub Total",
-                    field: "SUBTOTAL",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "SUBTOTAL"
                 },
                 {
                     label: "19% Iva",
-                    field: "IVA",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "IVA"
                 },
                 {
                     label: "Ajuste",
-                    field: "AJUSTE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "AJUSTE"
                 },
                 {
                     label: "Total",
-                    field: "TOTAL",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "TOTAL"
                 }
             ],
             //Datos Listado
@@ -1606,7 +1585,7 @@ export default {
         },
         ImprimirDatos() {
             try {
-                if (this.numint != 0) {
+                if (this.numint != 0 && this.folio != 0) {
                     const url =
                         this.localVal +
                         "/api/Recepcion/RecepcionPDF/" +

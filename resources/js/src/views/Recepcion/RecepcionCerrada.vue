@@ -127,115 +127,6 @@
                                         class="text-nowrap"
                                     >
                                     </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CODBAR'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.CODBAR"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'ACT_FECVEN'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-chip
-                                            color="success"
-                                            v-if="props.row.ACT_FECVEN == 1"
-                                            v-model="FVEN1"
-                                            type="text"
-                                            style="width:100px"
-                                            >Si</vs-chip
-                                        >
-                                        <vs-chip
-                                            v-else
-                                            color="primary"
-                                            v-model="FVEN2"
-                                            type="text"
-                                            style="width:100px"
-                                            >No</vs-chip
-                                        >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'FECVEN'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <flat-pickr
-                                            :config="configFromdateTimePicker"
-                                            v-model="fechaRecepcion"
-                                            placeholder="Fecha Inicio"
-                                            @on-change="onFromChange"
-                                            class="w-full "
-                                        />
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'LOTE'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.LOTE"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CANREC'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.CANREC"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CANRECH'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.CANRECH"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'PENDIENTE'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.PENDIENTE"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'PREUNI'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.PREUNI"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
 
                                     <span
                                         v-else-if="
@@ -306,7 +197,16 @@
                         </div>
                         <br /><br />
                         <div class="vx-row">
-                            <div class="vx-col w-full mt-5">
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    @click="ImprimirDatos"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Imprimir</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
@@ -321,76 +221,6 @@
             </vx-card>
             <div class="vx-row"></div>
         </div>
-        <!-- Listado Articulos -->
-        <vs-popup
-            classContent="ListadoArticulos"
-            title="Listado Articulos"
-            :active.sync="popUpArticulos"
-        >
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="">
-                    <div class="vx-row">
-                        <vx-card>
-                            <vue-good-table
-                                :columns="col"
-                                :rows="listaArticulos"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            content="Agregar Articulo al listado"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                popAgregarArticulo(
-                                                    props.row.NOMBRE,
-                                                    props.row.UNIMEDBASE,
-                                                    props.row.CODART_ONU,
-                                                    props.row.CODART,
-                                                    props.row.CODART_BARR,
-                                                    props.row.idEstado,
-                                                    props.row.UBICACION,
-                                                    props.row.SECTOR,
-                                                    props.row.idBodega,
-                                                    props.row.idZona,
-                                                    props.row.CANTXENB,
-                                                    props.row.idACT_FECVEN,
-                                                    props.row.idACTLOTE
-                                                )
-                                            "
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </vx-card>
-                    </div>
-                </vx-card>
-                <div class="vx-row"></div>
-            </div>
-        </vs-popup>
     </div>
 </template>
 <script>
@@ -441,7 +271,6 @@ export default {
             //Datos Campos
             FVEN1: "Si",
             FVEN2: "No",
-            popUpArticulos: false,
             codInternoRecepcion: 0,
             descripcionServicio: "",
             ndocumento: "",
@@ -751,52 +580,31 @@ export default {
             colTotal: [
                 {
                     label: "NETO",
-                    field: "NETO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "NETO"
                 },
                 {
                     label: "Descuento",
-                    field: "DCTO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "DCTO"
                 },
                 {
                     label: "Cargos",
-                    field: "CARGO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CARGO"
                 },
                 {
                     label: "Sub Total",
-                    field: "SUBTOTAL",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "SUBTOTAL"
                 },
                 {
                     label: "19% Iva",
-                    field: "IVA",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "IVA"
                 },
                 {
                     label: "Ajuste",
-                    field: "AJUSTE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "AJUSTE"
                 },
                 {
                     label: "Total",
-                    field: "TOTAL",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "TOTAL"
                 }
             ],
             //Datos Listado
@@ -855,46 +663,6 @@ export default {
                 return true;
             }
         },
-        limpiarCampos() {
-            try {
-                this.cantidad = 0;
-                this.precio = 0;
-                this.codigoBarra = "";
-                this.codigoOnu = "";
-                this.codigoArticulo = "";
-                this.nombre = "";
-                this.seleccionEstado = {
-                    id: 0,
-                    descripcionEstado: ""
-                };
-                this.seleccionFechaVencimiento = {
-                    id: 0,
-                    descripcionFVen: "Seleccione Fecha Venciminento"
-                };
-                this.seleccionLoteSerie = {
-                    id: 0,
-                    descripcionLoteSerie: "Seleccione Lote/Serie"
-                };
-                this.cantidadEmbalaje = "";
-                this.idBodega = 0;
-                this.seleccionBodega = {
-                    id: 0,
-                    descripcionBodega: ""
-                };
-                this.idZona = 0;
-                this.seleccionZona = {
-                    id: 0,
-                    descripcionZonas: ""
-                };
-                this.sector = "";
-                this.ubicacion = "";
-                this.unidadMedidaBase = "";
-                this.idMod = 0;
-                this.lote = "";
-            } catch (error) {
-                console.log(error);
-            }
-        },
         setProveedor() {
             try {
                 this.descripcionProveedor = "";
@@ -904,16 +672,23 @@ export default {
             }
         },
         //Funciones Finales Recepcion
-        ActualizarListado() {
-            try {
-                console.log("Ha ha");
-            } catch (error) {
-                console.log(error);
-            }
-        },
         ImprimirDatos() {
             try {
-                console.log("Ha ha");
+                if (this.numint != 0 && this.folio != 0) {
+                    const url =
+                        this.localVal +
+                        "/api/Recepcion/RecepcionPDF/" +
+                        this.numint;
+                    window.open(url, "_blank");
+                } else {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No esta creado el Numero Interno",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -927,144 +702,7 @@ export default {
                 console.log(error);
             }
         },
-        //PopUp
-        popArticulos() {
-            try {
-                this.popUpArticulos = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popModDetalle(id) {
-            try {
-                console.log(id);
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popAgregarArticulo(
-            NOMBRE,
-            UNIMEDBASE,
-            CODART_ONU,
-            CODART,
-            CODART_BARR,
-            idEstado,
-            UBICACION,
-            SECTOR,
-            idBodega,
-            idZona,
-            CANTXENB,
-            idACT_FECVEN,
-            idACTLOTE
-        ) {
-            try {
-                this.limpiarCampos();
-                this.popUpCodInsumoEco = true;
-                this.codigoBarra = CODART_BARR;
-                this.codigoOnu = CODART_ONU;
-                this.codigoArticulo = CODART;
-                this.nombre = NOMBRE;
-                let c = this.listaEstado;
-
-                c.forEach((value, index) => {
-                    if (idEstado == value.id) {
-                        this.seleccionEstado.id = value.id;
-                        this.seleccionEstado.descripcionEstado =
-                            value.descripcionEstado;
-                    }
-                });
-
-                c = [];
-                if (idACT_FECVEN == 1) {
-                    this.seleccionFechaVencimiento = {
-                        id: 1,
-                        descripcionFVen: "Si"
-                    };
-                } else {
-                    this.seleccionFechaVencimiento = {
-                        id: 2,
-                        descripcionFVen: "No"
-                    };
-
-                    this.fechaVencimiento = null;
-                }
-
-                if (idACTLOTE == 1) {
-                    this.seleccionLoteSerie = {
-                        id: 1,
-                        descripcionLoteSerie: "Si"
-                    };
-                } else {
-                    this.seleccionLoteSerie = {
-                        id: 2,
-                        descripcionLoteSerie: "No"
-                    };
-                }
-
-                this.cantidadEmbalaje = CANTXENB;
-                this.idBodega = 0;
-
-                c = this.listaBodega;
-
-                c.forEach((value, index) => {
-                    if (idBodega == value.id) {
-                        this.seleccionBodega.id = value.id;
-                        this.seleccionBodega.descripcionBodega =
-                            value.descripcionBodega;
-                    }
-                });
-
-                c = [];
-
-                this.idZona = 0;
-
-                c = this.listaZona;
-
-                c.forEach((value, index) => {
-                    if (idZona == value.id) {
-                        this.seleccionZona.id = value.id;
-                        this.seleccionZona.descripcionZonas =
-                            value.descripcionZonas;
-                    }
-                });
-
-                c = [];
-                this.sector = SECTOR;
-                this.ubicacion = UBICACION;
-
-                this.unidadMedidaBase = UNIMEDBASE;
-                this.popUpArticulos = false;
-            } catch (error) {
-                console.log(error);
-            }
-        },
         //Metodos CRUD
-        TraerArticulos() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetAllArticulos", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaArticulos = res.data;
-                        if (this.listaArticulos.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
         TraerDetalleRecepcion() {
             try {
                 let data = {
@@ -1308,163 +946,6 @@ export default {
                 console.log(error);
             }
         },
-        AgregarArticuloDetalle() {
-            try {
-                if (this.precio == null || this.precio < 1) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe Ingresar un Precio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.cantidad == null || this.cantidad < 1) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe Ingresar una cantidad",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.fechaRecepcion == null) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe seleccionar una fecha de recepcion",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (
-                    this.seleccionProveedores.id == 0 ||
-                    this.seleccionProveedores.id == null ||
-                    this.seleccionProveedores.id == ""
-                ) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe seleccionar un proveedor",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.codigoBarra == null || this.codigoBarra == "") {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe seleccionar un articulo",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.cantidad == null || this.cantidad < 1) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe ingresar una cantidad no menor a 1",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.precio == null || this.precio < 1) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe ingresar un precio no menor a 1",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else {
-                    let total = this.precio * this.cantidad;
-                    let valorT = total + parseInt(this.valorTotal);
-                    let nombreUsuario =
-                        sessionStorage.getItem("nombre") +
-                        " " +
-                        sessionStorage.getItem("apellido");
-                    let data = {
-                        NUMINT: this.numint,
-                        FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
-                        FECDES: moment(
-                            this.fechaRecepcion,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        RUTPRO: this.seleccionProveedores.RUTPROV,
-                        NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
-                        TIPDOC: this.seleccionTipoDocumento.id,
-                        NUMDOC: this.ndocumento,
-                        FECDOC: moment(
-                            this.fechaDocumento,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        NUMORD: this.nordencompra.toUpperCase(),
-                        NUMRIB: this.nrib.toUpperCase(),
-                        CODART: this.codigoArticulo.toUpperCase(),
-                        PRODUCTO: this.nombre.toUpperCase(),
-                        CODBAR: this.codigoBarra.toUpperCase(),
-                        UNIMED: this.unidadMedidaBase.toUpperCase(),
-                        ACT_FECVEN: this.seleccionFechaVencimiento.id,
-                        FECVEN: moment(
-                            this.fechaVencimiento,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        LOTE: this.seleccionLoteSerie.id,
-                        CANREC: this.cantidad,
-                        CANRECH: 0,
-                        PENDIENTE: 0,
-                        PREUNI: this.precio,
-                        VALTOT: total,
-                        DCTO: 0,
-                        OBS: this.Observaciones.toUpperCase(),
-                        CARGO: 0,
-                        SUBTOTAL: valorT,
-                        AJUSTE: 0,
-                        USUMOD: nombreUsuario.toUpperCase(),
-                        idServicio: this.seleccionServicio.id,
-                        NUMLIBPED: this.numeroLibroPedido,
-                        TIPRECEPCION: this.tiporecepcion
-                    };
-                    const dat = data;
-
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostArticuloDetalleCodInterno",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Articulo Ingresado al detalle Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.TraerDetalleRecepcion();
-                                this.TraerRecepcion();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
         cargarHoras() {
             try {
                 let date = moment().endOf("day");
@@ -1481,7 +962,6 @@ export default {
     beforeMount() {
         this.TraerTipoDocumentos();
         this.TraerProveedores();
-        this.TraerArticulos();
         this.TraerEstado();
         this.TraerBodega();
         this.TraerZona();
