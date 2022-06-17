@@ -166,13 +166,22 @@
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-full mt-5">
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
                                     >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    @click="ImprimirOC"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Imprimir</vs-button
                                 >
                             </div>
                         </div>
@@ -505,12 +514,32 @@ export default {
                 return true;
             }
         },
-        //Funciones Finales Recepcion
         volver() {
             try {
                 this.$router.push({
                     name: "home"
                 });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ImprimirOC() {
+            try {
+                if (this.numint != 0 && this.folio != 0) {
+                    const url =
+                        this.localVal +
+                        "/api/OrdenCompra/OrdenCompraPDF/" +
+                        this.numint;
+                    window.open(url, "_blank");
+                } else {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "No esta creado el Numero Interno",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -562,6 +591,7 @@ export default {
                                     value.NOMPRO;
                                 this.descripcionProveedor = value.NOMPRO;
                                 this.nsigfe = value.NUMSIGFE;
+                                this.folio = value.FOLIO;
                             });
 
                             c = [];

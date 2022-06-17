@@ -1481,43 +1481,22 @@ pre code {
     </head>
               @php
               $fechaSistema = "";
-              $fechaRecepcion = "";
+              $fechaOC = "";
               $RutProveedor = "";
               $Proveedor = "";
-              $TipoDocBod = "";
-              $ndoc = "";
-              $fechaDoc = "";
-              $nroordencompra = "";
-              $nrorib = "";
-              $neto = "";
-              $dcto = "";
-              $cargos = "";
-              $subtotal = "";
-              $iva = "";
-              $ajuste = "";
+              $nsigfe = "";
               $total = "";
-              $observacion = "";
+              $nfolio = "";
               @endphp
               
               @foreach ($getRec as $dato)
               <?php
                  $fechaSistema = $dato['FECSYS'];
-                 $fechaRecepcion = $dato['FECDES'];
+                 $fechaOC = $dato['FECORD'];
                  $RutProveedor = $dato['RUTPRO'];
                  $Proveedor = $dato['NOMPRO'];
-                 $TipoDocBod = $dato['TIPDOC'];
-                 $ndoc = $dato['NUMDOC'];
-                 $fechaDoc = $dato['FECDOC'];
-                 $nroordencompra = $dato['NUMORD'];
-                 $nrorib = $dato['NUMRIB'];
-                 $neto = $dato['NETO'];
-                 $dcto = $dato['DCTO'];
-                 $cargos = $dato['CARGO'];
-                 $subtotal = $dato['SUBTOTAL'];
-                 $iva = $dato['IVA'];
-                 $ajuste = $dato['AJUSTE'];
+                 $nsigfe = $dato['NUMSIGFE'];
                  $total = $dato['TOTAL'];
-                 $observacion = $dato['OBS'];
                  $nfolio = $dato['FOLIO'];
               ?>
               @endforeach
@@ -1530,7 +1509,7 @@ pre code {
                         <td><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/1.jpg"></td>
                         <td><b>Orden Compra </b>
                             <b>N° {{$nfolio}}</b><br><br>
-                            <h5>{{$nroordencompra}}</h5></td>
+                            </td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1546,25 +1525,17 @@ pre code {
                <tbody>
                  <tr>
                    <td class="badge badge-secondary"><h6>Fecha Sistema</h6></td>
-                   <td class="badge badge-secondary"><h6>Fecha Recepcion</h6></td>
+                   <td class="badge badge-secondary"><h6>Fecha Orden Compra</h6></td>
                    <td class="badge badge-secondary"><h6>Rut Proveedor</h6></td>
                     <td class="badge badge-secondary"><h6>Nombre Proveedor</h6></td>
-                    <td class="badge badge-secondary"><h6>Tipo Documento</h6></td>
-                    <td class="badge badge-secondary"><h6>N° Documento</h6></td>
-                    <td class="badge badge-secondary"><h6>Fecha Documento</h6></td>
-                    <td class="badge badge-secondary"><h6>N° Orden Compra</h6></td>
-                    <td class="badge badge-secondary"><h6>N° RIB</h6></td>
+                    <td class="badge badge-secondary"><h6>N° Sigfe</h6></td>
                  </tr>
                  <tr>
                   <td><h6>{{$fechaSistema}}</h6></td>
-                   <td><h6>{{$fechaRecepcion}}</h6></td>
+                   <td><h6>{{$fechaOC}}</h6></td>
                    <td><h6>{{$RutProveedor}}</h6></td>
                    <td><h6>{{$Proveedor}}</h6></td>
-                   <td><h6>{{$TipoDocBod}}</h6></td>
-                   <td><h6>{{$ndoc}}</h6></td>
-                   <td><h6>{{$fechaDoc}}</h6></td>
-                   <td><h6>{{$nroordencompra}}</h6></td>
-                   <td><h6>{{$nrorib}}</h6></td>
+                   <td><h6>{{$nsigfe}}</h6></td>
                  </tr>
                </tbody>
               </table>
@@ -1574,26 +1545,22 @@ pre code {
               <table class="table table-bordered table-sm">
               <tbody>
                  <tr>
-                   <td class="badge badge-secondary" style="width: 7.33%"><h6>Codigo Interno</h6></td>
-                   <td class="badge badge-secondary"><h6>Producto</h6></td>
-                   <td class="badge badge-secondary" style="width: 5.33%"><h6>Unidad Medida</h6></td>
-                   <td class="badge badge-secondary" style="width: 8.33%"><h6>Lote</h6></td>
-                   <td class="badge badge-secondary" style="width: 8.33%"><h6>Fecha Vencimiento</h6></td>
-                   <td class="badge badge-secondary" style="width: 8.33%"><h6>Cantidad Recepcionada</h6></td>
-                   <td class="badge badge-secondary" style="width: 5.33%"><h6>Precio Unitario</h6></td>
+                   <td class="badge badge-secondary" style="width: 7.33%"><h6>Folio Recepcion</h6></td>
+                   <td class="badge badge-secondary" style="width: 7.33%"><h6>Tipo Documento</h6></td>
+                   <td class="badge badge-secondary" style="width: 5.33%"><h6>N° Documento</h6></td>
+                   <td class="badge badge-secondary" style="width: 8.33%"><h6>Fecha Documento</h6></td>
+                   <td class="badge badge-secondary" style="width: 8.33%"><h6>OC Recepcion</h6></td>
                    <td class="badge badge-secondary" style="width: 10.33%"><h6>Total</h6></td>
                  </tr>
                  @foreach ($getDet as $dat)
                 
                  <tr>
-                   <td><h6><?php echo $dat['CODART'] ?></h6></td>
-                   <td><h6><?php echo $dat['PRODUCTO'] ?></h6></td>
-                   <td><h6><?php echo $dat['UNIMED'] ?></h6></td>
-                   <td><h6><?php echo $dat['LOTE'] ?></h6></td>
-                   <td><h6><?php echo $dat['FECVEN'] ?></h6></td>
-                   <td><h6><?php echo $dat['CANREC'] ?></h6></td>
-                   <td><h6><?php echo $dat['PREUNI'] ?></h6></td>
-                   <td><h6><?php echo $dat['VALTOT'] ?></h6></td>
+                   <td><h6><?php echo $dat['FOLIO'] ?></h6></td>
+                   <td><h6><?php echo $dat['TIPDOC'] ?></h6></td>
+                   <td><h6><?php echo $dat['NUMDOC'] ?></h6></td>
+                   <td><h6><?php echo $dat['FECDOC'] ?></h6></td>
+                   <td><h6><?php echo $dat['NOMORD'] ?></h6></td>
+                   <td><h6><?php echo $dat['TOTAL'] ?></h6></td>
                  </tr>
                 
                 @endforeach   
@@ -1604,53 +1571,13 @@ pre code {
             <div class="row table-responsive-xl">
               <table class="table table-bordered table-sm">
                <tbody>
-                 <tr>
-                   <td class="badge badge-secondary"><h6>Neto</h6></td>
-                   <td class="badge badge-secondary"><h6>DCTO</h6></td>
-                   <td class="badge badge-secondary"><h6>Cargos</h6></td>
-                    <td class="badge badge-secondary"><h6>Subtotal</h6></td>
-                    <td class="badge badge-secondary"><h6>Iva</h6></td>
-                    <td class="badge badge-secondary"><h6>Ajuste</h6></td>
-                    <td class="badge badge-secondary"><h6>Total</h6></td>
-                 </tr>
-                 <tr>
-                  <td><h6>{{$neto}}</h6></td>
-                   <td><h6>{{$dcto}}</h6></td>
-                   <td><h6>{{$cargos}}</h6></td>
-                   <td><h6>{{$subtotal}}</h6></td>
-                   <td><h6>{{$iva}}</h6></td>
-                   <td><h6>{{$ajuste}}</h6></td>
-                   <td><h6>{{$total}}</h6></td>
-                 </tr>
-               </tbody>
-              </table>
-            </div>
-
-            <div class="row table-responsive-xl">
-              <table class="table table-bordered table-sm">
-               <tbody>
-                <tr>
-                 <td class="badge badge-secondary"><h6>Observaciones</h6></td>
-                  </tr>
-                  <tr>
-                      <td style="height: 7.33%"><h6>{{$observacion}}</h6></td>
-                     </tr>
-               </tbody>
-              </table>
-            </div>
-
-            <div class="row table-responsive-xl">
-              <table class="table table-bordered table-sm">
-               <tbody>
                 <tr id="OrdenTabla">
-                  <td style="height: 7.33%"><h6 ></h6></td>
-                  <td style="height: 7.33%"><h6></h6></td>
-                  <td style="height: 7.33%"><h6></h6></td>
+                  <td style="height: 5% width: 7.33%"><h6 ></h6></td>
+                  <td style="height: 5% width: 7.33%"><h6></h6></td>
                 </tr>
                 <tr>
-                 <td class="badge badge-secondary"><h6>Encargado Seccion Bodega</h6></td>
-                 <td class="badge badge-secondary"><h6>Jefe Bodega</h6></td>
-                 <td class="badge badge-secondary"><h6>Jefe Abastecimiento</h6></td>                 
+                 <td class="badge badge-secondary" style="text-align: center;"><h6>Jefe Contabilidad y Presupuesto</h6><h6>Hospital San Luis Buin - Paine</h6></td>
+                 <td class="badge badge-secondary" style="text-align: center;"><h6>Jefe Abastecimiento</h6><h6>Hospital San Luis Buin - Paine</h6></td>              
                 </tr>
                </tbody>
               </table>

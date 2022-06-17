@@ -7,6 +7,7 @@ use App\ordenCompraDetalles;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
 
 class OrdenComprasController extends Controller
 {
@@ -149,6 +150,25 @@ class OrdenComprasController extends Controller
         } catch (\Throwable $th) {
             log::info($th);
             return false;
+        }
+    }
+
+    public function GenerarImpresion($NUMINT){
+        try {
+            $getDet = ordenCompraDetalles::where('orden_compra_detalles.NUMINT',$NUMINT)
+            ->get();
+
+            $getRec = ordenCompras::where('orden_compras.NUMINT',$NUMINT)
+            ->get();
+
+            $pdf = App::make("dompdf.wrapper");
+            $pdf->loadView('OrdenCompra', compact ('getDet','getRec'));
+            $pdf->setOptions(['isJavascriptEnabled' => true]);
+            $pdf->setOptions(['isRemoteEnabled' => true]);
+            return $pdf->stream("OrdenCompra.pdf", array("Attachment" => 0));
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;  
         }
     }
 }
