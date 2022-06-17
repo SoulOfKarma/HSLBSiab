@@ -15,8 +15,9 @@ class DespachosController extends Controller
 {
     public function GetDetallesArticulosDisponibles(){
         try {
-            $get = DB::select('select COALESCE((SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = t.LOTE
-            GROUP BY despacho_detalles.LOTE),0)),SUM(t.saldo))
+            $get = DB::select('select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = t.LOTE && 
+            despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
+            GROUP BY despacho_detalles.LOTE),0))
                          AS saldoCorrecto,
                                     t.NOMBRE,t.CODBAR,t.LOTE,t.UNIMED,t.CODART,t.diasVencimiento,t.fechaVencimiento,t.PREUNI
                                         from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
