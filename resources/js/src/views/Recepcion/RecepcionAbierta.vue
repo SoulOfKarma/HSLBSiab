@@ -136,7 +136,8 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-
+                </div>
+                <div class="vx-row" v-if="tiporecepcion == 'Consumo Inmediato'">
                     <div class="vx-col w-1/2 mt-5">
                         <h6>Servicio</h6>
                         <v-select
@@ -157,7 +158,8 @@
                             v-model="numeroLibroPedido"
                         />
                     </div>
-
+                </div>
+                <div class="vx-row">
                     <div
                         class="vx-col w-1/2 mt-5"
                         v-if="seleccionFechaVencimiento.id == 1"
@@ -740,6 +742,7 @@ export default {
             configFromdateTimePicker: {
                 minDate: null,
                 maxDate: "today",
+                allowInput: true,
                 dateFormat: "d/m/Y",
                 locale: {
                     firstDayOfWeek: 1,
@@ -1257,7 +1260,7 @@ export default {
             idACTLOTE
         ) {
             try {
-                this.limpiarCampos();
+                //this.limpiarCampos();
                 this.popUpCodInsumoEco = true;
                 this.codigoBarra = CODART_BARR;
                 this.codigoOnu = CODART_ONU;
@@ -1748,7 +1751,7 @@ export default {
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
                         NUMORD: this.nordencompra.toUpperCase(),
-                        NUMRIB: this.nrib.toUpperCase(),
+                        NUMRIB: this.nrib,
                         CODART: this.codigoArticulo.toUpperCase(),
                         PRODUCTO: this.nombre.toUpperCase(),
                         CODBAR: this.codigoBarra.toUpperCase(),

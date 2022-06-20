@@ -374,6 +374,7 @@ export default {
             configFromdateTimePicker: {
                 minDate: null,
                 maxDate: "today",
+                allowInput: true,
                 dateFormat: "d/m/Y",
                 locale: {
                     firstDayOfWeek: 1,

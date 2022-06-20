@@ -185,6 +185,28 @@ class RecepcionesController extends Controller
         }
     }
 
+    public function PostAnularArticulo(Request $request){
+        try {
+            recepcionDetalles::where('id',$request->id)
+            ->update(['CODMOT' => $request->CODMOT,'NOMMOT' => $request->NOMMOT]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PostAnularTodo(Request $request){
+        try {
+            recepcionDetalles::where('NUMINT',$request->NUMINT)
+            ->update(['CODMOT' => $request->CODMOT,'NOMMOT' => $request->NOMMOT]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function GenerarImpresion($NUMINT){
         try {
             $getDet = recepcionDetalles::where('NUMINT',$NUMINT)

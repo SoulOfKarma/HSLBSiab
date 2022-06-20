@@ -133,6 +133,15 @@
                                             props.column.field === 'action'
                                         "
                                     >
+                                        <plus-circle-icon
+                                            content="Anular Articulo"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                popAnularArticulo(props.row.id)
+                                            "
+                                        ></plus-circle-icon>
                                     </span>
                                     <!-- Column: Common -->
                                     <span v-else>
@@ -197,16 +206,7 @@
                         </div>
                         <br /><br />
                         <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
-                                <vs-button
-                                    @click="ImprimirDatos"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Imprimir</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
+                            <div class="vx-col w-1/3 mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
@@ -215,12 +215,94 @@
                                     >Volver</vs-button
                                 >
                             </div>
+                            <div class="vx-col w-1/3 mt-5">
+                                <vs-button
+                                    @click="ImprimirDatos"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Imprimir</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/3 mt-5">
+                                <vs-button
+                                    @click="popAnularTodo"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Anular Todo</vs-button
+                                >
+                            </div>
                         </div>
                     </vx-card>
                 </div>
             </vx-card>
             <div class="vx-row"></div>
         </div>
+        <vs-popup
+            classContent="Anulacion"
+            title="Anulacion"
+            :active.sync="popUpAnularArticulo"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Seleccione Tipo de Anulacion</h6>
+                            <v-select
+                                v-model="seleccionAnulacion"
+                                placeholder="Activo"
+                                class="w-full select-large"
+                                label="NOMMOT"
+                                :options="listadoAnulacion"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-button
+                                @click="popAnularDetalleArticulo"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Anular</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="Anulacion"
+            title="Anulacion"
+            :active.sync="popUpAnularTodo"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Seleccione Tipo de Anulacion</h6>
+                            <v-select
+                                v-model="seleccionAnulacion"
+                                placeholder="Activo"
+                                class="w-full select-large"
+                                label="NOMMOT"
+                                :options="listadoAnulacion"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-button
+                                @click="AnularTodo"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Anular</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -269,6 +351,9 @@ export default {
                 }
             },
             //Datos Campos
+            idAnulacion: 0,
+            popUpAnularArticulo: false,
+            popUpAnularTodo: false,
             FVEN1: "Si",
             FVEN2: "No",
             codInternoRecepcion: 0,
@@ -334,6 +419,11 @@ export default {
             seleccionTipoDocumento: {
                 id: 0,
                 descripcionDocumento: ""
+            },
+            seleccionAnulacion: {
+                id: 0,
+                CODMOT: "",
+                NOMMOT: ""
             },
             idMod: 0,
             //Datos Fechas
@@ -534,6 +624,17 @@ export default {
                     filterOptions: {
                         enabled: true
                     }
+                },
+                {
+                    label: "Anulado?",
+                    field: "NOMMOT",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
                 }
             ],
             col: [
@@ -611,6 +712,7 @@ export default {
             rows: [],
             listaArticulos: [],
             listaDetalleRecepcion: [],
+            listadoAnulacion: [],
             listaRecepcion: [],
             listaEstado: [],
             listaBodega: [],
@@ -672,6 +774,15 @@ export default {
             }
         },
         //Funciones Finales Recepcion
+        popAnularArticulo(id) {
+            try {
+                this.idAnulacion = 0;
+                this.idAnulacion = id;
+                this.popUpAnularArticulo = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         ImprimirDatos() {
             try {
                 if (this.numint != 0 && this.folio != 0) {
@@ -689,6 +800,103 @@ export default {
                         position: "top-right"
                     });
                 }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popAnularTodo() {
+            try {
+                this.popUpAnularTodo = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AnularTodo() {
+            try {
+                let data = {
+                    NUMINT: this.numint,
+                    CODMOT: this.seleccionAnulacion.CODMOT,
+                    NOMMOT: this.seleccionAnulacion.NOMMOT
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Recepcion/PostAnularTodo",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo anular la recepcion, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text: "Recepcion anulado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpAnularTodo = false;
+                            this.TraerDetalleRecepcion();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popAnularDetalleArticulo() {
+            try {
+                let data = {
+                    id: this.idAnulacion,
+                    CODMOT: this.seleccionAnulacion.CODMOT,
+                    NOMMOT: this.seleccionAnulacion.NOMMOT
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Recepcion/PostAnularArticulo",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo anular el articulo, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text: "Articulo anulado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpAnularArticulo = false;
+                            this.TraerDetalleRecepcion();
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
@@ -741,6 +949,32 @@ export default {
                                 a = a + parseInt(value.VALTOT);
                             });
                             this.valorTotal = a;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerAnulaciones() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetAnulacion", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoAnulacion = res.data;
+                        if (this.listadoAnulacion.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
                         }
                     });
             } catch (error) {
@@ -965,6 +1199,7 @@ export default {
         this.TraerEstado();
         this.TraerBodega();
         this.TraerZona();
+        this.TraerAnulaciones();
         setTimeout(() => {
             this.TraerDetalleRecepcion();
             this.TraerRecepcion();

@@ -189,6 +189,17 @@ class DespachosController extends Controller
         }
     }
 
+    public function PostAnularTodo(Request $request){
+        try {
+            despachoDetalles::where('NUMINT',$request->NUMINT)
+            ->update(['CODMOT' => $request->CODMOT,'NOMMOT' => $request->NOMMOT]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function GenerarImpresion($NUMINT){
         try {
             $getDet = despachoDetalles::select('despacho_detalles.id','despacho_detalles.FECSYS','despacho_detalles.FECDES','despacho_detalles.NUMLIBRO',

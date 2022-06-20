@@ -157,7 +157,7 @@
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-1/3 mt-5">
+                            <div class="vx-col w-1/4 mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
@@ -166,7 +166,7 @@
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/3 mt-5">
+                            <div class="vx-col w-1/4 mt-5">
                                 <vs-button
                                     @click="ImprimirDatos"
                                     color="primary"
@@ -175,13 +175,22 @@
                                     >Imprimir</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/3 mt-5">
+                            <div class="vx-col w-1/4 mt-5">
                                 <vs-button
                                     @click="RecargarPagina"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
                                     >Hacer Otro Despacho</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
+                                <vs-button
+                                    @click="popAnularTodo"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Anular Todo</vs-button
                                 >
                             </div>
                         </div>
@@ -209,6 +218,38 @@
                             <div class="vx-col w-full mt-5">
                                 <vs-button
                                     @click="popAnularDetalleArticulo"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Anular</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
+            <vs-popup
+                classContent="Anulacion"
+                title="Anulacion"
+                :active.sync="popUpAnularTodo"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <div class="vx-col w-full mt-5">
+                                <h6>Seleccione Tipo de Anulacion</h6>
+                                <v-select
+                                    v-model="seleccionAnulacion"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="NOMMOT"
+                                    :options="listadoAnulacion"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <vs-button
+                                    @click="AnularTodo"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
@@ -382,6 +423,7 @@ export default {
             },
             //Datos Generales
             popUpAnularArticulo: false,
+            popUpAnularTodo: false,
             numint: 0,
             fechaSistema: null,
             fechaDespacho: null,
@@ -578,6 +620,58 @@ export default {
                 console.log(error);
             }
         },
+        popAnularTodo() {
+            try {
+                this.popUpAnularTodo = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AnularTodo() {
+            try {
+                let data = {
+                    NUMINT: this.numint,
+                    CODMOT: this.seleccionAnulacion.CODMOT,
+                    NOMMOT: this.seleccionAnulacion.NOMMOT
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Despachos/PostAnularTodo",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo anular el despacho, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text: "Despacho anulado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpAnularTodo = false;
+                            this.TraerDetalleDespacho();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         popAnularDetalleArticulo() {
             try {
                 let data = {
@@ -615,6 +709,7 @@ export default {
                                 color: "success",
                                 position: "top-right"
                             });
+                            this.popUpAnularArticulo = false;
                             this.TraerDetalleDespacho();
                         }
                     });

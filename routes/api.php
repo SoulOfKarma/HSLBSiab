@@ -142,6 +142,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Despachos/PutDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@PutDespacho']);
     Route::post('/Despachos/CerrarDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@CerrarDespacho']);
     Route::post('/Despachos/PostAnularArticulo', ['middleware' => 'cors', 'uses' => 'DespachosController@PostAnularArticulo']);
+    Route::post('/Despachos/PostAnularTodo', ['middleware' => 'cors', 'uses' => 'DespachosController@PostAnularTodo']);
+    Route::post('/Recepcion/PostAnularArticulo', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostAnularArticulo']);
+    Route::post('/Recepcion/PostAnularTodo', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostAnularTodo']);
 
     //Post como Delete
     Route::post('/Mantenedor/DeleteArticuloDetalle', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DeleteArticuloDetalle']);

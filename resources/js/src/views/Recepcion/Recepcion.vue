@@ -1201,6 +1201,7 @@ export default {
                 minDate: null,
                 maxDate: "today",
                 dateFormat: "d/m/Y",
+                allowInput: true,
                 locale: {
                     firstDayOfWeek: 1,
                     weekdays: {
@@ -1736,7 +1737,7 @@ export default {
             idACTLOTE
         ) {
             try {
-                this.limpiarCampos();
+                //this.limpiarCampos();
                 this.popUpCodInsumoEco = true;
                 this.codigoBarra = CODART_BARR;
                 this.codigoOnu = CODART_ONU;
@@ -2248,7 +2249,7 @@ export default {
                             "DD-MM-YYYY"
                         ).format("YYYY-MM-DD"),
                         NUMORD: this.nordencompra.toUpperCase(),
-                        NUMRIB: this.nrib.toUpperCase(),
+                        NUMRIB: this.nrib,
                         CODART: this.codigoArticulo.toUpperCase(),
                         PRODUCTO: this.nombre.toUpperCase(),
                         CODBAR: this.codigoBarra.toUpperCase(),
