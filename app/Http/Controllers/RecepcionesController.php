@@ -11,6 +11,25 @@ use Illuminate\Support\Facades\App;
 
 class RecepcionesController extends Controller
 {
+    public function GetDetallesRecepcionesAnulados(){
+        try {
+            $get = DB::select('select COUNT(recepcion_detalles.FOLIO) AS contador,COUNT(recepcion_detalles.CODMOT) AS contadorAnulacion,
+            recepciones.NUMINT,recepciones.FOLIO,recepciones.NUMORD,recepciones.FECDES,recepciones.RUTPRO,recepciones.NOMPRO,recepciones.NUMDOC,
+            recepciones.NUMRIB,recepciones.USUING,recepciones.OBS
+            FROM recepciones
+            JOIN recepcion_detalles ON recepciones.FOLIO = recepcion_detalles.FOLIO
+            WHERE recepcion_detalles.FOLIO = recepciones.FOLIO 
+            GROUP BY recepciones.NUMINT,recepciones.FOLIO,recepciones.NUMORD,recepciones.FECDES,recepciones.RUTPRO,recepciones.NOMPRO,recepciones.NUMDOC,
+            recepciones.NUMRIB,recepciones.USUING,recepciones.OBS
+            HAVING (contador)-(contadorAnulacion) = 0
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function GetUltimoNInterno(){
         try {
             $get = recepciones::max('NUMINT');

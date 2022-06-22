@@ -129,6 +129,12 @@ export default [
                 name: "Rec. Cerradas",
                 slug: "/Recepcion/ListadoRecepcionCerrada",
                 icon: "HomeIcon"
+            },
+            {
+                url: "/Recepcion/ListadoRecepcionAnuladas",
+                name: "Rec. Anuladas",
+                slug: "/Recepcion/ListadoRecepcionAnuladas",
+                icon: "HomeIcon"
             }
         ]
     },
@@ -180,6 +186,12 @@ export default [
                 url: "/Despacho/ListadoDespachosCerrados",
                 name: "Despachos Cerrados",
                 slug: "/Despacho/ListadoDespachosCerrados",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Despacho/ListadoDespachosAnulados",
+                name: "Despachos Anulados",
+                slug: "/Despacho/ListadoDespachosAnulados",
                 icon: "HomeIcon"
             }
         ]

@@ -62,6 +62,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Despachos/GetUltimoNFolioDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@GetUltimoNFolioDespacho']);
     Route::get('/Despachos/GetDespachosAbiertos', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachosAbiertos']);
     Route::get('/Despachos/GetDespachosCerrados', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachosCerrados']);
+    Route::get('/Recepcion/GetDetallesRecepcionesAnulados', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetDetallesRecepcionesAnulados']);
+    Route::get('/Despachos/GetDetallesDespachosAnulados', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDetallesDespachosAnulados']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);

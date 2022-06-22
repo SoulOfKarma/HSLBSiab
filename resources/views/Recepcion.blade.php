@@ -1528,7 +1528,7 @@ pre code {
                     <tbody>
                       <tr>
                         <td><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/1.jpg"></td>
-                        <td><b>Recepcion </b>
+                        <td style="text-align: center;  width: 500px;"><b>Recepcion </b>
                             <b>N° {{$nfolio}}</b><br><br>
                             <h5>{{$nroordencompra}}</h5></td>
                         <td></td>

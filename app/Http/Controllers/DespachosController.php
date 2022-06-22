@@ -45,6 +45,24 @@ class DespachosController extends Controller
         }
     }
 
+    public function GetDetallesDespachosAnulados(){
+        try {
+            $get = DB::select('select COUNT(despacho_detalles.FOLIO) AS contador,COUNT(despacho_detalles.CODMOT) AS contadorAnulacion,
+            despachos.NUMINT,despachos.FOLIO,despachos.FECDES,servicios.descripcionServicio,despachos.NUMLIBRO,despachos.USUING
+            FROM despachos
+            JOIN despacho_detalles ON despachos.FOLIO = despacho_detalles.FOLIO
+            JOIN servicios ON despachos.idServicio = servicios.id
+            WHERE despacho_detalles.FOLIO = despachos.FOLIO 
+            GROUP BY despachos.NUMINT,despachos.FOLIO,despachos.FECDES,servicios.descripcionServicio,despachos.NUMLIBRO,despachos.USUING
+            HAVING (contador)-(contadorAnulacion) = 0
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function PostDespacho(Request $request){
         try {
             despachos::create($request->all());

@@ -1513,7 +1513,7 @@ pre code {
                     <tbody>
                       <tr>
                         <td><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/1.jpg"></td>
-                        <td style="text-align: center;"><b>Folio Despacho </b>
+                        <td style="text-align: center;  width: 500px;"><b>Folio Despacho </b>
                             <b>N° {{$nfolio}}</b><br>
                             <h4>DESPACHO PEDIDOS</h4>
                         <td></td>

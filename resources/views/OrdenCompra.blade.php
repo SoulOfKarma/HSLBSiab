@@ -1507,7 +1507,7 @@ pre code {
                     <tbody>
                       <tr>
                         <td><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/1.jpg"></td>
-                        <td><b>Orden Compra </b>
+                        <td style="text-align: center;  width: 500px;"><b>Orden Compra </b>
                             <b>N° {{$nfolio}}</b><br><br>
                             </td>
                         <td></td>

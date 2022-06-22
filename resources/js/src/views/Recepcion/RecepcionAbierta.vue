@@ -681,7 +681,7 @@ export default {
             fechaRecepcionAct: null,
             codigoBarra: "",
             Observaciones: "",
-            nordencompra: "",
+            nordencompra: "-",
             nrib: "",
             codigoTrack: "",
             codigoOnu: "",
@@ -1066,7 +1066,7 @@ export default {
                 this.codigoOnu = "";
                 this.codigoArticulo = "";
                 this.nombre = "";
-                this.nordencompra = "";
+                this.nordencompra = "-";
                 this.seleccionEstado = {
                     id: 0,
                     descripcionEstado: ""
@@ -1486,7 +1486,7 @@ export default {
                                 this.fechaDocumento = moment(value.FECDOC)
                                     .format("DD/MM/YYYY")
                                     .toString();
-                                this.nordencompra = value.NUMFAC;
+                                this.nordencompra = value.NUMORD;
                                 this.nrib = value.NUMRIB;
                                 this.tiporecepcion = value.TIPRECEPCION;
                             });
@@ -1690,9 +1690,8 @@ export default {
                         position: "top-right"
                     });
                 } else if (
-                    this.seleccionProveedores.id == 0 ||
-                    this.seleccionProveedores.id == null ||
-                    this.seleccionProveedores.id == ""
+                    this.seleccionProveedores.RUTPROV == "" ||
+                    this.seleccionProveedores.RUTPROV == null
                 ) {
                     this.$vs.notify({
                         time: 5000,

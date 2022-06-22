@@ -160,6 +160,12 @@ const router = new Router({
                         import("./views/Recepcion/ListadoRecepcionCerrada.vue")
                 },
                 {
+                    path: "/Recepcion/ListadoRecepcionAnuladas",
+                    name: "ListadoRecepcionAnuladas",
+                    component: () =>
+                        import("./views/Recepcion/ListadoRecepcionAnuladas.vue")
+                },
+                {
                     path: "/Recepcion/RecepcionCerrada/:NUMINT",
                     name: "RecepcionCerrada",
                     component: () =>
@@ -218,6 +224,13 @@ const router = new Router({
                     name: "ListadoDespachosCerrados",
                     component: () =>
                         import("./views/Despacho/ListadoDespachosCerrados.vue")
+                },
+                ,
+                {
+                    path: "/Despacho/ListadoDespachosAnulados",
+                    name: "ListadoDespachosAnulados",
+                    component: () =>
+                        import("./views/Despacho/ListadoDespachosAnulados.vue")
                 },
                 {
                     path: "/Despacho/DespachoAbierto/:NUMINT",

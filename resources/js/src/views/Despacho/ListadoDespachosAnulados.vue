@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vx-card title="Listado Despachos Cerrados">
+        <vx-card title="Listado Despachos Anulados">
             <br />
             <div>
                 <vx-card>
@@ -126,11 +126,12 @@ export default {
             }, 1000);
         },
         //Metodos CRUD
-        TraerDespachosCerrados() {
+        TraerDespachosAnulados() {
             try {
                 axios
                     .get(
-                        this.localVal + "/api/Despachos/GetDespachosCerrados",
+                        this.localVal +
+                            "/api/Despachos/GetDetallesDespachosAnulados",
                         {
                             headers: {
                                 Authorization:
@@ -169,7 +170,7 @@ export default {
         }
     },
     beforeMount() {
-        this.TraerDespachosCerrados();
+        this.TraerDespachosAnulados();
         this.openLoadingColor();
     }
 };
