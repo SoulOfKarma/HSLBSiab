@@ -678,15 +678,48 @@ export default {
                 console.log("No se cargo la ISO hora");
                 console.log(error);
             }
+        },
+        RefreshToken() {
+            try {
+                let data = {
+                    token: sessionStorage.getItem("token")
+                };
+                axios
+                    .post(this.localVal + "/api/auth/RefreshToken", data)
+                    .then(res => {
+                        let tok = res.data;
+                        if (tok == "") {
+                        } else if (tok == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo refrescar su sesion, sera redirigido a el inicio de sesion",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                            window.sessionStorage.clear();
+                            window.localStorage.clear();
+                            router.push("/pages/login");
+                        } else {
+                            sessionStorage.setItem("token", tok);
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     beforeMount() {
-        this.TraerOrdenCompra();
-        this.TraerDetalleOrdenCompra();
-        this.TraerProveedores();
-        this.cargarHoras();
-        this.openLoadingColor();
+        this.RefreshToken();
         this.numint = this.$route.params.NUMINT;
+        setTimeout(() => {
+            this.TraerOrdenCompra();
+            this.TraerDetalleOrdenCompra();
+            this.TraerProveedores();
+            this.cargarHoras();
+            this.openLoadingColor();
+        }, 2000);
     }
 };
 </script>

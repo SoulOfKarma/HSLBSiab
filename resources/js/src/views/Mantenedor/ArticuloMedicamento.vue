@@ -1623,14 +1623,47 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        RefreshToken() {
+            try {
+                let data = {
+                    token: sessionStorage.getItem("token")
+                };
+                axios
+                    .post(this.localVal + "/api/auth/RefreshToken", data)
+                    .then(res => {
+                        let tok = res.data;
+                        if (tok == "") {
+                        } else if (tok == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo refrescar su sesion, sera redirigido a el inicio de sesion",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                            window.sessionStorage.clear();
+                            window.localStorage.clear();
+                            router.push("/pages/login");
+                        } else {
+                            sessionStorage.setItem("token", tok);
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     beforeMount() {
-        this.TraerMedicamentos();
-        this.TraerEstado();
-        this.TraerBodega();
-        this.TraerZona();
-        this.openLoadingColor();
+        this.RefreshToken();
+        setTimeout(() => {
+            this.TraerMedicamentos();
+            this.TraerEstado();
+            this.TraerBodega();
+            this.TraerZona();
+            this.openLoadingColor();
+        }, 2000);
     }
 };
 </script>
