@@ -332,6 +332,7 @@ import "flatpickr/dist/flatpickr.css";
 import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";
+import router from "@/router";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";

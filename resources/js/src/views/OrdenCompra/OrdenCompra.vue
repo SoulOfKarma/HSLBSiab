@@ -292,6 +292,7 @@ import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import moment from "moment";
 import axios from "axios";
+import router from "@/router";
 import vSelect from "vue-select";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";

@@ -194,6 +194,7 @@
 <script>
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
+import router from "@/router";
 import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";

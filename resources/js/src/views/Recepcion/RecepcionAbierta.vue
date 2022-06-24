@@ -616,6 +616,7 @@ import axios from "axios";
 import vSelect from "vue-select";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
+import router from "@/router";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
@@ -671,6 +672,8 @@ export default {
             precio: 0,
             numint: 0,
             folio: 0,
+            numintDespacho: 0,
+            numFolioDespacho: 0,
             valorTotal: 0,
             contador: 0,
             idServicio: 0,
@@ -1657,6 +1660,66 @@ export default {
                             this.folio = 1;
                         } else {
                             this.folio = data + 1;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerUltimoNInternoDespacho() {
+            try {
+                axios
+                    .get(
+                        this.localVal +
+                            "/api/Despachos/GetUltimoNInternoDespacho",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let nintDes = res.data;
+                        if (
+                            nintDes == 0 ||
+                            nintDes == null ||
+                            nintDes == [] ||
+                            nintDes == {}
+                        ) {
+                            this.numintDespacho = 1;
+                        } else {
+                            this.numintDespacho = nintDes;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerUltimoNFolioDespacho() {
+            try {
+                axios
+                    .get(
+                        this.localVal +
+                            "/api/Despachos/GetUltimoNFolioDespacho",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let data = res.data;
+                        if (
+                            data == 0 ||
+                            data == null ||
+                            data == [] ||
+                            data == {}
+                        ) {
+                            this.numFolioDespacho = 1;
+                        } else {
+                            this.numFolioDespacho = data + 1;
                         }
                     });
             } catch (error) {

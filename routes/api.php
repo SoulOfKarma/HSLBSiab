@@ -100,6 +100,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Despachos/PostDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@PostDespacho']);
     Route::post('/Despachos/PostDetalleDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@PostDetalleDespacho']);
     Route::post('/Despachos/PostQuitarArticuloDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@PostQuitarArticuloDespacho']);
+    Route::post('/Recepcion/PostArticulosDespacho', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostArticulosDespacho']);
+    Route::post('/Recepcion/PostArticulosDespachoCodInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostArticulosDespachoCodInterno']);
 
     //Post Como Get
     Route::post('/Mantenedor/GetListadoArticulosByCodInterno', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetListadoArticulosByCodInterno']);

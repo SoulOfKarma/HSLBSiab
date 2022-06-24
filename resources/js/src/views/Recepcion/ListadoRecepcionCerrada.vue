@@ -43,6 +43,7 @@
 </template>
 <script>
 import axios from "axios";
+import router from "@/router";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";

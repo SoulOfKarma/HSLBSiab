@@ -654,7 +654,7 @@
                     </div>
                     <div class="vx-col w-1/2 mt-5">
                         <vs-button
-                            @click="AgregarArticuloDetalle"
+                            @click="AgregarArticuloDetalleCI"
                             color="success"
                             type="filled"
                             class="w-full"
@@ -1073,6 +1073,7 @@ import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";
 import "quill/dist/quill.core.css";
+import router from "@/router";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
@@ -1154,6 +1155,8 @@ export default {
             cantidadEmbalaje: "",
             idBodega: "",
             folio: 0,
+            numintDespacho: 0,
+            numFolioDespacho: 0,
             idZona: "",
             sector: "",
             ubicacion: "",
@@ -2320,6 +2323,319 @@ export default {
                             .post(
                                 this.localVal +
                                     "/api/Mantenedor/PostArticuloDetalle",
+                                dat,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                if (solicitudServer == true) {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Articulo Ingresado al detalle Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.TraerDetalleRecepcion();
+                                    this.TraerRecepcion();
+                                    this.contador = 1;
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerUltimoNInternoDespacho() {
+            try {
+                axios
+                    .get(
+                        this.localVal +
+                            "/api/Despachos/GetUltimoNInternoDespacho",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let nintDes = res.data;
+                        if (
+                            nintDes == 0 ||
+                            nintDes == null ||
+                            nintDes == [] ||
+                            nintDes == {}
+                        ) {
+                            this.numintDespacho = 1;
+                        } else {
+                            this.numintDespacho = nintDes;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerUltimoNFolioDespacho() {
+            try {
+                axios
+                    .get(
+                        this.localVal +
+                            "/api/Despachos/GetUltimoNFolioDespacho",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let data = res.data;
+                        if (
+                            data == 0 ||
+                            data == null ||
+                            data == [] ||
+                            data == {}
+                        ) {
+                            this.numFolioDespacho = 1;
+                        } else {
+                            this.numFolioDespacho = data + 1;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        AgregarArticuloDetalleCI() {
+            try {
+                if (this.numintDespacho == 0) {
+                    this.TraerUltimoNInternoDespacho();
+                }
+
+                if (this.precio == null || this.precio < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe Ingresar un Precio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.cantidad == null || this.cantidad < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe Ingresar una cantidad",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.fechaRecepcion == null) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar una fecha de recepcion",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionProveedores.id == 0 ||
+                    this.seleccionProveedores.id == null ||
+                    this.seleccionProveedores.id == ""
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un proveedor",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.codigoBarra == null || this.codigoBarra == "") {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar un articulo",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.cantidad == null || this.cantidad < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar una cantidad no menor a 1",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.precio == null || this.precio < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe ingresar un precio no menor a 1",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let total = this.precio * this.cantidad;
+                    let valorT = total + parseInt(this.valorTotal);
+                    let nombreUsuario =
+                        sessionStorage.getItem("nombre") +
+                        " " +
+                        sessionStorage.getItem("apellido");
+                    let data = {
+                        NUMINT: this.numint,
+                        FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
+                            "YYYY-MM-DD"
+                        ),
+                        FECDES: moment(
+                            this.fechaRecepcion,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        RUTPRO: this.seleccionProveedores.RUTPROV,
+                        NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
+                        TIPDOC: this.seleccionTipoDocumento.id,
+                        NUMDOC: this.ndocumento,
+                        FECDOC: moment(
+                            this.fechaDocumento,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        NUMORD: this.nordencompra.toUpperCase(),
+                        NUMRIB: this.nrib,
+                        CODART: this.codigoArticulo.toUpperCase(),
+                        PRODUCTO: this.nombre.toUpperCase(),
+                        NOMART: this.nombre.toUpperCase(),
+                        CODBAR: this.codigoBarra.toUpperCase(),
+                        UNIMED: this.unidadMedidaBase.toUpperCase(),
+                        ACT_FECVEN: this.seleccionFechaVencimiento.id,
+                        FECVEN: moment(
+                            this.fechaVencimiento,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        LOTE: this.lote,
+                        CANREC: this.cantidad,
+                        CANTIDAD: this.cantidad,
+                        CANRECH: 0,
+                        PENDIENTE: 0,
+                        PREUNI: this.precio,
+                        PRECIO: this.precio,
+                        VALTOT: total,
+                        DCTO: 0,
+                        OBS: this.Observaciones.toUpperCase(),
+                        CARGO: 0,
+                        SUBTOTAL: valorT,
+                        AJUSTE: 0,
+                        USUING: nombreUsuario.toUpperCase(),
+                        idServicio: this.seleccionServicio.id,
+                        NUMLIBPED: this.numeroLibroPedido,
+                        TIPRECEPCION: this.tiporecepcion
+                    };
+                    let dataDespacho = {
+                        NUMINT: this.numintDespacho,
+                        FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
+                            "YYYY-MM-DD"
+                        ),
+                        FECDES: moment(
+                            this.fechaRecepcion,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        RUTPRO: this.seleccionProveedores.RUTPROV,
+                        NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
+                        TIPDOC: this.seleccionTipoDocumento.id,
+                        NUMDOC: this.ndocumento,
+                        FECDOC: moment(
+                            this.fechaDocumento,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        NUMORD: this.nordencompra.toUpperCase(),
+                        NUMRIB: this.nrib,
+                        CODART: this.codigoArticulo.toUpperCase(),
+                        PRODUCTO: this.nombre.toUpperCase(),
+                        NOMART: this.nombre.toUpperCase(),
+                        CODBAR: this.codigoBarra.toUpperCase(),
+                        UNIMED: this.unidadMedidaBase.toUpperCase(),
+                        ACT_FECVEN: this.seleccionFechaVencimiento.id,
+                        FECVEN: moment(
+                            this.fechaVencimiento,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        LOTE: this.lote,
+                        CANREC: this.cantidad,
+                        CANTIDAD: this.cantidad,
+                        CANRECH: 0,
+                        PENDIENTE: 0,
+                        PREUNI: this.precio,
+                        PRECIO: this.precio,
+                        VALTOT: total,
+                        DCTO: 0,
+                        OBS: this.Observaciones.toUpperCase(),
+                        CARGO: 0,
+                        SUBTOTAL: valorT,
+                        AJUSTE: 0,
+                        USUING: nombreUsuario.toUpperCase(),
+                        idServicio: this.seleccionServicio.id,
+                        NUMLIBPED: this.numeroLibroPedido,
+                        TIPRECEPCION: this.tiporecepcion
+                    };
+                    const dat = data;
+                    const datDespacho = dataDespacho;
+
+                    if (this.contador > 0) {
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Recepcion/PostArticulosDespachoCodInterno",
+                                dat,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                if (solicitudServer == true) {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Articulo Ingresado al detalle Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.TraerDetalleRecepcion();
+                                    this.TraerRecepcion();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Recepcion/PostArticulosDespacho",
                                 dat,
                                 {
                                     headers: {

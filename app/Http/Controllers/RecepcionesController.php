@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\recepciones;
 use Illuminate\Http\Request;
 use App\recepcionDetalles;
+use App\despachos;
+use App\despachoDetalles;
 use DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\App;
@@ -153,11 +155,58 @@ class RecepcionesController extends Controller
         }
     }
 
+    public function PostArticulosDespacho(Request $request){
+        try {
+            recepciones::create($request->all());
+            recepcionDetalles::create($request->all());
+            despachos::create($request->all());
+            despachoDetalles::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PostArticulosDespachoCodInterno(Request $request){
+        try {
+            recepcionDetalles::create($request->all());
+            despachoDetalles::create($request->all());
+            recepciones::where('NUMINT',$request->NUMINT)
+            ->update(['RUTPRO' => $request->RUTPRO,'NOMPRO' => $request->NOMPRO,'SUBTOTAL' => $request->SUBTOTAL,
+            'DCTO' => $request->DCTO,'TIPDOC' => $request->TIPDOC,'NUMDOC' => $request->NUMDOC,'FECDOC' => $request->FECDOC,
+            'NUMFAC' => $request->NUMFAC,'NUMRIB' => $request->NUMRIB,'USUMOD' => $request->USUMOD,
+            'OBS' => $request->OBS,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'idServicio' => $request->idServicio,
+            'NUMLIBPED' => $request->NUMLIBPED,'TIPRECEPCION' => $request->TIPRECEPCION]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function PostCerrarRecepcion(Request $request){
         try {
             recepcionDetalles::where('NUMINT',$request->NUMINT)
             ->update(['FOLIO' => $request->FOLIO]);
             recepciones::where('NUMINT',$request->NUMINT)
+            ->update(['FOLIO' => $request->FOLIO]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PostCerrarRecepcionDespacho(Request $request){
+        try {
+            recepcionDetalles::where('NUMINT',$request->NUMINT)
+            ->update(['FOLIO' => $request->FOLIO]);
+            recepciones::where('NUMINT',$request->NUMINT)
+            ->update(['FOLIO' => $request->FOLIO]);
+            despachos::where('NUMINT',$request->NUMINTD)
+            ->update(['FOLIO' => $request->FOLIO]);
+            despachoDetalles::where('NUMINT',$request->NUMINTD)
             ->update(['FOLIO' => $request->FOLIO]);
             return true;
         } catch (\Throwable $th) {
