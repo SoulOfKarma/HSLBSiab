@@ -169,6 +169,7 @@ import TheFooter from "@/layouts/components/TheFooter.vue";
 import themeConfig from "@/../themeConfig.js";
 import VNavMenu from "@/layouts/components/vertical-nav-menu/VerticalNavMenu.vue";
 import axios from "axios";
+import router from "@/router";
 
 export default {
     components: {

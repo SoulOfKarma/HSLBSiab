@@ -106,8 +106,103 @@
                         />
                     </div>
                 </div>
-                <br />
+                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
+                    <div class="vx-row">
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarFactura"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR FACTURA</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarRIB"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR RIB</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarCarta"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR CARTA</vs-button
+                            >
+                        </div>
+                    </div>
+                </div>
+                <!-- <br />
+                <div class="vx-row mb-12">
+                    <div class="vx-col w-1/8 mt-5">
+                        <h6 class="pt-4 text-justify">ADJUNTAR FACTURA</h6>
+                    </div>
+                    <div class="vx-col w-1/8 mt-5">
+                        <vs-input
+                            type="file"
+                            id="archivo"
+                            @change="getImage"
+                            class="form-control w-full"
+                        />
+                    </div>
 
+                    <div class="vx-col w-1/8 mt-5">
+                        <h5 class="w-full pt-4 text-justify">
+                            <p>
+                                {{ nombrearchivo }}
+                            </p>
+                        </h5>
+                    </div>
+                </div>
+                <br />
+                <div class="vx-row mb-12">
+                    <div class="vx-col w-1/8 mt-5">
+                        <h6 class="pt-4 text-justify">ADJUNTAR RIB</h6>
+                    </div>
+                    <div class="vx-col w-1/8 mt-5">
+                        <vs-input
+                            type="file"
+                            id="archivo"
+                            @change="getImageRib"
+                            class="form-control w-full"
+                        />
+                    </div>
+
+                    <div class="vx-col w-1/8 mt-5">
+                        <h5 class="w-full pt-4 text-justify">
+                            <p>
+                                {{ nombrearchivoRib }}
+                            </p>
+                        </h5>
+                    </div>
+                </div>
+                <br />
+                <div class="vx-row mb-12">
+                    <div class="vx-col w-1/8 mt-5">
+                        <h6 class="pt-4 text-justify">ADJUNTAR CARTA</h6>
+                    </div>
+                    <div class="vx-col w-1/8 mt-5">
+                        <vs-input
+                            type="file"
+                            id="archivo"
+                            @change="getImageCarta"
+                            class="form-control w-full"
+                        />
+                    </div>
+
+                    <div class="vx-col w-1/8 mt-5">
+                        <h5 class="w-full pt-4 text-justify">
+                            <p>
+                                {{ nombrearchivoCarta }}
+                            </p>
+                        </h5>
+                    </div>
+                </div> -->
                 <!-- Detalles Articulos -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
@@ -303,6 +398,161 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <!-- Documento Factura -->
+        <vs-popup
+            classContent="Factura"
+            title="Factura"
+            :active.sync="popUpAgregarFactura"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6 class="pt-4 text-right">ADJUNTAR FACTURA</h6>
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
+                            <vs-input
+                                type="file"
+                                id="archivo"
+                                @change="getImage"
+                                class="form-control w-full"
+                            />
+                        </div>
+
+                        <div class="vx-col w-1/2 mt-5">
+                            <h5 class="w-full pt-4 text-justify">
+                                <p>
+                                    {{ nombrearchivo }}
+                                </p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpAgregarFactura = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="uploadImage"
+                                color="danger"
+                                type="filled"
+                                class="w-full"
+                                >Subir Documento</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
+        <!-- Documento RIB -->
+        <vs-popup classContent="RIB" title="RIB" :active.sync="popUpAgregarRIB">
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6 class="pt-4 text-justify">ADJUNTAR RIB</h6>
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
+                            <vs-input
+                                type="file"
+                                id="archivo"
+                                @change="getImageRib"
+                                class="form-control w-full"
+                            />
+                        </div>
+
+                        <div class="vx-col w-1/2 mt-5">
+                            <h5 class="w-full pt-4 text-justify">
+                                <p>
+                                    {{ nombrearchivoRib }}
+                                </p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpAgregarRIB = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="uploadImageRib"
+                                color="danger"
+                                type="filled"
+                                class="w-full"
+                                >Subir Documento</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
+        <!-- Documento CARTA -->
+        <vs-popup
+            classContent="CARTA"
+            title="CARTA"
+            :active.sync="popUpAgregarCarta"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6 class="pt-4 text-justify">ADJUNTAR CARTA</h6>
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
+                            <vs-input
+                                type="file"
+                                id="archivo"
+                                @change="getImageCarta"
+                                class="form-control w-full"
+                            />
+                        </div>
+
+                        <div class="vx-col w-1/2 mt-5">
+                            <h5 class="w-full pt-4 text-justify">
+                                <p>
+                                    {{ nombrearchivoCarta }}
+                                </p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpAgregarCarta = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="uploadImageCarta"
+                                color="danger"
+                                type="filled"
+                                class="w-full"
+                                >Subir Documento</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -336,6 +586,7 @@ export default {
         return {
             //Datos Locales - Variables de Entorno
             localVal: process.env.MIX_APP_URL,
+            localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
             editorOption: {
                 modules: {
                     toolbar: [
@@ -352,9 +603,19 @@ export default {
                 }
             },
             //Datos Campos
+            image: null,
+            nombrearchivo: "",
+            imageRib: null,
+            nombrearchivoRib: "",
+            imageCarta: null,
+            nombrearchivoCarta: "",
+            val_doc: 0,
             idAnulacion: 0,
             popUpAnularArticulo: false,
             popUpAnularTodo: false,
+            popUpAgregarFactura: false,
+            popUpAgregarRIB: false,
+            popUpAgregarCarta: false,
             FVEN1: "Si",
             FVEN2: "No",
             codInternoRecepcion: 0,
@@ -812,6 +1073,177 @@ export default {
                 console.log(error);
             }
         },
+        popAgregarFactura() {
+            try {
+                this.popUpAgregarFactura = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popAgregarRIB() {
+            try {
+                this.popUpAgregarRIB = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popAgregarCarta() {
+            try {
+                this.popUpAgregarCarta = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        getImage(event) {
+            //Asignamos la imagen a  nuestra data
+            this.image = event.target.files[0];
+            this.nombrearchivo = this.image.name;
+            this.val_doc = 1;
+        },
+        getImageRib(event) {
+            //Asignamos la imagen a  nuestra data
+            this.imageRib = event.target.files[0];
+            this.nombrearchivoRib = this.imageRib.name;
+            this.val_doc = 1;
+        },
+        getImageCarta(event) {
+            //Asignamos la imagen a  nuestra data
+            this.imageCarta = event.target.files[0];
+            this.nombrearchivoCarta = this.imageCarta.name;
+            this.val_doc = 1;
+        },
+        uploadImage() {
+            //Creamos el formData
+
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.image);
+            data.append("id", this.folio);
+            data.append("nombreDocOriginal", this.nombrearchivo);
+
+            axios
+                .post(
+                    this.localVal +
+                        "/api/Recepcion/PostDocumentoRecepcionFactura",
+                    data,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(response => {
+                    let resp = response.data;
+                    if (resp == true) {
+                        this.$vs.notify({
+                            title: "Documento Guardado ",
+                            text:
+                                "Podra Visualizarlo en el listado los usuarios autorizados ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.TraerRecepcion();
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
+        uploadImageRib() {
+            //Creamos el formData
+
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.imageRib);
+            data.append("id", this.folio);
+            data.append("nombreDocOriginal", this.nombrearchivoRib);
+
+            axios
+                .post(
+                    this.localVal +
+                        "/api/Recepcion/PostDocumentoRecepcionFacturaRib",
+                    data,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(response => {
+                    let resp = response.data;
+                    if (resp == true) {
+                        this.$vs.notify({
+                            title: "Documento Guardado ",
+                            text:
+                                "Podra Visualizarlo en el listado los usuarios autorizados ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.TraerRecepcion();
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
+        uploadImageCarta() {
+            //Creamos el formData
+
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.imageCarta);
+            data.append("id", this.folio);
+            data.append("nombreDocOriginal", this.nombrearchivoCarta);
+
+            axios
+                .post(
+                    this.localVal +
+                        "/api/Recepcion/PostDocumentoRecepcionFacturaCarta",
+                    data,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(response => {
+                    let resp = response.data;
+                    if (resp == true) {
+                        this.$vs.notify({
+                            title: "Documento Guardado ",
+                            text:
+                                "Podra Visualizarlo en el listado los usuarios autorizados ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.TraerRecepcion();
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
         AnularTodo() {
             try {
                 let data = {
@@ -1242,6 +1674,10 @@ export default {
 };
 </script>
 <style lang="stylus">
+#archivo{
+   width: 155px;
+}
+
 .con-vs-popup .vs-popup {
   width: 1500px;
 }

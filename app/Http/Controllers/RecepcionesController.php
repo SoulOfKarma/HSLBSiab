@@ -296,4 +296,113 @@ class RecepcionesController extends Controller
             return false;  
         }
     }
+
+    //Subir Documentos
+    public function PostDocumentoRecepcionFactura(Request $request)
+    {
+        try {
+            if ($request->hasFile('avatar')) {
+                // Si es así , almacenamos en la carpeta public/avatars
+                // esta estará dentro de public/defaults/
+               
+               $url = $request->avatar->store('users/Documentacion');
+               recepciones::where('FOLIO', $request->id)
+                ->update(['NOMARCH' => $url]);
+               return true;
+            }else{
+                log::info("No hay archivo");
+                return back()->with('error', 'Missing image!');
+            }
+            
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function DestroyDocumentoRecepcionFactura(Request $request){
+        try {
+            $res=recepciones::where('FOLIO',$request->id)
+            ->update(['NOMARCH' => ""]);
+               return true;
+            if($res){
+              return true;
+            }
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PostDocumentoRecepcionFacturaRib(Request $request)
+    {
+        try {
+            if ($request->hasFile('avatar')) {
+                // Si es así , almacenamos en la carpeta public/avatars
+                // esta estará dentro de public/defaults/
+               
+               $url = $request->avatar->store('users/Documentacion');
+               recepciones::where('FOLIO', $request->id)
+                ->update(['NOMARCH_RIB' => $url]);
+               return true;
+            }else{
+                log::info("No hay archivo");
+                return back()->with('error', 'Missing image!');
+            }
+            
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function DestroyDocumentoRecepcionFacturaRib(Request $request){
+        try {
+            $res=recepciones::where('FOLIO',$request->id)
+            ->update(['NOMARCH_RIB' => ""]);
+               return true;
+            if($res){
+              return true;
+            }
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PostDocumentoRecepcionFacturaCarta(Request $request)
+    {
+        try {
+            if ($request->hasFile('avatar')) {
+                // Si es así , almacenamos en la carpeta public/avatars
+                // esta estará dentro de public/defaults/
+               
+               $url = $request->avatar->store('users/Documentacion');
+               recepciones::where('FOLIO', $request->id)
+                ->update(['NOMARCH_CAR' => $url]);
+               return true;
+            }else{
+                log::info("No hay archivo");
+                return back()->with('error', 'Missing image!');
+            }
+            
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function DestroyDocumentoRecepcionFacturaCarta(Request $request){
+        try {
+            $res=recepciones::where('FOLIO',$request->id)
+            ->update(['NOMARCH_CAR' => ""]);
+               return true;
+            if($res){
+              return true;
+            }
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }

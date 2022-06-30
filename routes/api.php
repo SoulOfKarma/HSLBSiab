@@ -157,6 +157,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     //Post Documentos
     Route::post('/Mantenedor/PostDocumentoAuthUsuario', ['middleware' => 'cors', 'uses' => 'DocumentacionAuthUsuariosController@PostDocumentoAuthUsuario']);
     Route::post('/Mantenedor/PutDocumentoAuthUsuario', ['middleware' => 'cors', 'uses' => 'DocumentacionAuthUsuariosController@PutDocumentoAuthUsuario']);
+    Route::post('/Recepcion/PostDocumentoRecepcionFactura', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostDocumentoRecepcionFactura']);
+    Route::post('/Recepcion/DestroyDocumentoRecepcionFactura', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DestroyDocumentoRecepcionFactura']);
+    Route::post('/Recepcion/PostDocumentoRecepcionFacturaRib', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostDocumentoRecepcionFacturaRib']);
+    Route::post('/Recepcion/DestroyDocumentoRecepcionFacturaRib', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DestroyDocumentoRecepcionFactura']);
+    Route::post('/Recepcion/PostDocumentoRecepcionFacturaCarta', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostDocumentoRecepcionFacturaCarta']);
+    Route::post('/Recepcion/DestroyDocumentoRecepcionFacturaCarta', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DestroyDocumentoRecepcionFactura']);
 
     
 });

@@ -19,6 +19,37 @@
                                 class="text-nowrap"
                             >
                             </span>
+                            <span v-else-if="props.column.field === 'NOMARCH'">
+                                <plus-circle-icon
+                                    content="Abrir Factura"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="abrirFactura(props.row.NOMARCH)"
+                                ></plus-circle-icon>
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'NOMARCH_RIB'"
+                            >
+                                <plus-circle-icon
+                                    content="Abrir RIB"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="abrirRIB(props.row.NOMARCH_RIB)"
+                                ></plus-circle-icon>
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'NOMARCH_CAR'"
+                            >
+                                <plus-circle-icon
+                                    content="Abrir Carta"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="abrirCarta(props.row.NOMARCH_CAR)"
+                                ></plus-circle-icon>
+                            </span>
                             <span v-else-if="props.column.field === 'action'">
                                 <plus-circle-icon
                                     content="Ir a la Recepcion Cerrada"
@@ -61,6 +92,7 @@ export default {
         return {
             //Datos Locales - Variables de Entorno
             localVal: process.env.MIX_APP_URL,
+            localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
             //Datos Campos
             idMod: 0,
             //Template Columnas Listado Proveedor
@@ -134,6 +166,18 @@ export default {
                     filterOptions: {
                         enabled: true
                     }
+                },
+                {
+                    label: "Ver Factura",
+                    field: "NOMARCH"
+                },
+                {
+                    label: "Ver RIB",
+                    field: "NOMARCH_RIB"
+                },
+                {
+                    label: "Ver Carta",
+                    field: "NOMARCH_CAR"
                 },
                 {
                     label: "Opciones",
@@ -220,6 +264,30 @@ export default {
                         NUMINT: `${numinterno}`
                     }
                 });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        abrirFactura(doc) {
+            try {
+                const url = this.localDoc + "/" + doc;
+                window.open(url, "_blank");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        abrirRIB(doc) {
+            try {
+                const url = this.localDoc + "/" + doc;
+                window.open(url, "_blank");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        abrirCarta(doc) {
+            try {
+                const url = this.localDoc + "/" + doc;
+                window.open(url, "_blank");
             } catch (error) {
                 console.log(error);
             }

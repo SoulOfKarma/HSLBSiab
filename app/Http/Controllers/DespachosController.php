@@ -66,7 +66,14 @@ class DespachosController extends Controller
     public function PostDespacho(Request $request){
         try {
             despachos::create($request->all());
-            despachoDetalles::create($request->all());
+            despachoDetalles::updateOrCreate(['NUMINT' => $request->NUMINT, 'FECSYS' => $request->FECSYS,
+            'FECDES' => $request->FECDES,'CODBAR' => $request->CODBAR,'LOTE' => $request->LOTE,
+            'UNIMED' => $request->UNIMED,'CODART' => $request->CODART],
+            ['NUMINT' => $request->NUMINT, 'FECSYS' => $request->FECSYS,'FECVEN' => $request->FECVEN,
+            'FECDES' => $request->FECDES,'idServicio' => $request->idServicio,'TIPDESP' => $request->TIPDESP,
+            'NUMSOL' => $request->NUMSOL,'NUMLIBRO' => $request->NUMLIBRO,'NOMART' => $request->NOMART,
+            'CODBAR' => $request->CODBAR,'LOTE' => $request->LOTE,'UNIMED' => $request->UNIMED,'CODART' => $request->CODART,
+            'PRECIO' => $request->PRECIO,'CANTIDAD' => $request->CANTIDAD,'USUING' => $request->USUING]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);
@@ -76,7 +83,14 @@ class DespachosController extends Controller
 
     public function PostDetalleDespacho(Request $request){
         try {
-            despachoDetalles::create($request->all());
+            despachoDetalles::updateOrCreate(['NUMINT' => $request->NUMINT, 'FECSYS' => $request->FECSYS,
+            'FECDES' => $request->FECDES,'CODBAR' => $request->CODBAR,'LOTE' => $request->LOTE,
+            'UNIMED' => $request->UNIMED,'CODART' => $request->CODART],
+            ['NUMINT' => $request->NUMINT, 'FECSYS' => $request->FECSYS,'FECVEN' => $request->FECVEN,
+            'FECDES' => $request->FECDES,'idServicio' => $request->idServicio,'TIPDESP' => $request->TIPDESP,
+            'NUMSOL' => $request->NUMSOL,'NUMLIBRO' => $request->NUMLIBRO,'NOMART' => $request->NOMART,
+            'CODBAR' => $request->CODBAR,'LOTE' => $request->LOTE,'UNIMED' => $request->UNIMED,'CODART' => $request->CODART,
+            'PRECIO' => $request->PRECIO,'CANTIDAD' => $request->CANTIDAD,'USUING' => $request->USUING]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);
@@ -86,7 +100,8 @@ class DespachosController extends Controller
 
     public function GetUltimoNInternoDespacho(){
         try {
-            $get = despachos::max('NUMINT');
+            $get = despachos::select(DB::raw("MAX(CAST(NUMINT AS UNSIGNED)) as NUMINT"))
+            ->get();
             return $get;
         } catch (\Throwable $th) {
             log::info($th);
@@ -96,7 +111,8 @@ class DespachosController extends Controller
 
     public function GetUltimoNFolioDespacho(){
         try {
-            $get = despachos::max('FOLIO');
+            $get = despachos::select(DB::raw("MAX(CAST(FOLIO AS UNSIGNED)) as FOLIO"))
+            ->get();
             return $get;
         } catch (\Throwable $th) {
             log::info($th);

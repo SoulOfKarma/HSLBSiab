@@ -655,6 +655,7 @@ export default {
             listadoServicios: [],
             listaDespachoArticulos: [],
             listaArticulosDisponibles: [],
+            listaArticulosActuales: [],
             listadoTipoDespacho: [
                 {
                     id: 1,
@@ -854,7 +855,7 @@ export default {
                         }
                     )
                     .then(res => {
-                        let data = res.data;
+                        let data = res.data[0].FOLIO;
                         if (
                             data == 0 ||
                             data == null ||
@@ -870,60 +871,128 @@ export default {
                 console.log(error);
             }
         },
+        TraerArticulosActuales() {
+            try {
+                axios
+                    .get(
+                        this.localVal +
+                            "/api/Despachos/GetDetallesArticulosDisponibles",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listaArticulosActuales = res.data;
+                        if (this.listaArticulosActuales.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         CerrarDespacho() {
             try {
-                this.TraerUltimoNFolio();
-                if (this.listaDespachoArticulos.length < 1) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text:
-                            "No existen datos en el detalle para generar un N° de Folio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else if (this.folio == 0) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "No se pudo generar un N° de Folio",
-                        color: "danger",
-                        position: "top-right"
-                    });
-                } else {
-                    let data = {
-                        NUMINT: this.numint,
-                        FOLIO: this.folio
-                    };
-                    axios
-                        .post(
-                            this.localVal + "/api/Despachos/CerrarDespacho",
-                            data,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            let data = res.data;
-                            if (data == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Finalizado",
-                                    text:
-                                        "Despacho Cerrado, sera redirigido a otra ventana",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.$router.push({
-                                    name: "ListadoDespachosCerrados"
-                                });
+                let validar = false;
+                let nomarticulo = "";
+                this.TraerArticulosActuales();
+                setTimeout(() => {
+                    let c = this.listaArticulosActuales;
+                    let d = this.listaDespachoArticulos;
+                    d.forEach((value, index) => {
+                        c.forEach((val, ind) => {
+                            if (
+                                value.CODART == val.CODART &&
+                                value.LOTE == val.LOTE &&
+                                parseInt(val.saldoCorrecto) <
+                                    parseInt(value.CANTIDAD)
+                            ) {
+                                nomarticulo = value.NOMART;
+                                validar = true;
                             }
                         });
-                }
+                    });
+                    if (validar == true) {
+                        this.$vs.notify({
+                            time: 5000,
+                            title: "Error",
+                            text:
+                                "Articulo " +
+                                nomarticulo +
+                                " sin saldo suficiente,revise los datos e intente nuevamente ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    } else {
+                        this.TraerUltimoNFolio();
+                        setTimeout(() => {
+                            if (this.listaDespachoArticulos.length < 1) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No existen datos en el detalle para generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.folio == 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text: "No se pudo generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                let data = {
+                                    NUMINT: this.numint,
+                                    FOLIO: this.folio
+                                };
+                                axios
+                                    .post(
+                                        this.localVal +
+                                            "/api/Despachos/CerrarDespacho",
+                                        data,
+                                        {
+                                            headers: {
+                                                Authorization:
+                                                    `Bearer ` +
+                                                    sessionStorage.getItem(
+                                                        "token"
+                                                    )
+                                            }
+                                        }
+                                    )
+                                    .then(res => {
+                                        let data = res.data;
+                                        if (data == true) {
+                                            this.$vs.notify({
+                                                time: 5000,
+                                                title: "Finalizado",
+                                                text:
+                                                    "Despacho Cerrado, sera redirigido a otra ventana",
+                                                color: "success",
+                                                position: "top-right"
+                                            });
+                                            this.$router.push({
+                                                name: "ListadoDespachosCerrados"
+                                            });
+                                        }
+                                    });
+                            }
+                        }, 2000);
+                    }
+                }, 1000);
             } catch (error) {
                 console.log(error);
             }
@@ -967,326 +1036,341 @@ export default {
                     sessionStorage.getItem("nombre") +
                     " " +
                     sessionStorage.getItem("apellido");
-                if (
-                    this.numint == 0 &&
-                    this.fechaDespacho != null &&
-                    this.seleccionTipoDespacho.id != 0 &&
-                    this.seleccionServicio.id != 0
-                ) {
-                    axios
-                        .get(
-                            this.localVal +
-                                "/api/Despachos/GetUltimoNInternoDespacho",
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            let nint = res.data;
-                            if (
-                                nint == 0 ||
-                                nint == null ||
-                                nint == [] ||
-                                nint == {}
-                            ) {
-                                this.numint = 1;
-                                let data = {};
-                                if (fechaVencimiento == "No tiene Fecha") {
-                                    data = {
-                                        NUMINT: this.numint,
-                                        FECSYS: moment(
-                                            this.fechaSistema,
-                                            "DD-MM-YYYY"
-                                        ).format("YYYY-MM-DD"),
-                                        FECDES: moment(
-                                            this.fechaDespacho,
-                                            "DD-MM-YYYY"
-                                        ).format("YYYY-MM-DD"),
-                                        idServicio: this.seleccionServicio.id,
-                                        TIPDESP: this.seleccionTipoDespacho
-                                            .descripcionTipoDespacho,
-                                        NUMSOL: this.nsolicitud,
-                                        NUMLIBRO: this.nlibropedido,
-                                        saldoCorrecto: saldoCorrecto,
-                                        NOMART: NOMBRE,
-                                        CODBAR: CODBAR,
-                                        LOTE: LOTE,
-                                        UNIMED: UNIMED,
-                                        CODART: CODART,
-                                        diasVencimiento: diasVencimiento,
-                                        PRECIO: PRECIO,
-                                        CANTIDAD: cantidad,
-                                        USUING: nombreUsuario.toUpperCase()
-                                    };
-                                } else {
-                                    data = {
-                                        NUMINT: this.numint,
-                                        FECSYS: moment(
-                                            this.fechaSistema,
-                                            "DD-MM-YYYY"
-                                        ).format("YYYY-MM-DD"),
-                                        FECDES: moment(
-                                            this.fechaDespacho,
-                                            "DD-MM-YYYY"
-                                        ).format("YYYY-MM-DD"),
-                                        idServicio: this.seleccionServicio.id,
-                                        TIPDESP: this.seleccionTipoDespacho
-                                            .descripcionTipoDespacho,
-                                        NUMSOL: this.nsolicitud,
-                                        NUMLIBRO: this.nlibropedido,
-                                        saldoCorrecto: saldoCorrecto,
-                                        NOMART: NOMBRE,
-                                        CODBAR: CODBAR,
-                                        LOTE: LOTE,
-                                        UNIMED: UNIMED,
-                                        CODART: CODART,
-                                        diasVencimiento: diasVencimiento,
-                                        FECVEN: moment(fechaVencimiento).format(
-                                            "YYYY-MM-DD"
-                                        ),
-                                        PRECIO: PRECIO,
-                                        CANTIDAD: cantidad,
-                                        USUING: nombreUsuario.toUpperCase()
-                                    };
-                                }
-
-                                axios
-                                    .post(
-                                        this.localVal +
-                                            "/api/Despachos/PostDespacho",
-                                        data,
-                                        {
-                                            headers: {
-                                                Authorization:
-                                                    `Bearer ` +
-                                                    sessionStorage.getItem(
-                                                        "token"
-                                                    )
-                                            }
-                                        }
-                                    )
-                                    .then(res => {
-                                        let dat = res.data;
-                                        if (dat == false) {
-                                            this.$vs.notify({
-                                                time: 5000,
-                                                title: "Error",
-                                                text:
-                                                    "Se no guardaron los datos, intentelo nuevamente",
-                                                color: "danger",
-                                                position: "top-right"
-                                            });
-                                        } else {
-                                            this.$vs.notify({
-                                                time: 5000,
-                                                title: "Finalizado",
-                                                text:
-                                                    "Datos Guardados Correctamente",
-                                                color: "success",
-                                                position: "top-right"
-                                            });
-                                            this.popUpArticulosDisponibles = false;
-                                            this.TraerArticulosDisponibles();
-                                            this.TraerDetalleDespacho();
-                                        }
-                                    });
-                            } else {
-                                this.numint = nint + 1;
-                                let data = {};
-                                if (fechaVencimiento == "No tiene Fecha") {
-                                    data = {
-                                        NUMINT: this.numint,
-                                        FECSYS: moment(
-                                            this.fechaSistema,
-                                            "DD-MM-YYYY"
-                                        ).format("YYYY-MM-DD"),
-                                        FECDES: moment(
-                                            this.fechaDespacho,
-                                            "DD-MM-YYYY"
-                                        ).format("YYYY-MM-DD"),
-                                        idServicio: this.seleccionServicio.id,
-                                        TIPDESP: this.seleccionTipoDespacho
-                                            .descripcionTipoDespacho,
-                                        NUMSOL: this.nsolicitud,
-                                        NUMLIBRO: this.nlibropedido,
-                                        saldoCorrecto: saldoCorrecto,
-                                        NOMART: NOMBRE,
-                                        CODBAR: CODBAR,
-                                        LOTE: LOTE,
-                                        UNIMED: UNIMED,
-                                        CODART: CODART,
-                                        diasVencimiento: diasVencimiento,
-                                        PRECIO: PRECIO,
-                                        CANTIDAD: cantidad,
-                                        USUING: nombreUsuario.toUpperCase()
-                                    };
-                                } else {
-                                    data = {
-                                        NUMINT: this.numint,
-                                        FECSYS: moment(
-                                            this.fechaSistema,
-                                            "DD-MM-YYYY"
-                                        ).format("YYYY-MM-DD"),
-                                        FECDES: moment(
-                                            this.fechaDespacho,
-                                            "DD-MM-YYYY"
-                                        ).format("YYYY-MM-DD"),
-                                        idServicio: this.seleccionServicio.id,
-                                        TIPDESP: this.seleccionTipoDespacho
-                                            .descripcionTipoDespacho,
-                                        NUMSOL: this.nsolicitud,
-                                        NUMLIBRO: this.nlibropedido,
-                                        saldoCorrecto: saldoCorrecto,
-                                        NOMART: NOMBRE,
-                                        CODBAR: CODBAR,
-                                        LOTE: LOTE,
-                                        UNIMED: UNIMED,
-                                        CODART: CODART,
-                                        diasVencimiento: diasVencimiento,
-                                        FECVEN: moment(fechaVencimiento).format(
-                                            "YYYY-MM-DD"
-                                        ),
-                                        PRECIO: PRECIO,
-                                        CANTIDAD: cantidad,
-                                        USUING: nombreUsuario.toUpperCase()
-                                    };
-                                }
-
-                                axios
-                                    .post(
-                                        this.localVal +
-                                            "/api/Despachos/PostDespacho",
-                                        data,
-                                        {
-                                            headers: {
-                                                Authorization:
-                                                    `Bearer ` +
-                                                    sessionStorage.getItem(
-                                                        "token"
-                                                    )
-                                            }
-                                        }
-                                    )
-                                    .then(res => {
-                                        let dat = res.data;
-                                        if (dat == false) {
-                                            this.$vs.notify({
-                                                time: 5000,
-                                                title: "Error",
-                                                text:
-                                                    "Se no guardaron los datos, intentelo nuevamente",
-                                                color: "danger",
-                                                position: "top-right"
-                                            });
-                                        } else {
-                                            this.$vs.notify({
-                                                time: 5000,
-                                                title: "Finalizado",
-                                                text:
-                                                    "Datos Guardados Correctamente",
-                                                color: "success",
-                                                position: "top-right"
-                                            });
-                                            this.popUpArticulosDisponibles = false;
-                                            this.TraerArticulosDisponibles();
-                                            this.TraerDetalleDespacho();
-                                        }
-                                    });
-                            }
-                        });
+                if (parseInt(saldoCorrecto) < parseInt(cantidad)) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "La cantidad ingresada supera el saldo existente, ingrese otro valor e intentelo nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
-                    let data = {};
-                    if (fechaVencimiento == "No tiene Fecha") {
-                        data = {
-                            NUMINT: this.numint,
-                            FECSYS: moment(
-                                this.fechaSistema,
-                                "DD-MM-YYYY"
-                            ).format("YYYY-MM-DD"),
-                            FECDES: moment(
-                                this.fechaDespacho,
-                                "DD-MM-YYYY"
-                            ).format("YYYY-MM-DD"),
-                            saldoCorrecto: saldoCorrecto,
-                            NOMART: NOMBRE,
-                            CODBAR: CODBAR,
-                            LOTE: LOTE,
-                            UNIMED: UNIMED,
-                            CODART: CODART,
-                            diasVencimiento: diasVencimiento,
-                            PRECIO: PRECIO,
-                            CANTIDAD: cantidad,
-                            USUING: nombreUsuario.toUpperCase()
-                        };
-                    } else {
-                        data = {
-                            NUMINT: this.numint,
-                            FECSYS: moment(
-                                this.fechaSistema,
-                                "DD-MM-YYYY"
-                            ).format("YYYY-MM-DD"),
-                            FECDES: moment(
-                                this.fechaDespacho,
-                                "DD-MM-YYYY"
-                            ).format("YYYY-MM-DD"),
-                            saldoCorrecto: saldoCorrecto,
-                            NOMART: NOMBRE,
-                            CODBAR: CODBAR,
-                            LOTE: LOTE,
-                            UNIMED: UNIMED,
-                            CODART: CODART,
-                            diasVencimiento: diasVencimiento,
-
-                            FECVEN: moment(fechaVencimiento).format(
-                                "YYYY-MM-DD"
-                            ),
-                            PRECIO: PRECIO,
-                            CANTIDAD: cantidad,
-                            USUING: nombreUsuario.toUpperCase()
-                        };
-                    }
-
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Despachos/PostDetalleDespacho",
-                            data,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                    if (
+                        this.numint == 0 &&
+                        this.fechaDespacho != null &&
+                        this.seleccionTipoDespacho.id != 0 &&
+                        this.seleccionServicio.id != 0
+                    ) {
+                        axios
+                            .get(
+                                this.localVal +
+                                    "/api/Despachos/GetUltimoNInternoDespacho",
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
-                            }
-                        )
-                        .then(res => {
-                            let dat = res.data;
-                            if (dat == false) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "Se no guardaron los datos, intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Finalizado",
-                                    text: "Datos Guardados Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.popUpArticulosDisponibles = false;
-                                this.TraerArticulosDisponibles();
-                                this.TraerDetalleDespacho();
-                            }
-                        });
+                            )
+                            .then(res => {
+                                let nint = res.data[0].NUMINT;
+                                if (
+                                    nint == 0 ||
+                                    nint == null ||
+                                    nint == [] ||
+                                    nint == {}
+                                ) {
+                                    this.numint = 1;
+                                    let data = {};
+                                    if (fechaVencimiento == "No tiene Fecha") {
+                                        data = {
+                                            NUMINT: this.numint,
+                                            FECSYS: moment(
+                                                this.fechaSistema,
+                                                "DD-MM-YYYY"
+                                            ).format("YYYY-MM-DD"),
+                                            FECDES: moment(
+                                                this.fechaDespacho,
+                                                "DD-MM-YYYY"
+                                            ).format("YYYY-MM-DD"),
+                                            idServicio: this.seleccionServicio
+                                                .id,
+                                            TIPDESP: this.seleccionTipoDespacho
+                                                .descripcionTipoDespacho,
+                                            NUMSOL: this.nsolicitud,
+                                            NUMLIBRO: this.nlibropedido,
+                                            saldoCorrecto: saldoCorrecto,
+                                            NOMART: NOMBRE,
+                                            CODBAR: CODBAR,
+                                            LOTE: LOTE,
+                                            UNIMED: UNIMED,
+                                            CODART: CODART,
+                                            diasVencimiento: diasVencimiento,
+                                            PRECIO: PRECIO,
+                                            CANTIDAD: cantidad,
+                                            USUING: nombreUsuario.toUpperCase()
+                                        };
+                                    } else {
+                                        data = {
+                                            NUMINT: this.numint,
+                                            FECSYS: moment(
+                                                this.fechaSistema,
+                                                "DD-MM-YYYY"
+                                            ).format("YYYY-MM-DD"),
+                                            FECDES: moment(
+                                                this.fechaDespacho,
+                                                "DD-MM-YYYY"
+                                            ).format("YYYY-MM-DD"),
+                                            idServicio: this.seleccionServicio
+                                                .id,
+                                            TIPDESP: this.seleccionTipoDespacho
+                                                .descripcionTipoDespacho,
+                                            NUMSOL: this.nsolicitud,
+                                            NUMLIBRO: this.nlibropedido,
+                                            saldoCorrecto: saldoCorrecto,
+                                            NOMART: NOMBRE,
+                                            CODBAR: CODBAR,
+                                            LOTE: LOTE,
+                                            UNIMED: UNIMED,
+                                            CODART: CODART,
+                                            diasVencimiento: diasVencimiento,
+                                            FECVEN: moment(
+                                                fechaVencimiento
+                                            ).format("YYYY-MM-DD"),
+                                            PRECIO: PRECIO,
+                                            CANTIDAD: cantidad,
+                                            USUING: nombreUsuario.toUpperCase()
+                                        };
+                                    }
+
+                                    axios
+                                        .post(
+                                            this.localVal +
+                                                "/api/Despachos/PostDespacho",
+                                            data,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        sessionStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                        .then(res => {
+                                            let dat = res.data;
+                                            if (dat == false) {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "Se no guardaron los datos, intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Finalizado",
+                                                    text:
+                                                        "Datos Guardados Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                //this.popUpArticulosDisponibles = false;
+                                                this.TraerArticulosDisponibles();
+                                                this.TraerDetalleDespacho();
+                                            }
+                                        });
+                                } else {
+                                    this.numint = parseInt(nint + 1);
+                                    let data = {};
+                                    if (fechaVencimiento == "No tiene Fecha") {
+                                        data = {
+                                            NUMINT: this.numint,
+                                            FECSYS: moment(
+                                                this.fechaSistema,
+                                                "DD-MM-YYYY"
+                                            ).format("YYYY-MM-DD"),
+                                            FECDES: moment(
+                                                this.fechaDespacho,
+                                                "DD-MM-YYYY"
+                                            ).format("YYYY-MM-DD"),
+                                            idServicio: this.seleccionServicio
+                                                .id,
+                                            TIPDESP: this.seleccionTipoDespacho
+                                                .descripcionTipoDespacho,
+                                            NUMSOL: this.nsolicitud,
+                                            NUMLIBRO: this.nlibropedido,
+                                            saldoCorrecto: saldoCorrecto,
+                                            NOMART: NOMBRE,
+                                            CODBAR: CODBAR,
+                                            LOTE: LOTE,
+                                            UNIMED: UNIMED,
+                                            CODART: CODART,
+                                            diasVencimiento: diasVencimiento,
+                                            PRECIO: PRECIO,
+                                            CANTIDAD: cantidad,
+                                            USUING: nombreUsuario.toUpperCase()
+                                        };
+                                    } else {
+                                        data = {
+                                            NUMINT: this.numint,
+                                            FECSYS: moment(
+                                                this.fechaSistema,
+                                                "DD-MM-YYYY"
+                                            ).format("YYYY-MM-DD"),
+                                            FECDES: moment(
+                                                this.fechaDespacho,
+                                                "DD-MM-YYYY"
+                                            ).format("YYYY-MM-DD"),
+                                            idServicio: this.seleccionServicio
+                                                .id,
+                                            TIPDESP: this.seleccionTipoDespacho
+                                                .descripcionTipoDespacho,
+                                            NUMSOL: this.nsolicitud,
+                                            NUMLIBRO: this.nlibropedido,
+                                            saldoCorrecto: saldoCorrecto,
+                                            NOMART: NOMBRE,
+                                            CODBAR: CODBAR,
+                                            LOTE: LOTE,
+                                            UNIMED: UNIMED,
+                                            CODART: CODART,
+                                            diasVencimiento: diasVencimiento,
+                                            FECVEN: moment(
+                                                fechaVencimiento
+                                            ).format("YYYY-MM-DD"),
+                                            PRECIO: PRECIO,
+                                            CANTIDAD: cantidad,
+                                            USUING: nombreUsuario.toUpperCase()
+                                        };
+                                    }
+
+                                    axios
+                                        .post(
+                                            this.localVal +
+                                                "/api/Despachos/PostDespacho",
+                                            data,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        sessionStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                        .then(res => {
+                                            let dat = res.data;
+                                            if (dat == false) {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "Se no guardaron los datos, intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Finalizado",
+                                                    text:
+                                                        "Datos Guardados Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                //this.popUpArticulosDisponibles = false;
+                                                this.TraerArticulosDisponibles();
+                                                this.TraerDetalleDespacho();
+                                            }
+                                        });
+                                }
+                            });
+                    } else {
+                        let data = {};
+                        if (fechaVencimiento == "No tiene Fecha") {
+                            data = {
+                                NUMINT: this.numint,
+                                FECSYS: moment(
+                                    this.fechaSistema,
+                                    "DD-MM-YYYY"
+                                ).format("YYYY-MM-DD"),
+                                FECDES: moment(
+                                    this.fechaDespacho,
+                                    "DD-MM-YYYY"
+                                ).format("YYYY-MM-DD"),
+                                saldoCorrecto: saldoCorrecto,
+                                NOMART: NOMBRE,
+                                CODBAR: CODBAR,
+                                LOTE: LOTE,
+                                UNIMED: UNIMED,
+                                CODART: CODART,
+                                diasVencimiento: diasVencimiento,
+                                PRECIO: PRECIO,
+                                CANTIDAD: cantidad,
+                                USUING: nombreUsuario.toUpperCase()
+                            };
+                        } else {
+                            data = {
+                                NUMINT: this.numint,
+                                FECSYS: moment(
+                                    this.fechaSistema,
+                                    "DD-MM-YYYY"
+                                ).format("YYYY-MM-DD"),
+                                FECDES: moment(
+                                    this.fechaDespacho,
+                                    "DD-MM-YYYY"
+                                ).format("YYYY-MM-DD"),
+                                saldoCorrecto: saldoCorrecto,
+                                NOMART: NOMBRE,
+                                CODBAR: CODBAR,
+                                LOTE: LOTE,
+                                UNIMED: UNIMED,
+                                CODART: CODART,
+                                diasVencimiento: diasVencimiento,
+
+                                FECVEN: moment(fechaVencimiento).format(
+                                    "YYYY-MM-DD"
+                                ),
+                                PRECIO: PRECIO,
+                                CANTIDAD: cantidad,
+                                USUING: nombreUsuario.toUpperCase()
+                            };
+                        }
+
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Despachos/PostDetalleDespacho",
+                                data,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                let dat = res.data;
+                                if (dat == false) {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "Se no guardaron los datos, intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Finalizado",
+                                        text: "Datos Guardados Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.popUpArticulosDisponibles = false;
+                                    this.TraerArticulosDisponibles();
+                                    this.TraerDetalleDespacho();
+                                }
+                            });
+                    }
                 }
             } catch (error) {
                 console.log(error);
