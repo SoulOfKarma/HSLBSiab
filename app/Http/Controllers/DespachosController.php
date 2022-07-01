@@ -37,6 +37,7 @@ class DespachosController extends Controller
                                       group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI                          
                                       ) t
                               group by t.NOMBRE,t.CODBAR,t.LOTE,t.UNIMED,t.CODART,t.diasVencimiento,t.fechaVencimiento,t.PREUNI
+                              HAVING saldoCorrecto > 0
             ');
             return $get;
         } catch (\Throwable $th) {
