@@ -250,6 +250,12 @@ const router = new Router({
                     name: "/Reportes/SaldoXProducto",
                     component: () =>
                         import("./views/Reportes/SaldoXProducto.vue")
+                },
+                {
+                    path: "/Reportes/SaldoValorizado",
+                    name: "/Reportes/SaldoValorizado",
+                    component: () =>
+                        import("./views/Reportes/SaldoValorizado.vue")
                 }
             ]
         },

@@ -207,6 +207,12 @@ export default [
                 name: "SaldoXProducto",
                 slug: "/Reportes/SaldoXProducto",
                 icon: "HomeIcon"
+            },
+            {
+                url: "/Reportes/SaldoValorizado",
+                name: "SaldoValorizado",
+                slug: "/Reportes/SaldoValorizado",
+                icon: "HomeIcon"
             }
         ]
     }

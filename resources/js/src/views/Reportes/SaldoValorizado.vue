@@ -245,6 +245,20 @@ export default {
                     }
                 },
                 {
+                    label: "Ultimo Precio",
+                    field: "ULTPRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Total",
+                    field: "TOTAL",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
                     label: "Opciones",
                     field: "action"
                 }
@@ -288,15 +302,19 @@ export default {
             }
         },
         //Metodos CRUD
-        GetSaldos() {
+        GetSaldoValorizado() {
             try {
                 axios
-                    .get(this.localVal + "/api/Reportes/GetSaldosReporte", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                    .get(
+                        this.localVal +
+                            "/api/Reportes/GetSaldosValorizadoReporte",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         this.listadoSaldos = res.data;
                         if (this.listadoSaldos.length < 0) {
@@ -348,7 +366,7 @@ export default {
     beforeMount() {
         this.RefreshToken();
         setTimeout(() => {
-            this.GetSaldos();
+            this.GetSaldoValorizado();
         }, 2000);
     }
 };

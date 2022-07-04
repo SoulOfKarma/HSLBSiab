@@ -164,7 +164,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Recepcion/PostDocumentoRecepcionFacturaCarta', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostDocumentoRecepcionFacturaCarta']);
     Route::post('/Recepcion/DestroyDocumentoRecepcionFacturaCarta', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DestroyDocumentoRecepcionFactura']);
 
-    
+    //Get Reportes
+    Route::get('/Reportes/GetSaldosReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosReporte']);
+    Route::get('/Reportes/GetSaldosValorizadoReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoReporte']);
 });
 
 //Generar PDF
