@@ -213,6 +213,12 @@ export default [
                 name: "SaldoValorizado",
                 slug: "/Reportes/SaldoValorizado",
                 icon: "HomeIcon"
+            },
+            {
+                url: "/Reportes/Bincard",
+                name: "Bincard",
+                slug: "/Reportes/Bincard",
+                icon: "HomeIcon"
             }
         ]
     }

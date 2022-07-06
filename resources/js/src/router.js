@@ -256,6 +256,11 @@ const router = new Router({
                     name: "/Reportes/SaldoValorizado",
                     component: () =>
                         import("./views/Reportes/SaldoValorizado.vue")
+                },
+                {
+                    path: "/Reportes/Bincard",
+                    name: "/Reportes/Bincard",
+                    component: () => import("./views/Reportes/Bincard.vue")
                 }
             ]
         },

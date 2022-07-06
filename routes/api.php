@@ -112,6 +112,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/GetOrdenCompraDetallesIngresadosByCodInterno', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetOrdenCompraDetallesIngresadosByCodInterno']);
     Route::post('/Despachos/GetDespachos', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachos']);
     Route::post('/Despachos/GetDespachoDetalles', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachoDetalles']);
+    Route::post('/Reportes/GetBincard', ['middleware' => 'cors', 'uses' => 'Reportes@GetBincard']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);
@@ -167,6 +168,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     //Get Reportes
     Route::get('/Reportes/GetSaldosReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosReporte']);
     Route::get('/Reportes/GetSaldosValorizadoReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoReporte']);
+    Route::get('/Reportes/GetArticulosSaldoEstado', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstado']);
 });
 
 //Generar PDF
