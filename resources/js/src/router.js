@@ -246,21 +246,9 @@ const router = new Router({
                 },
                 //Router de Reportes
                 {
-                    path: "/Reportes/SaldoXProducto",
-                    name: "/Reportes/SaldoXProducto",
-                    component: () =>
-                        import("./views/Reportes/SaldoXProducto.vue")
-                },
-                {
-                    path: "/Reportes/SaldoValorizado",
-                    name: "/Reportes/SaldoValorizado",
-                    component: () =>
-                        import("./views/Reportes/SaldoValorizado.vue")
-                },
-                {
-                    path: "/Reportes/Bincard",
-                    name: "/Reportes/Bincard",
-                    component: () => import("./views/Reportes/Bincard.vue")
+                    path: "/Reportes/Reportes",
+                    name: "/Reportes/Reportes",
+                    component: () => import("./views/Reportes/Reportes.vue")
                 }
             ]
         },

@@ -203,21 +203,9 @@ export default [
         icon: "HomeIcon",
         submenu: [
             {
-                url: "/Reportes/SaldoXProducto",
-                name: "SaldoXProducto",
-                slug: "/Reportes/SaldoXProducto",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/Reportes/SaldoValorizado",
-                name: "SaldoValorizado",
-                slug: "/Reportes/SaldoValorizado",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/Reportes/Bincard",
-                name: "Bincard",
-                slug: "/Reportes/Bincard",
+                url: "/Reportes/Reportes",
+                name: "Reportes",
+                slug: "/Reportes/Reportes",
                 icon: "HomeIcon"
             }
         ]
