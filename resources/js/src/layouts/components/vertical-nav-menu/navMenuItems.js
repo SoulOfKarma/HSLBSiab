@@ -215,5 +215,19 @@ export default [
                 icon: "HomeIcon"
             }
         ]
+    },
+    {
+        url: null,
+        name: "FirmaTest",
+        slug: "FirmaTest",
+        icon: "HomeIcon",
+        submenu: [
+            {
+                url: "/Firma/FirmaTest",
+                name: "FirmaTest",
+                slug: "/Firma/FirmaTest",
+                icon: "HomeIcon"
+            }
+        ]
     }
 ];

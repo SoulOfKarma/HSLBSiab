@@ -254,6 +254,12 @@ const router = new Router({
                     path: "/Reportes/GridReportes",
                     name: "GridReportes",
                     component: () => import("./views/Reportes/GridReportes.vue")
+                },
+                //Firma Tests Sandbox
+                {
+                    path: "/Firma/FirmaTest",
+                    name: "FirmaTest",
+                    component: () => import("./views/Firma/FirmaTest.vue")
                 }
             ]
         },
