@@ -114,6 +114,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Despachos/GetDespachoDetalles', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachoDetalles']);
     Route::post('/Reportes/GetBincard', ['middleware' => 'cors', 'uses' => 'Reportes@GetBincard']);
     Route::post('/Reportes/GetConsumoAnio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoAnio']);
+    Route::post('/Reportes/GetConsumoMes', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoMes']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);

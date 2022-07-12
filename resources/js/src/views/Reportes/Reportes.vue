@@ -50,6 +50,39 @@
                         </div>
                     </div>
                     <br />
+                    <div class="vx-row" v-if="consumomes">
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicio"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTermino"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetConsumoMes"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar</vs-button
+                            >
+                        </div>
+                    </div>
+                    <br />
                     <vx-card title="">
                         <div class="vx-row">
                             <vue-good-table
@@ -187,6 +220,7 @@ export default {
             //Datos Campos
             listaActive: false,
             consumoanio: false,
+            consumomes: false,
             popUpBincard: false,
             fechaInicio: null,
             fechaTermino: null,
@@ -631,6 +665,10 @@ export default {
                 } else if (this.seleccionReporte.id == 4) {
                     this.listaActive = false;
                     this.consumoanio = true;
+                } else if (this.seleccionReporte.id == 5) {
+                    this.listaActive = false;
+                    this.consumoanio = false;
+                    this.consumomes = true;
                 }
             } catch (error) {
                 console.log(error);
@@ -674,7 +712,9 @@ export default {
                     ),
                     FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
                         "YYYY-MM-DD"
-                    )
+                    ),
+                    ANIO: moment(this.fechaInicio, "DD-MM-YYYY").format("YYYY"),
+                    MES: moment(this.fechaInicio, "DD-MM-YYYY").format("MM")
                 };
                 axios
                     .post(
@@ -729,15 +769,8 @@ export default {
                                     }
                                 },
                                 {
-                                    label: "Saldo",
-                                    field: "saldoCorrecto",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Ultimo Precio",
-                                    field: "ULTPRE",
+                                    label: "Consumo",
+                                    field: "CONSUMO",
                                     filterOptions: {
                                         enabled: true
                                     }
@@ -747,6 +780,93 @@ export default {
                                     field: "action"
                                 }
                             ];
+                            this.listaActive = true;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetConsumoMes() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    ANIO: moment(this.fechaInicio, "DD-MM-YYYY").format("YYYY"),
+                    MES: moment(this.fechaInicio, "DD-MM-YYYY").format("MM")
+                };
+                axios
+                    .post(this.localVal + "/api/Reportes/GetConsumoMes", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        if (this.listadoGeneral.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.column = [
+                                {
+                                    label: "Año",
+                                    field: "ANIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Interno",
+                                    field: "CODART",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo ZGEN",
+                                    field: "ZGEN",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Descripcion",
+                                    field: "NOMBRE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Mes",
+                                    field: "MES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Consumo",
+                                    field: "CONSUMO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Opciones",
+                                    field: "action"
+                                }
+                            ];
+                            this.listaActive = true;
                         }
                     });
             } catch (error) {

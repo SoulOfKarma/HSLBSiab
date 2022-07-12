@@ -156,37 +156,54 @@ class Reportes extends Controller
 
     public function GetConsumoAnio(Request $request){
         try {
-            $get = DB::select('select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = t.LOTE && 
-            despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
-            GROUP BY despacho_detalles.LOTE),0))
-                         AS saldoCorrecto,
-                                    t.NOMBRE,t.CODBAR,t.LOTE,t.UNIMED,t.CODART,t.diasVencimiento,t.fechaVencimiento,t.PREUNI,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
-                                    (SELECT MAX(recepcion_detalles.PREUNI)
-												FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
-												WHERE recepcion_detalles.CODART = t.CODART) AS ULTPRE,
-                                                FORMAT(((SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.NOMART = t.NOMBRE && 
-												            despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
-												            GROUP BY despacho_detalles.NOMART),0)) * (SELECT MAX(recepcion_detalles.PREUNI)
-												FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
-												WHERE recepcion_detalles.CODART = t.CODART)),2) AS TOTAL,
-                                    COALESCE((SELECT despacho_detalles.CANTIDAD FROM despacho_detalles WHERE t.CODART = despacho_detalles.CODART && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'" LIMIT 1),0) AS CONSUMO
-                                        from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
-                                      recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
-                                      COALESCE(TIMESTAMPDIFF(DAY,NOW(),recepcion_detalles.FECVEN)+1,0) as diasVencimiento,COALESCE(recepcion_detalles.FECVEN,"No tiene Fecha") AS fechaVencimiento,
-                                      recepcion_detalles.PREUNI AS PREUNI
-                                      from recepcion_detalles 
-                                      group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI
-                              
-                                      union all
-                              
-                                      select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
-                                       saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
-                                       COALESCE(TIMESTAMPDIFF(DAY,NOW(),saldo_inventario.FECVEN)+1,0) as diasVencimiento,COALESCE(saldo_inventario.FECVEN,"No tiene Fecha") AS fechaVencimiento,
-                                       saldo_inventario.PRECIO AS PREUNI
-                                      from saldo_inventario 
-                                      group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI                         
-                                      ) t
-                              group by t.NOMBRE,t.CODBAR,t.LOTE,t.UNIMED,t.CODART,t.diasVencimiento,t.fechaVencimiento,t.PREUNI,ZGEN
+            $get = DB::select('select t.NOMBRE,t.CODART,t.UNIMED,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
+            COALESCE((SELECT despacho_detalles.CANTIDAD FROM despacho_detalles WHERE t.CODART = despacho_detalles.CODART && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'" LIMIT 1),0) AS CONSUMO
+                from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+              recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
+              COALESCE(TIMESTAMPDIFF(DAY,NOW(),recepcion_detalles.FECVEN)+1,0) as diasVencimiento,COALESCE(recepcion_detalles.FECVEN,"No tiene Fecha") AS fechaVencimiento,
+              recepcion_detalles.PREUNI AS PREUNI
+              from recepcion_detalles 
+              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI
+      
+              union all
+      
+              select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+               saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
+               COALESCE(TIMESTAMPDIFF(DAY,NOW(),saldo_inventario.FECVEN)+1,0) as diasVencimiento,COALESCE(saldo_inventario.FECVEN,"No tiene Fecha") AS fechaVencimiento,
+               saldo_inventario.PRECIO AS PREUNI
+              from saldo_inventario 
+              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI                         
+              ) t
+      group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetConsumoMes(Request $request){
+        try {
+            $get = DB::select('select DISTINCT "'.$request->ANIO.'" AS ANIO,"'.$request->MES.'" AS MES,t.NOMBRE,t.CODART,t.UNIMED,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
+            COALESCE((SELECT despacho_detalles.CANTIDAD FROM despacho_detalles WHERE t.CODART = despacho_detalles.CODART && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'" LIMIT 1),0) AS CONSUMO
+                from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+              recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
+              COALESCE(TIMESTAMPDIFF(DAY,NOW(),recepcion_detalles.FECVEN)+1,0) as diasVencimiento,COALESCE(recepcion_detalles.FECVEN,"No tiene Fecha") AS fechaVencimiento,
+              recepcion_detalles.PREUNI AS PREUNI
+              from recepcion_detalles 
+              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI
+      
+              union all
+      
+              select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+               saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
+               COALESCE(TIMESTAMPDIFF(DAY,NOW(),saldo_inventario.FECVEN)+1,0) as diasVencimiento,COALESCE(saldo_inventario.FECVEN,"No tiene Fecha") AS fechaVencimiento,
+               saldo_inventario.PRECIO AS PREUNI
+              from saldo_inventario 
+              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI                         
+              ) t
+      group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
             ');
             return $get;
         } catch (\Throwable $th) {

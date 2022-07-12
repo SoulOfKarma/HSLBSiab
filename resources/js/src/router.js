@@ -249,6 +249,11 @@ const router = new Router({
                     path: "/Reportes/Reportes",
                     name: "/Reportes/Reportes",
                     component: () => import("./views/Reportes/Reportes.vue")
+                },
+                {
+                    path: "/Reportes/GridReportes",
+                    name: "GridReportes",
+                    component: () => import("./views/Reportes/GridReportes.vue")
                 }
             ]
         },

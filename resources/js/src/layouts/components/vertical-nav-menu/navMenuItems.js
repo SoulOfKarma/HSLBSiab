@@ -207,6 +207,12 @@ export default [
                 name: "Reportes",
                 slug: "/Reportes/Reportes",
                 icon: "HomeIcon"
+            },
+            {
+                url: "/Reportes/GridReportes",
+                name: "GridReportes",
+                slug: "/Reportes/GridReportes",
+                icon: "HomeIcon"
             }
         ]
     }
