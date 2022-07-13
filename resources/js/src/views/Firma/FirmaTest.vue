@@ -109,22 +109,16 @@ export default {
 
                 let data = {
                     api_token_key: "sandbox",
-                    token: token,
-                    files: [
-                        {
-                            "content-type": "application/json",
-                            content:
-                                "eyJrZXkxIjogInZhbHVlMSIsImtleTIiOiAidmFsdWUyIn0=",
-                            checksum:
-                                "9971224dc8f574ec570ce9fa86f649e2fc26928f561d1649e16841432f9165ff"
-                        }
-                    ]
+                    token: token
                 };
+
                 axios
-                    .post(
-                        "https://api.firma.cert.digital.gob.cl/firma/v2/files/tickets",
-                        data
-                    )
+                    .post(this.localVal + "/api/Firma/TestFirmaDigital", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
                     .then(res => {
                         let tok = res.data;
                         console.log(tok);

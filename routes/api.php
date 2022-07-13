@@ -65,6 +65,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Despachos/GetDespachosCerrados', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachosCerrados']);
     Route::get('/Recepcion/GetDetallesRecepcionesAnulados', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetDetallesRecepcionesAnulados']);
     Route::get('/Despachos/GetDetallesDespachosAnulados', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDetallesDespachosAnulados']);
+    Route::post('/Firma/TestFirmaDigital', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestFirmaDigital']);
     
     //Posts 
     Route::post('/Mantenedor/PostProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PostProveedor']);
