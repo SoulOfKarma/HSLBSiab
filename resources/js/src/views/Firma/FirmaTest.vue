@@ -6,6 +6,7 @@
                     <div class="vx-row">
                         <div class="vx-col w-full mt-5">
                             <h6>.</h6>
+                            <vs-input class="inputx w-full  " v-model="otp" />
                             <vs-button
                                 @click="GenerarJWT"
                                 color="primary"
@@ -55,7 +56,8 @@ export default {
             localVal: process.env.MIX_APP_URL,
             localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
             //Datos Listado
-            rows: []
+            rows: [],
+            otp: 0
         };
     },
     methods: {
@@ -94,22 +96,24 @@ export default {
             try {
                 let secreto = "27a216342c744f89b7b82fa290519ba0";
                 const jwt = require("jsonwebtoken");
-                let date = moment().add(15, "minutes");
+                let date = moment().add(30, "minutes");
                 let fecha = date.format("YYYY-MM-DDTHH:mm:ss").toString();
                 const user = {
+                    entity: "Hospital San Luis de Buin - Paine",
                     run: "18499714",
-                    entity: "Ricardo Arturo Soto Gómez",
                     expiration: fecha,
                     purpose: "Desatendido"
                 };
+
                 const token = jwt.sign(user, secreto, {
-                    expiresIn: 60 * 15,
+                    expiresIn: 60 * 30,
                     algorithm: "HS256"
                 });
 
                 let data = {
                     api_token_key: "sandbox",
-                    token: token
+                    token: token,
+                    otp: this.otp
                 };
 
                 axios
