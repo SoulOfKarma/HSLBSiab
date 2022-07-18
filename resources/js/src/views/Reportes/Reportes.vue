@@ -18,6 +18,20 @@
                     </div>
                     <br />
                     <div class="vx-row" v-if="consumoanio">
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codter"
+                            />
+                        </div>
                         <div class="vx-col w-1/3 mt-5">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
@@ -49,29 +63,78 @@
                             >
                         </div>
                     </div>
-                    <br />
                     <div class="vx-row" v-if="consumomes">
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>Fecha Inicio</h6>
-                            <flat-pickr
-                                :config="configFromdateTimePicker"
-                                v-model="fechaInicio"
-                                placeholder="Fecha Inicio"
-                                @on-change="onFromChange"
-                                class="w-full "
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>Fecha Termino</h6>
-                            <flat-pickr
-                                :config="configTodateTimePicker"
-                                v-model="fechaTermino"
-                                placeholder="Fecha Termino"
-                                @on-change="onToChange"
-                                class="w-full "
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codter"
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>Seleccione Mes</h6>
+                            <v-select
+                                v-model="seleccionMes"
+                                placeholder="Ej. Junio"
+                                class="w-full select-large"
+                                label="descripcionMes"
+                                :options="listadoMes"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetConsumoMes"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar</vs-button
+                            >
+                        </div>
+                    </div>
+                    <div class="vx-row" v-if="consumomesservicio">
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codter"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Seleccione Mes</h6>
+                            <v-select
+                                v-model="seleccionMes"
+                                placeholder="Ej. Junio"
+                                class="w-full select-large"
+                                label="descripcionMes"
+                                :options="listadoMes"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Seleccione Servicio</h6>
+                            <v-select
+                                v-model="seleccionMes"
+                                placeholder="Ej. Junio"
+                                class="w-full select-large"
+                                label="descripcionMes"
+                                :options="listadoMes"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetConsumoMes"
@@ -221,13 +284,20 @@ export default {
             listaActive: false,
             consumoanio: false,
             consumomes: false,
+            consumomesservicio: false,
             popUpBincard: false,
             fechaInicio: null,
             fechaTermino: null,
+            codini: "",
+            codter: "",
             idMod: 0,
             seleccionReporte: {
                 id: 0,
                 descripcionReporte: "Ej. Bincard"
+            },
+            seleccionMes: {
+                id: 0,
+                descripcionMes: "Seleccione Mes"
             },
             //Datos Fechas
             configFromdateTimePicker: {
@@ -465,6 +535,64 @@ export default {
                 {
                     id: 4,
                     descripcionReporte: "Consumo por Año"
+                },
+                {
+                    id: 5,
+                    descripcionReporte: "Consumo por Mes"
+                },
+                {
+                    id: 6,
+                    descripcionReporte: "Consumo por Mes/Servicio"
+                }
+            ],
+            listadoMes: [
+                {
+                    id: 1,
+                    descripcionMes: "Enero"
+                },
+                {
+                    id: 2,
+                    descripcionMes: "Febrero"
+                },
+                {
+                    id: 3,
+                    descripcionMes: "Marzo"
+                },
+                {
+                    id: 4,
+                    descripcionMes: "Abril"
+                },
+                {
+                    id: 5,
+                    descripcionMes: "Mayo"
+                },
+                {
+                    id: 6,
+                    descripcionMes: "Junio"
+                },
+                {
+                    id: 7,
+                    descripcionMes: "Julio"
+                },
+                {
+                    id: 8,
+                    descripcionMes: "Agosto"
+                },
+                {
+                    id: 9,
+                    descripcionMes: "Septiembre"
+                },
+                {
+                    id: 10,
+                    descripcionMes: "Octubre"
+                },
+                {
+                    id: 11,
+                    descripcionMes: "Noviembre"
+                },
+                {
+                    id: 12,
+                    descripcionMes: "Diciembre"
                 }
             ]
         };
@@ -509,6 +637,11 @@ export default {
             try {
                 this.listaActive = true;
                 this.consumoanio = false;
+                this.consumomes = false;
+                this.fechaInicio = null;
+                this.fechaTermino = null;
+                this.codini = "";
+                this.codter = "";
                 if (this.seleccionReporte.id == 1) {
                     this.column = [
                         {
@@ -661,14 +794,23 @@ export default {
                         }
                     ];
                     this.consumoanio = false;
+                    this.consumomes = false;
                     this.GetSaldoArticulos();
                 } else if (this.seleccionReporte.id == 4) {
                     this.listaActive = false;
                     this.consumoanio = true;
+                    this.consumomes = false;
+                    this.consumomesservicio = false;
                 } else if (this.seleccionReporte.id == 5) {
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = true;
+                    this.consumomesservicio = false;
+                } else if (this.seleccionReporte.id == 6) {
+                    this.listaActive = false;
+                    this.consumoanio = false;
+                    this.consumomes = false;
+                    this.consumomesservicio = true;
                 }
             } catch (error) {
                 console.log(error);
@@ -713,8 +855,8 @@ export default {
                     FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
                         "YYYY-MM-DD"
                     ),
-                    ANIO: moment(this.fechaInicio, "DD-MM-YYYY").format("YYYY"),
-                    MES: moment(this.fechaInicio, "DD-MM-YYYY").format("MM")
+                    CODINI: this.codini,
+                    CODTER: this.codter
                 };
                 axios
                     .post(
@@ -789,15 +931,16 @@ export default {
         },
         GetConsumoMes() {
             try {
+                let mes = "";
+                if (this.seleccionMes.id > 0 && this.seleccionMes.id < 10) {
+                    mes = "0" + this.seleccionMes.id;
+                } else {
+                    mes = this.seleccionMes.id;
+                }
                 let data = {
-                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
-                        "YYYY-MM-DD"
-                    ),
-                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
-                        "YYYY-MM-DD"
-                    ),
-                    ANIO: moment(this.fechaInicio, "DD-MM-YYYY").format("YYYY"),
-                    MES: moment(this.fechaInicio, "DD-MM-YYYY").format("MM")
+                    CODINI: this.codini,
+                    CODTER: this.codter,
+                    MES: mes
                 };
                 axios
                     .post(this.localVal + "/api/Reportes/GetConsumoMes", data, {
@@ -819,13 +962,6 @@ export default {
                             });
                         } else {
                             this.column = [
-                                {
-                                    label: "Año",
-                                    field: "ANIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
                                 {
                                     label: "Codigo Interno",
                                     field: "CODART",

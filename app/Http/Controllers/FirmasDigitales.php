@@ -49,46 +49,38 @@ class FirmasDigitales extends Controller
                 $pdf->setOptions(['isRemoteEnabled' => true]);
                 $base = chunk_split(base64_encode($pdf->stream("RecepcionFirma.pdf", array("Attachment" => 0))));
                 $hash = hash('sha256', $pdf->stream("RecepcionFirma.pdf", array("Attachment" => 0)));
-                //Storage::disk('public')->put('file.pdf',base64_decode($base));
-                $datos = json_encode([
+                //Storage::disk('public')->put('file.pdf',base64_decode($base)) json_encode(;
+                $datos = [
                     'token' => $request->token,
                     'api_token_key' => $request->api_token_key,     
                     'files' => [
                         ["content-type" => "application/pdf",
                         "content" => $base,
-                        "description" => "doc",
-                        "checksum" => $hash,
-                        "layout" => "<AgileSignerConfig>
-                                        <Application id=\"THIS-CONFIG\">
-                                        <pdfPassword/>
-                                            <Signature>
-                                                <Visible active=\"true\" layer2=\"false\" label=\"true\" pos=\"1\">
-                                                    <llx>250</llx>
-                                                    <lly>300</lly>
-                                                    <urx>350</urx>
-                                                    <ury>450</ury>
-                                                    <page>LAST</page>
-                                                    <image>BASE64</image>
-                                                    <BASE64VALUE></BASE64VALUE>
-                                                </Visible>
-                                            </Signature>
-                                        </Application>
-                        </AgileSignerConfig>"]
+                        "description" => "RecepcionFirma",
+                        "checksum" => $hash
+                        ]
                     ]
-                ]);
+                ];
 
             $client = new \GuzzleHttp\Client();
             $res = $client->post('https://api.firma.cert.digital.gob.cl/firma/v2/files/tickets',
-            [
-                'body' => $datos
+            [   
+                'body' => json_encode($datos)
             ]
             );
             $resp = $res->getBody()->getContents(); 
             
             log::info($resp);
             return $datos;
-        }catch(\Throwable $th){
-            log::info($th);
+        }catch (RuntimeException $e) {
+            // catches all kinds of RuntimeExceptions
+            if ($e instanceof ClientException) {
+                log::info($e);
+                return false;
+            } else if ($e instanceof RequestException) {
+                log::info($e);
+                return false;
+            }
             return false;
         }
 

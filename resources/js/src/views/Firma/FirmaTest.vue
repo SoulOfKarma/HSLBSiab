@@ -98,9 +98,16 @@ export default {
                 const jwt = require("jsonwebtoken");
                 let date = moment().add(30, "minutes");
                 let fecha = date.format("YYYY-MM-DDTHH:mm:ss").toString();
-                const user = {
+                const users = {
                     entity: "Hospital San Luis de Buin - Paine",
                     run: "18499714",
+                    expiration: fecha,
+                    purpose: "Propósito General"
+                };
+
+                const user = {
+                    entity: "Subsecretaría General de la Presidencia",
+                    run: "22222222",
                     expiration: fecha,
                     purpose: "Desatendido"
                 };
@@ -112,8 +119,7 @@ export default {
 
                 let data = {
                     api_token_key: "sandbox",
-                    token: token,
-                    otp: this.otp
+                    token: token
                 };
 
                 axios

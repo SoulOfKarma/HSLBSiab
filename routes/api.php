@@ -113,9 +113,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/GetOrdenCompraDetallesIngresadosByCodInterno', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GetOrdenCompraDetallesIngresadosByCodInterno']);
     Route::post('/Despachos/GetDespachos', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachos']);
     Route::post('/Despachos/GetDespachoDetalles', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachoDetalles']);
-    Route::post('/Reportes/GetBincard', ['middleware' => 'cors', 'uses' => 'Reportes@GetBincard']);
-    Route::post('/Reportes/GetConsumoAnio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoAnio']);
-    Route::post('/Reportes/GetConsumoMes', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoMes']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);
@@ -172,6 +169,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Reportes/GetSaldosReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosReporte']);
     Route::get('/Reportes/GetSaldosValorizadoReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoReporte']);
     Route::get('/Reportes/GetArticulosSaldoEstado', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstado']);
+
+    //Post Reportes
+    Route::post('/Reportes/GetBincard', ['middleware' => 'cors', 'uses' => 'Reportes@GetBincard']);
+    Route::post('/Reportes/GetConsumoAnio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoAnio']);
+    Route::post('/Reportes/GetConsumoMes', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoMes']);    
+    Route::post('/Reportes/GetConsumoMesServicio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoMesServicio']);
 });
 
 //Generar PDF

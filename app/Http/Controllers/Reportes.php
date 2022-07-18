@@ -46,6 +46,7 @@ class Reportes extends Controller
             ) a
             
             group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN
+            ORDER BY a.CODART ASC
             ');
             return $get;
         } catch (\Throwable $th) {
@@ -97,6 +98,7 @@ class Reportes extends Controller
             ) a
             
             group by a.NOMBRE,a.UNIMED,a.CODART,a.ZGEN,a.ULTPRE,a.TOTAL
+            ORDER BY a.CODART ASC
             ');
             return $get;
         } catch (\Throwable $th) {
@@ -171,6 +173,7 @@ class Reportes extends Controller
                FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id
             )a 
             group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
+            ORDER BY a.CODART ASC
             ');
             return $get;
         } catch (\Throwable $th) {
@@ -187,14 +190,14 @@ class Reportes extends Controller
                         COALESCE((SELECT despacho_detalles.CANTIDAD FROM despacho_detalles WHERE t.CODART = despacho_detalles.CODART && despacho_detalles.FECDES BETWEEN  "'.$request->FECINI.'" AND "'.$request->FECTER.'"  LIMIT 1),0) AS CONSUMO
                             from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
                           COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
-                          from recepcion_detalles 
+                          from recepcion_detalles WHERE recepcion_detalles.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
                           group by NOMBRE,LOTE,UNIMED,CODART
                   
                           union all
                   
                           select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
                            COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART
-                          from saldo_inventario 
+                          from saldo_inventario WHERE saldo_inventario.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
                           group by NOMBRE,LOTE,UNIMED,CODART                         
                           ) t
                   group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
@@ -203,9 +206,10 @@ class Reportes extends Controller
                   
                   SELECT siab_articulo.NOMBRE AS NOMBRE,siab_articulo.CODART AS CODART,siab_articulo.UNIMEDBASE AS UNIMED,
                            siab_articulo.ZGEN AS ZGEN,0 AS CONSUMO
-                           FROM siab_articulo 
+                           FROM siab_articulo WHERE siab_articulo.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
             ) a
             group by a.NOMBRE,a.UNIMED,a.CODART,a.ZGEN
+            ORDER BY a.CODART ASC
             ');
             return $get;
         } catch (\Throwable $th) {
@@ -216,25 +220,68 @@ class Reportes extends Controller
 
     public function GetConsumoMes(Request $request){
         try {
-            $get = DB::select('select DISTINCT "'.$request->ANIO.'" AS ANIO,"'.$request->MES.'" AS MES,t.NOMBRE,t.CODART,t.UNIMED,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
-            COALESCE((SELECT despacho_detalles.CANTIDAD FROM despacho_detalles WHERE t.CODART = despacho_detalles.CODART && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'" LIMIT 1),0) AS CONSUMO
-                from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
-              recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
-              COALESCE(TIMESTAMPDIFF(DAY,NOW(),recepcion_detalles.FECVEN)+1,0) as diasVencimiento,COALESCE(recepcion_detalles.FECVEN,"No tiene Fecha") AS fechaVencimiento,
-              recepcion_detalles.PREUNI AS PREUNI
-              from recepcion_detalles 
-              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI
-      
-              union all
-      
-              select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
-               saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
-               COALESCE(TIMESTAMPDIFF(DAY,NOW(),saldo_inventario.FECVEN)+1,0) as diasVencimiento,COALESCE(saldo_inventario.FECVEN,"No tiene Fecha") AS fechaVencimiento,
-               saldo_inventario.PRECIO AS PREUNI
-              from saldo_inventario 
-              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI                         
-              ) t
-      group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
+            $get = DB::select('select a.NOMBRE,a.CODART,a.UNIMED,a.ZGEN,sum(a.CONSUMO) AS CONSUMO,"'.$request->MES.'" as MES FROM 
+            (
+            select t.NOMBRE,t.CODART,t.UNIMED,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
+                        COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE t.CODART = despacho_detalles.CODART && DATE_FORMAT(despacho_detalles.FECDES,"%m") = "'.$request->MES.'"),0) AS CONSUMO
+                            from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+                          COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
+                          from recepcion_detalles WHERE recepcion_detalles.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
+                          group by NOMBRE,LOTE,UNIMED,CODART
+                  
+                          union all
+                  
+                          select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                           COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART
+                          from saldo_inventario WHERE saldo_inventario.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
+                          group by NOMBRE,LOTE,UNIMED,CODART                         
+                          ) t
+                  group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
+                  
+                  UNION ALL 
+                  
+                  SELECT siab_articulo.NOMBRE AS NOMBRE,siab_articulo.CODART AS CODART,siab_articulo.UNIMEDBASE AS UNIMED,
+                           siab_articulo.ZGEN AS ZGEN,0 AS CONSUMO
+                           FROM siab_articulo WHERE siab_articulo.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
+            ) a
+            group by a.NOMBRE,a.UNIMED,a.CODART,a.ZGEN
+            ORDER BY a.CODART ASC
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetConsumoMesServicio(Request $request){
+        try {
+            $get = DB::select('select a.NOMBRE,a.CODART,a.UNIMED,a.ZGEN,sum(a.CONSUMO) AS CONSUMO,"'.$request->MES.'" as MES FROM 
+            (
+            select t.NOMBRE,t.CODART,t.UNIMED,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
+                        COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE t.CODART = despacho_detalles.CODART && DATE_FORMAT(despacho_detalles.FECDES,"%m") = "'.$request->MES.'"),0) AS CONSUMO
+                            from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+                          COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
+                          from recepcion_detalles WHERE recepcion_detalles.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
+                          group by NOMBRE,LOTE,UNIMED,CODART
+                  
+                          union all
+                  
+                          select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                           COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART
+                          from saldo_inventario WHERE saldo_inventario.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
+                          group by NOMBRE,LOTE,UNIMED,CODART                         
+                          ) t
+                  group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
+                  
+                  UNION ALL 
+                  
+                  SELECT siab_articulo.NOMBRE AS NOMBRE,siab_articulo.CODART AS CODART,siab_articulo.UNIMEDBASE AS UNIMED,
+                           siab_articulo.ZGEN AS ZGEN,0 AS CONSUMO
+                           FROM siab_articulo WHERE siab_articulo.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
+            ) a
+            group by a.NOMBRE,a.UNIMED,a.CODART,a.ZGEN
+            ORDER BY a.CODART ASC
             ');
             return $get;
         } catch (\Throwable $th) {
