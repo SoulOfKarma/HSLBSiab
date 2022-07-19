@@ -13,25 +13,10 @@ use App\recepciones;
 //use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
+use Response;
 
 class FirmasDigitales extends Controller
 {
-    public function TestFirmaDigita(){
-        $token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMC41LjIzLjI0ODo5MDAwXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjU3NzQyNjExLCJleHAiOjE2NTc3NDQ0MTEsIm5iZiI6MTY1Nzc0MjYxMSwianRpIjoidVZOdG55c3NyRmNiQUdleiIsInN1YiI6MSwicHJ2IjoiZWY4YmQyNTQxOTlhNGRmODExYmU2YzhkZDgzZTUxNWIxYmVjNjNkYyJ9.nqBM4uBeejPKvk_eZkPL1g-TppUaG3zMR_Z083XMcvI";
-        $client = new \GuzzleHttp\Client();
-        log::info($token);
-        $res = $client->request('GET', 'http://10.5.23.248:9000/api/Despachos/GetDetallesDespachosAnulados',
-        ['headers' => 
-        [
-            'Authorization' => "Bearer " . $token,        
-            'Accept'        => 'application/json',
-        ]
-    ]);
-        $resp = $res->getBody()->getContents();
-        log::info($resp);
-        return $resp;
-    }
-
     public function TestFirmaDigital(Request $request){
         try{
                 $getDet = recepcionDetalles::where('NUMINT',1)
@@ -42,14 +27,16 @@ class FirmasDigitales extends Controller
                 DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
                 ->where('NUMINT',1)
                 ->get();
-    //'data:application/pdf;base64,'.
+
+                $file = $request->cont;
+
                 $pdf = App::make("dompdf.wrapper");
                 $pdf->loadView('RecepcionFirma', compact ('getDet','getRec'));
                 $pdf->setOptions(['isJavascriptEnabled' => true]);
                 $pdf->setOptions(['isRemoteEnabled' => true]);
-                $base = chunk_split(base64_encode($pdf->stream("RecepcionFirma.pdf", array("Attachment" => 0))));
-                $hash = hash('sha256', $pdf->stream("RecepcionFirma.pdf", array("Attachment" => 0)));
-                //Storage::disk('public')->put('file.pdf',base64_decode($base)) json_encode(;
+                $base = chunk_split(base64_encode($pdf->stream($file, array("Attachment" => 0))));
+                $hash = hash('sha256', $pdf->stream($file, array("Attachment" => 0)));
+                //Storage::disk('public')->put('file.pdf',base64_decode($base));
                 $datos = [
                     'token' => $request->token,
                     'api_token_key' => $request->api_token_key,     
@@ -68,10 +55,13 @@ class FirmasDigitales extends Controller
                 'body' => json_encode($datos)
             ]
             );
-            $resp = $res->getBody()->getContents(); 
+            $resp = json_decode($res->getBody()->getContents()); 
             
-            log::info($resp);
-            return $datos;
+            $pdfFirmado = $resp->files[0]->content;
+
+            Storage::disk('docFirmados')->put($file,base64_decode($pdfFirmado));
+
+            return $file;
         }catch (RuntimeException $e) {
             // catches all kinds of RuntimeExceptions
             if ($e instanceof ClientException) {

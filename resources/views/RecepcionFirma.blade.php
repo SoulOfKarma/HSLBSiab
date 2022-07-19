@@ -1644,22 +1644,6 @@ pre code {
                <tbody>
                 <tr id="OrdenTabla">
                   <td style="height: 7.33%"><h6 >
-                    <AgileSignerConfig>
-                        <Application id=\"THIS-CONFIG\">
-                        <pdfPassword/>
-                        <Signature>
-                        <Visible active=\"true\" layer2=\"false\" label=\"true\" pos=\"1\">
-                        <llx>250</llx>
-                        <lly>300</lly>
-                        <urx>350</urx>
-                        <ury>450</ury>
-                        <page>LAST</page>
-                        <image>BASE64</image>
-                        <BASE64VALUE></BASE64VALUE>
-                        </Visible>
-                        </Signature>
-                        </Application>
-                        </AgileSignerConfig>
                     </h6></td>
                   <td style="height: 7.33%"><h6></h6></td>
                   <td style="height: 7.33%"><h6></h6></td>

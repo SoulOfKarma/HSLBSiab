@@ -48,6 +48,11 @@ return [
             'root' => public_path('Documentos'),
         ],
 
+        'docFirmados' => [
+            'driver' => 'local',
+            'root' => public_path('DocumentosFirmados'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

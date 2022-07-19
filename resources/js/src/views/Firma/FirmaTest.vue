@@ -57,7 +57,8 @@ export default {
             localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
             //Datos Listado
             rows: [],
-            otp: 0
+            otp: 0,
+            cont: 1
         };
     },
     methods: {
@@ -98,12 +99,6 @@ export default {
                 const jwt = require("jsonwebtoken");
                 let date = moment().add(30, "minutes");
                 let fecha = date.format("YYYY-MM-DDTHH:mm:ss").toString();
-                const users = {
-                    entity: "Hospital San Luis de Buin - Paine",
-                    run: "18499714",
-                    expiration: fecha,
-                    purpose: "Propósito General"
-                };
 
                 const user = {
                     entity: "Subsecretaría General de la Presidencia",
@@ -117,9 +112,12 @@ export default {
                     algorithm: "HS256"
                 });
 
+                let doc = this.cont.toString() + ".pdf";
+
                 let data = {
                     api_token_key: "sandbox",
-                    token: token
+                    token: token,
+                    cont: doc.toString()
                 };
 
                 axios
@@ -131,10 +129,11 @@ export default {
                     })
                     .then(res => {
                         let tok = res.data;
-                        console.log(tok);
+                        const url =
+                            this.localVal + "/DocumentosFirmados/" + tok;
+                        window.open(url, "_blank");
+                        this.cont = parseInt(this.cont) + 1;
                     });
-
-                console.log(token);
             } catch (error) {
                 console.log(error);
             }
