@@ -14,6 +14,13 @@
                                 class="w-full"
                                 >Generar</vs-button
                             >
+                            <vs-button
+                                @click="PDFIncrustar"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Probar</vs-button
+                            >
                         </div>
                     </div>
                     <div class="vx-row"></div>
@@ -133,6 +140,52 @@ export default {
                             this.localVal + "/DocumentosFirmados/" + tok;
                         window.open(url, "_blank");
                         this.cont = parseInt(this.cont) + 1;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        PDFIncrustar() {
+            try {
+                let secreto = "27a216342c744f89b7b82fa290519ba0";
+                const jwt = require("jsonwebtoken");
+                let date = moment().add(30, "minutes");
+                let fecha = date.format("YYYY-MM-DDTHH:mm:ss").toString();
+
+                const user = {
+                    entity: "Subsecretaría General de la Presidencia",
+                    run: "22222222",
+                    expiration: fecha,
+                    purpose: "Desatendido"
+                };
+
+                const token = jwt.sign(user, secreto, {
+                    expiresIn: 60 * 30,
+                    algorithm: "HS256"
+                });
+
+                let doc = this.cont.toString() + ".pdf";
+
+                let data = {
+                    api_token_key: "sandbox",
+                    token: token,
+                    cont: doc.toString()
+                };
+
+                axios
+                    .post(this.localVal + "/api/PDFPrueba", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let tok = res.data;
+                        console.log(tok);
+                        /* const url =
+                            this.localVal + "/DocumentosFirmados/" + tok;
+                        window.open(url, "_blank");
+                        this.cont = parseInt(this.cont) + 1; */
                     });
             } catch (error) {
                 console.log(error);

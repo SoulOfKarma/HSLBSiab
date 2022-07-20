@@ -1643,10 +1643,10 @@ pre code {
               <table class="table table-bordered table-sm">
                <tbody>
                 <tr id="OrdenTabla">
-                  <td style="height: 7.33%"><h6 >
+                  <td style="height: 7.33%"><h6 ><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/2.jpg">
                     </h6></td>
-                  <td style="height: 7.33%"><h6></h6></td>
-                  <td style="height: 7.33%"><h6></h6></td>
+                  <td style="height: 7.33%"><h6><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/2.jpg"></h6></td>
+                  <td style="height: 7.33%"><h6><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/2.jpg"></h6></td>
                 </tr>
                 <tr>
                  <td class="badge badge-secondary"><h6>Encargado Seccion Bodega</h6></td>

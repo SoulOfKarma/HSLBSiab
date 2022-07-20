@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,3 +12,4 @@
 */
 
 Route::get('/{any}', 'ApplicationController')->where('any', '.*');
+Route::get('/tcpdf', [HomeController::class, 'createPDF'])->name('createPDF');
