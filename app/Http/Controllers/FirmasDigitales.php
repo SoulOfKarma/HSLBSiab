@@ -15,6 +15,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
 use Response;
 use PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class FirmasDigitales extends Controller
 {
@@ -31,8 +32,11 @@ class FirmasDigitales extends Controller
 
                 $file = $request->cont;
 
+                
+                $qr = QrCode::generate('Make me into a QrCode!');
+
                 $pdf = App::make("dompdf.wrapper");
-                $pdf->loadView('RecepcionFirma', compact ('getDet','getRec'));
+                $pdf->loadView('RecepcionFirma', compact ('getDet','getRec','qr'));
                 $pdf->setOptions(['isJavascriptEnabled' => true]);
                 $pdf->setOptions(['isRemoteEnabled' => true]);
                 $base = chunk_split(base64_encode($pdf->stream($file, array("Attachment" => 0))));
@@ -91,7 +95,7 @@ class FirmasDigitales extends Controller
             $file = $request->cont;
             $pdfitem = file_get_contents(Storage::disk('docFirmados')->path($file));
             $base = chunk_split(base64_encode($pdfitem));
-            log::info($base);
+            log::info($file);
             $hash = hash('sha256', $pdfitem);
             //Storage::disk('public')->put('file.pdf',base64_decode($base));
              $datos = [

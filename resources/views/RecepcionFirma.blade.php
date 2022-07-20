@@ -1477,6 +1477,15 @@ pre code {
   max-height: 200px !important;
   height: 200px !important;
 }
+
+.main-footer{
+    position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 10%;
+  width: 100%;
+}
+ 
         </style>
     </head>
               @php
@@ -1519,6 +1528,7 @@ pre code {
                  $total = $dato['TOTAL'];
                  $observacion = $dato['OBS'];
                  $nfolio = $dato['FOLIO'];
+                 $valor = $dato['qr'];
               ?>
               @endforeach
     <body>
@@ -1657,7 +1667,15 @@ pre code {
               </table>
             </div>          
         </div>
-        
+        <footer class="main-footer" style="position:fixed;bottom:0">
+            <div class="float-right d-none d-xs-block">
+                <img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(100)->generate('Make me into an QrCode!')) }} ">
+              <b>Version</b> 4.0.8
+            </div>
+            <strong>Copyright &copy; 2018-2021 </strong> All rights
+            reserved.
+          </footer>
     </body>
+    
    
 </html>
