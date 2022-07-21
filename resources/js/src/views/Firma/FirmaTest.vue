@@ -124,7 +124,8 @@ export default {
                 let data = {
                     api_token_key: "sandbox",
                     token: token,
-                    cont: doc.toString()
+                    cont: doc.toString(),
+                    link: this.localVal + "/Verificacion"
                 };
 
                 axios

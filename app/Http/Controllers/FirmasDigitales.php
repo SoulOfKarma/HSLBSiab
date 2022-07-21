@@ -31,12 +31,12 @@ class FirmasDigitales extends Controller
                 ->get();
 
                 $file = $request->cont;
-
+                $link = $request->link;
                 
-                $qr = QrCode::generate('Make me into a QrCode!');
+                log::info($link);
 
                 $pdf = App::make("dompdf.wrapper");
-                $pdf->loadView('RecepcionFirma', compact ('getDet','getRec','qr'));
+                $pdf->loadView('RecepcionFirma', compact ('getDet','getRec','link'));
                 $pdf->setOptions(['isJavascriptEnabled' => true]);
                 $pdf->setOptions(['isRemoteEnabled' => true]);
                 $base = chunk_split(base64_encode($pdf->stream($file, array("Attachment" => 0))));
@@ -95,7 +95,6 @@ class FirmasDigitales extends Controller
             $file = $request->cont;
             $pdfitem = file_get_contents(Storage::disk('docFirmados')->path($file));
             $base = chunk_split(base64_encode($pdfitem));
-            log::info($file);
             $hash = hash('sha256', $pdfitem);
             //Storage::disk('public')->put('file.pdf',base64_decode($base));
              $datos = [

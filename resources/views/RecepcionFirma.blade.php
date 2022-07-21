@@ -1528,9 +1528,9 @@ pre code {
                  $total = $dato['TOTAL'];
                  $observacion = $dato['OBS'];
                  $nfolio = $dato['FOLIO'];
-                 $valor = $dato['qr'];
               ?>
               @endforeach
+
     <body>
         <div class="container-fluid">
             <div class="row">
@@ -1669,11 +1669,18 @@ pre code {
         </div>
         <footer class="main-footer" style="position:fixed;bottom:0">
             <div class="float-right d-none d-xs-block">
-                <img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(100)->generate('Make me into an QrCode!')) }} ">
-              <b>Version</b> 4.0.8
+                <table class="table table-bordered table-sm">
+                    <tbody>
+                     <tr id="OrdenTabla">
+                       <td style="height: 7.33%"><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(75)->generate('http://127.0.0.1:8000/')) }} "></td>
+                       <td style="height: 7.33%"><h5 style="text-align:left">Este documento ha sido firmado electrónicamente,
+                        Para verificar la integridad y autenticidad de este documento
+                        debe ingresar al siguiente Link: {{$link}}
+                        </h5></td>
+                     </tr>
+                    </tbody>
+                   </table>
             </div>
-            <strong>Copyright &copy; 2018-2021 </strong> All rights
-            reserved.
           </footer>
     </body>
     

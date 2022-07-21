@@ -23,7 +23,11 @@ const router = new Router({
             path: "",
             redirect: "/pages/login"
         },
-
+        {
+            path: "/Verificacion",
+            name: "Verificacion",
+            component: () => import("./views/Verificacion/Verificacion.vue")
+        },
         {
             // =============================================================================
             // MAIN LAYOUT ROUTES
