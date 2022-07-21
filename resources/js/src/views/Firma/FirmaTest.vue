@@ -14,6 +14,7 @@
                                 class="w-full"
                                 >Generar</vs-button
                             >
+                            <br />
                             <vs-button
                                 @click="PDFIncrustar"
                                 color="primary"
@@ -125,7 +126,7 @@ export default {
                     api_token_key: "sandbox",
                     token: token,
                     cont: doc.toString(),
-                    link: this.localVal + "/Verificacion"
+                    link: this.localVal + "/Verificacion/" + 1
                 };
 
                 axios

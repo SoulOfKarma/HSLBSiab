@@ -1,24 +1,38 @@
-<!-- =========================================================================================
-    File Name: Login.vue
-    Description: Login Page
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
 <template>
     <div>
-        <vx-card title="Listado Documentos Firmados" class="text-center">
+        <vx-card title="Verificacion de Documentos Firmados">
             <div>
+                <vx-card>
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="TraerRecepcionesCerradas"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Traer Recepciones</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="TraerDespachosCerrados"
+                                color="success"
+                                type="filled"
+                                class="w-full"
+                                >Traer Despachos</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <br />
                 <vs-row>
                     <vs-col
-                        vs-offset="1"
-                        v-tooltip="'col - 10'"
+                        vs-offset="0"
+                        vs-tooltip="'col - 12'"
                         vs-type="flex"
                         vs-justify="center"
                         vs-align="center"
-                        vs-w="10"
+                        vs-w="12"
                     >
                         <vx-card>
                             <vue-good-table
@@ -76,9 +90,17 @@ import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
 import Vue from "vue";
+import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
+// Import Bootstrap and BootstrapVue CSS files (order is important)
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+// Make BootstrapVue available throughout your project
+Vue.use(BootstrapVue);
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin);
 
 export default {
     components: {
@@ -125,11 +147,40 @@ export default {
             }, 1000);
         },
         //Metodos CRUD
-        TraerRecepcionesAbiertas() {
+        TraerRecepcionesCerradas() {
             try {
                 axios
                     .get(
-                        this.localVal + "/api/Mantenedor/GetRecepcionAbiertas",
+                        this.localVal + "/api/Recepcion/GetRecepcionCerradasV",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.rows = res.data;
+                        if (this.rows.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TraerDespachosCerrados() {
+            try {
+                axios
+                    .get(
+                        this.localVal + "/api/Despachos/GetDespachosCerradosV",
                         {
                             headers: {
                                 Authorization:
@@ -160,6 +211,9 @@ export default {
                 console.log(error);
             }
         }
+    },
+    beforeMount() {
+        setTimeout(() => {}, 2000);
     }
 };
 </script>
