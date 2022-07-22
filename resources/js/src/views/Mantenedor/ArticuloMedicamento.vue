@@ -51,7 +51,8 @@
                                             props.row.LABORATORIO,
                                             props.row.CANTXENB,
                                             props.row.idACT_FECVEN,
-                                            props.row.idACTLOTE
+                                            props.row.idACTLOTE,
+                                            props.row.NOMARCH
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -275,6 +276,28 @@
                         </div>
                         <br />
                         <div class="vx-row w-full">
+                            <vx-card title="Adjuntar Imagen">
+                                <div class="vx-row mb-12">
+                                    <div class="vx-col w-1/8 mt-5">
+                                        <vs-input
+                                            type="file"
+                                            id="archivo"
+                                            @change="handleImage"
+                                            class="form-control w-full"
+                                        />
+                                    </div>
+                                    <div class="vx-col w-1/2 mt-5">
+                                        <h5 class="w-full ">
+                                            <p class="pt-4 text-justify">
+                                                {{ nombrearchivo }}
+                                            </p>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </vx-card>
+                        </div>
+                        <br />
+                        <div class="vx-row w-full">
                             <div class="vx-col w-1/2 mt-5">
                                 <vs-button
                                     @click="popUpMedicamento = false"
@@ -480,6 +503,38 @@
                             </div>
                         </div>
                         <br />
+                        <div class="vx-row w-full">
+                            <vx-card title="Adjuntar Imagen">
+                                <div class="vx-row mb-12">
+                                    <div class="vx-col w-1/8 mt-5">
+                                        <vs-input
+                                            type="file"
+                                            id="archivo"
+                                            @change="handleImage"
+                                            class="form-control w-full"
+                                        />
+                                        <h5 class="w-full ">
+                                            <p class="pt-4 text-justify">
+                                                {{ nombrearchivo }}
+                                            </p>
+                                        </h5>
+                                    </div>
+                                    <div
+                                        class="vx-col w-1/2 mt-5 con-example-images"
+                                        slot="media"
+                                        type="flex"
+                                        vs-justify="center"
+                                        vs-align="center"
+                                    >
+                                        <div>
+                                            <img :src="localDoc + nomarchivo" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </vx-card>
+                        </div>
+                        <br />
+
                         <div class="vx-row w-full md-5">
                             <div class="vx-col w-1/2 ">
                                 <vs-button
@@ -657,6 +712,7 @@ export default {
         return {
             //Datos Locales - Variables de Entorno
             localVal: process.env.MIX_APP_URL,
+            localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
             editorOption: {
                 modules: {
                     toolbar: [
@@ -696,6 +752,11 @@ export default {
             sector: "",
             ubicacion: "",
             zgen: "",
+            hover: "blur",
+            image: null,
+            nombrearchivo: "",
+            nomarchivo:
+                "imagenArticulos/00VCY0iWEUQvxC2yTvY2wt41jB3dHeM1bda3djvg.png",
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -900,6 +961,14 @@ export default {
                 return true;
             }
         },
+        handleImage(e) {
+            try {
+                this.image = e.target.files[0];
+                this.nombrearchivo = this.image.name;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         limpiarCampos() {
             try {
                 this.codigoBarra = "";
@@ -959,7 +1028,8 @@ export default {
             LABORATORIO,
             CANTXENB,
             idACT_FECVEN,
-            idACTLOTE
+            idACTLOTE,
+            NOMARCH
         ) {
             try {
                 this.limpiarCampos();
@@ -974,6 +1044,7 @@ export default {
                 this.categoriaFarmacia = CAT_FARMACIA;
                 this.unidadMedidaBase = UNIMEDBASE;
                 this.concentracion = CONCENTRACION;
+                this.nomarchivo = NOMARCH;
                 let c = this.listaEstado;
 
                 c.forEach((value, index) => {
@@ -1287,14 +1358,6 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
-                } else if (this.seleccionFamilia1.id == 0) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "No hay datos, Revise y intente nuevamente",
-                        color: "danger",
-                        position: "top-right"
-                    });
                 } else if (this.nombre == "") {
                     this.$vs.notify({
                         time: 5000,
@@ -1326,66 +1389,168 @@ export default {
                         boolFLoteSerie = true;
                     }
 
-                    let data = {
-                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                        CODART_TRACK: this.codigoTrack.toUpperCase(),
-                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                        CODART: this.codigoArticulo.toUpperCase(),
-                        NOMBRE: this.nombre.toUpperCase(),
-                        GENERICO: this.generico.toUpperCase(),
-                        CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
-                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                        CONCENTRACION: this.concentracion.toUpperCase(),
-                        idEstado: this.seleccionEstado.id,
-                        ACT_FECVEN: boolFVen,
-                        ACT_LOTE: boolFLoteSerie,
-                        LABORATORIO: this.laboratorio.toUpperCase(),
-                        CANTXENB: this.cantidadEmbalaje,
-                        idBodega: this.seleccionBodega.id,
-                        idZona: this.seleccionZona.id,
-                        SECTOR: this.sector.toUpperCase(),
-                        UBICACION: this.ubicacion.toUpperCase(),
-                        ZGEN: this.zgen.toUpperCase()
-                    };
+                    if (this.image !== null) {
+                        let imagen = new FormData();
+                        //Añadimos la imagen seleccionada
+                        imagen.append("avatar", this.image);
+                        imagen.append("nombreDocOriginal", this.nombrearchivo);
 
-                    const dat = data;
-
-                    axios
-                        .post(
-                            this.localVal + "/api/Mantenedor/PostMedicamentos",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                        axios
+                            .post(
+                                this.localVal + "/api/Mantenedor/PostImagen",
+                                imagen,
+                                {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.limpiarCampos();
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text: "Medicamento Ingresado Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.popUpMedicamento = false;
-                                this.TraerMedicamentos();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible registrar el medicamento,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
+                            )
+                            .then(res => {
+                                const url = res.data;
+                                if (url.length > 0) {
+                                    let data = {
+                                        CODART_BARR: this.codigoBarra.toUpperCase(),
+                                        CODART_TRACK: this.codigoTrack.toUpperCase(),
+                                        CODART_ONU: this.codigoOnu.toUpperCase(),
+                                        CODART: this.codigoArticulo.toUpperCase(),
+                                        NOMBRE: this.nombre.toUpperCase(),
+                                        GENERICO: this.generico.toUpperCase(),
+                                        CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                                        CONCENTRACION: this.concentracion.toUpperCase(),
+                                        idEstado: this.seleccionEstado.id,
+                                        ACT_FECVEN: boolFVen,
+                                        ACT_LOTE: boolFLoteSerie,
+                                        LABORATORIO: this.laboratorio.toUpperCase(),
+                                        CANTXENB: this.cantidadEmbalaje,
+                                        idBodega: this.seleccionBodega.id,
+                                        idZona: this.seleccionZona.id,
+                                        SECTOR: this.sector.toUpperCase(),
+                                        UBICACION: this.ubicacion.toUpperCase(),
+                                        ZGEN: this.zgen.toUpperCase(),
+                                        NOMARCH: url
+                                    };
+
+                                    const dat = data;
+
+                                    axios
+                                        .post(
+                                            this.localVal +
+                                                "/api/Mantenedor/PostMedicamentos",
+                                            dat,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        sessionStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                        .then(res => {
+                                            const solicitudServer = res.data;
+                                            if (solicitudServer == true) {
+                                                this.limpiarCampos();
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Completado",
+                                                    text:
+                                                        "Medicamento Ingresado Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                this.popUpMedicamento = false;
+                                                this.TraerMedicamentos();
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "No fue posible registrar el medicamento,intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            }
+                                        });
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        let data = {
+                            CODART_BARR: this.codigoBarra.toUpperCase(),
+                            CODART_TRACK: this.codigoTrack.toUpperCase(),
+                            CODART_ONU: this.codigoOnu.toUpperCase(),
+                            CODART: this.codigoArticulo.toUpperCase(),
+                            NOMBRE: this.nombre.toUpperCase(),
+                            GENERICO: this.generico.toUpperCase(),
+                            CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                            UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                            CONCENTRACION: this.concentracion.toUpperCase(),
+                            idEstado: this.seleccionEstado.id,
+                            ACT_FECVEN: boolFVen,
+                            ACT_LOTE: boolFLoteSerie,
+                            LABORATORIO: this.laboratorio.toUpperCase(),
+                            CANTXENB: this.cantidadEmbalaje,
+                            idBodega: this.seleccionBodega.id,
+                            idZona: this.seleccionZona.id,
+                            SECTOR: this.sector.toUpperCase(),
+                            UBICACION: this.ubicacion.toUpperCase(),
+                            ZGEN: this.zgen.toUpperCase()
+                        };
+
+                        const dat = data;
+
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Mantenedor/PostMedicamentos",
+                                dat,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                if (solicitudServer == true) {
+                                    this.limpiarCampos();
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Medicamento Ingresado Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.popUpMedicamento = false;
+                                    this.TraerMedicamentos();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible registrar el medicamento,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -1401,14 +1566,6 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
-                } else if (this.seleccionFamilia1.id == 0) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "No hay datos, Revise y intente nuevamente",
-                        color: "danger",
-                        position: "top-right"
-                    });
                 } else if (this.nombre == "") {
                     this.$vs.notify({
                         time: 5000,
@@ -1440,68 +1597,171 @@ export default {
                         boolFLoteSerie = true;
                     }
 
-                    let data = {
-                        id: this.idMod,
-                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                        CODART_TRACK: this.codigoTrack.toUpperCase(),
-                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                        CODART: this.codigoArticulo.toUpperCase(),
-                        NOMBRE: this.nombre.toUpperCase(),
-                        GENERICO: this.generico.toUpperCase(),
-                        CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
-                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                        CONCENTRACION: this.concentracion.toUpperCase(),
-                        idEstado: this.seleccionEstado.id,
-                        ACT_FECVEN: boolFVen,
-                        ACT_LOTE: boolFLoteSerie,
-                        LABORATORIO: this.laboratorio.toUpperCase(),
-                        CANTXENB: this.cantidadEmbalaje,
-                        idBodega: this.seleccionBodega.id,
-                        idZona: this.seleccionZona.id,
-                        SECTOR: this.sector.toUpperCase(),
-                        UBICACION: this.ubicacion.toUpperCase(),
-                        ZGEN: this.zgen.toUpperCase()
-                    };
+                    if (this.image !== null) {
+                        let imagen = new FormData();
+                        //Añadimos la imagen seleccionada
+                        imagen.append("avatar", this.image);
+                        imagen.append("nombreDocOriginal", this.nombrearchivo);
 
-                    const dat = data;
-
-                    axios
-                        .post(
-                            this.localVal + "/api/Mantenedor/PutMedicamentos",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                        axios
+                            .post(
+                                this.localVal + "/api/Mantenedor/PostImagen",
+                                imagen,
+                                {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.limpiarCampos();
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Medicamento Modificado Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.popUpMedicamentoMod = false;
-                                this.TraerMedicamentos();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible modificar el medicamento,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
+                            )
+                            .then(res => {
+                                const url = res.data;
+                                if (url.length > 0) {
+                                    let data = {
+                                        id: this.idMod,
+                                        CODART_BARR: this.codigoBarra.toUpperCase(),
+                                        CODART_TRACK: this.codigoTrack.toUpperCase(),
+                                        CODART_ONU: this.codigoOnu.toUpperCase(),
+                                        CODART: this.codigoArticulo.toUpperCase(),
+                                        NOMBRE: this.nombre.toUpperCase(),
+                                        GENERICO: this.generico.toUpperCase(),
+                                        CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                                        CONCENTRACION: this.concentracion.toUpperCase(),
+                                        idEstado: this.seleccionEstado.id,
+                                        ACT_FECVEN: boolFVen,
+                                        ACT_LOTE: boolFLoteSerie,
+                                        LABORATORIO: this.laboratorio.toUpperCase(),
+                                        CANTXENB: this.cantidadEmbalaje,
+                                        idBodega: this.seleccionBodega.id,
+                                        idZona: this.seleccionZona.id,
+                                        SECTOR: this.sector.toUpperCase(),
+                                        UBICACION: this.ubicacion.toUpperCase(),
+                                        ZGEN: this.zgen.toUpperCase(),
+                                        NOMARCH: url
+                                    };
+
+                                    const dat = data;
+
+                                    axios
+                                        .post(
+                                            this.localVal +
+                                                "/api/Mantenedor/PutMedicamentos",
+                                            dat,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        sessionStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                        .then(res => {
+                                            const solicitudServer = res.data;
+                                            if (solicitudServer == true) {
+                                                this.limpiarCampos();
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Completado",
+                                                    text:
+                                                        "Medicamento Modificado Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                this.popUpMedicamentoMod = false;
+                                                this.TraerMedicamentos();
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "No fue posible modificar el medicamento,intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            }
+                                        });
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        let data = {
+                            id: this.idMod,
+                            CODART_BARR: this.codigoBarra.toUpperCase(),
+                            CODART_TRACK: this.codigoTrack.toUpperCase(),
+                            CODART_ONU: this.codigoOnu.toUpperCase(),
+                            CODART: this.codigoArticulo.toUpperCase(),
+                            NOMBRE: this.nombre.toUpperCase(),
+                            GENERICO: this.generico.toUpperCase(),
+                            CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                            UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                            CONCENTRACION: this.concentracion.toUpperCase(),
+                            idEstado: this.seleccionEstado.id,
+                            ACT_FECVEN: boolFVen,
+                            ACT_LOTE: boolFLoteSerie,
+                            LABORATORIO: this.laboratorio.toUpperCase(),
+                            CANTXENB: this.cantidadEmbalaje,
+                            idBodega: this.seleccionBodega.id,
+                            idZona: this.seleccionZona.id,
+                            SECTOR: this.sector.toUpperCase(),
+                            UBICACION: this.ubicacion.toUpperCase(),
+                            ZGEN: this.zgen.toUpperCase(),
+                            NOMARCH: null
+                        };
+
+                        const dat = data;
+
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Mantenedor/PutMedicamentos",
+                                dat,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                if (solicitudServer == true) {
+                                    this.limpiarCampos();
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Medicamento Modificado Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.popUpMedicamentoMod = false;
+                                    this.TraerMedicamentos();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible modificar el medicamento,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -1672,4 +1932,8 @@ export default {
 .con-vs-popup .vs-popup {
   width: 1000px;
 }
+
+.con-example-images
+  max-height 500px
+  overflow auto
 </style>

@@ -290,6 +290,29 @@
                             </div>
                         </div>
                         <br />
+
+                        <div class="vx-row w-full">
+                            <vx-card title="Adjuntar Imagen">
+                                <div class="vx-row mb-12">
+                                    <div class="vx-col w-1/8 mt-5">
+                                        <vs-input
+                                            type="file"
+                                            id="archivo"
+                                            @change="handleImage"
+                                            class="form-control w-full"
+                                        />
+                                    </div>
+                                    <div class="vx-col w-1/2 mt-5">
+                                        <h5 class="w-full ">
+                                            <p class="pt-4 text-justify">
+                                                {{ nombrearchivo }}
+                                            </p>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </vx-card>
+                        </div>
+                        <br />
                         <div class="vx-row w-full">
                             <div class="vx-col w-1/2 mt-5">
                                 <vs-button
@@ -511,6 +534,28 @@
                         </div>
                         <br />
                         <div class="vx-row w-full">
+                            <vx-card title="Adjuntar Imagen">
+                                <div class="vx-row mb-12">
+                                    <div class="vx-col w-1/8 mt-5">
+                                        <vs-input
+                                            type="file"
+                                            id="archivo"
+                                            @change="handleImage"
+                                            class="form-control w-full"
+                                        />
+                                    </div>
+                                    <div class="vx-col w-1/2 mt-5">
+                                        <h5 class="w-full ">
+                                            <p class="pt-4 text-justify">
+                                                {{ nombrearchivo }}
+                                            </p>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </vx-card>
+                        </div>
+                        <br />
+                        <div class="vx-row w-full">
                             <div class="vx-col w-1/2 mt-5">
                                 <vs-button
                                     @click="popUpInsumoEcoMod = false"
@@ -720,6 +765,8 @@ export default {
             sector: "",
             ubicacion: "",
             unidadMedidaBase: "",
+            image: null,
+            nombrearchivo: "",
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -908,6 +955,14 @@ export default {
                 evt.preventDefault();
             } else {
                 return true;
+            }
+        },
+        handleImage(e) {
+            try {
+                this.image = e.target.files[0];
+                this.nombrearchivo = this.image.name;
+            } catch (error) {
+                console.log(error);
             }
         },
         limpiarCampos() {
@@ -1745,66 +1800,166 @@ export default {
                         boolFLoteSerie = true;
                     }
 
-                    let data = {
-                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                        CODART: this.codigoArticulo.toUpperCase(),
-                        NOMBRE: this.nombre.toUpperCase(),
-                        idEstado: this.seleccionEstado.id,
-                        ACT_FECVEN: boolFVen,
-                        ACT_LOTE: boolFLoteSerie,
-                        CANTXENB: this.cantidadEmbalaje,
-                        idBodega: this.seleccionBodega.id,
-                        idZona: this.seleccionZona.id,
-                        SECTOR: this.sector.toUpperCase(),
-                        UBICACION: this.ubicacion.toUpperCase(),
-                        NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
-                        NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
-                        NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
-                        NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
-                        NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase()
-                    };
-                    const dat = data;
+                    if (this.image !== null) {
+                        let imagen = new FormData();
+                        //Añadimos la imagen seleccionada
+                        imagen.append("avatar", this.image);
+                        imagen.append("nombreDocOriginal", this.nombrearchivo);
 
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostInsumoEconomato",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                        axios
+                            .post(
+                                this.localVal + "/api/Mantenedor/PostImagen",
+                                imagen,
+                                {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.limpiarCampos();
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Insumo/Economato Ingresado Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.popUpInsumoEco = false;
-                                this.TraerInsumoEconomato();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
+                            )
+                            .then(res => {
+                                const url = res.data;
+                                if (url.length > 0) {
+                                    let data = {
+                                        CODART_BARR: this.codigoBarra.toUpperCase(),
+                                        CODART_ONU: this.codigoOnu.toUpperCase(),
+                                        CODART: this.codigoArticulo.toUpperCase(),
+                                        NOMBRE: this.nombre.toUpperCase(),
+                                        idEstado: this.seleccionEstado.id,
+                                        ACT_FECVEN: boolFVen,
+                                        ACT_LOTE: boolFLoteSerie,
+                                        CANTXENB: this.cantidadEmbalaje,
+                                        idBodega: this.seleccionBodega.id,
+                                        idZona: this.seleccionZona.id,
+                                        SECTOR: this.sector.toUpperCase(),
+                                        UBICACION: this.ubicacion.toUpperCase(),
+                                        NOMFAM1: this.seleccionFamilia1
+                                            .descripcionFamilia,
+                                        NOMFAM2: this.seleccionFamilia2
+                                            .descripcionFamilia,
+                                        NOMFAM3: this.seleccionFamilia3
+                                            .descripcionFamilia,
+                                        NOMFAM4: this.seleccionFamilia4
+                                            .descripcionFamilia,
+                                        NOMFAM5: this.seleccionFamilia5
+                                            .descripcionFamilia,
+                                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                                        NOMARCH: url
+                                    };
+                                    axios
+                                        .post(
+                                            this.localVal +
+                                                "/api/Mantenedor/PostInsumoEconomato",
+                                            data,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        sessionStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                        .then(res => {
+                                            const solicitudServer = res.data;
+                                            if (solicitudServer == true) {
+                                                this.limpiarCampos();
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Completado",
+                                                    text:
+                                                        "Insumo/Economato Ingresado Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                this.popUpInsumoEco = false;
+                                                this.TraerInsumoEconomato();
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            }
+                                        });
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        let data = {
+                            CODART_BARR: this.codigoBarra.toUpperCase(),
+                            CODART_ONU: this.codigoOnu.toUpperCase(),
+                            CODART: this.codigoArticulo.toUpperCase(),
+                            NOMBRE: this.nombre.toUpperCase(),
+                            idEstado: this.seleccionEstado.id,
+                            ACT_FECVEN: boolFVen,
+                            ACT_LOTE: boolFLoteSerie,
+                            CANTXENB: this.cantidadEmbalaje,
+                            idBodega: this.seleccionBodega.id,
+                            idZona: this.seleccionZona.id,
+                            SECTOR: this.sector.toUpperCase(),
+                            UBICACION: this.ubicacion.toUpperCase(),
+                            NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
+                            NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
+                            NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
+                            NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
+                            NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
+                            UNIMEDBASE: this.unidadMedidaBase.toUpperCase()
+                        };
+
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Mantenedor/PostInsumoEconomato",
+                                data,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                if (solicitudServer == true) {
+                                    this.limpiarCampos();
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Insumo/Economato Ingresado Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.popUpInsumoEco = false;
+                                    this.TraerInsumoEconomato();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -1905,66 +2060,169 @@ export default {
                         boolFLoteSerie = true;
                     }
 
-                    let data = {
-                        id: this.idMod,
-                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                        CODART: this.codigoArticulo.toUpperCase(),
-                        NOMBRE: this.nombre.toUpperCase(),
-                        idEstado: this.seleccionEstado.id,
-                        ACT_FECVEN: boolFVen,
-                        ACT_LOTE: boolFLoteSerie,
-                        CANTXENB: this.cantidadEmbalaje,
-                        idBodega: this.seleccionBodega.id,
-                        idZona: this.seleccionZona.id,
-                        SECTOR: this.sector.toUpperCase(),
-                        UBICACION: this.ubicacion.toUpperCase(),
-                        NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
-                        NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
-                        NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
-                        NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
-                        NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase()
-                    };
-                    const dat = data;
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PutInsumoEconomato",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                    if (this.image !== null) {
+                        let imagen = new FormData();
+                        //Añadimos la imagen seleccionada
+                        imagen.append("avatar", this.image);
+                        imagen.append("nombreDocOriginal", this.nombrearchivo);
+
+                        axios
+                            .post(
+                                this.localVal + "/api/Mantenedor/PostImagen",
+                                imagen,
+                                {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.limpiarCampos();
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Insumo/Economato Modificado Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.TraerInsumoEconomato();
-                                this.popUpInsumoEcoMod = false;
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible modificar el Insumo/Economato,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
+                            )
+                            .then(res => {
+                                const url = res.data;
+                                if (url.length > 0) {
+                                    let data = {
+                                        id: this.idMod,
+                                        CODART_BARR: this.codigoBarra.toUpperCase(),
+                                        CODART_ONU: this.codigoOnu.toUpperCase(),
+                                        CODART: this.codigoArticulo.toUpperCase(),
+                                        NOMBRE: this.nombre.toUpperCase(),
+                                        idEstado: this.seleccionEstado.id,
+                                        ACT_FECVEN: boolFVen,
+                                        ACT_LOTE: boolFLoteSerie,
+                                        CANTXENB: this.cantidadEmbalaje,
+                                        idBodega: this.seleccionBodega.id,
+                                        idZona: this.seleccionZona.id,
+                                        SECTOR: this.sector.toUpperCase(),
+                                        UBICACION: this.ubicacion.toUpperCase(),
+                                        NOMFAM1: this.seleccionFamilia1
+                                            .descripcionFamilia,
+                                        NOMFAM2: this.seleccionFamilia2
+                                            .descripcionFamilia,
+                                        NOMFAM3: this.seleccionFamilia3
+                                            .descripcionFamilia,
+                                        NOMFAM4: this.seleccionFamilia4
+                                            .descripcionFamilia,
+                                        NOMFAM5: this.seleccionFamilia5
+                                            .descripcionFamilia,
+                                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                                        NOMARCH: url
+                                    };
+                                    const dat = data;
+                                    axios
+                                        .post(
+                                            this.localVal +
+                                                "/api/Mantenedor/PutInsumoEconomato",
+                                            dat,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        sessionStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                        .then(res => {
+                                            const solicitudServer = res.data;
+                                            if (solicitudServer == true) {
+                                                this.limpiarCampos();
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Completado",
+                                                    text:
+                                                        "Insumo/Economato Ingresado Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                this.popUpInsumoEco = false;
+                                                this.TraerInsumoEconomato();
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            }
+                                        });
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    } else {
+                        let data = {
+                            id: this.idMod,
+                            CODART_BARR: this.codigoBarra.toUpperCase(),
+                            CODART_ONU: this.codigoOnu.toUpperCase(),
+                            CODART: this.codigoArticulo.toUpperCase(),
+                            NOMBRE: this.nombre.toUpperCase(),
+                            idEstado: this.seleccionEstado.id,
+                            ACT_FECVEN: boolFVen,
+                            ACT_LOTE: boolFLoteSerie,
+                            CANTXENB: this.cantidadEmbalaje,
+                            idBodega: this.seleccionBodega.id,
+                            idZona: this.seleccionZona.id,
+                            SECTOR: this.sector.toUpperCase(),
+                            UBICACION: this.ubicacion.toUpperCase(),
+                            NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
+                            NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
+                            NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
+                            NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
+                            NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
+                            UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                            NOMARCH: null
+                        };
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Mantenedor/PutInsumoEconomato",
+                                data,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                if (solicitudServer == true) {
+                                    this.limpiarCampos();
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Insumo/Economato Ingresado Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.popUpInsumoEco = false;
+                                    this.TraerInsumoEconomato();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    }
                 }
             } catch (error) {
                 console.log(error);

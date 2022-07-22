@@ -1672,7 +1672,7 @@ pre code {
                 <table class="table table-bordered table-sm">
                     <tbody>
                      <tr id="OrdenTabla">
-                       <td style="height: 7.33%"><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(75)->generate('http://127.0.0.1:8000/')) }} "></td>
+                       <td style="height: 7.33%"><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(75)->generate('{{$link}}')) }} "></td>
                        <td style="height: 7.33%"><h5 style="text-align:left">Este documento ha sido firmado electrónicamente,
                         Para verificar la integridad y autenticidad de este documento
                         debe ingresar al siguiente Link: {{$link}}

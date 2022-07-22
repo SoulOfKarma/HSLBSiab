@@ -126,7 +126,7 @@ export default {
                     api_token_key: "sandbox",
                     token: token,
                     cont: doc.toString(),
-                    link: this.localVal + "/Verificacion/" + 1
+                    link: this.localVal + "/Verificacion"
                 };
 
                 axios
