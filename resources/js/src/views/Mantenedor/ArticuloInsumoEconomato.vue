@@ -53,7 +53,8 @@
                                             props.row.NOMFAM4,
                                             props.row.NOMFAM5,
                                             props.row.idACT_FECVEN,
-                                            props.row.idACTLOTE
+                                            props.row.idACTLOTE,
+                                            props.row.NOMARCH
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -543,13 +544,22 @@
                                             @change="handleImage"
                                             class="form-control w-full"
                                         />
-                                    </div>
-                                    <div class="vx-col w-1/2 mt-5">
                                         <h5 class="w-full ">
                                             <p class="pt-4 text-justify">
                                                 {{ nombrearchivo }}
                                             </p>
                                         </h5>
+                                    </div>
+                                    <div
+                                        class="vx-col w-1/2 mt-5 con-example-images"
+                                        slot="media"
+                                        type="flex"
+                                        vs-justify="center"
+                                        vs-align="center"
+                                    >
+                                        <div>
+                                            <img :src="localDoc + nomarchivo" />
+                                        </div>
                                     </div>
                                 </div>
                             </vx-card>
@@ -733,6 +743,7 @@ export default {
         return {
             //Datos Locales - Variables de Entorno
             localVal: process.env.MIX_APP_URL,
+            localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
             editorOption: {
                 modules: {
                     toolbar: [
@@ -767,6 +778,8 @@ export default {
             unidadMedidaBase: "",
             image: null,
             nombrearchivo: "",
+            nomarchivo:
+                "imagenArticulos/00VCY0iWEUQvxC2yTvY2wt41jB3dHeM1bda3djvg.png",
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -1140,7 +1153,8 @@ export default {
             NOMFAM4,
             NOMFAM5,
             idACT_FECVEN,
-            idACTLOTE
+            idACTLOTE,
+            NOMARCH
         ) {
             try {
                 this.limpiarCampos();
@@ -1150,6 +1164,7 @@ export default {
                 this.codigoOnu = CODART_ONU;
                 this.codigoArticulo = CODART;
                 this.nombre = NOMBRE;
+                this.nomarchivo = NOMARCH;
                 let c = this.listaEstado;
 
                 c.forEach((value, index) => {

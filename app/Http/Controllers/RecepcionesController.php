@@ -128,6 +128,26 @@ class RecepcionesController extends Controller
         }
     }
 
+    public function GetRecepcionCerradaOC(){
+        try {
+            $get = recepciones::select('recepciones.FOLIO','recepciones.FECSYS','recepciones.FECDES','recepciones.RUTPRO',
+            'recepciones.NOMPRO','recepciones.NUMDOC','recepciones.NUMFAC','tipo_documentos.descripcionDocumento','recepciones.FECDOC','recepciones.DCTO',
+            'recepciones.OBS','recepciones.CARGO','recepciones.SUBTOTAL','recepciones.AJUSTE','recepciones.FECSYS','recepciones.USUING',
+            'recepciones.USUMOD','recepciones.FECSYS','recepciones.NUMINT','recepciones.NUMRIB','recepciones.TIPRECEPCION','recepciones.NUMORD',
+            DB::raw("recepciones.SUBTOTAL as NETO"),DB::raw("ROUND((recepciones.SUBTOTAL*0.19),2) as IVA"),
+            DB::raw("ROUND((recepciones.SUBTOTAL*0.19) + recepciones.SUBTOTAL,2) as TOTAL"))
+            ->join('tipo_documentos','recepciones.TIPDOC','=','tipo_documentos.id')
+            ->leftjoin('orden_compra_detalles','recepciones.FOLIO','=','orden_compra_detalles.FOLREC')
+            ->whereNotNull('recepciones.FOLIO')
+            ->whereNotNull('orden_compra_detalles.FOLREC')
+            ->get();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function PostArticuloDetalle(Request $request){
         try {
             recepciones::create($request->all());

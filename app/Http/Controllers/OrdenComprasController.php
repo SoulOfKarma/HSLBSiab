@@ -103,7 +103,7 @@ class OrdenComprasController extends Controller
 
     public function GetOrdenCompraIngresadosByCodInterno(Request $request){
         try {
-            $get = ordenCompras::select('FOLIO','RUTPRO','NOMPRO','FECORD','NUMINT','NUMSIGFE','FECSYS','OBS')
+            $get = ordenCompras::select(DB::raw('COALESCE(FOLIO,0) AS FOLIO'),'RUTPRO','NOMPRO','FECORD','NUMINT','NUMSIGFE','FECSYS','OBS')
             ->where('NUMINT',$request->NUMINT)
             ->get();
             return $get;
@@ -115,7 +115,19 @@ class OrdenComprasController extends Controller
 
     public function GetOrdenCompraDetallesIngresadosByCodInterno(Request $request){
         try {
-            $get = ordenCompraDetalles::select('FOLREC','TIPDOC','NUMDOC','FECDOC','NOMORD','TOTAL')
+            $get = ordenCompraDetalles::select(DB::raw('COALESCE(FOLIO,0) AS FOLIO'),'FOLREC','TIPDOC','NUMDOC','FECDOC','NOMORD','TOTAL')
+            ->where('NUMINT',$request->NUMINT)
+            ->get();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function GetOrdenCompraDetallesIngresadosByCodInternoCompleto(Request $request){
+        try {
+            $get = ordenCompraDetalles::select(DB::raw('COALESCE(FOLIO,0) AS FOLIO'),'FOLREC','TIPDOC','NUMDOC','FECDOC','NOMORD','TOTAL')
             ->where('NUMINT',$request->NUMINT)
             ->get();
             return $get;

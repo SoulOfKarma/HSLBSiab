@@ -336,6 +336,7 @@ export default {
             },
             //Datos Campos
             popUpRecepciones: false,
+            validarRecepcion: false,
             codInternoRecepcion: 0,
             descripcionServicio: "",
             nsigfe: "",
@@ -351,6 +352,7 @@ export default {
             nombre: "",
             tipoDocumento: "",
             folio: 0,
+            folrec: 0,
             descripcionProveedor: "",
             seleccionConsumoInmediato: {
                 id: 0,
@@ -579,6 +581,7 @@ export default {
             //Datos Listado
             rows: [],
             listaDetalleOrdenCompra: [],
+            listaDetalleOrdenCompraTemporal: [],
             listaRecepcion: [],
             listadoProveedores: [],
             listaConsumoInmediato: [
@@ -705,6 +708,7 @@ export default {
                 let c = this.listaRecepcion;
                 c.forEach((value, index) => {
                     if (id == value.id) {
+                        console.log(value);
                         this.fechaSistema = moment(value.FECSYS)
                             .format("DD/MM/YYYY")
                             .toString();
@@ -915,6 +919,53 @@ export default {
                 console.log(error);
             }
         },
+        TraerDetalleOrdenCompraTemporal() {
+            try {
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/OrdenCompras/GetOrdenCompraDetallesIngresadosByCodInternoCompleto",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listaDetalleOrdenCompraTemporal = res.data;
+                        if (this.listaDetalleOrdenCompraTemporal.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            let c = this.listaDetalleOrdenCompraTemporal;
+                            let a = 0;
+                            let d = this.listaDetalleOrdenCompra;
+
+                            d.forEach((value, index) => {
+                                c.forEach((val, ind) => {
+                                    if (
+                                        value.FOLIO != val.FOLIO ||
+                                        val.FOLIO != null
+                                    ) {
+                                        this.folrec = val.FOLREC;
+                                        this.validarRecepcion = true;
+                                    }
+                                });
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerProveedores() {
             try {
                 axios
@@ -1049,73 +1100,87 @@ export default {
                         position: "top-right"
                     });
                 } else {
-                    let nombreUsuario =
-                        sessionStorage.getItem("nombre") +
-                        " " +
-                        sessionStorage.getItem("apellido");
-                    let data = {
-                        NUMINT: this.numint,
-                        FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
-                        FECORD: moment(
-                            this.fechaOrdenCompra,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        RUTPRO: this.seleccionProveedores.RUTPROV,
-                        NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
-                        NUMSIGFE: this.nsigfe,
-
-                        OBS: this.Observaciones.toUpperCase(),
-                        USUING: nombreUsuario.toUpperCase(),
-                        TIPDOC: this.tipoDocumento,
-                        NUMDOC: this.ndocumento,
-                        FECDOC: moment(
-                            this.fechaDocumento,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        TOTAL: parseInt(this.totalRecepcion),
-                        FOLREC: this.nfoliorecepcionado,
-                        NOMORD: this.nordencompra
-                    };
-                    const dat = data;
-
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostOrdenComprasDetalleByCodInterno",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Recepcion ingresada al detalle Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.TraerDetalleOrdenCompra();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
+                    if (this.validarRecepcion == true) {
+                        this.$vs.notify({
+                            time: 5000,
+                            title: "Error",
+                            text:
+                                "Recepcion N°" +
+                                this.folrec +
+                                " ya esta ingresada, quitela del listado para continuar",
+                            color: "danger",
+                            position: "top-right"
                         });
+                    } else {
+                        let nombreUsuario =
+                            sessionStorage.getItem("nombre") +
+                            " " +
+                            sessionStorage.getItem("apellido");
+                        let data = {
+                            NUMINT: this.numint,
+                            FECSYS: moment(
+                                this.fechaSistema,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            FECORD: moment(
+                                this.fechaOrdenCompra,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            RUTPRO: this.seleccionProveedores.RUTPROV,
+                            NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
+                            NUMSIGFE: this.nsigfe,
+
+                            OBS: this.Observaciones.toUpperCase(),
+                            USUING: nombreUsuario.toUpperCase(),
+                            TIPDOC: this.tipoDocumento,
+                            NUMDOC: this.ndocumento,
+                            FECDOC: moment(
+                                this.fechaDocumento,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            TOTAL: parseInt(this.totalRecepcion),
+                            FOLREC: this.nfoliorecepcionado,
+                            NOMORD: this.nordencompra
+                        };
+                        const dat = data;
+
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Mantenedor/PostOrdenComprasDetalleByCodInterno",
+                                dat,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                const solicitudServer = res.data;
+                                if (solicitudServer == true) {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Recepcion ingresada al detalle Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.TraerDetalleOrdenCompra();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                    }
                 }
             } catch (error) {
                 console.log(error);

@@ -264,7 +264,8 @@
                                             class="custom-class"
                                             @click="
                                                 AgregarOrdenCompraDetalle(
-                                                    props.row.id
+                                                    props.row.FOLIO,
+                                                    props.row.RUTPROV
                                                 )
                                             "
                                         ></plus-circle-icon>
@@ -335,6 +336,7 @@ export default {
             },
             //Datos Campos
             popUpRecepciones: false,
+            validarRecepcion: false,
             codInternoRecepcion: 0,
             descripcionServicio: "",
             nsigfe: "",
@@ -350,6 +352,7 @@ export default {
             nombre: "",
             tipoDocumento: "",
             folio: 0,
+            folrec: 0,
             descripcionProveedor: "",
             seleccionConsumoInmediato: {
                 id: 0,
@@ -578,6 +581,7 @@ export default {
             //Datos Listado
             rows: [],
             listaDetalleOrdenCompra: [],
+            listaDetalleOrdenCompraTemporal: [],
             listaRecepcion: [],
             listadoProveedores: [],
             listaConsumoInmediato: [
@@ -699,28 +703,65 @@ export default {
                 console.log(error);
             }
         },
-        AgregarOrdenCompraDetalle(id) {
+        AgregarOrdenCompraDetalle(folio, rutprov) {
             try {
                 let c = this.listaRecepcion;
+                let d = this.listaDetalleOrdenCompra;
                 c.forEach((value, index) => {
-                    if (id == value.id) {
-                        this.fechaSistema = moment(value.FECSYS)
-                            .format("DD/MM/YYYY")
-                            .toString();
-                        this.fechaOrdenCompra = moment(value.FECDES)
-                            .format("DD/MM/YYYY")
-                            .toString();
-                        this.nfoliorecepcionado = value.FOLIO;
-                        this.seleccionProveedores.RUTPROV = value.RUTPRO;
-                        this.seleccionProveedores.NOMRAZSOC = value.NOMPRO;
-                        this.descripcionProveedor = value.NOMPRO;
-                        this.tipoDocumento = value.descripcionDocumento;
-                        this.ndocumento = value.NUMDOC;
-                        this.fechaDocumento = moment(value.FECDOC)
-                            .format("DD/MM/YYYY")
-                            .toString();
-                        this.nordencompra = value.NUMORD;
-                        this.totalRecepcion = value.TOTAL;
+                    if (folio == value.FOLIO) {
+                        if (this.listaDetalleOrdenCompra.length > 0) {
+                            d.forEach((val, ind) => {
+                                if (rutprov == val.RUTPROV) {
+                                    this.fechaSistema = moment(value.FECSYS)
+                                        .format("DD/MM/YYYY")
+                                        .toString();
+                                    this.fechaOrdenCompra = moment(value.FECDES)
+                                        .format("DD/MM/YYYY")
+                                        .toString();
+                                    this.nfoliorecepcionado = value.FOLIO;
+                                    this.seleccionProveedores.RUTPROV =
+                                        value.RUTPRO;
+                                    this.seleccionProveedores.NOMRAZSOC =
+                                        value.NOMPRO;
+                                    this.descripcionProveedor = value.NOMPRO;
+                                    this.tipoDocumento =
+                                        value.descripcionDocumento;
+                                    this.ndocumento = value.NUMDOC;
+                                    this.fechaDocumento = moment(value.FECDOC)
+                                        .format("DD/MM/YYYY")
+                                        .toString();
+                                    this.nordencompra = value.NUMORD;
+                                    this.totalRecepcion = value.TOTAL;
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "Proveedor no puede ser diferente al agregado en la orden de compra",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            });
+                        } else {
+                            this.fechaSistema = moment(value.FECSYS)
+                                .format("DD/MM/YYYY")
+                                .toString();
+                            this.fechaOrdenCompra = moment(value.FECDES)
+                                .format("DD/MM/YYYY")
+                                .toString();
+                            this.nfoliorecepcionado = value.FOLIO;
+                            this.seleccionProveedores.RUTPROV = value.RUTPRO;
+                            this.seleccionProveedores.NOMRAZSOC = value.NOMPRO;
+                            this.descripcionProveedor = value.NOMPRO;
+                            this.tipoDocumento = value.descripcionDocumento;
+                            this.ndocumento = value.NUMDOC;
+                            this.fechaDocumento = moment(value.FECDOC)
+                                .format("DD/MM/YYYY")
+                                .toString();
+                            this.nordencompra = value.NUMORD;
+                            this.totalRecepcion = value.TOTAL;
+                        }
                     }
                 });
 
@@ -840,12 +881,58 @@ export default {
                 console.log(error);
             }
         },
+        TraerDetalleOrdenCompraTemporal() {
+            try {
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/OrdenCompras/GetOrdenCompraDetallesIngresadosByCodInternoCompleto",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listaDetalleOrdenCompraTemporal = res.data;
+                        if (this.listaDetalleOrdenCompraTemporal.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            let c = this.listaDetalleOrdenCompraTemporal;
+                            let a = 0;
+                            let d = this.listaDetalleOrdenCompra;
+
+                            d.forEach((value, index) => {
+                                c.forEach((val, ind) => {
+                                    if (
+                                        value.FOLIO != val.FOLIO ||
+                                        val.FOLIO != null
+                                    ) {
+                                        this.folrec = val.FOLREC;
+                                        this.validarRecepcion = true;
+                                    }
+                                });
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerRecepcion() {
             try {
                 axios
                     .get(
-                        this.localVal +
-                            "/api/Mantenedor/GetRecepcionIngresadaOrdenCompra",
+                        this.localVal + "/api/Recepcion/GetRecepcionCerradaOC",
                         {
                             headers: {
                                 Authorization:
@@ -1033,112 +1120,128 @@ export default {
                         position: "top-right"
                     });
                 } else {
-                    let nombreUsuario =
-                        sessionStorage.getItem("nombre") +
-                        " " +
-                        sessionStorage.getItem("apellido");
-                    let data = {
-                        NUMINT: this.numint,
-                        FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
-                        FECORD: moment(
-                            this.fechaOrdenCompra,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        RUTPRO: this.seleccionProveedores.RUTPROV,
-                        NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
-                        NUMSIGFE: this.nsigfe,
-
-                        OBS: this.Observaciones.toUpperCase(),
-                        USUING: nombreUsuario.toUpperCase(),
-                        TIPDOC: this.tipoDocumento,
-                        NUMDOC: this.ndocumento,
-                        FECDOC: moment(
-                            this.fechaDocumento,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        TOTAL: parseInt(this.totalRecepcion),
-                        FOLREC: this.nfoliorecepcionado,
-                        NOMORD: this.nordencompra
-                    };
-                    const dat = data;
-
-                    if (this.contador > 0) {
-                        axios
-                            .post(
-                                this.localVal +
-                                    "/api/Mantenedor/PostOrdenComprasDetalleByCodInterno",
-                                dat,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
-                                    }
-                                }
-                            )
-                            .then(res => {
-                                const solicitudServer = res.data;
-                                if (solicitudServer == true) {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Completado",
-                                        text:
-                                            "Recepcion ingresada al detalle Correctamente",
-                                        color: "success",
-                                        position: "top-right"
-                                    });
-                                    this.TraerDetalleOrdenCompra();
-                                } else {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Error",
-                                        text:
-                                            "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
-                                        color: "danger",
-                                        position: "top-right"
-                                    });
-                                }
-                            });
+                    if (this.validarRecepcion == true) {
+                        this.$vs.notify({
+                            time: 5000,
+                            title: "Error",
+                            text:
+                                "Recepcion N°" +
+                                this.folrec +
+                                " ya esta ingresada, quitela del listado para continuar",
+                            color: "danger",
+                            position: "top-right"
+                        });
                     } else {
-                        axios
-                            .post(
-                                this.localVal +
-                                    "/api/Mantenedor/PostOrdenCompras",
-                                dat,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            sessionStorage.getItem("token")
+                        let nombreUsuario =
+                            sessionStorage.getItem("nombre") +
+                            " " +
+                            sessionStorage.getItem("apellido");
+                        let data = {
+                            NUMINT: this.numint,
+                            FECSYS: moment(
+                                this.fechaSistema,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            FECORD: moment(
+                                this.fechaOrdenCompra,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            RUTPRO: this.seleccionProveedores.RUTPROV,
+                            NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
+                            NUMSIGFE: this.nsigfe,
+
+                            OBS: this.Observaciones.toUpperCase(),
+                            USUING: nombreUsuario.toUpperCase(),
+                            TIPDOC: this.tipoDocumento,
+                            NUMDOC: this.ndocumento,
+                            FECDOC: moment(
+                                this.fechaDocumento,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            TOTAL: parseInt(this.totalRecepcion),
+                            FOLREC: this.nfoliorecepcionado,
+                            NOMORD: this.nordencompra
+                        };
+                        const dat = data;
+
+                        if (this.contador > 0) {
+                            axios
+                                .post(
+                                    this.localVal +
+                                        "/api/Mantenedor/PostOrdenComprasDetalleByCodInterno",
+                                    dat,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
                                     }
-                                }
-                            )
-                            .then(res => {
-                                const solicitudServer = res.data;
-                                if (solicitudServer == true) {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Completado",
-                                        text:
-                                            "Recepcion fue ingresado al detalle Correctamente",
-                                        color: "success",
-                                        position: "top-right"
-                                    });
-                                    this.contador = parseInt(this.contador + 1);
-                                    this.TraerDetalleOrdenCompra();
-                                } else {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Error",
-                                        text:
-                                            "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
-                                        color: "danger",
-                                        position: "top-right"
-                                    });
-                                }
-                            });
+                                )
+                                .then(res => {
+                                    const solicitudServer = res.data;
+                                    if (solicitudServer == true) {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Completado",
+                                            text:
+                                                "Recepcion ingresada al detalle Correctamente",
+                                            color: "success",
+                                            position: "top-right"
+                                        });
+                                        this.TraerDetalleOrdenCompra();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                });
+                        } else {
+                            axios
+                                .post(
+                                    this.localVal +
+                                        "/api/Mantenedor/PostOrdenCompras",
+                                    dat,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                                .then(res => {
+                                    const solicitudServer = res.data;
+                                    if (solicitudServer == true) {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Completado",
+                                            text:
+                                                "Recepcion fue ingresado al detalle Correctamente",
+                                            color: "success",
+                                            position: "top-right"
+                                        });
+                                        this.contador = parseInt(
+                                            this.contador + 1
+                                        );
+                                        this.TraerDetalleOrdenCompra();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible agregar la recepcion al detalle,intentelo nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                });
+                        }
                     }
                 }
             } catch (error) {
