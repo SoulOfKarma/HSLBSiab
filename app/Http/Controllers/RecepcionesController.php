@@ -139,7 +139,7 @@ class RecepcionesController extends Controller
             ->join('tipo_documentos','recepciones.TIPDOC','=','tipo_documentos.id')
             ->leftjoin('orden_compra_detalles','recepciones.FOLIO','=','orden_compra_detalles.FOLREC')
             ->whereNotNull('recepciones.FOLIO')
-            ->whereNotNull('orden_compra_detalles.FOLREC')
+            ->whereNull('orden_compra_detalles.FOLREC')
             ->get();
             return $get;
         } catch (\Throwable $th) {
@@ -175,7 +175,7 @@ class RecepcionesController extends Controller
         }
     }
 
-    public function PostArticulosDespacho(Request $request){
+    /* public function PostArticulosDespacho(Request $request){
         try {
             recepciones::create($request->all());
             recepcionDetalles::create($request->all());
@@ -203,7 +203,7 @@ class RecepcionesController extends Controller
             log::info($th);
             return false;
         }
-    }
+    } */
 
     public function PostCerrarRecepcion(Request $request){
         try {
@@ -220,14 +220,17 @@ class RecepcionesController extends Controller
 
     public function PostCerrarRecepcionDespacho(Request $request){
         try {
-            recepcionDetalles::where('NUMINT',$request->NUMINT)
-            ->update(['FOLIO' => $request->FOLIO]);
-            recepciones::where('NUMINT',$request->NUMINT)
-            ->update(['FOLIO' => $request->FOLIO]);
-            despachos::where('NUMINT',$request->NUMINTD)
-            ->update(['FOLIO' => $request->FOLIO]);
-            despachoDetalles::where('NUMINT',$request->NUMINTD)
-            ->update(['FOLIO' => $request->FOLIO]);
+            despachoDetalles::create($request->all());
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PostCerrarDespacho(Request $request){
+        try {
+            despachos::create($request->all());
             return true;
         } catch (\Throwable $th) {
             log::info($th);
@@ -264,6 +267,16 @@ class RecepcionesController extends Controller
     }
 
     public function DeleteArticuloDetalle(Request $request){
+        try {
+           recepcionDetalles::where('id', $request->id)->delete();
+           return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;       
+        }
+    }
+
+    public function DeleteArticuloDespachoDetalle(Request $request){
         try {
            recepcionDetalles::where('id', $request->id)->delete();
            return true;

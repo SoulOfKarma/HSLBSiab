@@ -125,18 +125,6 @@ class OrdenComprasController extends Controller
         }
     }
 
-    public function GetOrdenCompraDetallesIngresadosByCodInternoCompleto(Request $request){
-        try {
-            $get = ordenCompraDetalles::select(DB::raw('COALESCE(FOLIO,0) AS FOLIO'),'FOLREC','TIPDOC','NUMDOC','FECDOC','NOMORD','TOTAL')
-            ->where('NUMINT',$request->NUMINT)
-            ->get();
-            return $get;
-        } catch (\Throwable $th) {
-            log::info($th);
-            return false;
-        }
-    }
-
     public function PutListadoOrdenCompra(Request $request){
         try {
                 $lista = $request->all();

@@ -53,6 +53,7 @@
                             label="RUTPROV"
                             :options="listadoProveedores"
                             @input="setProveedor"
+                            disabled
                         ></v-select>
                     </div>
                     <div class="vx-col w-1/5 mt-5">
@@ -77,6 +78,7 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="nfoliorecepcionado"
+                            disabled
                         />
                     </div>
                     <div class="vx-col w-1/3 mt-5">
@@ -265,7 +267,7 @@
                                             @click="
                                                 AgregarOrdenCompraDetalle(
                                                     props.row.FOLIO,
-                                                    props.row.RUTPROV
+                                                    props.row.RUTPRO
                                                 )
                                             "
                                         ></plus-circle-icon>
@@ -347,6 +349,7 @@ export default {
             contador: 0,
             fechaSistema: null,
             fechaOrdenCompra: null,
+            validadorProv: false,
             nfoliorecepcionado: "",
             Observaciones: "",
             nombre: "",
@@ -706,54 +709,11 @@ export default {
         AgregarOrdenCompraDetalle(folio, rutprov) {
             try {
                 let c = this.listaRecepcion;
-                let d = this.listaDetalleOrdenCompra;
+                let validador = false;
                 c.forEach((value, index) => {
-                    if (folio == value.FOLIO) {
-                        if (this.listaDetalleOrdenCompra.length > 0) {
-                            d.forEach((val, ind) => {
-                                if (rutprov == val.RUTPROV) {
-                                    this.fechaSistema = moment(value.FECSYS)
-                                        .format("DD/MM/YYYY")
-                                        .toString();
-                                    this.fechaOrdenCompra = moment(value.FECDES)
-                                        .format("DD/MM/YYYY")
-                                        .toString();
-                                    this.nfoliorecepcionado = value.FOLIO;
-                                    this.seleccionProveedores.RUTPROV =
-                                        value.RUTPRO;
-                                    this.seleccionProveedores.NOMRAZSOC =
-                                        value.NOMPRO;
-                                    this.descripcionProveedor = value.NOMPRO;
-                                    this.tipoDocumento =
-                                        value.descripcionDocumento;
-                                    this.ndocumento = value.NUMDOC;
-                                    this.fechaDocumento = moment(value.FECDOC)
-                                        .format("DD/MM/YYYY")
-                                        .toString();
-                                    this.nordencompra = value.NUMORD;
-                                    this.totalRecepcion = value.TOTAL;
-                                } else {
-                                    this.$vs.notify({
-                                        time: 5000,
-                                        title: "Error",
-                                        text:
-                                            "Proveedor no puede ser diferente al agregado en la orden de compra",
-                                        color: "danger",
-                                        position: "top-right"
-                                    });
-                                }
-                            });
-                        } else {
-                            this.fechaSistema = moment(value.FECSYS)
-                                .format("DD/MM/YYYY")
-                                .toString();
-                            this.fechaOrdenCompra = moment(value.FECDES)
-                                .format("DD/MM/YYYY")
-                                .toString();
+                    if (this.validadorProv == false) {
+                        if (folio == value.FOLIO) {
                             this.nfoliorecepcionado = value.FOLIO;
-                            this.seleccionProveedores.RUTPROV = value.RUTPRO;
-                            this.seleccionProveedores.NOMRAZSOC = value.NOMPRO;
-                            this.descripcionProveedor = value.NOMPRO;
                             this.tipoDocumento = value.descripcionDocumento;
                             this.ndocumento = value.NUMDOC;
                             this.fechaDocumento = moment(value.FECDOC)
@@ -761,9 +721,36 @@ export default {
                                 .toString();
                             this.nordencompra = value.NUMORD;
                             this.totalRecepcion = value.TOTAL;
+                            this.seleccionProveedores.RUTPROV = value.RUTPRO;
+                            this.seleccionProveedores.NOMRAZSOC = value.NOMPRO;
+                            this.descripcionProveedor = value.NOMPRO;
+                        }
+                    } else {
+                        if (rutprov == this.seleccionProveedores.RUTPROV) {
+                            this.nfoliorecepcionado = value.FOLIO;
+                            this.tipoDocumento = value.descripcionDocumento;
+                            this.ndocumento = value.NUMDOC;
+                            this.fechaDocumento = moment(value.FECDOC)
+                                .format("DD/MM/YYYY")
+                                .toString();
+                            this.nordencompra = value.NUMORD;
+                            this.totalRecepcion = value.TOTAL;
+                        } else {
+                            validador = true;
                         }
                     }
                 });
+
+                if (validador == true) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Proveedor no puede ser diferente al agregado en la orden de compra",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                }
 
                 c = [];
 
@@ -883,10 +870,14 @@ export default {
         },
         TraerDetalleOrdenCompraTemporal() {
             try {
+                let data = {
+                    NUMINT: this.numint
+                };
+
                 axios
                     .post(
                         this.localVal +
-                            "/api/OrdenCompras/GetOrdenCompraDetallesIngresadosByCodInternoCompleto",
+                            "/api/OrdenCompras/GetOrdenCompraDetallesIngresadosByCodInterno",
                         data,
                         {
                             headers: {
@@ -908,7 +899,6 @@ export default {
                             });
                         } else {
                             let c = this.listaDetalleOrdenCompraTemporal;
-                            let a = 0;
                             let d = this.listaDetalleOrdenCompra;
 
                             d.forEach((value, index) => {
@@ -1058,12 +1048,13 @@ export default {
                     });
                 } else if (
                     this.nfoliorecepcionado == null ||
-                    this.nfoliorecepcionado == ""
+                    this.nfoliorecepcionado == "" ||
+                    this.nfoliorecepcionado == 0
                 ) {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
-                        text: "Debe seleccionar un articulo",
+                        text: "Debe seleccionar una recepcion",
                         color: "danger",
                         position: "top-right"
                     });
@@ -1189,7 +1180,12 @@ export default {
                                             color: "success",
                                             position: "top-right"
                                         });
+
+                                        this.validadorProv = true;
+                                        this.TraerRecepcion();
                                         this.TraerDetalleOrdenCompra();
+                                        this.nfoliorecepcionado = 0;
+                                        this.anio = 0;
                                     } else {
                                         this.$vs.notify({
                                             time: 5000,
@@ -1229,7 +1225,11 @@ export default {
                                         this.contador = parseInt(
                                             this.contador + 1
                                         );
+                                        this.validadorProv = true;
+                                        this.TraerRecepcion();
                                         this.TraerDetalleOrdenCompra();
+                                        this.nfoliorecepcionado = 0;
+                                        this.anio = 0;
                                     } else {
                                         this.$vs.notify({
                                             time: 5000,
