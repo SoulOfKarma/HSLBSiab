@@ -137,72 +137,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <br />
-                <div class="vx-row mb-12">
-                    <div class="vx-col w-1/8 mt-5">
-                        <h6 class="pt-4 text-justify">ADJUNTAR FACTURA</h6>
-                    </div>
-                    <div class="vx-col w-1/8 mt-5">
-                        <vs-input
-                            type="file"
-                            id="archivo"
-                            @change="getImage"
-                            class="form-control w-full"
-                        />
-                    </div>
-
-                    <div class="vx-col w-1/8 mt-5">
-                        <h5 class="w-full pt-4 text-justify">
-                            <p>
-                                {{ nombrearchivo }}
-                            </p>
-                        </h5>
-                    </div>
-                </div>
-                <br />
-                <div class="vx-row mb-12">
-                    <div class="vx-col w-1/8 mt-5">
-                        <h6 class="pt-4 text-justify">ADJUNTAR RIB</h6>
-                    </div>
-                    <div class="vx-col w-1/8 mt-5">
-                        <vs-input
-                            type="file"
-                            id="archivo"
-                            @change="getImageRib"
-                            class="form-control w-full"
-                        />
-                    </div>
-
-                    <div class="vx-col w-1/8 mt-5">
-                        <h5 class="w-full pt-4 text-justify">
-                            <p>
-                                {{ nombrearchivoRib }}
-                            </p>
-                        </h5>
-                    </div>
-                </div>
-                <br />
-                <div class="vx-row mb-12">
-                    <div class="vx-col w-1/8 mt-5">
-                        <h6 class="pt-4 text-justify">ADJUNTAR CARTA</h6>
-                    </div>
-                    <div class="vx-col w-1/8 mt-5">
-                        <vs-input
-                            type="file"
-                            id="archivo"
-                            @change="getImageCarta"
-                            class="form-control w-full"
-                        />
-                    </div>
-
-                    <div class="vx-col w-1/8 mt-5">
-                        <h5 class="w-full pt-4 text-justify">
-                            <p>
-                                {{ nombrearchivoCarta }}
-                            </p>
-                        </h5>
-                    </div>
-                </div> -->
                 <!-- Detalles Articulos -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
@@ -222,7 +156,27 @@
                                         class="text-nowrap"
                                     >
                                     </span>
-
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'FOLIO'
+                                        "
+                                    >
+                                        <plus-circle-icon
+                                            content="Generar Codigo de Barra"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                generarCodigoBarra(
+                                                    props.row.PRODUCTO,
+                                                    props.row.CODART,
+                                                    props.row.FECVEN,
+                                                    props.row.LOTE,
+                                                    props.row.FOLIO
+                                                )
+                                            "
+                                        ></plus-circle-icon>
+                                    </span>
                                     <span
                                         v-else-if="
                                             props.column.field === 'action'
@@ -553,6 +507,39 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="CodigodeBarra"
+            title="Codigo de Barra"
+            :active.sync="popCodigoBarra"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5 justify-right">
+                            <h6>
+                                Codigo de Barra
+                            </h6>
+                            <br />
+                            <h6>
+                                C. 1234324323
+                            </h6>
+                            <br />
+                            <h6>
+                                V. 01/01/2011 L. GFCFS3
+                            </h6>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5 justify-left">
+                            <barcode
+                                v-bind:value="barcodeValue"
+                                format="codabar"
+                            >
+                                Fallo
+                            </barcode>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -571,6 +558,7 @@ import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
+import VueBarcode from "vue-barcode";
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
 
@@ -580,7 +568,8 @@ export default {
         "v-select": vSelect,
         quillEditor,
         PlusCircleIcon,
-        flatPickr
+        flatPickr,
+        barcode: VueBarcode
     },
     data() {
         return {
@@ -653,6 +642,8 @@ export default {
             unidadMedidaBase: "",
             descripcionProveedor: "",
             zgen: "",
+            barcodeValue: null,
+            popCodigoBarra: false,
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -895,6 +886,10 @@ export default {
                     }
                 },
                 {
+                    label: "Generar Codigo de barra",
+                    field: "FOLIO"
+                },
+                {
                     label: "Opciones",
                     field: "action"
                 }
@@ -1025,6 +1020,19 @@ export default {
                 evt.preventDefault();
             } else {
                 return true;
+            }
+        },
+        generarCodigoBarra(producto, codart, fecven, lote, folio) {
+            try {
+                console.log(producto);
+                console.log(codart);
+                console.log(fecven);
+                console.log(lote);
+                console.log(folio);
+                this.barcodeValue = folio;
+                this.popCodigoBarra = true;
+            } catch (error) {
+                console.log(error);
             }
         },
         setProveedor() {
