@@ -34,7 +34,7 @@ class RecepcionesController extends Controller
 
     public function GetUltimoNInterno(){
         try {
-            $get = recepciones::max('NUMINT');
+            $get = recepciones::select(DB::raw('MAX(cast(NUMINT AS UNSIGNED)) AS NUMINT'))->get();
             return $get;
         } catch (\Throwable $th) {
             log::info($th);
@@ -44,7 +44,7 @@ class RecepcionesController extends Controller
 
     public function GetUltimoNFolio(){
         try {
-            $get = recepciones::max('FOLIO');
+            $get = recepciones::select(DB::raw('MAX(cast(FOLIO AS UNSIGNED)) AS FOLIO'))->get();
             return $get;
         } catch (\Throwable $th) {
             log::info($th);
@@ -98,8 +98,9 @@ class RecepcionesController extends Controller
 
     public function GetRecepcionIngresadaByCodInterno(Request $request){
         try {
-            $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC','TIPDOC','FECDOC','DCTO',
-            'OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD','FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD',
+            $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
+            'TIPDOC','FECDOC','DCTO','OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD',
+            'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','idServicio',
             DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
             ->get();
@@ -220,7 +221,32 @@ class RecepcionesController extends Controller
 
     public function PostCerrarRecepcionDespacho(Request $request){
         try {
-            despachoDetalles::create($request->all());
+            //despachoDetalles::insert($request->all());
+
+            $lista = $request->all();
+            
+            foreach($lista as $e => $req ){    
+                $despachoDetalles = new despachoDetalles;
+                $despachoDetalles->FOLIO = $req['FOLIO'];
+                $despachoDetalles->FECSYS = $req['FECSYS'];
+                $despachoDetalles->FECDES = $req['FECDES'];
+                $despachoDetalles->idServicio = $req['idServicio'];
+                $despachoDetalles->NUMLIBRO = $req['NUMLIBRO'];
+                $despachoDetalles->LOTE = $req['LOTE'];
+                $despachoDetalles->FECVEN = $req['FECVEN'];
+                $despachoDetalles->CODBAR = $req['CODBAR'];
+                $despachoDetalles->CODART = $req['CODART'];
+                $despachoDetalles->NOMART = $req['PRODUCTO'];
+                $despachoDetalles->UNIMED = $req['UNIMED'];
+                $despachoDetalles->CANTIDAD = $req['CANTIDAD'];
+                $despachoDetalles->PRECIO = $req['PREUNI'];
+                $despachoDetalles->ACT_FECVEN = $req['ACT_FECVEN'];
+                $despachoDetalles->USUING = $req['USUING'];
+                $despachoDetalles->NUMINT = $req['NUMINT'];
+                $despachoDetalles->TIPDESP = $req['TIPDESP'];
+                $despachoDetalles->save();
+                    
+            }
             return true;
         } catch (\Throwable $th) {
             log::info($th);
