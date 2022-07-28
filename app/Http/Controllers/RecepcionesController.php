@@ -176,36 +176,6 @@ class RecepcionesController extends Controller
         }
     }
 
-    /* public function PostArticulosDespacho(Request $request){
-        try {
-            recepciones::create($request->all());
-            recepcionDetalles::create($request->all());
-            despachos::create($request->all());
-            despachoDetalles::create($request->all());
-            return true;
-        } catch (\Throwable $th) {
-            log::info($th);
-            return false;
-        }
-    }
-
-    public function PostArticulosDespachoCodInterno(Request $request){
-        try {
-            recepcionDetalles::create($request->all());
-            despachoDetalles::create($request->all());
-            recepciones::where('NUMINT',$request->NUMINT)
-            ->update(['RUTPRO' => $request->RUTPRO,'NOMPRO' => $request->NOMPRO,'SUBTOTAL' => $request->SUBTOTAL,
-            'DCTO' => $request->DCTO,'TIPDOC' => $request->TIPDOC,'NUMDOC' => $request->NUMDOC,'FECDOC' => $request->FECDOC,
-            'NUMFAC' => $request->NUMFAC,'NUMRIB' => $request->NUMRIB,'USUMOD' => $request->USUMOD,
-            'OBS' => $request->OBS,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'idServicio' => $request->idServicio,
-            'NUMLIBPED' => $request->NUMLIBPED,'TIPRECEPCION' => $request->TIPRECEPCION]);
-            return true;
-        } catch (\Throwable $th) {
-            log::info($th);
-            return false;
-        }
-    } */
-
     public function PostCerrarRecepcion(Request $request){
         try {
             recepcionDetalles::where('NUMINT',$request->NUMINT)
@@ -238,7 +208,7 @@ class RecepcionesController extends Controller
                 $despachoDetalles->CODART = $req['CODART'];
                 $despachoDetalles->NOMART = $req['PRODUCTO'];
                 $despachoDetalles->UNIMED = $req['UNIMED'];
-                $despachoDetalles->CANTIDAD = $req['CANTIDAD'];
+                $despachoDetalles->CANTIDAD = $req['CANREC'];
                 $despachoDetalles->PRECIO = $req['PREUNI'];
                 $despachoDetalles->ACT_FECVEN = $req['ACT_FECVEN'];
                 $despachoDetalles->USUING = $req['USUING'];

@@ -127,17 +127,43 @@
                         <div class="vx-col w-1/5 mt-5">
                             <h6>Seleccione Servicio</h6>
                             <v-select
-                                v-model="seleccionMes"
-                                placeholder="Ej. Junio"
+                                v-model="seleccionServicios"
+                                placeholder="Ej. INFORMATICA"
                                 class="w-full select-large"
-                                label="descripcionMes"
-                                :options="listadoMes"
+                                label="descripcionServicio"
+                                :options="listadoServicios"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/5 mt-5">
                             <h6>.</h6>
                             <vs-button
-                                @click="GetConsumoMes"
+                                @click="GetConsumoMesServicio"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar</vs-button
+                            >
+                        </div>
+                    </div>
+                    <div class="vx-row" v-if="fechavencimiento">
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codter"
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetFechaVencimiento"
                                 color="primary"
                                 type="filled"
                                 class="w-full"
@@ -171,7 +197,7 @@
                                         "
                                     >
                                         <plus-circle-icon
-                                            content="Agregar Articulo al listado"
+                                            content="Ver Bincard"
                                             v-tippy
                                             size="1.5x"
                                             class="custom-class"
@@ -285,6 +311,7 @@ export default {
             consumoanio: false,
             consumomes: false,
             consumomesservicio: false,
+            fechavencimiento: false,
             popUpBincard: false,
             fechaInicio: null,
             fechaTermino: null,
@@ -298,6 +325,10 @@ export default {
             seleccionMes: {
                 id: 0,
                 descripcionMes: "Seleccione Mes"
+            },
+            seleccionServicios: {
+                id: 0,
+                descripcionServicio: "Seleccione Servicio"
             },
             //Datos Fechas
             configFromdateTimePicker: {
@@ -519,6 +550,7 @@ export default {
             rows: [],
             listadoGeneral: [],
             listaBincard: [],
+            listadoServicios: [],
             listadoReportes: [
                 {
                     id: 1,
@@ -543,6 +575,10 @@ export default {
                 {
                     id: 6,
                     descripcionReporte: "Consumo por Mes/Servicio"
+                },
+                {
+                    id: 7,
+                    descripcionReporte: "Fecha Vencimiento/Cenabast"
                 }
             ],
             listadoMes: [
@@ -801,22 +837,57 @@ export default {
                     this.consumoanio = true;
                     this.consumomes = false;
                     this.consumomesservicio = false;
+                    this.fechavencimiento = false;
                 } else if (this.seleccionReporte.id == 5) {
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = true;
                     this.consumomesservicio = false;
+                    this.fechavencimiento = false;
                 } else if (this.seleccionReporte.id == 6) {
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
                     this.consumomesservicio = true;
+                    this.fechavencimiento = false;
+                } else if (this.seleccionReporte.id == 7) {
+                    this.listaActive = false;
+                    this.consumoanio = false;
+                    this.consumomes = false;
+                    this.consumomesservicio = false;
+                    this.fechavencimiento = true;
                 }
             } catch (error) {
                 console.log(error);
             }
         },
         //Metodos CRUD
+        TraerServicio() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoServicios = res.data;
+                        if (this.listadoServicios.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         GetSaldoArticulos() {
             try {
                 axios
@@ -1009,6 +1080,111 @@ export default {
                 console.log(error);
             }
         },
+        GetConsumoMesServicio() {
+            try {
+                let mes = "";
+                if (this.seleccionMes.id > 0 && this.seleccionMes.id < 10) {
+                    mes = "0" + this.seleccionMes.id;
+                } else {
+                    mes = this.seleccionMes.id;
+                }
+                let data = {
+                    CODINI: this.codini,
+                    CODTER: this.codter,
+                    MES: mes,
+                    idServicio: this.seleccionServicios.id
+                };
+                if (
+                    this.seleccionMes.id == 0 &&
+                    this.seleccionServicios.id == 0
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe seleccionar el mes o el servicio para continuar",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                }
+                axios
+                    .post(
+                        this.localVal + "/api/Reportes/GetConsumoMesServicio",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        if (this.listadoGeneral.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.column = [
+                                {
+                                    label: "Codigo Interno",
+                                    field: "CODART",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo ZGEN",
+                                    field: "ZGEN",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Descripcion",
+                                    field: "NOMBRE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Mes",
+                                    field: "MES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Servicio",
+                                    field: "descripcionServicio",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Consumo",
+                                    field: "CONSUMO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Opciones",
+                                    field: "action"
+                                }
+                            ];
+                            this.listaActive = true;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         GetBincard(codart) {
             try {
                 let data = {
@@ -1104,6 +1280,171 @@ export default {
                 console.log(error);
             }
         },
+        GetFechaVencimiento() {
+            try {
+                if (
+                    this.codini == null &&
+                    this.codini == "" &&
+                    this.codter == null &&
+                    this.codter == ""
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Ingresar el codigo inicial y de termino para realizar la busqueda",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    let data = {
+                        CODINI: this.codini,
+                        CODTER: this.codter
+                    };
+
+                    axios
+                        .post(
+                            this.localVal + "/api/Reportes/GetFechaVencimiento",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.listadoGeneral = res.data;
+                            if (this.listadoGeneral.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                this.column = [
+                                    {
+                                        label: "Codigo Interno",
+                                        field: "CODART",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Nombre",
+                                        field: "NOMBRE",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Unidad Medida",
+                                        field: "UNIMED",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Fecha Vencimiento",
+                                        field: "FECVEN",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Dias de Vencimiento",
+                                        field: "DIASVENCIMIENTO",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Lote",
+                                        field: "LOTE",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Codigo de Barra",
+                                        field: "CODBAR",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Saldo",
+                                        field: "SALDO",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Folio",
+                                        field: "FOLIO",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Fecha Recepcion",
+                                        field: "FRECEP",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Nombre Proveedor",
+                                        field: "NOMPROV",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Tipo Documento",
+                                        field: "TIPDOC",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Numero Documento",
+                                        field: "NUMDOC",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Dias Recepcionado",
+                                        field: "DIASREC",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Ordenes de Compra",
+                                        field: "ORDENCOMPRA",
+                                        filterOptions: {
+                                            enabled: true
+                                        }
+                                    },
+                                    {
+                                        label: "Opciones",
+                                        field: "action"
+                                    }
+                                ];
+                                this.listaActive = true;
+                            }
+                        });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
         GetSaldos() {
             try {
                 axios
@@ -1194,7 +1535,7 @@ export default {
     beforeMount() {
         this.RefreshToken();
         setTimeout(() => {
-            //this.GetSaldoArticulos();
+            this.TraerServicio();
         }, 2000);
     }
 };
