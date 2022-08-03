@@ -180,6 +180,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Reportes/GetConsumoMes', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoMes']);    
     Route::post('/Reportes/GetConsumoMesServicio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoMesServicio']);
     Route::post('/Reportes/GetFechaVencimiento', ['middleware' => 'cors', 'uses' => 'Reportes@GetFechaVencimiento']);
+    Route::post('/Reportes/GetZGEN', ['middleware' => 'cors', 'uses' => 'Reportes@GetZGEN']);
+    Route::post('/Reportes/GetZGENPriorizados', ['middleware' => 'cors', 'uses' => 'Reportes@GetZGENPriorizados']);
 });
 
 //Generar PDF

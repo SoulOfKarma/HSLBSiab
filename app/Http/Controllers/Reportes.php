@@ -6,6 +6,7 @@ use App\despachos;
 use App\despachoDetalles;
 use App\saldo_inventarios;
 use App\recepcionDetalles;
+use App\siab_articulos;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Log;
@@ -252,6 +253,64 @@ class Reportes extends Controller
             WHERE t.CODART BETWEEN "'.$request->CODINI.'" AND "'.$request->CODTER.'"
             GROUP BY t.CODART,t.NOMBRE,t.UNIMED,t.FECVEN,t.LOTE,t.CODBAR,t.FOLIO,t.FRECEP,t.NOMPROV,t.TIPDOC,t.NUMDOC,t.DIASREC,t.ORDENCOMPRA
             ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetZGENPriorizados(Request $request){
+        try {
+            $get = siab_articulos::select('recepciones.NUMORD AS NUMORD',DB::raw('"13" AS CDEISSV'),DB::raw('"130150" AS DEISEST'),
+            'siab_articulo.ZGEN AS ZGEN','siab_articulo.CODART AS CODART','siab_articulo.NOMBRE AS NOMBRE',
+            DB::raw('"SI" AS VALMED'),
+            DB::raw('"'.$request->MES.'" AS MES'),
+            DB::raw('siab_articulo.CODART_BARR AS CODBAR'),
+            DB::raw("ROUND(COALESCE(SUM(saldo_inventario.CANTIDAD),0),0) AS STOCKFISICO"),
+            DB::raw("ROUND(COALESCE(SUM(saldo_inventario.CANTIDAD),0),0) AS STOCKBINSAL"),
+            DB::raw("ROUND(COALESCE(SUM(recepcion_detalles.CANREC),0),0) AS CANREC"),
+            DB::raw("0 AS CANDEL"),
+            DB::raw("0 AS CANPRES"),
+            DB::raw("0 AS CANPAC"),
+            DB::raw("0 AS CANPOE"),
+            DB::raw("0 AS UMERMA"),
+            DB::raw("0 AS MONMERMA"),
+            DB::raw("ROUND(SUM(recepcion_detalles.CANREC),0)- COALESCE(ROUND((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = recepcion_detalles.LOTE),0),0) AS SALDO"),
+            DB::raw("ROUND(SUM(recepcion_detalles.CANREC),0)- COALESCE(ROUND((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = recepcion_detalles.LOTE),0),0) AS SALDOBIN"),
+            DB::raw("ROUND(recepcion_detalles.PREUNI,0) AS PRECIO1"),
+            DB::raw("ROUND((SELECT if((select COUNT(recepcion_detalles.PREUNI) FROM recepcion_detalles WHERE recepcion_detalles.CODBAR = siab_articulo.CODART_BARR) > 1,(SELECT recepcion_detalles.PREUNI FROM recepcion_detalles WHERE recepcion_detalles.CODBAR = siab_articulo.CODART_BARR LIMIT 1,1),0)),0) AS PRECIO2"),
+            DB::raw("ROUND((SELECT if((select COUNT(recepcion_detalles.PREUNI) FROM recepcion_detalles WHERE recepcion_detalles.CODBAR = siab_articulo.CODART_BARR) > 2,(SELECT recepcion_detalles.PREUNI FROM recepcion_detalles WHERE recepcion_detalles.CODBAR = siab_articulo.CODART_BARR LIMIT 2,1),0)),0) AS PRECIO3"),
+            DB::raw("ROUND((SELECT if((select COUNT(recepcion_detalles.PREUNI) FROM recepcion_detalles WHERE recepcion_detalles.CODBAR = siab_articulo.CODART_BARR) > 3,(SELECT recepcion_detalles.PREUNI FROM recepcion_detalles WHERE recepcion_detalles.CODBAR = siab_articulo.CODART_BARR LIMIT 3,1),0)),0) AS PRECIO4"))
+            ->join('recepcion_detalles', 'siab_articulo.CODART_BARR','=','recepcion_detalles.CODBAR')            
+            ->leftjoin('saldo_inventario', 'recepcion_detalles.CODBAR','=','saldo_inventario.CODART_BARR')
+            ->leftjoin('recepciones', 'recepcion_detalles.FOLIO','=','recepciones.FOLIO')
+            ->whereRaw('DATE_FORMAT(recepcion_detalles.FECDES,"%m") = "'.$request->MES.'" && siab_articulo.GENERICO !="\\\N"')
+            ->groupBy('NUMORD','ZGEN','CODART','NOMBRE','CODBAR','recepcion_detalles.LOTE','PRECIO1')
+            ->get();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetZGEN(Request $request){
+        try {
+            $get = siab_articulos::select('recepciones.NUMORD AS NUMORD',DB::raw('"13" AS CDEISSV'),DB::raw('"130150" AS DEISEST'),
+            'siab_articulo.ZGEN AS ZGEN','siab_articulo.CODART AS CODART','siab_articulo.NOMBRE AS NOMBRE',
+            DB::raw('"SI" AS VALMED'),DB::raw('"'.$request->MES.'" AS MES'),
+            DB::raw("ROUND(SUM(recepcion_detalles.CANREC),0) AS CANREC"),DB::raw("MAX(ROUND(recepcion_detalles.PREUNI,0)) AS PRECIO"),
+            DB::raw("ROUND(SUM(COALESCE(recepcion_detalles.CANREC,0)) * SUM(COALESCE(recepcion_detalles.PREUNI,0)),0) AS TOTAL"),
+            "recepcion_detalles.UNIMED AS UNIMED",DB::raw('"'.$request->MES.'" AS MESSAL'),
+            DB::raw("ROUND(SUM(COALESCE(despacho_detalles.CANTIDAD,0)),0) AS DESPACHO"))
+            ->join('recepcion_detalles', 'siab_articulo.CODART_BARR','=','recepcion_detalles.CODBAR')
+            ->join('recepciones', 'recepcion_detalles.FOLIO','=','recepciones.FOLIO')
+            ->leftjoin('despacho_detalles', 'recepcion_detalles.LOTE','=','despacho_detalles.LOTE')
+            ->whereRaw('DATE_FORMAT(recepcion_detalles.FECDES,"%m") = "'.$request->MES.'" && siab_articulo.GENERICO !="\\\N"')
+            ->groupBy('NUMORD','CDEISSV','DEISEST','ZGEN','siab_articulo.CODART','recepcion_detalles.PREUNI','NOMBRE','VALMED','UNIMED')
+            ->get();
+
             return $get;
         } catch (\Throwable $th) {
             log::info($th);

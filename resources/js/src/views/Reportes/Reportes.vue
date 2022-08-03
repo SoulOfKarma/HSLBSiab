@@ -171,6 +171,51 @@
                             >
                         </div>
                     </div>
+                    <div class="vx-row" v-if="zgen">
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>Seleccione Mes</h6>
+                            <v-select
+                                v-model="seleccionMes"
+                                placeholder="Ej. Junio"
+                                class="w-full select-large"
+                                label="descripcionMes"
+                                :options="listadoMes"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetZGen"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar</vs-button
+                            >
+                        </div>
+                    </div>
+                    <br />
+                    <div class="vx-row" v-if="zgenpriorizado">
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>Seleccione Mes</h6>
+                            <v-select
+                                v-model="seleccionMes"
+                                placeholder="Ej. Junio"
+                                class="w-full select-large"
+                                label="descripcionMes"
+                                :options="listadoMes"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetZGenPriozados"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar</vs-button
+                            >
+                        </div>
+                    </div>
                     <br />
                     <vx-card title="">
                         <div class="vx-row">
@@ -312,6 +357,8 @@ export default {
             consumomes: false,
             consumomesservicio: false,
             fechavencimiento: false,
+            zgen: false,
+            zgenpriorizado: false,
             popUpBincard: false,
             fechaInicio: null,
             fechaTermino: null,
@@ -579,6 +626,14 @@ export default {
                 {
                     id: 7,
                     descripcionReporte: "Fecha Vencimiento/Cenabast"
+                },
+                {
+                    id: 8,
+                    descripcionReporte: "ZGEN"
+                },
+                {
+                    id: 9,
+                    descripcionReporte: "ZGEN Priorizados"
                 }
             ],
             listadoMes: [
@@ -838,24 +893,48 @@ export default {
                     this.consumomes = false;
                     this.consumomesservicio = false;
                     this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
                 } else if (this.seleccionReporte.id == 5) {
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = true;
                     this.consumomesservicio = false;
                     this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
                 } else if (this.seleccionReporte.id == 6) {
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
                     this.consumomesservicio = true;
                     this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
                 } else if (this.seleccionReporte.id == 7) {
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
                     this.consumomesservicio = false;
                     this.fechavencimiento = true;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
+                } else if (this.seleccionReporte.id == 8) {
+                    this.listaActive = false;
+                    this.consumoanio = false;
+                    this.consumomes = false;
+                    this.consumomesservicio = false;
+                    this.fechavencimiento = false;
+                    this.zgen = true;
+                    this.zgenpriorizado = false;
+                } else if (this.seleccionReporte.id == 9) {
+                    this.listaActive = false;
+                    this.consumoanio = false;
+                    this.consumomes = false;
+                    this.consumomesservicio = false;
+                    this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = true;
                 }
             } catch (error) {
                 console.log(error);
@@ -1169,6 +1248,374 @@ export default {
                                 {
                                     label: "Consumo",
                                     field: "CONSUMO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Opciones",
+                                    field: "action"
+                                }
+                            ];
+                            this.listaActive = true;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetZGen() {
+            try {
+                let mes = "";
+                if (this.seleccionMes.id > 0 && this.seleccionMes.id < 10) {
+                    mes = "0" + this.seleccionMes.id;
+                } else {
+                    mes = this.seleccionMes.id;
+                }
+                let data = {
+                    MES: mes
+                };
+                if (this.seleccionMes.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar el mes para continuar",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                }
+                axios
+                    .post(this.localVal + "/api/Reportes/GetZGEN", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        if (this.listadoGeneral.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.column = [
+                                {
+                                    label: "Codigo DEIS Servicio de Salud",
+                                    field: "CDEISSV",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo DEIS establecimiento",
+                                    field: "DEISEST",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo ZGEN",
+                                    field: "ZGEN",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Interno",
+                                    field: "CODART",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Descripcion",
+                                    field: "NOMBRE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label:
+                                        "Medicamento Corresponde al Arsenal del Establecimiento",
+                                    field: "VALMED",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Mes de Recepcion del Medicamento",
+                                    field: "MES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Cantidad Recepcionada",
+                                    field: "CANREC",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio Unitario",
+                                    field: "PRECIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio Total",
+                                    field: "TOTAL",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Unidad de Medida",
+                                    field: "UNIMED",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label:
+                                        "Mes de Salida de Medicamento a Farmacia Central",
+                                    field: "MESSAL",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Cantidad de Salida a Farmacia",
+                                    field: "DESPACHO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Opciones",
+                                    field: "action"
+                                }
+                            ];
+                            this.listaActive = true;
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetZGenPriozados() {
+            try {
+                let mes = "";
+                if (this.seleccionMes.id > 0 && this.seleccionMes.id < 10) {
+                    mes = "0" + this.seleccionMes.id;
+                } else {
+                    mes = this.seleccionMes.id;
+                }
+                let data = {
+                    MES: mes
+                };
+                if (this.seleccionMes.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe seleccionar el mes para continuar",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                }
+                axios
+                    .post(
+                        this.localVal + "/api/Reportes/GetZGENPriorizados",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        if (this.listadoGeneral.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.column = [
+                                {
+                                    label: "Via Adquisicion",
+                                    field: "NUMORD",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo DEIS Servicio de Salud",
+                                    field: "CDEISSV",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo DEIS establecimiento",
+                                    field: "DEISEST",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo ZGEN",
+                                    field: "ZGEN",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Interno",
+                                    field: "CODART",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Descripcion",
+                                    field: "NOMBRE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label:
+                                        "Medicamento Corresponde al Arsenal del Establecimiento",
+                                    field: "VALMED",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Mes de Recepcion del Medicamento",
+                                    field: "MES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Cantidad Recepcionada",
+                                    field: "STOCKFISICO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio Unitario",
+                                    field: "STOCKBINSAL",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Cantidad Recepcionada Por Compra",
+                                    field: "CANREC",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label:
+                                        "Cantidad ingresada por concepto de devolucion de prestamo de otro establecimiento",
+                                    field: "CANDEL",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label:
+                                        "Cantidad ingresada por prestamo de otro establecimiento",
+                                    field: "CANPRES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label:
+                                        "Cantidad total dispensada a pacientes",
+                                    field: "CANPAC",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label:
+                                        "Cantidad Prestada o devuelta a otro establecimiento",
+                                    field: "CANPOE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Unidades Mermadas",
+                                    field: "UMERMA",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Monto Mermado",
+                                    field: "MONMERMA",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Stock Final Físico",
+                                    field: "SALDO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label:
+                                        "Stock Final en Sistema de Inventario",
+                                    field: "SALDOBIN",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio Unitario (PPP) de stock",
+                                    field: "PRECIO1",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio 1",
+                                    field: "PRECIO2",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio 2",
+                                    field: "PRECIO3",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio 3",
+                                    field: "PRECIO4",
                                     filterOptions: {
                                         enabled: true
                                     }
