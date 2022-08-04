@@ -172,6 +172,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     //Get Reportes
     Route::get('/Reportes/GetSaldosReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosReporte']);
     Route::get('/Reportes/GetSaldosValorizadoReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoReporte']);
+    Route::get('/Reportes/GetSaldoValorizadoP', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoP']);
+    Route::get('/Reportes/GetSaldosValorizadoPMP', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMP']);
     Route::get('/Reportes/GetArticulosSaldoEstado', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstado']);
 
     //Post Reportes

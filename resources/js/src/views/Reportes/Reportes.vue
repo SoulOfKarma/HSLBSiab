@@ -634,6 +634,10 @@ export default {
                 {
                     id: 9,
                     descripcionReporte: "ZGEN Priorizados"
+                },
+                {
+                    id: 10,
+                    descripcionReporte: "Saldo Valorizado PMP"
                 }
             ],
             listadoMes: [
@@ -935,6 +939,78 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = false;
                     this.zgenpriorizado = true;
+                } else if (this.seleccionReporte.id == 10) {
+                    this.column = [
+                        {
+                            label: "Codigo Articulo 1",
+                            field: "CODART",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Codigo Articulo 2",
+                            field: "CODART2",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Descripcion",
+                            field: "NOMBRE",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Unidad Medida",
+                            field: "UNIMED",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Unidades",
+                            field: "saldoCorrecto",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Total",
+                            field: "TOTAL",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "PMP",
+                            field: "PMP",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Ultimo Valor",
+                            field: "ULTPRE",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Menor Valor",
+                            field: "MINPRE",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Opciones",
+                            field: "action"
+                        }
+                    ];
+                    this.consumoanio = false;
+                    this.GetSaldoValorizadoPMP();
                 }
             } catch (error) {
                 console.log(error);
@@ -1944,6 +2020,66 @@ export default {
                             });
                         }
                     });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetSaldoValorizadoPMP() {
+            try {
+                axios
+                    .all([
+                        axios.get(
+                            this.localVal + "/api/Reportes/GetSaldoValorizadoP",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.get(
+                            this.localVal +
+                                "/api/Reportes/GetSaldosValorizadoPMP",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                    ])
+                    .then(
+                        axios.spread((res1, res2) => {
+                            let resp1 = res1.data;
+                            let resp2 = res2.data;
+                            if (resp1.length > 0 && resp2.length > 0) {
+                                this.listadoGeneral = [];
+                                let d = [];
+                                resp1.forEach((val, ind) => {
+                                    resp2.forEach((value, index) => {
+                                        if (val.CODART == value.CODART) {
+                                            val.PMP = value.PMP;
+                                            val.TOTAL = value.VALTOT;
+                                            val.CODART2 = value.CODART;
+                                            d.push(val);
+                                        }
+                                    });
+                                });
+                                this.listadoGeneral = d;
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible cargar los datos,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        })
+                    );
             } catch (error) {
                 console.log(error);
             }
