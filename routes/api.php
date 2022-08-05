@@ -184,6 +184,14 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Reportes/GetFechaVencimiento', ['middleware' => 'cors', 'uses' => 'Reportes@GetFechaVencimiento']);
     Route::post('/Reportes/GetZGEN', ['middleware' => 'cors', 'uses' => 'Reportes@GetZGEN']);
     Route::post('/Reportes/GetZGENPriorizados', ['middleware' => 'cors', 'uses' => 'Reportes@GetZGENPriorizados']);
+    Route::post('/Reportes/GetSaldoValorizadoPCod', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoPCod']);
+    Route::post('/Reportes/GetSaldosValorizadoPMPCod', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPCod']);
+    Route::post('/Reportes/GetSaldoValorizadoPCodFecha', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoPCodFecha']);
+    Route::post('/Reportes/GetSaldosValorizadoPMPCodFecha', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPCodFecha']);
+    Route::post('/Reportes/GetSaldoValorizadoPFarmacia', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoPFarmacia']);
+    Route::post('/Reportes/GetSaldosValorizadoPMPFarmacia', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPFarmacia']);
+    Route::post('/Reportes/GetSaldoValorizadoPEconomato', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoPEconomato']);
+    Route::post('/Reportes/GetSaldosValorizadoPMPEconomato', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPEconomato']);
 });
 
 //Generar PDF

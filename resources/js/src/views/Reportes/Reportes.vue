@@ -16,7 +16,6 @@
                             @input="GetReporteEspecifico"
                         ></v-select>
                     </div>
-                    <br />
                     <div class="vx-row" v-if="consumoanio">
                         <div class="vx-col w-1/2 mt-5">
                             <h6>Codigo Inicial</h6>
@@ -216,6 +215,155 @@
                             >
                         </div>
                     </div>
+                    <div class="vx-row" v-if="saldopmp">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Por Farmacia</h6>
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicioF"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTerminoF"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetSaldoValorizadoPMPFarmacia"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Por Farmacia</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Por Economato</h6>
+                        </div>
+
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicioE"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTerminoE"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetSaldoValorizadoPMPEconomato"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Por Economato</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Por Fecha Farmacia/Economato</h6>
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicioFE"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTerminoFE"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetSaldoValorizadoPMPXFechaFE"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Por Fecha Farmacia/Economato</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Por Codigo/Fecha</h6>
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codiniC"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codterC"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicio"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTermino"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetSaldoValorizadoPMPXCodigoFecha"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Por Codigo/Fecha</vs-button
+                            >
+                        </div>
+                    </div>
                     <br />
                     <vx-card title="">
                         <div class="vx-row">
@@ -362,8 +510,17 @@ export default {
             popUpBincard: false,
             fechaInicio: null,
             fechaTermino: null,
+            fechaInicioF: null,
+            fechaTerminoF: null,
+            fechaInicioE: null,
+            fechaTerminoE: null,
+            fechaInicioFE: null,
+            fechaTerminoFE: null,
+            saldopmp: false,
             codini: "",
             codter: "",
+            codiniC: "",
+            codterC: "",
             idMod: 0,
             seleccionReporte: {
                 id: 0,
@@ -780,6 +937,7 @@ export default {
                         }
                     ];
                     this.consumoanio = false;
+                    this.saldopmp = false;
                     this.GetSaldos();
                 } else if (this.seleccionReporte.id == 2) {
                     this.column = [
@@ -838,6 +996,7 @@ export default {
                         }
                     ];
                     this.consumoanio = false;
+                    this.saldopmp = false;
                     this.GetSaldoValorizado();
                 } else if (this.seleccionReporte.id == 3) {
                     this.column = [
@@ -890,6 +1049,7 @@ export default {
                     ];
                     this.consumoanio = false;
                     this.consumomes = false;
+                    this.saldopmp = false;
                     this.GetSaldoArticulos();
                 } else if (this.seleccionReporte.id == 4) {
                     this.listaActive = false;
@@ -899,6 +1059,7 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = false;
                     this.zgenpriorizado = false;
+                    this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 5) {
                     this.listaActive = false;
                     this.consumoanio = false;
@@ -907,6 +1068,7 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = false;
                     this.zgenpriorizado = false;
+                    this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 6) {
                     this.listaActive = false;
                     this.consumoanio = false;
@@ -915,6 +1077,7 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = false;
                     this.zgenpriorizado = false;
+                    this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 7) {
                     this.listaActive = false;
                     this.consumoanio = false;
@@ -923,6 +1086,7 @@ export default {
                     this.fechavencimiento = true;
                     this.zgen = false;
                     this.zgenpriorizado = false;
+                    this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 8) {
                     this.listaActive = false;
                     this.consumoanio = false;
@@ -931,6 +1095,7 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = true;
                     this.zgenpriorizado = false;
+                    this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 9) {
                     this.listaActive = false;
                     this.consumoanio = false;
@@ -939,18 +1104,20 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = false;
                     this.zgenpriorizado = true;
+                    this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 10) {
+                    this.saldopmp = true;
+                    this.listaActive = true;
+                    this.consumoanio = false;
+                    this.consumomes = false;
+                    this.consumomesservicio = false;
+                    this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
                     this.column = [
                         {
-                            label: "Codigo Articulo 1",
+                            label: "Codigo Articulo",
                             field: "CODART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Codigo Articulo 2",
-                            field: "CODART2",
                             filterOptions: {
                                 enabled: true
                             }
@@ -2041,6 +2208,292 @@ export default {
                         axios.get(
                             this.localVal +
                                 "/api/Reportes/GetSaldosValorizadoPMP",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                    ])
+                    .then(
+                        axios.spread((res1, res2) => {
+                            let resp1 = res1.data;
+                            let resp2 = res2.data;
+                            if (resp1.length > 0 && resp2.length > 0) {
+                                this.listadoGeneral = [];
+                                let d = [];
+                                resp1.forEach((val, ind) => {
+                                    resp2.forEach((value, index) => {
+                                        if (val.CODART == value.CODART) {
+                                            val.PMP = value.PMP;
+                                            val.TOTAL = value.VALTOT;
+                                            val.CODART2 = value.CODART;
+                                            d.push(val);
+                                        }
+                                    });
+                                });
+                                this.listadoGeneral = d;
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible cargar los datos,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        })
+                    );
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetSaldoValorizadoPMPFarmacia() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicioF, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTerminoF, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    )
+                };
+                axios
+                    .all([
+                        axios.post(
+                            this.localVal +
+                                "/api/Reportes/GetSaldoValorizadoPFarmacia",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.post(
+                            this.localVal +
+                                "/api/Reportes/GetSaldosValorizadoPMPFarmacia",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                    ])
+                    .then(
+                        axios.spread((res1, res2) => {
+                            let resp1 = res1.data;
+                            let resp2 = res2.data;
+                            if (resp1.length > 0 && resp2.length > 0) {
+                                this.listadoGeneral = [];
+                                let d = [];
+                                resp1.forEach((val, ind) => {
+                                    resp2.forEach((value, index) => {
+                                        if (val.CODART == value.CODART) {
+                                            val.PMP = value.PMP;
+                                            val.TOTAL = value.VALTOT;
+                                            val.CODART2 = value.CODART;
+                                            d.push(val);
+                                        }
+                                    });
+                                });
+                                this.listadoGeneral = d;
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible cargar los datos,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        })
+                    );
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetSaldoValorizadoPMPEconomato() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicioE, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTerminoE, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    )
+                };
+                axios
+                    .all([
+                        axios.post(
+                            this.localVal +
+                                "/api/Reportes/GetSaldoValorizadoPEconomato",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.post(
+                            this.localVal +
+                                "/api/Reportes/GetSaldosValorizadoPMPEconomato",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                    ])
+                    .then(
+                        axios.spread((res1, res2) => {
+                            let resp1 = res1.data;
+                            let resp2 = res2.data;
+                            if (resp1.length > 0 && resp2.length > 0) {
+                                this.listadoGeneral = [];
+                                let d = [];
+                                resp1.forEach((val, ind) => {
+                                    resp2.forEach((value, index) => {
+                                        if (val.CODART == value.CODART) {
+                                            val.PMP = value.PMP;
+                                            val.TOTAL = value.VALTOT;
+                                            val.CODART2 = value.CODART;
+                                            d.push(val);
+                                        }
+                                    });
+                                });
+                                this.listadoGeneral = d;
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible cargar los datos,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        })
+                    );
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetSaldoValorizadoPMPXFechaFE() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicioFE, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTerminoFE, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    )
+                };
+                axios
+                    .all([
+                        axios.post(
+                            this.localVal +
+                                "/api/Reportes/GetSaldoValorizadoPCod",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.post(
+                            this.localVal +
+                                "/api/Reportes/GetSaldosValorizadoPMPCod",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                    ])
+                    .then(
+                        axios.spread((res1, res2) => {
+                            let resp1 = res1.data;
+                            let resp2 = res2.data;
+                            if (resp1.length > 0 && resp2.length > 0) {
+                                this.listadoGeneral = [];
+                                let d = [];
+                                resp1.forEach((val, ind) => {
+                                    resp2.forEach((value, index) => {
+                                        if (val.CODART == value.CODART) {
+                                            val.PMP = value.PMP;
+                                            val.TOTAL = value.VALTOT;
+                                            val.CODART2 = value.CODART;
+                                            d.push(val);
+                                        }
+                                    });
+                                });
+                                this.listadoGeneral = d;
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No fue posible cargar los datos,intentelo nuevamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        })
+                    );
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetSaldoValorizadoPMPXCodigoFecha() {
+            try {
+                let data = {
+                    codini: this.codiniC,
+                    codter: this.codterC,
+                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    )
+                };
+                axios
+                    .all([
+                        axios.post(
+                            this.localVal +
+                                "/api/Reportes/GetSaldoValorizadoPCodFecha",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        ),
+                        axios.post(
+                            this.localVal +
+                                "/api/Reportes/GetSaldosValorizadoPMPCodFecha",
+                            data,
                             {
                                 headers: {
                                     Authorization:

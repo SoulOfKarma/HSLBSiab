@@ -108,6 +108,8 @@ class Reportes extends Controller
         }    
     }
 
+    //Busqueda Saldo General
+
     public function GetSaldoValorizadoP(){
         try {
             $get = DB::select('select a.CODART,a.NOMBRE,a.UNIMED,ROUND(SUM(a.saldoCorrecto),0) AS saldoCorrecto,ROUND(a.ULTPRE,0) AS ULTPRE,ROUND(a.MINPRE,0) AS MINPRE,a.TOTAL AS TOTAL
@@ -186,6 +188,351 @@ class Reportes extends Controller
             return false;
         }    
     }
+
+    //Busqueda Saldo Farmacia/Economato por Fecha
+
+    public function GetSaldoValorizadoPCod(Request $request){
+        try {
+            $get = DB::select('select a.CODART,a.NOMBRE,a.UNIMED,ROUND(SUM(a.saldoCorrecto),0) AS saldoCorrecto,ROUND(a.ULTPRE,0) AS ULTPRE,ROUND(a.MINPRE,0) AS MINPRE,a.TOTAL AS TOTAL
+            FROM
+                        (
+                        select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODBAR = t.CODBAR && 
+                                    despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                    GROUP BY despacho_detalles.NOMART),0))
+                                                 AS saldoCorrecto,
+                                                            t.NOMBRE,t.UNIMED,t.CODART,
+                                                            (SELECT MAX(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART) AS ULTPRE,                                                            
+                                                                        (SELECT MIN(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART) AS MINPRE,
+                                                                        ROUND(((SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.NOMART = t.NOMBRE && 
+                                                                                    despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                                                    GROUP BY despacho_detalles.NOMART),0)) * (SELECT MAX(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART)),0) AS TOTAL
+                                                                from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+                                                              recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
+                                                              recepcion_detalles.PREUNI AS PREUNI,
+                                                              ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP
+                                                              from recepcion_detalles 
+                                                              WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI
+                                                      
+                                                              union all
+                                                      
+                                                              select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                                                               saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
+                                                               saldo_inventario.PRECIO AS PREUNI,
+                                                               ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP
+                                                              from saldo_inventario 
+                                                              WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI                         
+                                                              ) t
+                                                      group by t.NOMBRE,t.UNIMED,t.CODART,ULTPRE,t.CODBAR
+                                                      
+                                                      
+                                                      UNION ALL 
+                                                      
+                                                      SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,siab_articulo.UNIMEDBASE AS UNIMED,
+                        siab_articulo.CODART AS CODART,0 AS ULTPRE,0 AS MINPRE,0 AS TOTAL
+                        FROM siab_articulo
+                        
+                        ) a
+                        WHERE saldoCorrecto > 0
+                        group by a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.MINPRE,a.TOTAL
+                        ORDER BY a.CODART ASC
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetSaldosValorizadoPMPCod(Request $request){
+        try {
+            $get = DB::select('select SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0) AS CANTOT,SUM(t.PMP) AS PMP,ROUND((SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0))*SUM(t.PMP),0) AS VALTOT,t.CODART AS CODART from
+            (SELECT ROUND(SUM(recepcion_detalles.CANREC),0) AS CANTOT,
+            ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP,recepcion_detalles.CODART AS CODART FROM recepcion_detalles
+            WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            GROUP BY CODART
+            
+            UNION ALL
+            
+            SELECT ROUND(SUM(saldo_inventario.SALDO),0) AS CANTOT,
+            ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP,saldo_inventario.CODART AS CODART FROM saldo_inventario
+            WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            GROUP BY CODART) t
+            GROUP BY t.CODART 
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    //Busqueda Por Codigo y Fecha
+
+    public function GetSaldoValorizadoPCodFecha(Request $request){
+        try {
+            $get = DB::select('select a.CODART,a.NOMBRE,a.UNIMED,ROUND(SUM(a.saldoCorrecto),0) AS saldoCorrecto,ROUND(a.ULTPRE,0) AS ULTPRE,ROUND(a.MINPRE,0) AS MINPRE,a.TOTAL AS TOTAL
+            FROM
+                        (
+                        select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODBAR = t.CODBAR && 
+                                    despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                    GROUP BY despacho_detalles.NOMART),0))
+                                                 AS saldoCorrecto,
+                                                            t.NOMBRE,t.UNIMED,t.CODART,
+                                                            (SELECT MAX(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART) AS ULTPRE,                                                            
+                                                                        (SELECT MIN(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART) AS MINPRE,
+                                                                        ROUND(((SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.NOMART = t.NOMBRE && 
+                                                                                    despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                                                    GROUP BY despacho_detalles.NOMART),0)) * (SELECT MAX(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART)),0) AS TOTAL
+                                                                from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+                                                              recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
+                                                              recepcion_detalles.PREUNI AS PREUNI,
+                                                              ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP
+                                                              from recepcion_detalles 
+                                                              WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI
+                                                      
+                                                              union all
+                                                      
+                                                              select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                                                               saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
+                                                               saldo_inventario.PRECIO AS PREUNI,
+                                                               ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP
+                                                              from saldo_inventario 
+                                                              WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI                         
+                                                              ) t
+                                                      group by t.NOMBRE,t.UNIMED,t.CODART,ULTPRE,t.CODBAR
+                                                      
+                                                      
+                                                      UNION ALL 
+                                                      
+                                                      SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,siab_articulo.UNIMEDBASE AS UNIMED,
+                        siab_articulo.CODART AS CODART,0 AS ULTPRE,0 AS MINPRE,0 AS TOTAL
+                        FROM siab_articulo
+                        
+                        ) a
+                        WHERE saldoCorrecto > 0 && a.CODART BETWEEN "'.$request->codini.'" and "'.$request->codter.'"
+                        group by a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.MINPRE,a.TOTAL
+                        ORDER BY a.CODART ASC
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetSaldosValorizadoPMPCodFecha(Request $request){
+        try {
+            $get = DB::select('select SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0) AS CANTOT,SUM(t.PMP) AS PMP,ROUND((SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0))*SUM(t.PMP),0) AS VALTOT,t.CODART AS CODART from
+            (SELECT ROUND(SUM(recepcion_detalles.CANREC),0) AS CANTOT,
+            ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP,recepcion_detalles.CODART AS CODART FROM recepcion_detalles
+            WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            GROUP BY CODART
+            
+            UNION ALL
+            
+            SELECT ROUND(SUM(saldo_inventario.SALDO),0) AS CANTOT,
+            ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP,saldo_inventario.CODART AS CODART FROM saldo_inventario
+            WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            GROUP BY CODART) t
+            WHERE t.CODART BETWEEN "'.$request->codini.'" and "'.$request->codter.'"
+            GROUP BY t.CODART 
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    //Busqueda Farmacia Por Fecha
+
+    public function GetSaldoValorizadoPFarmacia(Request $request){
+        try {
+            $get = DB::select('select a.CODART,a.NOMBRE,a.UNIMED,ROUND(SUM(a.saldoCorrecto),0) AS saldoCorrecto,ROUND(a.ULTPRE,0) AS ULTPRE,ROUND(a.MINPRE,0) AS MINPRE,a.TOTAL AS TOTAL
+            FROM
+                        (
+                        select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODBAR = t.CODBAR && 
+                                    despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                    GROUP BY despacho_detalles.NOMART),0))
+                                                 AS saldoCorrecto,
+                                                            t.NOMBRE,t.UNIMED,t.CODART,
+                                                            (SELECT MAX(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART) AS ULTPRE,                                                            
+                                                                        (SELECT MIN(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART) AS MINPRE,
+                                                                        ROUND(((SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.NOMART = t.NOMBRE && 
+                                                                                    despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                                                    GROUP BY despacho_detalles.NOMART),0)) * (SELECT MAX(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART)),0) AS TOTAL
+                                                                from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+                                                              recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
+                                                              recepcion_detalles.PREUNI AS PREUNI,
+                                                              ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP
+                                                              from recepcion_detalles
+                                                              WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI
+                                                      
+                                                              union all
+                                                      
+                                                              select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                                                               saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
+                                                               saldo_inventario.PRECIO AS PREUNI,
+                                                               ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP
+                                                              from saldo_inventario
+                                                              WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI                         
+                                                              ) t
+                                                      group by t.NOMBRE,t.UNIMED,t.CODART,ULTPRE,t.CODBAR
+                                                      
+                                                      
+                                                      UNION ALL 
+                                                      
+                                                      SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,siab_articulo.UNIMEDBASE AS UNIMED,
+                        siab_articulo.CODART AS CODART,0 AS ULTPRE,0 AS MINPRE,0 AS TOTAL
+                        FROM siab_articulo
+                        
+                        ) a
+                        WHERE saldoCorrecto > 0 && a.CODART BETWEEN "2110000" and "3470066"
+                        group by a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.MINPRE,a.TOTAL
+                        ORDER BY a.CODART ASC
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetSaldosValorizadoPMPFarmacia(Request $request){
+        try {
+            $get = DB::select('select SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0) AS CANTOT,SUM(t.PMP) AS PMP,ROUND((SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0))*SUM(t.PMP),0) AS VALTOT,t.CODART AS CODART from
+            (SELECT ROUND(SUM(recepcion_detalles.CANREC),0) AS CANTOT,
+            ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP,recepcion_detalles.CODART AS CODART FROM recepcion_detalles
+            WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            GROUP BY CODART
+            
+            UNION ALL
+            
+            SELECT ROUND(SUM(saldo_inventario.SALDO),0) AS CANTOT,
+            ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP,saldo_inventario.CODART AS CODART FROM saldo_inventario
+            WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            GROUP BY CODART) t
+            WHERE t.CODART BETWEEN "2110000" and "3470066"
+            GROUP BY t.CODART 
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    //Busqueda Saldo PMP Economato Por Fecha
+
+    public function GetSaldoValorizadoPEconomato(Request $request){
+        try {
+            $get = DB::select('select a.CODART,a.NOMBRE,a.UNIMED,ROUND(SUM(a.saldoCorrecto),0) AS saldoCorrecto,ROUND(a.ULTPRE,0) AS ULTPRE,ROUND(a.MINPRE,0) AS MINPRE,a.TOTAL AS TOTAL
+            FROM
+                        (
+                        select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODBAR = t.CODBAR && 
+                                    despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                    GROUP BY despacho_detalles.NOMART),0))
+                                                 AS saldoCorrecto,
+                                                            t.NOMBRE,t.UNIMED,t.CODART,
+                                                            (SELECT MAX(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART) AS ULTPRE,                                                            
+                                                                        (SELECT MIN(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART) AS MINPRE,
+                                                                        ROUND(((SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.NOMART = t.NOMBRE && 
+                                                                                    despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL && despacho_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                                                    GROUP BY despacho_detalles.NOMART),0)) * (SELECT MAX(recepcion_detalles.PREUNI)
+                                                                        FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                                        WHERE recepcion_detalles.CODART = t.CODART)),0) AS TOTAL
+                                                                from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+                                                              recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
+                                                              recepcion_detalles.PREUNI AS PREUNI,
+                                                              ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP
+                                                              from recepcion_detalles
+                                                              WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI
+                                                      
+                                                              union all
+                                                      
+                                                              select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                                                               saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
+                                                               saldo_inventario.PRECIO AS PREUNI,
+                                                               ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP
+                                                              from saldo_inventario
+                                                              WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI                         
+                                                              ) t
+                                                      group by t.NOMBRE,t.UNIMED,t.CODART,ULTPRE,t.CODBAR
+                                                      
+                                                      
+                                                      UNION ALL 
+                                                      
+                                                      SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,siab_articulo.UNIMEDBASE AS UNIMED,
+                        siab_articulo.CODART AS CODART,0 AS ULTPRE,0 AS MINPRE,0 AS TOTAL
+                        FROM siab_articulo
+                        
+                        ) a
+                        WHERE saldoCorrecto > 0 && a.CODART NOT BETWEEN "2110000" and "3470066"
+                        group by a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.MINPRE,a.TOTAL
+                        ORDER BY a.CODART ASC
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetSaldosValorizadoPMPEconomato(Request $request){
+        try {
+            $get = DB::select('select SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0) AS CANTOT,SUM(t.PMP) AS PMP,ROUND((SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0))*SUM(t.PMP),0) AS VALTOT,t.CODART AS CODART from
+            (SELECT ROUND(SUM(recepcion_detalles.CANREC),0) AS CANTOT,
+            ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP,recepcion_detalles.CODART AS CODART FROM recepcion_detalles
+            WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            GROUP BY CODART
+            
+            UNION ALL
+            
+            SELECT ROUND(SUM(saldo_inventario.SALDO),0) AS CANTOT,
+            ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP,saldo_inventario.CODART AS CODART FROM saldo_inventario
+            WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            GROUP BY CODART) t
+            WHERE t.CODART NOT BETWEEN "2110000" and "3470066"
+            GROUP BY t.CODART 
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    //Bincard
 
     public function GetBincard(Request $request){
         try {

@@ -103,14 +103,14 @@ export default {
         },
         GenerarJWT() {
             try {
-                let secreto = "27a216342c744f89b7b82fa290519ba0";
+                let secreto = "4a191562d7b2476d8dcb13f265b4c7b1";
                 const jwt = require("jsonwebtoken");
                 let date = moment().add(30, "minutes");
                 let fecha = date.format("YYYY-MM-DDTHH:mm:ss").toString();
 
                 const user = {
-                    entity: "Subsecretaría General de la Presidencia",
-                    run: "22222222",
+                    entity: "Hospital San Luis de Buin - Paine",
+                    run: "18499714",
                     expiration: fecha,
                     purpose: "Desatendido"
                 };
@@ -122,8 +122,10 @@ export default {
 
                 let doc = this.cont.toString() + ".pdf";
 
+                let tokenaa = "sandbox";
+
                 let data = {
-                    api_token_key: "sandbox",
+                    api_token_key: "d7f01566-48df-4a67-8388-4fc0b85d5c37",
                     token: token,
                     cont: doc.toString(),
                     link: this.localVal + "/Verificacion"
