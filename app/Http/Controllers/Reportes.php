@@ -570,7 +570,88 @@ class Reportes extends Controller
         }    
     }
 
+    public function GetBincardFVen(Request $request){
+        try {
+            $saldoinv = saldo_inventarios::select(DB::raw("'Saldo Inventario' AS TIPO"), 'saldo_inventario.NOMBRE AS NOMBRE',
+            DB::raw("STR_TO_DATE(DATE_FORMAT(saldo_inventario.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
+            DB::raw("'-' AS FOLDES"),DB::raw("'-' AS FOLREC"),DB::raw("'-' AS PROVEEDOR"),
+            DB::raw("COALESCE(STR_TO_DATE(DATE_FORMAT(saldo_inventario.FECVEN,'%d-%m-%Y %H'),'%d-%m-%Y'),'-') AS FECVEN"),
+            DB::raw("COALESCE(saldo_inventario.LOTE,'-') AS LOTE"),
+            'saldo_inventario.CODART AS CODART','saldo_inventario.CODART_BARR AS CODBAR','saldo_inventario.PRECIO AS PRECIO',
+            'saldo_inventario.SALDO AS CANTIDAD',DB::raw("'-' AS SERVICIO"))
+            ->where('saldo_inventario.CODART',$request->CODART);
+
+            $recepciondet = recepcionDetalles::select(DB::raw("'Recepcion' AS TIPO"), 'recepcion_detalles.PRODUCTO AS NOMBRE',
+            DB::raw("STR_TO_DATE(DATE_FORMAT(recepcion_detalles.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
+            DB::raw("'-' AS FOLDES"),DB::raw('COALESCE(recepcion_detalles.FOLIO,"-") AS FOLREC'),'recepciones.NOMPRO AS PROVEEDOR',            
+            DB::raw("COALESCE(STR_TO_DATE(DATE_FORMAT(recepcion_detalles.FECVEN,'%d-%m-%Y %H'),'%d-%m-%Y'),'-') AS FECVEN"),
+            DB::raw("COALESCE(recepcion_detalles.LOTE,'-') AS LOTE"),
+            'recepcion_detalles.CODART AS CODART','recepcion_detalles.CODBAR AS CODBAR','recepcion_detalles.PREUNI AS PRECIO',
+            'recepcion_detalles.CANREC AS CANTIDAD',DB::raw("'-' AS SERVICIO"))
+            ->join('recepciones','recepcion_detalles.NUMINT','=','recepciones.NUMINT')
+            ->where('recepcion_detalles.CODART',$request->CODART);
+
+            $despachodet = despachoDetalles::select(DB::raw("'Despacho' AS TIPO"), 'despacho_detalles.NOMART AS NOMBRE',
+            DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
+            DB::raw('COALESCE(despacho_detalles.FOLIO,"-") AS FOLDES'),DB::raw("'-' AS FOLREC"),DB::raw("'-' AS PROVEEDOR"),
+            DB::raw("COALESCE(STR_TO_DATE(DATE_FORMAT(despacho_detalles.FECVEN,'%d-%m-%Y %H'),'%d-%m-%Y'),'-') AS FECVEN"),
+            DB::raw("COALESCE(despacho_detalles.LOTE,'-') AS LOTE"),
+            'despacho_detalles.CODART AS CODART','despacho_detalles.CODBAR AS CODBAR','despacho_detalles.PRECIO AS PRECIO',
+            'despacho_detalles.CANTIDAD AS CANTIDAD',DB::raw('COALESCE(servicios.descripcionServicio,"-") AS SERVICIO'))
+            ->leftjoin('servicios','despacho_detalles.idServicio','=','servicios.id')
+            ->where('despacho_detalles.CODART',$request->CODART)
+            ->union($saldoinv)
+            ->union($recepciondet)
+            ->orderByRaw("TIPO = 'Saldo Inventario' DESC, FECHA ASC, TIPO = 'Recepcion' DESC")
+            ->get();
+
+            return $despachodet;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
     public function GetArticulosSaldoEstado(){
+        try {
+            $get = DB::select('select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
+            FROM (select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = t.LOTE && 
+                        despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
+                        GROUP BY despacho_detalles.LOTE),0))
+                                     AS saldoCorrecto,
+                                                t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
+                                                (SELECT auth_estados.descripcionEstado FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS Estado
+                                                    from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+                                                  COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
+                                                  from recepcion_detalles
+                                                  group by NOMBRE,LOTE,UNIMED,CODART
+                                          
+                                                  union all
+                                          
+                                                  select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                                                  COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART
+                                                  from saldo_inventario
+                                                  group by NOMBRE,LOTE,UNIMED,CODART                         
+                                                  ) t
+                                          group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
+                                          
+                                          UNION ALL 
+                                          
+              SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,"No tiene LOTE" AS LOTE,siab_articulo.UNIMEDBASE AS UNIMED,
+               siab_articulo.CODART AS CODART,siab_articulo.ZGEN AS ZGEN,auth_estados.descripcionEstado AS Estado
+               FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id
+            )a 
+            group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
+            ORDER BY a.CODART ASC
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetArticulosSaldoEstadoC(Request $request){
         try {
             $get = DB::select('select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
             FROM (select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = t.LOTE && 
@@ -588,7 +669,7 @@ class Reportes extends Controller
                                           
                                                   select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
                                                   COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART
-                                                  from saldo_inventario 
+                                                  from saldo_inventario
                                                   group by NOMBRE,LOTE,UNIMED,CODART                         
                                                   ) t
                                           group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
@@ -599,6 +680,49 @@ class Reportes extends Controller
                siab_articulo.CODART AS CODART,siab_articulo.ZGEN AS ZGEN,auth_estados.descripcionEstado AS Estado
                FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id
             )a 
+            WHERE saldoCorrecto > 0 && a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
+            group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
+            ORDER BY a.CODART ASC
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
+    public function GetArticulosSaldoEstadoCF(Request $request){
+        try {
+            $get = DB::select('select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
+            FROM (select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = t.LOTE && 
+                        despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
+                        GROUP BY despacho_detalles.LOTE),0))
+                                     AS saldoCorrecto,
+                                                t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
+                                                (SELECT auth_estados.descripcionEstado FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS Estado
+                                                    from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+                                                  COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
+                                                  from recepcion_detalles 
+                                                  WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                  group by NOMBRE,LOTE,UNIMED,CODART
+                                          
+                                                  union all
+                                          
+                                                  select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                                                  COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART
+                                                  from saldo_inventario
+                                                  WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                  group by NOMBRE,LOTE,UNIMED,CODART                         
+                                                  ) t
+                                          group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
+                                          
+                                          UNION ALL 
+                                          
+              SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,"No tiene LOTE" AS LOTE,siab_articulo.UNIMEDBASE AS UNIMED,
+               siab_articulo.CODART AS CODART,siab_articulo.ZGEN AS ZGEN,auth_estados.descripcionEstado AS Estado
+               FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id
+            )a 
+            WHERE saldoCorrecto > 0 && a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
             group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
             ORDER BY a.CODART ASC
             ');

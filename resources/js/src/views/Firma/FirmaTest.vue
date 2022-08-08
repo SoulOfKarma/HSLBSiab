@@ -110,9 +110,9 @@ export default {
 
                 const user = {
                     entity: "Hospital San Luis de Buin - Paine",
-                    run: "18499714",
+                    run: "Desatendido",
                     expiration: fecha,
-                    purpose: "Desatendido"
+                    purpose: "Propósito General"
                 };
 
                 const token = jwt.sign(user, secreto, {

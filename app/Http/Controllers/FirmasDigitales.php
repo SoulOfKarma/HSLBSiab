@@ -32,8 +32,6 @@ class FirmasDigitales extends Controller
 
                 $file = $request->cont;
                 $link = $request->link;
-                
-                log::info($link);
 
                 $pdf = App::make("dompdf.wrapper");
                 $pdf->loadView('RecepcionFirma', compact ('getDet','getRec','link'));
@@ -44,7 +42,7 @@ class FirmasDigitales extends Controller
                 //Storage::disk('public')->put('file.pdf',base64_decode($base));
                 $datos = [
                     'token' => $request->token,
-                    'api_token_key' => $request->api_token_key,     
+                    'api_token_key' => $request->api_token_key,
                     'files' => [
                         ["content-type" => "application/pdf",
                         "content" => $base,

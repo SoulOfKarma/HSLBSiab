@@ -16,6 +16,7 @@
                             @input="GetReporteEspecifico"
                         ></v-select>
                     </div>
+                    <!-- Carga ConsumoXAño -->
                     <div class="vx-row" v-if="consumoanio">
                         <div class="vx-col w-1/2 mt-5">
                             <h6>Codigo Inicial</h6>
@@ -62,6 +63,7 @@
                             >
                         </div>
                     </div>
+                    <!-- Carga ConsumoXMes -->
                     <div class="vx-row" v-if="consumomes">
                         <div class="vx-col w-1/4 mt-5">
                             <h6>Codigo Inicial</h6>
@@ -98,6 +100,7 @@
                             >
                         </div>
                     </div>
+                    <!-- Carga ConsumoXServicio -->
                     <div class="vx-row" v-if="consumomesservicio">
                         <div class="vx-col w-1/5 mt-5">
                             <h6>Codigo Inicial</h6>
@@ -144,6 +147,7 @@
                             >
                         </div>
                     </div>
+                    <!-- Carga Fecha Vencimiento/Cenabast-->
                     <div class="vx-row" v-if="fechavencimiento">
                         <div class="vx-col w-1/3 mt-5">
                             <h6>Codigo Inicial</h6>
@@ -170,6 +174,7 @@
                             >
                         </div>
                     </div>
+                    <!-- Carga ZGen -->
                     <div class="vx-row" v-if="zgen">
                         <div class="vx-col w-1/2 mt-5">
                             <h6>Seleccione Mes</h6>
@@ -193,6 +198,7 @@
                         </div>
                     </div>
                     <br />
+                    <!-- Carga ZGEN Priorizados -->
                     <div class="vx-row" v-if="zgenpriorizado">
                         <div class="vx-col w-1/2 mt-5">
                             <h6>Seleccione Mes</h6>
@@ -215,6 +221,7 @@
                             >
                         </div>
                     </div>
+                    <!-- Carga Saldos PMP -->
                     <div class="vx-row" v-if="saldopmp">
                         <div class="vx-col w-full mt-5">
                             <h6>Busqueda Por Farmacia</h6>
@@ -364,6 +371,109 @@
                             >
                         </div>
                     </div>
+                    <!-- Carga Elementos Bincard -->
+                    <div class="vx-row" v-if="bincardTipo">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Por Bincard General</h6>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetSaldoArticulos(1)"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Carga Bincard</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Por Codigo/Fecha</h6>
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codter"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicio"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTermino"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetSaldoArticulos(2)"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Por Codigo/Fecha</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Bincard General Fecha Vencimiento</h6>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetSaldoArticulos(3)"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Cargar Bincard</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Por Codigo</h6>
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codiniC"
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codterC"
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetSaldoArticulos(4)"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Por Codigo</vs-button
+                            >
+                        </div>
+                    </div>
                     <br />
                     <vx-card title="">
                         <div class="vx-row">
@@ -501,6 +611,7 @@ export default {
             },
             //Datos Campos
             listaActive: false,
+            bincardTipo: false,
             consumoanio: false,
             consumomes: false,
             consumomesservicio: false,
@@ -521,6 +632,7 @@ export default {
             codter: "",
             codiniC: "",
             codterC: "",
+            idActBin: 1,
             idMod: 0,
             seleccionReporte: {
                 id: 0,
@@ -650,106 +762,7 @@ export default {
             },
             //Configuracion Columnas
             column: [],
-            columnBincard: [
-                {
-                    label: "Tipo",
-                    field: "TIPO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Fecha",
-                    field: "FECHA",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Folio Recepcion",
-                    field: "FOLREC",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Orden de Compra",
-                    field: "NUMORD",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Proveedor",
-                    field: "PROVEEDOR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Folio Despacho",
-                    field: "FOLDES",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Servicio",
-                    field: "SERVICIO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Precio",
-                    field: "PRECIO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cantidad",
-                    field: "CANTIDAD",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Saldo",
-                    field: "SALDO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Motivo Anulacion",
-                    field: "NOMMOT",
-                    filterOptions: {
-                        enabled: true
-                    }
-                }
-            ],
+            columnBincard: [],
             //Datos Listado
             rows: [],
             listadoGeneral: [],
@@ -766,7 +779,11 @@ export default {
                 },
                 {
                     id: 3,
-                    descripcionReporte: "Saldo Bincard"
+                    descripcionReporte: "Bincard General"
+                },
+                {
+                    id: 10,
+                    descripcionReporte: "Saldo Valorizado PMP"
                 },
                 {
                     id: 4,
@@ -791,10 +808,6 @@ export default {
                 {
                     id: 9,
                     descripcionReporte: "ZGEN Priorizados"
-                },
-                {
-                    id: 10,
-                    descripcionReporte: "Saldo Valorizado PMP"
                 }
             ],
             listadoMes: [
@@ -894,6 +907,111 @@ export default {
                 this.fechaTermino = null;
                 this.codini = "";
                 this.codter = "";
+                this.codiniC = "";
+                this.codterC = "";
+                this.fechaInicioF = null;
+                this.fechaTerminoF = null;
+                this.columnBincard = [];
+                this.columnBincard = [
+                    {
+                        label: "Tipo",
+                        field: "TIPO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Descripcion",
+                        field: "NOMBRE",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Fecha",
+                        field: "FECHA",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Folio Recepcion",
+                        field: "FOLREC",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Orden de Compra",
+                        field: "NUMORD",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Proveedor",
+                        field: "PROVEEDOR",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Folio Despacho",
+                        field: "FOLDES",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Servicio",
+                        field: "SERVICIO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Codigo Interno",
+                        field: "CODART",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Codigo Barra",
+                        field: "CODBAR",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Precio",
+                        field: "PRECIO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Cantidad",
+                        field: "CANTIDAD",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Saldo",
+                        field: "SALDO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Motivo Anulacion",
+                        field: "NOMMOT",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    }
+                ];
                 if (this.seleccionReporte.id == 1) {
                     this.column = [
                         {
@@ -1047,11 +1165,17 @@ export default {
                             field: "action"
                         }
                     ];
+                    this.bincardTipo = true;
                     this.consumoanio = false;
                     this.consumomes = false;
+                    this.consumomesservicio = false;
+                    this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
                     this.saldopmp = false;
-                    this.GetSaldoArticulos();
+                    this.GetSaldoArticulos(1);
                 } else if (this.seleccionReporte.id == 4) {
+                    this.bincardTipo = false;
                     this.listaActive = false;
                     this.consumoanio = true;
                     this.consumomes = false;
@@ -1061,6 +1185,7 @@ export default {
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 5) {
+                    this.bincardTipo = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = true;
@@ -1070,6 +1195,7 @@ export default {
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 6) {
+                    this.bincardTipo = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
@@ -1079,6 +1205,7 @@ export default {
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 7) {
+                    this.bincardTipo = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
@@ -1088,6 +1215,7 @@ export default {
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 8) {
+                    this.bincardTipo = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
@@ -1097,6 +1225,7 @@ export default {
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 9) {
+                    this.bincardTipo = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
@@ -1106,6 +1235,7 @@ export default {
                     this.zgenpriorizado = true;
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 10) {
+                    this.bincardTipo = false;
                     this.saldopmp = true;
                     this.listaActive = true;
                     this.consumoanio = false;
@@ -1210,31 +1340,506 @@ export default {
                 console.log(error);
             }
         },
-        GetSaldoArticulos() {
+        GetSaldoArticulos(idAction) {
+            this.idActBin = idAction;
             try {
-                axios
-                    .get(
-                        this.localVal + "/api/Reportes/GetArticulosSaldoEstado",
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                if (this.idActBin == 1) {
+                    axios
+                        .get(
+                            this.localVal +
+                                "/api/Reportes/GetArticulosSaldoEstado",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
                             }
-                        }
-                    )
-                    .then(res => {
-                        this.listadoGeneral = res.data;
-                        if (this.listadoGeneral.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
+                        )
+                        .then(res => {
+                            this.listadoGeneral = res.data;
+                            this.columnBincard = [];
+                            this.columnBincard = [
+                                {
+                                    label: "Tipo",
+                                    field: "TIPO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Descripcion",
+                                    field: "NOMBRE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Fecha",
+                                    field: "FECHA",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Recepcion",
+                                    field: "FOLREC",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Orden de Compra",
+                                    field: "NUMORD",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Proveedor",
+                                    field: "PROVEEDOR",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Despacho",
+                                    field: "FOLDES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Servicio",
+                                    field: "SERVICIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Interno",
+                                    field: "CODART",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Barra",
+                                    field: "CODBAR",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio",
+                                    field: "PRECIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Cantidad",
+                                    field: "CANTIDAD",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Saldo",
+                                    field: "SALDO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Motivo Anulacion",
+                                    field: "NOMMOT",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                }
+                            ];
+                            if (this.listadoGeneral.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idActBin == 2) {
+                    let data = {
+                        FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                            "YYYY-MM-DD"
+                        ),
+                        FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                            "YYYY-MM-DD"
+                        ),
+                        CODINI: this.codini,
+                        CODTER: this.codter
+                    };
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Reportes/GetArticulosSaldoEstadoCF",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.listadoGeneral = res.data;
+                            this.columnBincard = [];
+                            this.columnBincard = [
+                                {
+                                    label: "Tipo",
+                                    field: "TIPO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Descripcion",
+                                    field: "NOMBRE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Fecha",
+                                    field: "FECHA",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Recepcion",
+                                    field: "FOLREC",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Proveedor",
+                                    field: "PROVEEDOR",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Despacho",
+                                    field: "FOLDES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Servicio",
+                                    field: "SERVICIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio",
+                                    field: "PRECIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Cantidad",
+                                    field: "CANTIDAD",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Saldo",
+                                    field: "SALDO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                }
+                            ];
+                            if (this.listadoGeneral.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idActBin == 3) {
+                    axios
+                        .get(
+                            this.localVal +
+                                "/api/Reportes/GetArticulosSaldoEstado",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.listadoGeneral = res.data;
+                            this.columnBincard = [];
+                            this.columnBincard = [
+                                {
+                                    label: "Tipo",
+                                    field: "TIPO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Descripcion",
+                                    field: "NOMBRE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Fecha",
+                                    field: "FECHA",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Recepcion",
+                                    field: "FOLREC",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Proveedor",
+                                    field: "PROVEEDOR",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Despacho",
+                                    field: "FOLDES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Servicio",
+                                    field: "SERVICIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Interno",
+                                    field: "CODART",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Barra",
+                                    field: "CODBAR",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio",
+                                    field: "PRECIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Cantidad",
+                                    field: "CANTIDAD",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Saldo",
+                                    field: "SALDO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Fecha Vencimiento",
+                                    field: "FECVEN",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "LOTE",
+                                    field: "LOTE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                }
+                            ];
+                            if (this.listadoGeneral.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idActBin == 4) {
+                    let data = {
+                        CODINI: this.codiniC,
+                        CODTER: this.codterC
+                    };
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Reportes/GetArticulosSaldoEstadoC",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.listadoGeneral = res.data;
+                            this.columnBincard = [];
+                            this.columnBincard = [
+                                {
+                                    label: "Tipo",
+                                    field: "TIPO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Descripcion",
+                                    field: "NOMBRE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Fecha",
+                                    field: "FECHA",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Recepcion",
+                                    field: "FOLREC",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Orden de Compra",
+                                    field: "NUMORD",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Proveedor",
+                                    field: "PROVEEDOR",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Despacho",
+                                    field: "FOLDES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Servicio",
+                                    field: "SERVICIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Interno",
+                                    field: "CODART",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Barra",
+                                    field: "CODBAR",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio",
+                                    field: "PRECIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Cantidad",
+                                    field: "CANTIDAD",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Saldo",
+                                    field: "SALDO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Motivo Anulacion",
+                                    field: "NOMMOT",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                }
+                            ];
+                            if (this.listadoGeneral.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -1880,92 +2485,371 @@ export default {
                 let data = {
                     CODART: codart
                 };
-                axios
-                    .post(this.localVal + "/api/Reportes/GetBincard", data, {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        let saldo = 0;
-                        let c = res.data;
-                        if (c.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else {
-                            let d = [];
-                            c.forEach((value, index) => {
-                                let data = {
-                                    TIPO: "",
-                                    NOMBRE: "",
-                                    FECHA: "",
-                                    FOLDES: "",
-                                    FOLREC: "",
-                                    NUMORD: "",
-                                    PROVEEDOR: "",
-                                    CODART: "",
-                                    CODBAR: "",
-                                    PRECIO: "",
-                                    CANTIDAD: "",
-                                    SERVICIO: "",
-                                    SALDO: "",
-                                    NOMMOT: ""
-                                };
-                                if (value.TIPO == "Saldo Inventario") {
-                                    saldo =
-                                        parseInt(saldo) +
-                                        parseInt(value.CANTIDAD);
-                                } else if (
-                                    value.TIPO == "Recepcion" &&
-                                    value.NOMMOT == "-"
-                                ) {
-                                    saldo =
-                                        parseInt(saldo) +
-                                        parseInt(value.CANTIDAD);
-                                } else if (
-                                    value.TIPO == "Recepcion" &&
-                                    value.NOMMOT != "-"
-                                ) {
-                                } else if (
-                                    value.TIPO == "Despacho" &&
-                                    value.NOMMOT == "-"
-                                ) {
-                                    saldo =
-                                        parseInt(saldo) -
-                                        parseInt(value.CANTIDAD);
-                                } else if (
-                                    value.TIPO == "Despacho" &&
-                                    value.NOMMOT != "-"
-                                ) {
+                if (this.idActBin == 1) {
+                    axios
+                        .post(
+                            this.localVal + "/api/Reportes/GetBincard",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
                                 }
+                            }
+                        )
+                        .then(res => {
+                            let saldo = 0;
+                            let c = res.data;
+                            if (c.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                let d = [];
+                                c.forEach((value, index) => {
+                                    let data = {
+                                        TIPO: "",
+                                        NOMBRE: "",
+                                        FECHA: "",
+                                        FOLDES: "",
+                                        FOLREC: "",
+                                        NUMORD: "",
+                                        PROVEEDOR: "",
+                                        CODART: "",
+                                        CODBAR: "",
+                                        PRECIO: "",
+                                        CANTIDAD: "",
+                                        SERVICIO: "",
+                                        SALDO: "",
+                                        NOMMOT: ""
+                                    };
+                                    if (value.TIPO == "Saldo Inventario") {
+                                        saldo =
+                                            parseInt(saldo) +
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Recepcion" &&
+                                        value.NOMMOT == "-"
+                                    ) {
+                                        saldo =
+                                            parseInt(saldo) +
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Recepcion" &&
+                                        value.NOMMOT != "-"
+                                    ) {
+                                    } else if (
+                                        value.TIPO == "Despacho" &&
+                                        value.NOMMOT == "-"
+                                    ) {
+                                        saldo =
+                                            parseInt(saldo) -
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Despacho" &&
+                                        value.NOMMOT != "-"
+                                    ) {
+                                    }
 
-                                data.TIPO = value.TIPO;
-                                data.NOMBRE = value.NOMBRE;
-                                data.FECHA = value.FECHA;
-                                data.FOLDES = value.FOLDES;
-                                data.FOLREC = value.FOLREC;
-                                data.NUMORD = value.NUMORD;
-                                data.PROVEEDOR = value.PROVEEDOR;
-                                data.CODART = value.CODART;
-                                data.CODBAR = value.CODBAR;
-                                data.PRECIO = value.PRECIO;
-                                data.CANTIDAD = value.CANTIDAD;
-                                data.SERVICIO = value.SERVICIO;
-                                data.SALDO = saldo;
-                                data.NOMMOT = value.NOMMOT;
-                                d.push(data);
-                            });
-                            this.listaBincard = d;
-                            this.popUpBincard = true;
-                        }
-                    });
+                                    data.TIPO = value.TIPO;
+                                    data.NOMBRE = value.NOMBRE;
+                                    data.FECHA = value.FECHA;
+                                    data.FOLDES = value.FOLDES;
+                                    data.FOLREC = value.FOLREC;
+                                    data.NUMORD = value.NUMORD;
+                                    data.PROVEEDOR = value.PROVEEDOR;
+                                    data.CODART = value.CODART;
+                                    data.CODBAR = value.CODBAR;
+                                    data.PRECIO = value.PRECIO;
+                                    data.CANTIDAD = value.CANTIDAD;
+                                    data.SERVICIO = value.SERVICIO;
+                                    data.SALDO = saldo;
+                                    data.NOMMOT = value.NOMMOT;
+                                    d.push(data);
+                                });
+                                this.listaBincard = d;
+                                this.popUpBincard = true;
+                            }
+                        });
+                } else if (this.idActBin == 2) {
+                    axios
+                        .post(
+                            this.localVal + "/api/Reportes/GetBincard",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let saldo = 0;
+                            let c = res.data;
+                            if (c.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                let d = [];
+                                c.forEach((value, index) => {
+                                    let data = {
+                                        TIPO: "",
+                                        FECHA: "",
+                                        NOMBRE: "",
+                                        FOLREC: "",
+                                        PROVEEDOR: "",
+                                        FOLDES: "",
+                                        SERVICIO: "",
+                                        PRECIO: "",
+                                        CANTIDAD: "",
+                                        SALDO: ""
+                                    };
+                                    if (value.TIPO == "Saldo Inventario") {
+                                        saldo =
+                                            parseInt(saldo) +
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Recepcion" &&
+                                        value.NOMMOT == "-"
+                                    ) {
+                                        saldo =
+                                            parseInt(saldo) +
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Recepcion" &&
+                                        value.NOMMOT != "-"
+                                    ) {
+                                    } else if (
+                                        value.TIPO == "Despacho" &&
+                                        value.NOMMOT == "-"
+                                    ) {
+                                        saldo =
+                                            parseInt(saldo) -
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Despacho" &&
+                                        value.NOMMOT != "-"
+                                    ) {
+                                    }
+
+                                    data.TIPO = value.TIPO;
+                                    data.NOMBRE = value.NOMBRE;
+                                    data.FECHA = value.FECHA;
+                                    data.FOLDES = value.FOLDES;
+                                    data.FOLREC = value.FOLREC;
+                                    data.PROVEEDOR = value.PROVEEDOR;
+                                    data.PRECIO = value.PRECIO;
+                                    data.CANTIDAD = value.CANTIDAD;
+                                    data.SERVICIO = value.SERVICIO;
+                                    data.SALDO = saldo;
+                                    d.push(data);
+                                });
+                                this.listaBincard = d;
+                                this.popUpBincard = true;
+                            }
+                        });
+                } else if (this.idActBin == 3) {
+                    axios
+                        .post(
+                            this.localVal + "/api/Reportes/GetBincardFVen",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let saldo = 0;
+                            let c = res.data;
+                            if (c.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                let d = [];
+                                c.forEach((value, index) => {
+                                    let data = {
+                                        TIPO: "",
+                                        NOMBRE: "",
+                                        FECHA: "",
+                                        FOLDES: "",
+                                        FOLREC: "",
+                                        NUMORD: "",
+                                        PROVEEDOR: "",
+                                        CODART: "",
+                                        CODBAR: "",
+                                        PRECIO: "",
+                                        CANTIDAD: "",
+                                        SERVICIO: "",
+                                        SALDO: "",
+                                        FECVEN: "",
+                                        LOTE: ""
+                                    };
+                                    if (value.TIPO == "Saldo Inventario") {
+                                        saldo =
+                                            parseInt(saldo) +
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Recepcion" &&
+                                        value.NOMMOT == "-"
+                                    ) {
+                                        saldo =
+                                            parseInt(saldo) +
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        /* else if (
+                                        value.TIPO == "Recepcion" &&
+                                        value.NOMMOT != "-"
+                                    ) {
+                                    } */
+                                        value.TIPO == "Despacho" &&
+                                        value.NOMMOT == "-"
+                                    ) {
+                                        saldo =
+                                            parseInt(saldo) -
+                                            parseInt(value.CANTIDAD);
+                                    }
+                                    //  else if (
+                                    //     value.TIPO == "Despacho" &&
+                                    //     value.NOMMOT != "-"
+                                    // ) {
+                                    // }
+
+                                    data.TIPO = value.TIPO;
+                                    data.NOMBRE = value.NOMBRE;
+                                    data.FECHA = value.FECHA;
+                                    data.FOLDES = value.FOLDES;
+                                    data.FOLREC = value.FOLREC;
+                                    data.NUMORD = value.NUMORD;
+                                    data.PROVEEDOR = value.PROVEEDOR;
+                                    data.CODART = value.CODART;
+                                    data.CODBAR = value.CODBAR;
+                                    data.PRECIO = value.PRECIO;
+                                    data.CANTIDAD = value.CANTIDAD;
+                                    data.SERVICIO = value.SERVICIO;
+                                    data.SALDO = saldo;
+                                    data.FECVEN = value.FECVEN;
+                                    data.LOTE = value.LOTE;
+                                    d.push(data);
+                                });
+                                this.listaBincard = d;
+                                this.popUpBincard = true;
+                            }
+                        });
+                } else if (this.idActBin == 4) {
+                    axios
+                        .post(
+                            this.localVal + "/api/Reportes/GetBincard",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            let saldo = 0;
+                            let c = res.data;
+                            if (c.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                let d = [];
+                                c.forEach((value, index) => {
+                                    let data = {
+                                        TIPO: "",
+                                        NOMBRE: "",
+                                        FECHA: "",
+                                        FOLDES: "",
+                                        FOLREC: "",
+                                        NUMORD: "",
+                                        PROVEEDOR: "",
+                                        CODART: "",
+                                        CODBAR: "",
+                                        PRECIO: "",
+                                        CANTIDAD: "",
+                                        SERVICIO: "",
+                                        SALDO: "",
+                                        NOMMOT: ""
+                                    };
+                                    if (value.TIPO == "Saldo Inventario") {
+                                        saldo =
+                                            parseInt(saldo) +
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Recepcion" &&
+                                        value.NOMMOT == "-"
+                                    ) {
+                                        saldo =
+                                            parseInt(saldo) +
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Recepcion" &&
+                                        value.NOMMOT != "-"
+                                    ) {
+                                    } else if (
+                                        value.TIPO == "Despacho" &&
+                                        value.NOMMOT == "-"
+                                    ) {
+                                        saldo =
+                                            parseInt(saldo) -
+                                            parseInt(value.CANTIDAD);
+                                    } else if (
+                                        value.TIPO == "Despacho" &&
+                                        value.NOMMOT != "-"
+                                    ) {
+                                    }
+
+                                    data.TIPO = value.TIPO;
+                                    data.NOMBRE = value.NOMBRE;
+                                    data.FECHA = value.FECHA;
+                                    data.FOLDES = value.FOLDES;
+                                    data.FOLREC = value.FOLREC;
+                                    data.NUMORD = value.NUMORD;
+                                    data.PROVEEDOR = value.PROVEEDOR;
+                                    data.CODART = value.CODART;
+                                    data.CODBAR = value.CODBAR;
+                                    data.PRECIO = value.PRECIO;
+                                    data.CANTIDAD = value.CANTIDAD;
+                                    data.SERVICIO = value.SERVICIO;
+                                    data.SALDO = saldo;
+                                    data.NOMMOT = value.NOMMOT;
+                                    d.push(data);
+                                });
+                                this.listaBincard = d;
+                                this.popUpBincard = true;
+                            }
+                        });
+                }
             } catch (error) {
                 console.log(error);
             }
