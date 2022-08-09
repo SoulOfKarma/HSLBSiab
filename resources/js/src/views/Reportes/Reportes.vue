@@ -508,6 +508,15 @@
                                                 GetBincard(props.row.CODART)
                                             "
                                         ></plus-circle-icon>
+                                        <plus-circle-icon
+                                            content="Ver Bincard PMP"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                GetBincardPmp(props.row.CODART)
+                                            "
+                                        ></plus-circle-icon>
                                     </span>
                                     <!-- Column: Common -->
                                     <span v-else>
@@ -530,6 +539,40 @@
             classContent="Bincard"
             title="Bincard"
             :active.sync="popUpBincard"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <vue-good-table
+                            :columns="columnBincard"
+                            :rows="listaBincard"
+                            :pagination-options="{
+                                enabled: true,
+                                perPage: 10
+                            }"
+                        >
+                            <template slot="table-row" slot-scope="props">
+                                <!-- Column: Name -->
+                                <span
+                                    v-if="props.column.field === 'fullName'"
+                                    class="text-nowrap"
+                                >
+                                </span>
+                                <!-- Column: Common -->
+                                <span v-else>
+                                    {{ props.formattedRow[props.column.field] }}
+                                </span>
+                            </template>
+                        </vue-good-table>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="BincardPMP"
+            title="BincardPMP"
+            :active.sync="popUpBincardPMP"
         >
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="">
@@ -619,6 +662,7 @@ export default {
             zgen: false,
             zgenpriorizado: false,
             popUpBincard: false,
+            popUpBincardPMP: false,
             fechaInicio: null,
             fechaTermino: null,
             fechaInicioF: null,
@@ -2485,6 +2529,107 @@ export default {
                 let data = {
                     CODART: codart
                 };
+                this.columnBincard = [];
+                this.columnBincard = [
+                    {
+                        label: "Tipo",
+                        field: "TIPO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Descripcion",
+                        field: "NOMBRE",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Fecha",
+                        field: "FECHA",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Folio Recepcion",
+                        field: "FOLREC",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Orden de Compra",
+                        field: "NUMORD",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Proveedor",
+                        field: "PROVEEDOR",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Folio Despacho",
+                        field: "FOLDES",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Servicio",
+                        field: "SERVICIO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Codigo Interno",
+                        field: "CODART",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Codigo Barra",
+                        field: "CODBAR",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Precio",
+                        field: "PRECIO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Cantidad",
+                        field: "CANTIDAD",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Saldo",
+                        field: "SALDO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Motivo Anulacion",
+                        field: "NOMMOT",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    }
+                ];
                 if (this.idActBin == 1) {
                     axios
                         .post(
@@ -2850,6 +2995,247 @@ export default {
                             }
                         });
                 }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetBincardPmp(codart) {
+            try {
+                let data = {
+                    CODART: codart
+                };
+                this.columnBincard = [];
+                this.columnBincard = [
+                    {
+                        label: "Tipo",
+                        field: "TIPO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Descripcion",
+                        field: "NOMBRE",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Fecha",
+                        field: "FECHA",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Folio Recepcion",
+                        field: "FOLREC",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Orden de Compra",
+                        field: "NUMORD",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Proveedor",
+                        field: "PROVEEDOR",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Folio Despacho",
+                        field: "FOLDES",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Servicio",
+                        field: "SERVICIO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Codigo Interno",
+                        field: "CODART",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Codigo Barra",
+                        field: "CODBAR",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Precio",
+                        field: "PRECIO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Cantidad",
+                        field: "CANTIDAD",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Saldo",
+                        field: "SALDO",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Cantidad*Precio",
+                        field: "TOTAL1",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Total",
+                        field: "TOTAL2",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "PMP",
+                        field: "PMP",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    },
+                    {
+                        label: "Motivo Anulacion",
+                        field: "NOMMOT",
+                        filterOptions: {
+                            enabled: true
+                        }
+                    }
+                ];
+                axios
+                    .post(this.localVal + "/api/Reportes/GetBincard", data, {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let saldo = 0;
+                        let c = res.data;
+                        if (c.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            let d = [];
+                            let saldoAnterior = 0;
+                            c.forEach((value, index) => {
+                                let data = {
+                                    TIPO: "",
+                                    NOMBRE: "",
+                                    FECHA: "",
+                                    FOLDES: "",
+                                    FOLREC: "",
+                                    NUMORD: "",
+                                    PROVEEDOR: "",
+                                    CODART: "",
+                                    CODBAR: "",
+                                    PRECIO: "",
+                                    CANTIDAD: "",
+                                    SERVICIO: "",
+                                    SALDO: "",
+                                    NOMMOT: ""
+                                };
+                                if (value.TIPO == "Saldo Inventario") {
+                                    saldo =
+                                        parseInt(saldo) +
+                                        parseInt(value.CANTIDAD);
+                                } else if (
+                                    value.TIPO == "Recepcion" &&
+                                    value.NOMMOT == "-"
+                                ) {
+                                    saldo =
+                                        parseInt(saldo) +
+                                        parseInt(value.CANTIDAD);
+                                } else if (
+                                    value.TIPO == "Recepcion" &&
+                                    value.NOMMOT != "-"
+                                ) {
+                                } else if (
+                                    value.TIPO == "Despacho" &&
+                                    value.NOMMOT == "-"
+                                ) {
+                                    saldo =
+                                        parseInt(saldo) -
+                                        parseInt(value.CANTIDAD);
+                                } else if (
+                                    value.TIPO == "Despacho" &&
+                                    value.NOMMOT != "-"
+                                ) {
+                                }
+
+                                data.TIPO = value.TIPO;
+                                data.NOMBRE = value.NOMBRE;
+                                data.FECHA = value.FECHA;
+                                data.FOLDES = value.FOLDES;
+                                data.FOLREC = value.FOLREC;
+                                data.NUMORD = value.NUMORD;
+                                data.PROVEEDOR = value.PROVEEDOR;
+                                data.CODART = value.CODART;
+                                data.CODBAR = value.CODBAR;
+                                data.PRECIO = value.PRECIO;
+                                data.CANTIDAD = value.CANTIDAD;
+                                data.SERVICIO = value.SERVICIO;
+                                data.SALDO = saldo;
+                                data.NOMMOT = value.NOMMOT;
+                                data.TOTAL1 = value.CANTIDAD * value.PRECIO;
+                                let totalcp = 0;
+                                totalcp = value.CANTIDAD * value.PRECIO;
+                                if (
+                                    value.TIPO == "Despacho" &&
+                                    value.NOMMOT == "-"
+                                ) {
+                                    saldoAnterior = saldoAnterior - totalcp;
+                                    data.TOTAL2 = saldoAnterior;
+                                    data.PMP = "-";
+                                } else if (
+                                    value.TIPO == "Despacho" &&
+                                    value.NOMMOT != "-"
+                                ) {
+                                    saldoAnterior = saldoAnterior;
+                                    data.TOTAL2 = saldoAnterior;
+                                    data.PMP = "-";
+                                } else {
+                                    saldoAnterior = saldoAnterior + totalcp;
+                                    data.TOTAL2 = saldoAnterior;
+                                    data.PMP = saldoAnterior / saldo;
+                                }
+
+                                d.push(data);
+                            });
+                            this.listaBincard = d;
+                            this.popUpBincardPMP = true;
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
@@ -3462,6 +3848,6 @@ export default {
 </script>
 <style lang="stylus">
 .con-vs-popup .vs-popup {
-  width: 1800px;
+  width: 1900px;
 }
 </style>
