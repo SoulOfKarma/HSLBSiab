@@ -136,8 +136,10 @@ class SiabArticulosController extends Controller
             'siab_articulo.CODART_ONU','siab_articulo.CODART','siab_articulo.CODART_BARR','auth_estados.descripcionEstado',
             'siab_articulo.UBICACION','siab_articulo.SECTOR','siab_articulo.ZGEN','bodega.descripcionBodega','zona.descripcionZonas',
             'siab_articulo.LABORATORIO','siab_articulo.CANTXENB','siab_articulo.ACT_FECVEN as idACT_FECVEN','siab_articulo.ACT_LOTE AS idACTLOTE',
+            'siab_articulo.COVID AS idCOVID',
             DB::raw("(CASE WHEN siab_articulo.ACT_FECVEN = 1 THEN 'Si' ELSE 'No' END) as ACT_FECVEN"),
             DB::raw("(CASE WHEN siab_articulo.ACT_LOTE = 1 THEN 'Si' ELSE 'No' END) as ACT_LOTE"),
+            DB::raw("(CASE WHEN siab_articulo.COVID = 1 THEN 'Si' ELSE 'No' END) as COVID"),
             'siab_articulo.idEstado','siab_articulo.idBodega','siab_articulo.idZona','siab_articulo.NOMARCH'
             )
            ->leftjoin('auth_estados','siab_articulo.idEstado','=','auth_estados.id')
@@ -158,8 +160,10 @@ class SiabArticulosController extends Controller
             'siab_articulo.CODART','siab_articulo.CODART_BARR','auth_estados.descripcionEstado',
             'siab_articulo.UBICACION','siab_articulo.SECTOR','bodega.descripcionBodega','zona.descripcionZonas',
             'siab_articulo.CANTXENB','siab_articulo.ACT_FECVEN as idACT_FECVEN','siab_articulo.ACT_LOTE AS idACTLOTE',
+            'siab_articulo.COVID AS idCOVID',
             DB::raw("(CASE WHEN siab_articulo.ACT_FECVEN = 1 THEN 'Si' ELSE 'No' END) as ACT_FECVEN"),
             DB::raw("(CASE WHEN siab_articulo.ACT_LOTE = 1 THEN 'Si' ELSE 'No' END) as ACT_LOTE"),
+            DB::raw("(CASE WHEN siab_articulo.COVID = 1 THEN 'Si' ELSE 'No' END) as COVID"),
             'siab_articulo.idEstado','siab_articulo.idBodega','siab_articulo.idZona','siab_articulo.NOMFAM1','siab_articulo.NOMFAM2',
             'siab_articulo.NOMFAM3','siab_articulo.NOMFAM4','siab_articulo.NOMFAM5','siab_articulo.NOMARCH'
             )

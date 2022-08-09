@@ -691,6 +691,50 @@ class Reportes extends Controller
         }    
     }
 
+    public function GetArticulosSaldoEstadoCovid(Request $request){
+        try {
+            $get = DB::select('select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
+            FROM (select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = t.LOTE && 
+                        despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
+                        GROUP BY despacho_detalles.LOTE),0))
+                                     AS saldoCorrecto,
+                                                t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
+                                                (SELECT auth_estados.descripcionEstado FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS Estado
+                                                    from (select SUM(recepcion_detalles.CANREC) as saldo, siab_articulo.NOMBRE AS NOMBRE,
+                                                  COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
+                                                  from recepcion_detalles
+                                                  JOIN siab_articulo ON recepcion_detalles.CODART = siab_articulo.CODART
+                                                  WHERE siab_articulo.COVID = 1
+                                                  group by NOMBRE,LOTE,UNIMED,CODART
+                                          
+                                                  union all
+                                          
+                                                  select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                                                  COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART
+                                                  from saldo_inventario
+                                                  JOIN siab_articulo ON saldo_inventario.CODART = siab_articulo.CODART
+                                                  WHERE siab_articulo.COVID = 1
+                                                  group by NOMBRE,LOTE,UNIMED,CODART                         
+                                                  ) t
+                                          group by t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,ZGEN
+                                          
+                                          UNION ALL 
+                                          
+              SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,"No tiene LOTE" AS LOTE,siab_articulo.UNIMEDBASE AS UNIMED,
+               siab_articulo.CODART AS CODART,siab_articulo.ZGEN AS ZGEN,auth_estados.descripcionEstado AS Estado
+               FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id
+            )a 
+            WHERE saldoCorrecto > 0 && a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
+            group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
+            ORDER BY a.CODART ASC
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
     public function GetArticulosSaldoEstadoCF(Request $request){
         try {
             $get = DB::select('select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado

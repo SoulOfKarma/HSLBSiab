@@ -473,6 +473,33 @@
                                 >Buscar Por Codigo</vs-button
                             >
                         </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Por Codigo Covid</h6>
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codiniCO"
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codterCO"
+                            />
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetSaldoArticulos(5)"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Por Codigo/Covid</vs-button
+                            >
+                        </div>
                     </div>
                     <br />
                     <vx-card title="">
@@ -676,6 +703,8 @@ export default {
             codter: "",
             codiniC: "",
             codterC: "",
+            codiniCO: "",
+            codterCO: "",
             idActBin: 1,
             idMod: 0,
             seleccionReporte: {
@@ -1760,6 +1789,138 @@ export default {
                         .post(
                             this.localVal +
                                 "/api/Reportes/GetArticulosSaldoEstadoC",
+                            data,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        sessionStorage.getItem("token")
+                                }
+                            }
+                        )
+                        .then(res => {
+                            this.listadoGeneral = res.data;
+                            this.columnBincard = [];
+                            this.columnBincard = [
+                                {
+                                    label: "Tipo",
+                                    field: "TIPO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Descripcion",
+                                    field: "NOMBRE",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Fecha",
+                                    field: "FECHA",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Recepcion",
+                                    field: "FOLREC",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Orden de Compra",
+                                    field: "NUMORD",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Proveedor",
+                                    field: "PROVEEDOR",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Folio Despacho",
+                                    field: "FOLDES",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Servicio",
+                                    field: "SERVICIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Interno",
+                                    field: "CODART",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Codigo Barra",
+                                    field: "CODBAR",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Precio",
+                                    field: "PRECIO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Cantidad",
+                                    field: "CANTIDAD",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Saldo",
+                                    field: "SALDO",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                },
+                                {
+                                    label: "Motivo Anulacion",
+                                    field: "NOMMOT",
+                                    filterOptions: {
+                                        enabled: true
+                                    }
+                                }
+                            ];
+                            if (this.listadoGeneral.length < 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No hay datos o no se cargaron los datos correctamente",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        });
+                } else if (this.idActBin == 5) {
+                    let data = {
+                        CODINI: this.codiniCO,
+                        CODTER: this.codterCO
+                    };
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Reportes/GetArticulosSaldoEstadoCovid",
                             data,
                             {
                                 headers: {

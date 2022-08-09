@@ -289,6 +289,17 @@
                                     v-model="ubicacion"
                                 />
                             </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>Activacion Covid 19</h6>
+
+                                <v-select
+                                    v-model="seleccionCovid"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionCovid"
+                                    :options="listaCovid"
+                                ></v-select>
+                            </div>
                         </div>
                         <br />
 
@@ -531,6 +542,17 @@
                                     class="inputx w-full  "
                                     v-model="ubicacion"
                                 />
+                            </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>Activacion Covid 19</h6>
+
+                                <v-select
+                                    v-model="seleccionCovid"
+                                    placeholder="Activo"
+                                    class="w-full select-large"
+                                    label="descripcionCovid"
+                                    :options="listaCovid"
+                                ></v-select>
                             </div>
                         </div>
                         <br />
@@ -800,6 +822,10 @@ export default {
                 id: 0,
                 descripcionLoteSerie: "Seleccione Lote/Serie"
             },
+            seleccionCovid: {
+                id: 2,
+                descripcionCovid: "No"
+            },
             seleccionFamilia1: {
                 id: 0,
                 descripcionFamilia: "",
@@ -945,6 +971,16 @@ export default {
                 {
                     id: 2,
                     descripcionLoteSerie: "No"
+                }
+            ],
+            listaCovid: [
+                {
+                    id: 1,
+                    descripcionCovid: "Si"
+                },
+                {
+                    id: 2,
+                    descripcionCovid: "No"
                 }
             ]
         };
@@ -2097,6 +2133,12 @@ export default {
                             .then(res => {
                                 const url = res.data;
                                 if (url.length > 0) {
+                                    let Acovid = false;
+                                    if (this.seleccionCovid.id == 1) {
+                                        Acovid = true;
+                                    } else {
+                                        Acovid = false;
+                                    }
                                     let data = {
                                         id: this.idMod,
                                         CODART_BARR: this.codigoBarra.toUpperCase(),
@@ -2122,7 +2164,8 @@ export default {
                                         NOMFAM5: this.seleccionFamilia5
                                             .descripcionFamilia,
                                         UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                                        NOMARCH: url
+                                        NOMARCH: url,
+                                        COVID: Acovid
                                     };
                                     const dat = data;
                                     axios
@@ -2177,6 +2220,12 @@ export default {
                                 }
                             });
                     } else {
+                        let Acovid = false;
+                        if (this.seleccionCovid.id == 1) {
+                            Acovid = true;
+                        } else {
+                            Acovid = false;
+                        }
                         let data = {
                             id: this.idMod,
                             CODART_BARR: this.codigoBarra.toUpperCase(),
@@ -2197,7 +2246,8 @@ export default {
                             NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
                             NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
                             UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                            NOMARCH: null
+                            NOMARCH: null,
+                            COVID: Acovid
                         };
                         axios
                             .post(
@@ -2337,7 +2387,12 @@ export default {
                     } else {
                         boolFLoteSerie = true;
                     }
-
+                    let Acovid = false;
+                    if (this.seleccionCovid.id == 1) {
+                        Acovid = true;
+                    } else {
+                        Acovid = false;
+                    }
                     let data = {
                         CODART_BARR: this.codigoBarra.toUpperCase(),
                         CODART_ONU: this.codigoOnu.toUpperCase(),
@@ -2356,7 +2411,8 @@ export default {
                         NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
                         NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
                         NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase()
+                        UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                        COVID: Acovid
                     };
                     const dat = data;
                     axios

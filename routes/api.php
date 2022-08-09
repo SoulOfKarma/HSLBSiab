@@ -179,7 +179,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     //Post Reportes
     Route::post('/Reportes/GetBincard', ['middleware' => 'cors', 'uses' => 'Reportes@GetBincard']);
     Route::post('/Reportes/GetBincardFVen', ['middleware' => 'cors', 'uses' => 'Reportes@GetBincardFVen']);
-    Route::post('/Reportes/GetBincardPMP', ['middleware' => 'cors', 'uses' => 'Reportes@GetBincardPMP']);
     Route::post('/Reportes/GetConsumoAnio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoAnio']);
     Route::post('/Reportes/GetConsumoMes', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoMes']);    
     Route::post('/Reportes/GetConsumoMesServicio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoMesServicio']);
@@ -195,6 +194,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Reportes/GetSaldoValorizadoPEconomato', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoPEconomato']);
     Route::post('/Reportes/GetSaldosValorizadoPMPEconomato', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPEconomato']);
     Route::post('/Reportes/GetArticulosSaldoEstadoC', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstadoC']);
+    Route::post('/Reportes/GetArticulosSaldoEstadoCovid', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstadoCovid']);
     Route::post('/Reportes/GetArticulosSaldoEstadoCF', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstadoCF']);
 });
 
