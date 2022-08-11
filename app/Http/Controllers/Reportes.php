@@ -911,4 +911,116 @@ class Reportes extends Controller
             return false;
         }    
     }
+
+    public function GetDespachoxServicio(Request $request){
+        try {
+            $get = despachoDetalles::select(DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.FECDES,'%d-%m-%Y'),'%d-%m-%Y') as FECDES"),
+            'despacho_detalles.FOLIO','despacho_detalles.CODART','despacho_detalles.NOMART','despacho_detalles.UNIMED',
+            DB::raw('ROUND(despacho_detalles.CANTIDAD,0) AS CANTIDAD'),DB::raw('ROUND(despacho_detalles.PRECIO,0) AS PRECIO'),DB::raw('ROUND(despacho_detalles.CANTIDAD*despacho_detalles.PRECIO,0) AS TOTAL'),
+            'servicios.descripcionServicio')
+            ->join('servicios', 'despacho_detalles.idServicio','=','servicios.id')
+            ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
+            ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
+            ->get();
+
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function GetDespachoxServicioI(Request $request){
+        try {
+            $get = despachoDetalles::select(DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.FECDES,'%d-%m-%Y'),'%d-%m-%Y') as FECDES"),
+            'despacho_detalles.FOLIO','despacho_detalles.CODART','despacho_detalles.NOMART','despacho_detalles.UNIMED',
+            DB::raw('ROUND(despacho_detalles.CANTIDAD,0) AS CANTIDAD'),DB::raw('ROUND(despacho_detalles.PRECIO,0) AS PRECIO'),DB::raw('ROUND(despacho_detalles.CANTIDAD*despacho_detalles.PRECIO,0) AS TOTAL'),
+            'servicios.descripcionServicio')
+            ->join('servicios', 'despacho_detalles.idServicio','=','servicios.id')
+            ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
+            ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
+            ->where('despacho_detalles.idServicio', $request->idServicio)
+            ->get();
+
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function GetRecepcionxServicio(Request $request){
+        try {
+            $get = despachoDetalles::select(DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.FECDES,'%d-%m-%Y'),'%d-%m-%Y') as FECDES"),
+            'despacho_detalles.FOLIO','despacho_detalles.CODART','despacho_detalles.NOMART','despacho_detalles.UNIMED',
+            DB::raw('ROUND(despacho_detalles.CANTIDAD,0) AS CANTIDAD'),DB::raw('ROUND(despacho_detalles.PRECIO,0) AS PRECIO'),DB::raw('ROUND(despacho_detalles.CANTIDAD*despacho_detalles.PRECIO,0) AS TOTAL'),
+            'servicios.descripcionServicio')
+            ->join('servicios', 'despacho_detalles.idServicio','=','servicios.id')
+            ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
+            ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
+            ->get();
+
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function GetConsolidadoDespacho(Request $request){
+        try {
+            $get = despachoDetalles::select(DB::raw("DATE_FORMAT(despacho_detalles.FECDES,'%m') AS MES"),
+            'despacho_detalles.CODART','despacho_detalles.NOMART','despacho_detalles.UNIMED',
+            DB::raw('SUM(despacho_detalles.CANTIDAD) AS CANTIDAD'),DB::raw('MAX(despacho_detalles.PRECIO) AS PRECIO'),
+            DB::raw('ROUND(MAX(despacho_detalles.PRECIO)*SUM(despacho_detalles.CANTIDAD),0) AS TOTAL'))
+            ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
+            ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
+            ->groupBy('MES','CODART','NOMART','UNIMED')
+            ->get();
+
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function GetConsolidadoDespachoServicio(Request $request){
+        try {
+            $get = despachoDetalles::select(DB::raw("DATE_FORMAT(despacho_detalles.FECDES,'%m') AS MES"),
+            'despacho_detalles.CODART','despacho_detalles.NOMART','despacho_detalles.UNIMED',
+            DB::raw('SUM(despacho_detalles.CANTIDAD) AS CANTIDAD'),DB::raw('MAX(despacho_detalles.PRECIO) AS PRECIO'),
+            DB::raw('ROUND(MAX(despacho_detalles.PRECIO)*SUM(despacho_detalles.CANTIDAD),0) AS TOTAL'))
+            ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
+            ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
+            ->where('despacho_detalles.idServicio', $request->idServicio)
+            ->groupBy('MES','CODART','NOMART','UNIMED')
+            ->get();
+
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function GetConsolidadoDespachoServicioCovid(Request $request){
+        try {
+            $get = despachoDetalles::select(DB::raw("DATE_FORMAT(despacho_detalles.FECDES,'%m') AS MES"),
+            'despacho_detalles.CODART','despacho_detalles.NOMART','despacho_detalles.UNIMED',
+            DB::raw('SUM(despacho_detalles.CANTIDAD) AS CANTIDAD'),DB::raw('MAX(despacho_detalles.PRECIO) AS PRECIO'),
+            DB::raw('ROUND(MAX(despacho_detalles.PRECIO)*SUM(despacho_detalles.CANTIDAD),0) AS TOTAL'))
+            ->join('siab_articulo', 'despacho_detalles.CODART','=','siab_articulo.CODART')
+            ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
+            ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
+            ->whereRaw('siab_articulo.COVID IS TRUE')
+            ->groupBy('MES','CODART','NOMART','UNIMED')
+            ->get();
+
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
 }

@@ -91,9 +91,11 @@ class FirmasDigitales extends Controller
             ->get();
 
             $file = $request->cont;
-            $pdfitem = file_get_contents(Storage::disk('docFirmados')->path($file));
-            $base = chunk_split(base64_encode($pdfitem));
-            $hash = hash('sha256', $pdfitem);
+            $base = chunk_split(base64_encode(file_get_contents(Storage::disk('docFirmados')->path('1.pdf'))));
+            //$pdfitem = file_get_contents(Storage::disk('docFirmados')->path($file));
+            //$base = chunk_split(base64_encode($pdfitem));
+            //$hash = hash('sha256', $pdfitem);
+            $hash = hash('sha256', file_get_contents(Storage::disk('docFirmados')->path('1.pdf')));
             //Storage::disk('public')->put('file.pdf',base64_decode($base));
              $datos = [
                 'token' => $request->token,

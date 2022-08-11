@@ -196,13 +196,18 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Reportes/GetArticulosSaldoEstadoC', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstadoC']);
     Route::post('/Reportes/GetArticulosSaldoEstadoCovid', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstadoCovid']);
     Route::post('/Reportes/GetArticulosSaldoEstadoCF', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstadoCF']);
+    Route::post('/Reportes/GetDespachoxServicio', ['middleware' => 'cors', 'uses' => 'Reportes@GetDespachoxServicio']);
+    Route::post('/Reportes/GetDespachoxServicioI', ['middleware' => 'cors', 'uses' => 'Reportes@GetDespachoxServicioI']);
+    Route::post('/Reportes/GetConsolidadoDespacho', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsolidadoDespacho']);
+    Route::post('/Reportes/GetConsolidadoDespachoServicio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsolidadoDespachoServicio']);
+    Route::post('/Reportes/GetConsolidadoDespachoServicioCovid', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsolidadoDespachoServicioCovid']);
 });
 
 //Generar PDF
 Route::get('/Recepcion/RecepcionPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GenerarImpresion']);
 Route::get('/Despacho/DespachoPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'DespachosController@GenerarImpresion']);
 Route::get('/OrdenCompra/OrdenCompraPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GenerarImpresion']);
-Route::post('/PDFPrueba', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestMultiPdf']);
+Route::post('/Firma/PDFPrueba', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestMultiPdf']);
 Route::post('/Firma/TestFirmaDigital', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestFirmaDigital']);
 
 //Get para Verificacion

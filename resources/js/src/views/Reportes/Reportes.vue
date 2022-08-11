@@ -501,6 +501,261 @@
                             >
                         </div>
                     </div>
+                    <!-- Carga Despacho Servicio -->
+                    <div class="vx-row" v-if="despachoxservicio">
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codter"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicio"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTermino"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetDespachoxServicio"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codter"
+                            />
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicio"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTermino"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Seleccione Servicio</h6>
+                            <v-select
+                                v-model="seleccionServicios"
+                                placeholder="Ej. INFORMATICA"
+                                class="w-full select-large"
+                                label="descripcionServicio"
+                                :options="listadoServicios"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetDespachoxServicioI"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar</vs-button
+                            >
+                        </div>
+                    </div>
+                    <!-- Carga Consolidado Despacho -->
+                    <div class="vx-row" v-if="consolidadoDespacho">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Consolidado Despacho</h6>
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codter"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicio"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTermino"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetConsolidadoDespacho"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Busqueda Consolidado</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Covid 19</h6>
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codiniCO"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codterCO"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicioFE"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTerminoFE"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetConsolidadoDespachoCovid"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Busqueda Covid</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Consolidado/Servicio</h6>
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codiniC"
+                            />
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codterC"
+                            />
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicioF"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTerminoF"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>Seleccione Servicio</h6>
+                            <v-select
+                                v-model="seleccionServicios"
+                                placeholder="Ej. INFORMATICA"
+                                class="w-full select-large"
+                                label="descripcionServicio"
+                                :options="listadoServicios"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/6 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetConsolidadoDespachoS"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Busqueda Consolidado/Servicio</vs-button
+                            >
+                        </div>
+                    </div>
                     <br />
                     <vx-card title="">
                         <div class="vx-row">
@@ -685,9 +940,11 @@ export default {
             consumoanio: false,
             consumomes: false,
             consumomesservicio: false,
+            despachoxservicio: false,
             fechavencimiento: false,
             zgen: false,
             zgenpriorizado: false,
+            consolidadoDespacho: false,
             popUpBincard: false,
             popUpBincardPMP: false,
             fechaInicio: null,
@@ -871,6 +1128,14 @@ export default {
                     descripcionReporte: "Consumo por Mes/Servicio"
                 },
                 {
+                    id: 11,
+                    descripcionReporte: "Despacho por Servicio"
+                },
+                {
+                    id: 12,
+                    descripcionReporte: "Consolidado Despacho"
+                },
+                {
                     id: 7,
                     descripcionReporte: "Fecha Vencimiento/Cenabast"
                 },
@@ -971,6 +1236,160 @@ export default {
                 console.log(error);
             }
         },
+        mensajeError() {
+            this.$vs.notify({
+                time: 5000,
+                title: "Error",
+                text: "No hay datos o no se cargaron los datos correctamente",
+                color: "danger",
+                position: "top-right"
+            });
+        },
+        ColumnasBincardGeneral() {
+            this.columnBincard = [
+                {
+                    label: "Tipo",
+                    field: "TIPO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion",
+                    field: "NOMBRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Fecha",
+                    field: "FECHA",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Folio Recepcion",
+                    field: "FOLREC",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Orden de Compra",
+                    field: "NUMORD",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Proveedor",
+                    field: "PROVEEDOR",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Folio Despacho",
+                    field: "FOLDES",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Servicio",
+                    field: "SERVICIO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Interno",
+                    field: "CODART",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo Barra",
+                    field: "CODBAR",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Precio",
+                    field: "PRECIO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Cantidad",
+                    field: "CANTIDAD",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Saldo",
+                    field: "SALDO",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Motivo Anulacion",
+                    field: "NOMMOT",
+                    filterOptions: {
+                        enabled: true
+                    }
+                }
+            ];
+        },
+        ColumnasSaldo() {
+            this.column = [
+                {
+                    label: "Codigo Interno",
+                    field: "CODART",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Codigo ZGEN",
+                    field: "ZGEN",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion",
+                    field: "NOMBRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Unidad Medida",
+                    field: "UNIMED",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Saldo",
+                    field: "saldoCorrecto",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ];
+        },
         GetReporteEspecifico() {
             try {
                 this.listaActive = true;
@@ -985,149 +1404,11 @@ export default {
                 this.fechaInicioF = null;
                 this.fechaTerminoF = null;
                 this.columnBincard = [];
-                this.columnBincard = [
-                    {
-                        label: "Tipo",
-                        field: "TIPO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Descripcion",
-                        field: "NOMBRE",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Fecha",
-                        field: "FECHA",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Folio Recepcion",
-                        field: "FOLREC",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Orden de Compra",
-                        field: "NUMORD",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Proveedor",
-                        field: "PROVEEDOR",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Folio Despacho",
-                        field: "FOLDES",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Servicio",
-                        field: "SERVICIO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Codigo Interno",
-                        field: "CODART",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Codigo Barra",
-                        field: "CODBAR",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Precio",
-                        field: "PRECIO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Cantidad",
-                        field: "CANTIDAD",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Saldo",
-                        field: "SALDO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Motivo Anulacion",
-                        field: "NOMMOT",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    }
-                ];
+                this.ColumnasBincardGeneral();
                 if (this.seleccionReporte.id == 1) {
-                    this.column = [
-                        {
-                            label: "Codigo Interno",
-                            field: "CODART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Codigo ZGEN",
-                            field: "ZGEN",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Descripcion",
-                            field: "NOMBRE",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Unidad Medida",
-                            field: "UNIMED",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Saldo",
-                            field: "saldoCorrecto",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Opciones",
-                            field: "action"
-                        }
-                    ];
+                    this.ColumnasSaldo();
                     this.consumoanio = false;
+                    this.consolidadoDespacho = false;
                     this.saldopmp = false;
                     this.GetSaldos();
                 } else if (this.seleccionReporte.id == 2) {
@@ -1187,6 +1468,7 @@ export default {
                         }
                     ];
                     this.consumoanio = false;
+                    this.consolidadoDespacho = false;
                     this.saldopmp = false;
                     this.GetSaldoValorizado();
                 } else if (this.seleccionReporte.id == 3) {
@@ -1239,6 +1521,7 @@ export default {
                         }
                     ];
                     this.bincardTipo = true;
+                    this.consolidadoDespacho = false;
                     this.consumoanio = false;
                     this.consumomes = false;
                     this.consumomesservicio = false;
@@ -1249,6 +1532,7 @@ export default {
                     this.GetSaldoArticulos(1);
                 } else if (this.seleccionReporte.id == 4) {
                     this.bincardTipo = false;
+                    this.consolidadoDespacho = false;
                     this.listaActive = false;
                     this.consumoanio = true;
                     this.consumomes = false;
@@ -1259,6 +1543,7 @@ export default {
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 5) {
                     this.bincardTipo = false;
+                    this.consolidadoDespacho = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = true;
@@ -1269,6 +1554,7 @@ export default {
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 6) {
                     this.bincardTipo = false;
+                    this.consolidadoDespacho = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
@@ -1279,6 +1565,7 @@ export default {
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 7) {
                     this.bincardTipo = false;
+                    this.consolidadoDespacho = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
@@ -1289,6 +1576,7 @@ export default {
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 8) {
                     this.bincardTipo = false;
+                    this.consolidadoDespacho = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
@@ -1299,6 +1587,7 @@ export default {
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 9) {
                     this.bincardTipo = false;
+                    this.consolidadoDespacho = false;
                     this.listaActive = false;
                     this.consumoanio = false;
                     this.consumomes = false;
@@ -1309,6 +1598,7 @@ export default {
                     this.saldopmp = false;
                 } else if (this.seleccionReporte.id == 10) {
                     this.bincardTipo = false;
+                    this.consolidadoDespacho = false;
                     this.saldopmp = true;
                     this.listaActive = true;
                     this.consumoanio = false;
@@ -1379,8 +1669,155 @@ export default {
                             field: "action"
                         }
                     ];
-                    this.consumoanio = false;
                     this.GetSaldoValorizadoPMP();
+                } else if (this.seleccionReporte.id == 11) {
+                    this.despachoxservicio = true;
+                    this.consolidadoDespacho = false;
+                    this.bincardTipo = false;
+                    this.saldopmp = false;
+                    this.listaActive = true;
+                    this.consumoanio = false;
+                    this.consumomes = false;
+                    this.consumomesservicio = false;
+                    this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
+                    this.column = [
+                        {
+                            label: "Fecha",
+                            field: "FECDES",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Folio",
+                            field: "FOLIO",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Codigo Interno",
+                            field: "CODART",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Descripcion",
+                            field: "NOMART",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Unidad Medida",
+                            field: "UNIMED",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Cantidad",
+                            field: "CANTIDAD",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Precio",
+                            field: "PRECIO",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Total",
+                            field: "TOTAL",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Servicio",
+                            field: "descripcionServicio",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Opciones",
+                            field: "action"
+                        }
+                    ];
+                } else if (this.seleccionReporte.id == 12) {
+                    this.consolidadoDespacho = true;
+                    this.despachoxservicio = false;
+                    this.bincardTipo = false;
+                    this.saldopmp = false;
+                    this.listaActive = true;
+                    this.consumoanio = false;
+                    this.consumomes = false;
+                    this.consumomesservicio = false;
+                    this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
+                    this.column = [
+                        {
+                            label: "Mes",
+                            field: "MES",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Codigo Interno",
+                            field: "CODART",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Descripcion",
+                            field: "NOMART",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Unidad Medida",
+                            field: "UNIMED",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Cantidad",
+                            field: "CANTIDAD",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Precio",
+                            field: "PRECIO",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Total",
+                            field: "TOTAL",
+                            filterOptions: {
+                                enabled: true
+                            }
+                        },
+                        {
+                            label: "Opciones",
+                            field: "action"
+                        }
+                    ];
                 }
             } catch (error) {
                 console.log(error);
@@ -1399,14 +1836,7 @@ export default {
                     .then(res => {
                         this.listadoServicios = res.data;
                         if (this.listadoServicios.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            this.mensajeError();
                         }
                     });
             } catch (error) {
@@ -1432,115 +1862,9 @@ export default {
                         .then(res => {
                             this.listadoGeneral = res.data;
                             this.columnBincard = [];
-                            this.columnBincard = [
-                                {
-                                    label: "Tipo",
-                                    field: "TIPO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Fecha",
-                                    field: "FECHA",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Recepcion",
-                                    field: "FOLREC",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Orden de Compra",
-                                    field: "NUMORD",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Proveedor",
-                                    field: "PROVEEDOR",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Despacho",
-                                    field: "FOLDES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Servicio",
-                                    field: "SERVICIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Interno",
-                                    field: "CODART",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Barra",
-                                    field: "CODBAR",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio",
-                                    field: "PRECIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Cantidad",
-                                    field: "CANTIDAD",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Saldo",
-                                    field: "SALDO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Motivo Anulacion",
-                                    field: "NOMMOT",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                }
-                            ];
+                            this.ColumnasBincardGeneral();
                             if (this.listadoGeneral.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         });
                 } else if (this.idActBin == 2) {
@@ -1643,14 +1967,7 @@ export default {
                                 }
                             ];
                             if (this.listadoGeneral.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         });
                 } else if (this.idActBin == 3) {
@@ -1770,14 +2087,7 @@ export default {
                                 }
                             ];
                             if (this.listadoGeneral.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         });
                 } else if (this.idActBin == 4) {
@@ -1801,115 +2111,9 @@ export default {
                         .then(res => {
                             this.listadoGeneral = res.data;
                             this.columnBincard = [];
-                            this.columnBincard = [
-                                {
-                                    label: "Tipo",
-                                    field: "TIPO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Fecha",
-                                    field: "FECHA",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Recepcion",
-                                    field: "FOLREC",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Orden de Compra",
-                                    field: "NUMORD",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Proveedor",
-                                    field: "PROVEEDOR",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Despacho",
-                                    field: "FOLDES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Servicio",
-                                    field: "SERVICIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Interno",
-                                    field: "CODART",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Barra",
-                                    field: "CODBAR",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio",
-                                    field: "PRECIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Cantidad",
-                                    field: "CANTIDAD",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Saldo",
-                                    field: "SALDO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Motivo Anulacion",
-                                    field: "NOMMOT",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                }
-                            ];
+                            this.ColumnasBincardGeneral();
                             if (this.listadoGeneral.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         });
                 } else if (this.idActBin == 5) {
@@ -1933,115 +2137,9 @@ export default {
                         .then(res => {
                             this.listadoGeneral = res.data;
                             this.columnBincard = [];
-                            this.columnBincard = [
-                                {
-                                    label: "Tipo",
-                                    field: "TIPO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Fecha",
-                                    field: "FECHA",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Recepcion",
-                                    field: "FOLREC",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Orden de Compra",
-                                    field: "NUMORD",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Proveedor",
-                                    field: "PROVEEDOR",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Despacho",
-                                    field: "FOLDES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Servicio",
-                                    field: "SERVICIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Interno",
-                                    field: "CODART",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Barra",
-                                    field: "CODBAR",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio",
-                                    field: "PRECIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Cantidad",
-                                    field: "CANTIDAD",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Saldo",
-                                    field: "SALDO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Motivo Anulacion",
-                                    field: "NOMMOT",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                }
-                            ];
+                            this.ColumnasBincardGeneral();
                             if (this.listadoGeneral.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         });
                 }
@@ -2075,14 +2173,7 @@ export default {
                     .then(res => {
                         this.listadoGeneral = res.data;
                         if (this.listadoGeneral.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            this.mensajeError();
                         } else {
                             this.column = [
                                 {
@@ -2155,14 +2246,7 @@ export default {
                     .then(res => {
                         this.listadoGeneral = res.data;
                         if (this.listadoGeneral.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            this.mensajeError();
                         } else {
                             this.column = [
                                 {
@@ -2230,14 +2314,7 @@ export default {
                     this.seleccionMes.id == 0 &&
                     this.seleccionServicios.id == 0
                 ) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text:
-                            "Debe seleccionar el mes o el servicio para continuar",
-                        color: "danger",
-                        position: "top-right"
-                    });
+                    this.mensajeError();
                 }
                 axios
                     .post(
@@ -2253,14 +2330,7 @@ export default {
                     .then(res => {
                         this.listadoGeneral = res.data;
                         if (this.listadoGeneral.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            this.mensajeError();
                         } else {
                             this.column = [
                                 {
@@ -2329,13 +2399,7 @@ export default {
                     MES: mes
                 };
                 if (this.seleccionMes.id == 0) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe seleccionar el mes para continuar",
-                        color: "danger",
-                        position: "top-right"
-                    });
+                    this.mensajeError();
                 }
                 axios
                     .post(this.localVal + "/api/Reportes/GetZGEN", data, {
@@ -2347,14 +2411,7 @@ export default {
                     .then(res => {
                         this.listadoGeneral = res.data;
                         if (this.listadoGeneral.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            this.mensajeError();
                         } else {
                             this.column = [
                                 {
@@ -2474,13 +2531,7 @@ export default {
                     MES: mes
                 };
                 if (this.seleccionMes.id == 0) {
-                    this.$vs.notify({
-                        time: 5000,
-                        title: "Error",
-                        text: "Debe seleccionar el mes para continuar",
-                        color: "danger",
-                        position: "top-right"
-                    });
+                    this.mensajeError();
                 }
                 axios
                     .post(
@@ -2496,14 +2547,7 @@ export default {
                     .then(res => {
                         this.listadoGeneral = res.data;
                         if (this.listadoGeneral.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            this.mensajeError();
                         } else {
                             this.column = [
                                 {
@@ -2691,106 +2735,7 @@ export default {
                     CODART: codart
                 };
                 this.columnBincard = [];
-                this.columnBincard = [
-                    {
-                        label: "Tipo",
-                        field: "TIPO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Descripcion",
-                        field: "NOMBRE",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Fecha",
-                        field: "FECHA",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Folio Recepcion",
-                        field: "FOLREC",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Orden de Compra",
-                        field: "NUMORD",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Proveedor",
-                        field: "PROVEEDOR",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Folio Despacho",
-                        field: "FOLDES",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Servicio",
-                        field: "SERVICIO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Codigo Interno",
-                        field: "CODART",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Codigo Barra",
-                        field: "CODBAR",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Precio",
-                        field: "PRECIO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Cantidad",
-                        field: "CANTIDAD",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Saldo",
-                        field: "SALDO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Motivo Anulacion",
-                        field: "NOMMOT",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    }
-                ];
+                this.ColumnasBincardGeneral();
                 if (this.idActBin == 1) {
                     axios
                         .post(
@@ -2808,14 +2753,7 @@ export default {
                             let saldo = 0;
                             let c = res.data;
                             if (c.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             } else {
                                 let d = [];
                                 c.forEach((value, index) => {
@@ -2900,14 +2838,7 @@ export default {
                             let saldo = 0;
                             let c = res.data;
                             if (c.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             } else {
                                 let d = [];
                                 c.forEach((value, index) => {
@@ -2984,14 +2915,7 @@ export default {
                             let saldo = 0;
                             let c = res.data;
                             if (c.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             } else {
                                 let d = [];
                                 c.forEach((value, index) => {
@@ -3024,11 +2948,6 @@ export default {
                                             parseInt(saldo) +
                                             parseInt(value.CANTIDAD);
                                     } else if (
-                                        /* else if (
-                                        value.TIPO == "Recepcion" &&
-                                        value.NOMMOT != "-"
-                                    ) {
-                                    } */
                                         value.TIPO == "Despacho" &&
                                         value.NOMMOT == "-"
                                     ) {
@@ -3036,11 +2955,6 @@ export default {
                                             parseInt(saldo) -
                                             parseInt(value.CANTIDAD);
                                     }
-                                    //  else if (
-                                    //     value.TIPO == "Despacho" &&
-                                    //     value.NOMMOT != "-"
-                                    // ) {
-                                    // }
 
                                     data.TIPO = value.TIPO;
                                     data.NOMBRE = value.NOMBRE;
@@ -3080,14 +2994,7 @@ export default {
                             let saldo = 0;
                             let c = res.data;
                             if (c.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             } else {
                                 let d = [];
                                 c.forEach((value, index) => {
@@ -3298,14 +3205,7 @@ export default {
                         let saldo = 0;
                         let c = res.data;
                         if (c.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            this.mensajeError();
                         } else {
                             let d = [];
                             let saldoAnterior = 0;
@@ -3438,14 +3338,7 @@ export default {
                         .then(res => {
                             this.listadoGeneral = res.data;
                             if (this.listadoGeneral.length < 0) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No hay datos o no se cargaron los datos correctamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             } else {
                                 this.column = [
                                     {
@@ -3578,6 +3471,141 @@ export default {
                     .then(res => {
                         this.listadoGeneral = res.data;
                         if (this.listadoGeneral.length < 0) {
+                            this.mensajeError();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetDespachoxServicio() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    CODINI: this.codini,
+                    CODTER: this.codter
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Reportes/GetDespachoxServicio",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        if (this.listadoGeneral.length < 0) {
+                            this.mensajeError();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetDespachoxServicioI() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    CODINI: this.codini,
+                    CODTER: this.codter,
+                    idServicio: this.seleccionServicios.id
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Reportes/GetDespachoxServicioI",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        if (this.listadoGeneral.length < 0) {
+                            this.mensajeError();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetConsolidadoDespacho() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    CODINI: this.codini,
+                    CODTER: this.codter
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Reportes/GetConsolidadoDespacho",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        if (this.listadoGeneral.length < 0) {
+                            this.mensajeError();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetConsolidadoDespachoS() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    CODINI: this.codini,
+                    CODTER: this.codter,
+                    idServicio: this.seleccionServicios.id
+                };
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Reportes/GetConsolidadoDespachoServicio",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        if (this.listadoGeneral.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
@@ -3586,6 +3614,40 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetConsolidadoDespachoCovid() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicioFE, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTerminoFE, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    CODINI: this.codiniCO,
+                    CODTER: this.codterCO
+                };
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Reportes/GetConsolidadoDespachoServicioCovid",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        if (this.listadoGeneral.length < 0) {
+                            this.mensajeError();
                         }
                     });
             } catch (error) {
@@ -3608,14 +3670,7 @@ export default {
                     .then(res => {
                         this.listadoGeneral = res.data;
                         if (this.listadoGeneral.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            this.mensajeError();
                         }
                     });
             } catch (error) {
@@ -3667,14 +3722,7 @@ export default {
                                 });
                                 this.listadoGeneral = d;
                             } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible cargar los datos,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         })
                     );
@@ -3738,14 +3786,7 @@ export default {
                                 });
                                 this.listadoGeneral = d;
                             } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible cargar los datos,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         })
                     );
@@ -3809,14 +3850,7 @@ export default {
                                 });
                                 this.listadoGeneral = d;
                             } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible cargar los datos,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         })
                     );
@@ -3880,14 +3914,7 @@ export default {
                                 });
                                 this.listadoGeneral = d;
                             } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible cargar los datos,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         })
                     );
@@ -3953,14 +3980,7 @@ export default {
                                 });
                                 this.listadoGeneral = d;
                             } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible cargar los datos,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
+                                this.mensajeError();
                             }
                         })
                     );
@@ -3979,14 +3999,7 @@ export default {
                         let tok = res.data;
                         if (tok == "") {
                         } else if (tok == false) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No se pudo refrescar su sesion, sera redirigido a el inicio de sesion",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            this.mensajeError();
                             window.sessionStorage.clear();
                             window.localStorage.clear();
                             router.push("/pages/login");
