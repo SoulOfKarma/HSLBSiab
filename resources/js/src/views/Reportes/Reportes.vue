@@ -551,21 +551,21 @@
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
-                                v-model="codini"
+                                v-model="codiniC"
                             />
                         </div>
                         <div class="vx-col w-1/6 mt-5">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
-                                v-model="codter"
+                                v-model="codterC"
                             />
                         </div>
                         <div class="vx-col w-1/6 mt-5">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
-                                v-model="fechaInicio"
+                                v-model="fechaInicioF"
                                 placeholder="Fecha Inicio"
                                 @on-change="onFromChange"
                                 class="w-full "
@@ -575,7 +575,7 @@
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
-                                v-model="fechaTermino"
+                                v-model="fechaTerminoF"
                                 placeholder="Fecha Termino"
                                 @on-change="onToChange"
                                 class="w-full "
@@ -1214,6 +1214,23 @@ export default {
                 this.$vs.loading.close();
             }, 1000);
         },
+        limpiar() {
+            this.fechaInicio = null;
+            this.fechaTermino = null;
+            this.fechaInicioF = null;
+            this.fechaTerminoF = null;
+            this.fechaInicioE = null;
+            this.fechaTerminoE = null;
+            this.fechaInicioFE = null;
+            this.fechaTerminoFE = null;
+            this.codini = "";
+            this.codter = "";
+            this.codiniC = "";
+            this.codterC = "";
+            this.codiniCO = "";
+            this.codterCO = "";
+            this.cargarHoras();
+        },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
@@ -1395,34 +1412,28 @@ export default {
                 this.listaActive = true;
                 this.consumoanio = false;
                 this.consumomes = false;
-                this.fechaInicio = null;
-                this.fechaTermino = null;
-                this.codini = "";
-                this.codter = "";
-                this.codiniC = "";
-                this.codterC = "";
-                this.fechaInicioF = null;
-                this.fechaTerminoF = null;
+                this.limpiar();
                 this.columnBincard = [];
                 this.ColumnasBincardGeneral();
                 if (this.seleccionReporte.id == 1) {
                     this.ColumnasSaldo();
-                    this.consumoanio = false;
                     this.consolidadoDespacho = false;
+                    this.despachoxservicio = false;
+                    this.bincardTipo = false;
                     this.saldopmp = false;
+                    this.listaActive = true;
+                    this.consumoanio = false;
+                    this.consumomes = false;
+                    this.consumomesservicio = false;
+                    this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
                     this.GetSaldos();
                 } else if (this.seleccionReporte.id == 2) {
                     this.column = [
                         {
                             label: "Codigo Interno",
                             field: "CODART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Codigo ZGEN",
-                            field: "ZGEN",
                             filterOptions: {
                                 enabled: true
                             }
@@ -1467,9 +1478,17 @@ export default {
                             field: "action"
                         }
                     ];
-                    this.consumoanio = false;
                     this.consolidadoDespacho = false;
+                    this.despachoxservicio = false;
+                    this.bincardTipo = false;
                     this.saldopmp = false;
+                    this.listaActive = true;
+                    this.consumoanio = false;
+                    this.consumomes = false;
+                    this.consumomesservicio = false;
+                    this.fechavencimiento = false;
+                    this.zgen = false;
+                    this.zgenpriorizado = false;
                     this.GetSaldoValorizado();
                 } else if (this.seleccionReporte.id == 3) {
                     this.column = [
@@ -1862,6 +1881,7 @@ export default {
                         .then(res => {
                             this.listadoGeneral = res.data;
                             this.columnBincard = [];
+                            this.limpiar();
                             this.ColumnasBincardGeneral();
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
@@ -1893,6 +1913,7 @@ export default {
                         )
                         .then(res => {
                             this.listadoGeneral = res.data;
+                            this.limpiar();
                             this.columnBincard = [];
                             this.columnBincard = [
                                 {
@@ -1985,6 +2006,7 @@ export default {
                         )
                         .then(res => {
                             this.listadoGeneral = res.data;
+                            this.limpiar();
                             this.columnBincard = [];
                             this.columnBincard = [
                                 {
@@ -2110,6 +2132,7 @@ export default {
                         )
                         .then(res => {
                             this.listadoGeneral = res.data;
+                            this.limpiar();
                             this.columnBincard = [];
                             this.ColumnasBincardGeneral();
                             if (this.listadoGeneral.length < 0) {
@@ -2136,6 +2159,7 @@ export default {
                         )
                         .then(res => {
                             this.listadoGeneral = res.data;
+                            this.limpiar();
                             this.columnBincard = [];
                             this.ColumnasBincardGeneral();
                             if (this.listadoGeneral.length < 0) {
@@ -2172,6 +2196,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
@@ -2245,6 +2270,7 @@ export default {
                     })
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
@@ -2329,6 +2355,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
@@ -2410,6 +2437,7 @@ export default {
                     })
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
@@ -2546,6 +2574,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
@@ -2751,6 +2780,7 @@ export default {
                         )
                         .then(res => {
                             let saldo = 0;
+                            this.limpiar();
                             let c = res.data;
                             if (c.length < 0) {
                                 this.mensajeError();
@@ -2836,6 +2866,7 @@ export default {
                         )
                         .then(res => {
                             let saldo = 0;
+                            this.limpiar();
                             let c = res.data;
                             if (c.length < 0) {
                                 this.mensajeError();
@@ -2913,6 +2944,7 @@ export default {
                         )
                         .then(res => {
                             let saldo = 0;
+                            this.limpiar();
                             let c = res.data;
                             if (c.length < 0) {
                                 this.mensajeError();
@@ -2992,6 +3024,7 @@ export default {
                         )
                         .then(res => {
                             let saldo = 0;
+                            this.limpiar();
                             let c = res.data;
                             if (c.length < 0) {
                                 this.mensajeError();
@@ -3203,6 +3236,7 @@ export default {
                     })
                     .then(res => {
                         let saldo = 0;
+                        this.limpiar();
                         let c = res.data;
                         if (c.length < 0) {
                             this.mensajeError();
@@ -3337,6 +3371,7 @@ export default {
                         )
                         .then(res => {
                             this.listadoGeneral = res.data;
+                            this.limpiar();
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             } else {
@@ -3470,6 +3505,7 @@ export default {
                     })
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         }
@@ -3503,6 +3539,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         }
@@ -3514,14 +3551,14 @@ export default {
         GetDespachoxServicioI() {
             try {
                 let data = {
-                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                    FECINI: moment(this.fechaInicioF, "DD-MM-YYYY").format(
                         "YYYY-MM-DD"
                     ),
-                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                    FECTER: moment(this.fechaTerminoF, "DD-MM-YYYY").format(
                         "YYYY-MM-DD"
                     ),
-                    CODINI: this.codini,
-                    CODTER: this.codter,
+                    CODINI: this.codiniC,
+                    CODTER: this.codterC,
                     idServicio: this.seleccionServicios.id
                 };
                 axios
@@ -3537,6 +3574,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         }
@@ -3570,6 +3608,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         }
@@ -3605,6 +3644,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
@@ -3646,6 +3686,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         }
@@ -3669,6 +3710,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         }
@@ -3707,6 +3749,7 @@ export default {
                         axios.spread((res1, res2) => {
                             let resp1 = res1.data;
                             let resp2 = res2.data;
+                            this.limpiar();
                             if (resp1.length > 0 && resp2.length > 0) {
                                 this.listadoGeneral = [];
                                 let d = [];
@@ -3769,6 +3812,7 @@ export default {
                     ])
                     .then(
                         axios.spread((res1, res2) => {
+                            this.limpiar();
                             let resp1 = res1.data;
                             let resp2 = res2.data;
                             if (resp1.length > 0 && resp2.length > 0) {
@@ -3833,6 +3877,7 @@ export default {
                     ])
                     .then(
                         axios.spread((res1, res2) => {
+                            this.limpiar();
                             let resp1 = res1.data;
                             let resp2 = res2.data;
                             if (resp1.length > 0 && resp2.length > 0) {
@@ -3897,6 +3942,7 @@ export default {
                     ])
                     .then(
                         axios.spread((res1, res2) => {
+                            this.limpiar();
                             let resp1 = res1.data;
                             let resp2 = res2.data;
                             if (resp1.length > 0 && resp2.length > 0) {
@@ -3963,6 +4009,7 @@ export default {
                     ])
                     .then(
                         axios.spread((res1, res2) => {
+                            this.limpiar();
                             let resp1 = res1.data;
                             let resp2 = res2.data;
                             if (resp1.length > 0 && resp2.length > 0) {
@@ -4008,6 +4055,20 @@ export default {
                         }
                     });
             } catch (error) {
+                console.log(error);
+            }
+        },
+        cargarHoras() {
+            try {
+                let date = moment().endOf("day");
+                this.fechaInicio = date.format("DD/MM/YYYY").toString();
+                this.fechaTermino = date.format("DD/MM/YYYY").toString();
+                this.fechaInicioF = date.format("DD/MM/YYYY").toString();
+                this.fechaTerminoF = date.format("DD/MM/YYYY").toString();
+                this.fechaInicioFE = date.format("DD/MM/YYYY").toString();
+                this.fechaTerminoFE = date.format("DD/MM/YYYY").toString();
+            } catch (error) {
+                console.log("No se cargo la ISO hora");
                 console.log(error);
             }
         }
