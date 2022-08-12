@@ -1083,14 +1083,8 @@ export default {
             formats: ["xlsx", "csv", "txt"],
             cellAutoWidth: true,
             selectedFormat: "xlsx",
-            headerTitle: [
-                "N° Interno",
-                "Z-Gen",
-                "Descripcion",
-                "Unidad Medida",
-                "Saldo"
-            ],
-            headerVal: ["CODART", "ZGEN", "NOMBRE", "UNIMED", "saldoCorrecto"],
+            headerTitle: [],
+            headerVal: [],
             activePrompt: false,
             //Datos Fechas
             configFromdateTimePicker: {
@@ -1374,6 +1368,24 @@ export default {
                 position: "top-right"
             });
         },
+        ColumnasBincardExcel() {
+            this.headerTitle = [
+                "N° Interno",
+                "Z-Gen",
+                "Descripcion",
+                "Unidad Medida",
+                "Saldo",
+                "Estado"
+            ];
+            this.headerVal = [
+                "CODART",
+                "ZGEN",
+                "NOMBRE",
+                "UNIMED",
+                "saldoCorrecto",
+                "Estado"
+            ];
+        },
         ColumnasBincardGeneral() {
             this.columnBincard = [
                 {
@@ -1569,6 +1581,20 @@ export default {
                 }
             ];
         },
+        ListadoVistas() {
+            this.consolidadoDespacho = false;
+            this.despachoxservicio = false;
+            this.bincardTipo = false;
+            this.saldopmp = false;
+            this.listaActive = true;
+            this.consumoanio = false;
+            this.consumomes = false;
+            this.consumomesservicio = false;
+            this.fechavencimiento = false;
+            this.zgen = false;
+            this.zgenpriorizado = false;
+            this.saldoGeneral = false;
+        },
         GetReporteEspecifico() {
             try {
                 this.listaActive = true;
@@ -1578,17 +1604,7 @@ export default {
                 this.columnBincard = [];
                 this.ColumnasBincardGeneral();
                 if (this.seleccionReporte.id == 1) {
-                    this.consolidadoDespacho = false;
-                    this.despachoxservicio = false;
-                    this.bincardTipo = false;
-                    this.saldopmp = false;
-                    this.listaActive = true;
-                    this.consumoanio = false;
-                    this.consumomes = false;
-                    this.consumomesservicio = false;
-                    this.fechavencimiento = false;
-                    this.zgen = false;
-                    this.zgenpriorizado = false;
+                    this.ListadoVistas();
                     this.saldoGeneral = true;
                     this.GetSaldos();
                 } else if (this.seleccionReporte.id == 3) {
@@ -1640,101 +1656,32 @@ export default {
                             field: "action"
                         }
                     ];
+
                     this.bincardTipo = true;
-                    this.consolidadoDespacho = false;
-                    this.consumoanio = false;
-                    this.consumomes = false;
-                    this.consumomesservicio = false;
-                    this.fechavencimiento = false;
-                    this.zgen = false;
-                    this.zgenpriorizado = false;
-                    this.saldopmp = false;
-                    this.saldoGeneral = false;
+                    this.ListadoVistas();
                     this.GetSaldoArticulos(1);
                 } else if (this.seleccionReporte.id == 4) {
-                    this.bincardTipo = false;
-                    this.consolidadoDespacho = false;
-                    this.listaActive = false;
+                    this.ListadoVistas();
                     this.consumoanio = true;
-                    this.consumomes = false;
-                    this.consumomesservicio = false;
-                    this.fechavencimiento = false;
-                    this.zgen = false;
-                    this.zgenpriorizado = false;
-                    this.saldopmp = false;
-                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 5) {
-                    this.bincardTipo = false;
-                    this.consolidadoDespacho = false;
-                    this.listaActive = false;
-                    this.consumoanio = false;
+                    this.ListadoVistas();
                     this.consumomes = true;
-                    this.consumomesservicio = false;
-                    this.fechavencimiento = false;
-                    this.zgen = false;
-                    this.zgenpriorizado = false;
-                    this.saldopmp = false;
-                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 6) {
-                    this.bincardTipo = false;
-                    this.consolidadoDespacho = false;
-                    this.listaActive = false;
-                    this.consumoanio = false;
-                    this.consumomes = false;
+                    this.ListadoVistas();
                     this.consumomesservicio = true;
-                    this.fechavencimiento = false;
-                    this.zgen = false;
-                    this.zgenpriorizado = false;
-                    this.saldopmp = false;
-                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 7) {
-                    this.bincardTipo = false;
-                    this.consolidadoDespacho = false;
-                    this.listaActive = false;
-                    this.consumoanio = false;
-                    this.consumomes = false;
-                    this.consumomesservicio = false;
+                    this.ListadoVistas();
                     this.fechavencimiento = true;
-                    this.zgen = false;
-                    this.zgenpriorizado = false;
-                    this.saldopmp = false;
-                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 8) {
-                    this.bincardTipo = false;
-                    this.consolidadoDespacho = false;
-                    this.listaActive = false;
-                    this.consumoanio = false;
-                    this.consumomes = false;
-                    this.consumomesservicio = false;
-                    this.fechavencimiento = false;
+                    this.ListadoVistas();
                     this.zgen = true;
-                    this.zgenpriorizado = false;
-                    this.saldopmp = false;
-                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 9) {
-                    this.bincardTipo = false;
-                    this.consolidadoDespacho = false;
-                    this.listaActive = false;
-                    this.consumoanio = false;
-                    this.consumomes = false;
-                    this.consumomesservicio = false;
-                    this.fechavencimiento = false;
-                    this.zgen = false;
+                    this.ListadoVistas();
                     this.zgenpriorizado = true;
-                    this.saldopmp = false;
-                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 10) {
-                    this.bincardTipo = false;
-                    this.consolidadoDespacho = false;
+                    this.ListadoVistas();
                     this.saldopmp = true;
-                    this.listaActive = true;
-                    this.consumoanio = false;
-                    this.consumomes = false;
-                    this.consumomesservicio = false;
-                    this.fechavencimiento = false;
-                    this.zgen = false;
-                    this.zgenpriorizado = false;
-                    this.saldoGeneral = false;
+
                     this.column = [
                         {
                             label: "Codigo Articulo",
@@ -1797,20 +1744,12 @@ export default {
                             field: "action"
                         }
                     ];
+
                     this.GetSaldoValorizadoPMP();
                 } else if (this.seleccionReporte.id == 11) {
+                    this.ListadoVistas();
                     this.despachoxservicio = true;
-                    this.consolidadoDespacho = false;
-                    this.bincardTipo = false;
-                    this.saldopmp = false;
-                    this.listaActive = true;
-                    this.consumoanio = false;
-                    this.consumomes = false;
-                    this.consumomesservicio = false;
-                    this.fechavencimiento = false;
-                    this.zgen = false;
-                    this.zgenpriorizado = false;
-                    this.saldoGeneral = false;
+
                     this.column = [
                         {
                             label: "Fecha",
@@ -1994,6 +1933,7 @@ export default {
                             this.columnBincard = [];
                             this.limpiar();
                             this.ColumnasBincardGeneral();
+                            this.ColumnasBincardExcel();
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             }
@@ -2097,6 +2037,30 @@ export default {
                                         enabled: true
                                     }
                                 }
+                            ];
+                            this.headerTitle = [
+                                "Tipo",
+                                "Nombre",
+                                "Fecha",
+                                "Folio Recepcion",
+                                "Proveedor",
+                                "Folio Despacho",
+                                "Servicio",
+                                "Precio",
+                                "Cantidad",
+                                "Saldo"
+                            ];
+                            this.headerVal = [
+                                "TIPO",
+                                "NOMBRE",
+                                "FECHA",
+                                "FOLREC",
+                                "PROVEEDOR",
+                                "FOLDES",
+                                "SERVICIO",
+                                "PRECIO",
+                                "CANTIDAD",
+                                "SALDO"
                             ];
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
@@ -2219,6 +2183,38 @@ export default {
                                     }
                                 }
                             ];
+                            this.headerTitle = [
+                                "Tipo",
+                                "Nombre",
+                                "Fecha",
+                                "Folio Recepcion",
+                                "Proveedor",
+                                "Folio Despacho",
+                                "Servicio",
+                                "Codigo Interno",
+                                "Codigo Barra",
+                                "Precio",
+                                "Cantidad",
+                                "Saldo",
+                                "Fecha Vencimiento",
+                                "Lote"
+                            ];
+                            this.headerVal = [
+                                "TIPO",
+                                "NOMBRE",
+                                "FECHA",
+                                "FOLREC",
+                                "PROVEEDOR",
+                                "FOLDES",
+                                "SERVICIO",
+                                "CODART",
+                                "CODBAR",
+                                "PRECIO",
+                                "CANTIDAD",
+                                "SALDO",
+                                "FECVEN",
+                                "LOTE"
+                            ];
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             }
@@ -2246,6 +2242,7 @@ export default {
                             this.limpiar();
                             this.columnBincard = [];
                             this.ColumnasBincardGeneral();
+                            this.ColumnasBincardExcel();
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             }
@@ -2273,6 +2270,7 @@ export default {
                             this.limpiar();
                             this.columnBincard = [];
                             this.ColumnasBincardGeneral();
+                            this.ColumnasBincardExcel();
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             }
@@ -2352,6 +2350,20 @@ export default {
                                     field: "action"
                                 }
                             ];
+                            this.headerTitle = [
+                                "N° Interno",
+                                "Z-Gen",
+                                "Descripcion",
+                                "Unidad Medida",
+                                "Consumo"
+                            ];
+                            this.headerVal = [
+                                "CODART",
+                                "ZGEN",
+                                "NOMBRE",
+                                "UNIMED",
+                                "CONSUMO"
+                            ];
                             this.listaActive = true;
                         }
                     });
@@ -2425,6 +2437,20 @@ export default {
                                     label: "Opciones",
                                     field: "action"
                                 }
+                            ];
+                            this.headerTitle = [
+                                "N° Interno",
+                                "Z-Gen",
+                                "Descripcion",
+                                "Mes",
+                                "Consumo"
+                            ];
+                            this.headerVal = [
+                                "CODART",
+                                "ZGEN",
+                                "NOMBRE",
+                                "MES",
+                                "CONSUMO"
                             ];
                             this.listaActive = true;
                         }
@@ -2517,6 +2543,22 @@ export default {
                                     label: "Opciones",
                                     field: "action"
                                 }
+                            ];
+                            this.headerTitle = [
+                                "N° Interno",
+                                "Z-Gen",
+                                "Descripcion",
+                                "Mes",
+                                "Servicio",
+                                "Consumo"
+                            ];
+                            this.headerVal = [
+                                "CODART",
+                                "ZGEN",
+                                "NOMBRE",
+                                "MES",
+                                "descripcionServicio",
+                                "CONSUMO"
                             ];
                             this.listaActive = true;
                         }
@@ -2650,6 +2692,36 @@ export default {
                                     label: "Opciones",
                                     field: "action"
                                 }
+                            ];
+                            this.headerTitle = [
+                                "Codigo DEIS Servicio de Salud",
+                                "Codigo DEIS establecimiento",
+                                "Codigo ZGEN",
+                                "Codigo Interno",
+                                "Descripcion",
+                                "Medicamento Corresponde al Arsenal del Establecimiento",
+                                "Mes de Recepcion del Medicamento",
+                                "Cantidad Recepcionada",
+                                "Precio Unitario",
+                                "Precio Total",
+                                "Unidad de Medida",
+                                "Mes de Salida de Medicamento a Farmacia Central",
+                                "Cantidad de Salida a Farmacia"
+                            ];
+                            this.headerVal = [
+                                "CDEISSV",
+                                "DEISEST",
+                                "ZGEN",
+                                "CODART",
+                                "NOMBRE",
+                                "VALMED",
+                                "MES",
+                                "CANREC",
+                                "PRECIO",
+                                "TOTAL",
+                                "UNIMED",
+                                "MESSAL",
+                                "DESPACHO"
                             ];
                             this.listaActive = true;
                         }
@@ -2861,6 +2933,56 @@ export default {
                                     label: "Opciones",
                                     field: "action"
                                 }
+                            ];
+                            this.headerTitle = [
+                                "Via Adquisicion",
+                                "Codigo DEIS Servicio de Salud",
+                                "Codigo DEIS establecimiento",
+                                "Codigo ZGEN",
+                                "Codigo Interno",
+                                "Descripcion",
+                                "Medicamento Corresponde al Arsenal del Establecimiento",
+                                "Mes de Recepcion del Medicamento",
+                                "Cantidad Recepcionada",
+                                "Precio Unitario",
+                                "Cantidad Recepcionada Por Compra",
+                                "Cantidad ingresada por concepto de devolucion de prestamo de otro establecimiento",
+                                "Cantidad ingresada por prestamo de otro establecimiento",
+                                "Cantidad total dispensada a pacientes",
+                                "Cantidad Prestada o devuelta a otro establecimiento",
+                                "Unidades Mermadas",
+                                "Monto Mermado",
+                                "Stock Final Físico",
+                                "Stock Final en Sistema de Inventario",
+                                "Precio Unitario (PPP) de stock",
+                                "Precio 1",
+                                "Precio 2",
+                                "Precio 3"
+                            ];
+                            this.headerVal = [
+                                "NUMORD",
+                                "CDEISSV",
+                                "DEISEST",
+                                "ZGEN",
+                                "CODART",
+                                "NOMBRE",
+                                "VALMED",
+                                "MES",
+                                "STOCKFISICO",
+                                "STOCKBINSAL",
+                                "CANREC",
+                                "CANDEL",
+                                "CANPRES",
+                                "CANPAC",
+                                "CANPOE",
+                                "UMERMA",
+                                "MONMERMA",
+                                "SALDO",
+                                "SALDOBIN",
+                                "PRECIO1",
+                                "PRECIO2",
+                                "PRECIO3",
+                                "PRECIO4"
                             ];
                             this.listaActive = true;
                         }
@@ -3618,6 +3740,20 @@ export default {
                         this.listadoGeneral = res.data;
                         this.limpiar();
                         this.ColumnasSaldo();
+                        this.headerTitle = [
+                            "N° Interno",
+                            "Z-Gen",
+                            "Descripcion",
+                            "Unidad Medida",
+                            "Saldo"
+                        ];
+                        this.headerVal = [
+                            "CODART",
+                            "ZGEN",
+                            "NOMBRE",
+                            "UNIMED",
+                            "saldoCorrecto"
+                        ];
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         }
@@ -3912,6 +4048,26 @@ export default {
                                     });
                                 });
                                 this.listadoGeneral = d;
+                                this.headerTitle = [
+                                    "N° Interno",
+                                    "Descripcion",
+                                    "Unidad Medida",
+                                    "Unidades",
+                                    "Total",
+                                    "PMP",
+                                    "Ultimo Valor",
+                                    "Menor Valor"
+                                ];
+                                this.headerVal = [
+                                    "CODART",
+                                    "NOMBRE",
+                                    "UNIMED",
+                                    "saldoCorrecto",
+                                    "TOTAL",
+                                    "PMP",
+                                    "ULTPRE",
+                                    "MINPRE"
+                                ];
                             } else {
                                 this.mensajeError();
                             }
