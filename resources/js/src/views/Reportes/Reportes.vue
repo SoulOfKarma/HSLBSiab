@@ -2,6 +2,39 @@
     <div>
         <div class="vx-col md:w-1/1 w-full mb-base">
             <vx-card title="Reportes">
+                <vs-prompt
+                    title="Exportar a Excel"
+                    class="export-options"
+                    @cancle="clearFields"
+                    @accept="exportToExcel"
+                    accept-text="Export"
+                    @close="clearFields"
+                    :active.sync="activePrompt"
+                >
+                    <vs-input
+                        v-model="fileName"
+                        placeholder="Escriba el nombre del archivo..."
+                        class="w-full"
+                    />
+                    <v-select
+                        v-model="selectedFormat"
+                        :options="formats"
+                        class="my-4"
+                    />
+                    <div class="flex">
+                        <span class="mr-4">Cell Auto Width:</span>
+                        <vs-switch v-model="cellAutoWidth"
+                            >Cell Auto Width</vs-switch
+                        >
+                    </div>
+                </vs-prompt>
+                <div class="vx-row mb-12">
+                    <div class="vx-col w-full mt-5">
+                        <vs-button @click="activePrompt = true"
+                            >Exportar</vs-button
+                        >
+                    </div>
+                </div>
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <div class="vx-col w-full mt-5">
                         <h6>Seleccione Reporte</h6>
@@ -56,6 +89,74 @@
                             <h6>.</h6>
                             <vs-button
                                 @click="GetConsumoAnio"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar</vs-button
+                            >
+                        </div>
+                    </div>
+                    <!-- Carga Saldo General - Valorizado -->
+                    <div class="vx-row" v-if="saldoGeneral">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="GetSaldos"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Saldo Productos</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="GetSaldoValorizado"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Saldo Valorizado</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Busqueda Recepcion Por Rango</h6>
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Codigo Final</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codter"
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Inicio</h6>
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="fechaInicio"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>Fecha Termino</h6>
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="fechaTermino"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                                class="w-full "
+                            />
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <h6>.</h6>
+                            <vs-button
+                                @click="GetRecepcionesRango"
                                 color="primary"
                                 type="filled"
                                 class="w-full"
@@ -956,6 +1057,7 @@ export default {
             fechaInicioFE: null,
             fechaTerminoFE: null,
             saldopmp: false,
+            saldoGeneral: false,
             codini: "",
             codter: "",
             codiniC: "",
@@ -976,6 +1078,20 @@ export default {
                 id: 0,
                 descripcionServicio: "Seleccione Servicio"
             },
+            //Datos para exportar
+            fileName: "",
+            formats: ["xlsx", "csv", "txt"],
+            cellAutoWidth: true,
+            selectedFormat: "xlsx",
+            headerTitle: [
+                "N° Interno",
+                "Z-Gen",
+                "Descripcion",
+                "Unidad Medida",
+                "Saldo"
+            ],
+            headerVal: ["CODART", "ZGEN", "NOMBRE", "UNIMED", "saldoCorrecto"],
+            activePrompt: false,
             //Datos Fechas
             configFromdateTimePicker: {
                 minDate: null,
@@ -1101,11 +1217,7 @@ export default {
             listadoReportes: [
                 {
                     id: 1,
-                    descripcionReporte: "Saldo Productos"
-                },
-                {
-                    id: 2,
-                    descripcionReporte: "Saldo Valorizado"
+                    descripcionReporte: "Saldos"
                 },
                 {
                     id: 3,
@@ -1407,6 +1519,56 @@ export default {
                 }
             ];
         },
+        ColumnasSaldoV() {
+            this.column = [
+                {
+                    label: "Codigo Interno",
+                    field: "CODART",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion",
+                    field: "NOMBRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Unidad Medida",
+                    field: "UNIMED",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Saldo",
+                    field: "saldoCorrecto",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Ultimo Precio",
+                    field: "ULTPRE",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Total",
+                    field: "TOTAL",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
+                }
+            ];
+        },
         GetReporteEspecifico() {
             try {
                 this.listaActive = true;
@@ -1416,7 +1578,6 @@ export default {
                 this.columnBincard = [];
                 this.ColumnasBincardGeneral();
                 if (this.seleccionReporte.id == 1) {
-                    this.ColumnasSaldo();
                     this.consolidadoDespacho = false;
                     this.despachoxservicio = false;
                     this.bincardTipo = false;
@@ -1428,68 +1589,8 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = false;
                     this.zgenpriorizado = false;
+                    this.saldoGeneral = true;
                     this.GetSaldos();
-                } else if (this.seleccionReporte.id == 2) {
-                    this.column = [
-                        {
-                            label: "Codigo Interno",
-                            field: "CODART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Descripcion",
-                            field: "NOMBRE",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Unidad Medida",
-                            field: "UNIMED",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Saldo",
-                            field: "saldoCorrecto",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Ultimo Precio",
-                            field: "ULTPRE",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Total",
-                            field: "TOTAL",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Opciones",
-                            field: "action"
-                        }
-                    ];
-                    this.consolidadoDespacho = false;
-                    this.despachoxservicio = false;
-                    this.bincardTipo = false;
-                    this.saldopmp = false;
-                    this.listaActive = true;
-                    this.consumoanio = false;
-                    this.consumomes = false;
-                    this.consumomesservicio = false;
-                    this.fechavencimiento = false;
-                    this.zgen = false;
-                    this.zgenpriorizado = false;
-                    this.GetSaldoValorizado();
                 } else if (this.seleccionReporte.id == 3) {
                     this.column = [
                         {
@@ -1548,6 +1649,7 @@ export default {
                     this.zgen = false;
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
+                    this.saldoGeneral = false;
                     this.GetSaldoArticulos(1);
                 } else if (this.seleccionReporte.id == 4) {
                     this.bincardTipo = false;
@@ -1560,6 +1662,7 @@ export default {
                     this.zgen = false;
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
+                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 5) {
                     this.bincardTipo = false;
                     this.consolidadoDespacho = false;
@@ -1571,6 +1674,7 @@ export default {
                     this.zgen = false;
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
+                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 6) {
                     this.bincardTipo = false;
                     this.consolidadoDespacho = false;
@@ -1582,6 +1686,7 @@ export default {
                     this.zgen = false;
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
+                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 7) {
                     this.bincardTipo = false;
                     this.consolidadoDespacho = false;
@@ -1593,6 +1698,7 @@ export default {
                     this.zgen = false;
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
+                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 8) {
                     this.bincardTipo = false;
                     this.consolidadoDespacho = false;
@@ -1604,6 +1710,7 @@ export default {
                     this.zgen = true;
                     this.zgenpriorizado = false;
                     this.saldopmp = false;
+                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 9) {
                     this.bincardTipo = false;
                     this.consolidadoDespacho = false;
@@ -1615,6 +1722,7 @@ export default {
                     this.zgen = false;
                     this.zgenpriorizado = true;
                     this.saldopmp = false;
+                    this.saldoGeneral = false;
                 } else if (this.seleccionReporte.id == 10) {
                     this.bincardTipo = false;
                     this.consolidadoDespacho = false;
@@ -1626,6 +1734,7 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = false;
                     this.zgenpriorizado = false;
+                    this.saldoGeneral = false;
                     this.column = [
                         {
                             label: "Codigo Articulo",
@@ -1701,6 +1810,7 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = false;
                     this.zgenpriorizado = false;
+                    this.saldoGeneral = false;
                     this.column = [
                         {
                             label: "Fecha",
@@ -1782,6 +1892,7 @@ export default {
                     this.fechavencimiento = false;
                     this.zgen = false;
                     this.zgenpriorizado = false;
+                    this.saldoGeneral = false;
                     this.column = [
                         {
                             label: "Mes",
@@ -3506,6 +3617,42 @@ export default {
                     .then(res => {
                         this.listadoGeneral = res.data;
                         this.limpiar();
+                        this.ColumnasSaldo();
+                        if (this.listadoGeneral.length < 0) {
+                            this.mensajeError();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GetRecepcionesRango() {
+            try {
+                let data = {
+                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    CODINI: this.codini,
+                    CODTER: this.codter
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Reportes/GetSaldosRecepcion",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        this.listadoGeneral = res.data;
+                        this.ColumnasSaldoV();
+                        this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         }
@@ -3710,6 +3857,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
+                        this.ColumnasSaldoV();
                         this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
@@ -4071,6 +4219,38 @@ export default {
                 console.log("No se cargo la ISO hora");
                 console.log(error);
             }
+        },
+        exportToExcel() {
+            import("@/vendor/Export2Excel").then(excel => {
+                const list = this.listadoGeneral;
+                const data = this.formatJson(this.headerVal, list);
+                excel.export_json_to_excel({
+                    header: this.headerTitle,
+                    data,
+                    filename: this.fileName,
+                    autoWidth: this.cellAutoWidth,
+                    bookType: this.selectedFormat
+                });
+                this.clearFields();
+            });
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map(v =>
+                filterVal.map(j => {
+                    // Add col name which needs to be translated
+                    // if (j === 'timestamp') {
+                    //   return parseTime(v[j])
+                    // } else {
+                    //   return v[j]
+                    // }
+                    return v[j];
+                })
+            );
+        },
+        clearFields() {
+            this.filename = "";
+            this.cellAutoWidth = true;
+            this.selectedFormat = "xlsx";
         }
     },
     beforeMount() {

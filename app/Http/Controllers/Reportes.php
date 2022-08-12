@@ -108,6 +108,60 @@ class Reportes extends Controller
         }    
     }
 
+    public function GetSaldosRecepcion(Request $request){
+        try {
+            $get = DB::select('select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.TOTAL FROM
+            (
+            select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.NOMART = t.NOMBRE && 
+                        despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
+                        GROUP BY despacho_detalles.NOMART),0))
+                                     AS saldoCorrecto,
+                                                t.NOMBRE,t.UNIMED,t.CODART,
+                                                (SELECT MAX(recepcion_detalles.PREUNI)
+                                                            FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                            WHERE recepcion_detalles.CODART = t.CODART) AS ULTPRE,
+                                                            FORMAT(((SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.NOMART = t.NOMBRE && 
+                                                                        despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
+                                                                        GROUP BY despacho_detalles.NOMART),0)) * (SELECT MAX(recepcion_detalles.PREUNI)
+                                                            FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
+                                                            WHERE recepcion_detalles.CODART = t.CODART)),2) AS TOTAL
+                                                    from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
+                                                  recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
+                                                  recepcion_detalles.PREUNI AS PREUNI
+                                                  from recepcion_detalles
+                                                  WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                  group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI
+                                          
+                                                  union all
+                                          
+                                                  select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
+                                                   saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
+                                                   saldo_inventario.PRECIO AS PREUNI
+                                                  from saldo_inventario
+                                                  WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                  group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI                         
+                                                  ) t
+                                          group by t.NOMBRE,t.UNIMED,t.CODART,ULTPRE
+                                          
+                                          
+                                          UNION ALL 
+                                          
+                                          SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,siab_articulo.UNIMEDBASE AS UNIMED,
+            siab_articulo.CODART AS CODART,0 AS ULTPRE,0 AS TOTAL
+            FROM siab_articulo
+            
+            ) a
+            WHERE saldoCorrecto > 0 && a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
+            group by a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.TOTAL
+            ORDER BY a.CODART ASC
+            ');
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }    
+    }
+
     //Busqueda Saldo General
 
     public function GetSaldoValorizadoP(){

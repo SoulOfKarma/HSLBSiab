@@ -201,6 +201,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Reportes/GetConsolidadoDespacho', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsolidadoDespacho']);
     Route::post('/Reportes/GetConsolidadoDespachoServicio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsolidadoDespachoServicio']);
     Route::post('/Reportes/GetConsolidadoDespachoServicioCovid', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsolidadoDespachoServicioCovid']);
+    Route::post('/Reportes/GetSaldosRecepcion', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosRecepcion']);
 });
 
 //Generar PDF
