@@ -1002,6 +1002,7 @@ import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
+import store from "./store.js";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 Vue.use(VueTippy);
@@ -1368,219 +1369,6 @@ export default {
                 position: "top-right"
             });
         },
-        ColumnasBincardExcel() {
-            this.headerTitle = [
-                "N° Interno",
-                "Z-Gen",
-                "Descripcion",
-                "Unidad Medida",
-                "Saldo",
-                "Estado"
-            ];
-            this.headerVal = [
-                "CODART",
-                "ZGEN",
-                "NOMBRE",
-                "UNIMED",
-                "saldoCorrecto",
-                "Estado"
-            ];
-        },
-        ColumnasBincardGeneral() {
-            this.columnBincard = [
-                {
-                    label: "Tipo",
-                    field: "TIPO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Fecha",
-                    field: "FECHA",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Folio Recepcion",
-                    field: "FOLREC",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Orden de Compra",
-                    field: "NUMORD",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Proveedor",
-                    field: "PROVEEDOR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Folio Despacho",
-                    field: "FOLDES",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Servicio",
-                    field: "SERVICIO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Precio",
-                    field: "PRECIO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Cantidad",
-                    field: "CANTIDAD",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Saldo",
-                    field: "SALDO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Motivo Anulacion",
-                    field: "NOMMOT",
-                    filterOptions: {
-                        enabled: true
-                    }
-                }
-            ];
-        },
-        ColumnasSaldo() {
-            this.column = [
-                {
-                    label: "Codigo Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo ZGEN",
-                    field: "ZGEN",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Unidad Medida",
-                    field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Saldo",
-                    field: "saldoCorrecto",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Opciones",
-                    field: "action"
-                }
-            ];
-        },
-        ColumnasSaldoV() {
-            this.column = [
-                {
-                    label: "Codigo Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Descripcion",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Unidad Medida",
-                    field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Saldo",
-                    field: "saldoCorrecto",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Ultimo Precio",
-                    field: "ULTPRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Total",
-                    field: "TOTAL",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Opciones",
-                    field: "action"
-                }
-            ];
-        },
         ListadoVistas() {
             this.consolidadoDespacho = false;
             this.despachoxservicio = false;
@@ -1602,60 +1390,13 @@ export default {
                 this.consumomes = false;
                 this.limpiar();
                 this.columnBincard = [];
-                this.ColumnasBincardGeneral();
+                this.columnBincard = store.state.columnBincardGeneral;
                 if (this.seleccionReporte.id == 1) {
                     this.ListadoVistas();
                     this.saldoGeneral = true;
                     this.GetSaldos();
                 } else if (this.seleccionReporte.id == 3) {
-                    this.column = [
-                        {
-                            label: "Codigo Interno",
-                            field: "CODART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Codigo ZGEN",
-                            field: "ZGEN",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Descripcion",
-                            field: "NOMBRE",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Unidad Medida",
-                            field: "UNIMED",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Saldo",
-                            field: "saldoCorrecto",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Estado",
-                            field: "Estado",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Opciones",
-                            field: "action"
-                        }
-                    ];
+                    this.column = store.state.columnBincardInicial;
 
                     this.bincardTipo = true;
                     this.ListadoVistas();
@@ -1681,144 +1422,12 @@ export default {
                 } else if (this.seleccionReporte.id == 10) {
                     this.ListadoVistas();
                     this.saldopmp = true;
-
-                    this.column = [
-                        {
-                            label: "Codigo Articulo",
-                            field: "CODART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Descripcion",
-                            field: "NOMBRE",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Unidad Medida",
-                            field: "UNIMED",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Unidades",
-                            field: "saldoCorrecto",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Total",
-                            field: "TOTAL",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "PMP",
-                            field: "PMP",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Ultimo Valor",
-                            field: "ULTPRE",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Menor Valor",
-                            field: "MINPRE",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Opciones",
-                            field: "action"
-                        }
-                    ];
-
+                    this.column = store.state.columnSaldoPmp;
                     this.GetSaldoValorizadoPMP();
                 } else if (this.seleccionReporte.id == 11) {
                     this.ListadoVistas();
                     this.despachoxservicio = true;
-
-                    this.column = [
-                        {
-                            label: "Fecha",
-                            field: "FECDES",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Folio",
-                            field: "FOLIO",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Codigo Interno",
-                            field: "CODART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Descripcion",
-                            field: "NOMART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Unidad Medida",
-                            field: "UNIMED",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Cantidad",
-                            field: "CANTIDAD",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Precio",
-                            field: "PRECIO",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Total",
-                            field: "TOTAL",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Servicio",
-                            field: "descripcionServicio",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Opciones",
-                            field: "action"
-                        }
-                    ];
+                    this.column = store.state.columnDespachoXServicio;
                 } else if (this.seleccionReporte.id == 12) {
                     this.consolidadoDespacho = true;
                     this.despachoxservicio = false;
@@ -1832,61 +1441,7 @@ export default {
                     this.zgen = false;
                     this.zgenpriorizado = false;
                     this.saldoGeneral = false;
-                    this.column = [
-                        {
-                            label: "Mes",
-                            field: "MES",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Codigo Interno",
-                            field: "CODART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Descripcion",
-                            field: "NOMART",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Unidad Medida",
-                            field: "UNIMED",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Cantidad",
-                            field: "CANTIDAD",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Precio",
-                            field: "PRECIO",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Total",
-                            field: "TOTAL",
-                            filterOptions: {
-                                enabled: true
-                            }
-                        },
-                        {
-                            label: "Opciones",
-                            field: "action"
-                        }
-                    ];
+                    this.column = store.state.columnConsolidadoDespacho;
                 }
             } catch (error) {
                 console.log(error);
@@ -1932,8 +1487,12 @@ export default {
                             this.listadoGeneral = res.data;
                             this.columnBincard = [];
                             this.limpiar();
-                            this.ColumnasBincardGeneral();
-                            this.ColumnasBincardExcel();
+                            this.columnBincard =
+                                store.state.columnBincardGeneral;
+                            this.headerTitle =
+                                store.state.headerTitleBincardGeneral;
+                            this.headerVal =
+                                store.state.headerValBincardGeneral;
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             }
@@ -1966,102 +1525,12 @@ export default {
                             this.listadoGeneral = res.data;
                             this.limpiar();
                             this.columnBincard = [];
-                            this.columnBincard = [
-                                {
-                                    label: "Tipo",
-                                    field: "TIPO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Fecha",
-                                    field: "FECHA",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Recepcion",
-                                    field: "FOLREC",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Proveedor",
-                                    field: "PROVEEDOR",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Despacho",
-                                    field: "FOLDES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Servicio",
-                                    field: "SERVICIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio",
-                                    field: "PRECIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Cantidad",
-                                    field: "CANTIDAD",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Saldo",
-                                    field: "SALDO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                }
-                            ];
-                            this.headerTitle = [
-                                "Tipo",
-                                "Nombre",
-                                "Fecha",
-                                "Folio Recepcion",
-                                "Proveedor",
-                                "Folio Despacho",
-                                "Servicio",
-                                "Precio",
-                                "Cantidad",
-                                "Saldo"
-                            ];
-                            this.headerVal = [
-                                "TIPO",
-                                "NOMBRE",
-                                "FECHA",
-                                "FOLREC",
-                                "PROVEEDOR",
-                                "FOLDES",
-                                "SERVICIO",
-                                "PRECIO",
-                                "CANTIDAD",
-                                "SALDO"
-                            ];
+                            this.columnBincard =
+                                store.state.columnBincardGetArticulosSaldoEstadoCF;
+                            this.headerTitle =
+                                store.state.headerTitleGetArticulosSaldoEstadoCF;
+                            this.headerVal =
+                                store.state.headerValGetArticulosSaldoEstadoCF;
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             }
@@ -2083,138 +1552,12 @@ export default {
                             this.listadoGeneral = res.data;
                             this.limpiar();
                             this.columnBincard = [];
-                            this.columnBincard = [
-                                {
-                                    label: "Tipo",
-                                    field: "TIPO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Fecha",
-                                    field: "FECHA",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Recepcion",
-                                    field: "FOLREC",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Proveedor",
-                                    field: "PROVEEDOR",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Folio Despacho",
-                                    field: "FOLDES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Servicio",
-                                    field: "SERVICIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Interno",
-                                    field: "CODART",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Barra",
-                                    field: "CODBAR",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio",
-                                    field: "PRECIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Cantidad",
-                                    field: "CANTIDAD",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Saldo",
-                                    field: "SALDO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Fecha Vencimiento",
-                                    field: "FECVEN",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "LOTE",
-                                    field: "LOTE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                }
-                            ];
-                            this.headerTitle = [
-                                "Tipo",
-                                "Nombre",
-                                "Fecha",
-                                "Folio Recepcion",
-                                "Proveedor",
-                                "Folio Despacho",
-                                "Servicio",
-                                "Codigo Interno",
-                                "Codigo Barra",
-                                "Precio",
-                                "Cantidad",
-                                "Saldo",
-                                "Fecha Vencimiento",
-                                "Lote"
-                            ];
-                            this.headerVal = [
-                                "TIPO",
-                                "NOMBRE",
-                                "FECHA",
-                                "FOLREC",
-                                "PROVEEDOR",
-                                "FOLDES",
-                                "SERVICIO",
-                                "CODART",
-                                "CODBAR",
-                                "PRECIO",
-                                "CANTIDAD",
-                                "SALDO",
-                                "FECVEN",
-                                "LOTE"
-                            ];
+                            this.columnBincard =
+                                store.state.columnBincardGetArticulosSaldoEstado;
+                            this.headerTitle =
+                                store.state.headerTitleGetArticulosSaldoEstado;
+                            this.headerVal =
+                                store.state.headerValGetArticulosSaldoEstado;
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             }
@@ -2241,8 +1584,12 @@ export default {
                             this.listadoGeneral = res.data;
                             this.limpiar();
                             this.columnBincard = [];
-                            this.ColumnasBincardGeneral();
-                            this.ColumnasBincardExcel();
+                            this.columnBincard =
+                                store.state.columnBincardGeneral;
+                            this.headerTitle =
+                                store.state.headerTitleBincardGeneral;
+                            this.headerVal =
+                                store.state.headerValBincardGeneral;
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             }
@@ -2269,8 +1616,12 @@ export default {
                             this.listadoGeneral = res.data;
                             this.limpiar();
                             this.columnBincard = [];
-                            this.ColumnasBincardGeneral();
-                            this.ColumnasBincardExcel();
+                            this.columnBincard =
+                                store.state.columnBincardGeneral;
+                            this.headerTitle =
+                                store.state.headerTitleBincardGeneral;
+                            this.headerVal =
+                                store.state.headerValBincardGeneral;
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             }
@@ -2309,61 +1660,10 @@ export default {
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
-                            this.column = [
-                                {
-                                    label: "Codigo Interno",
-                                    field: "CODART",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo ZGEN",
-                                    field: "ZGEN",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Unidad Medida",
-                                    field: "UNIMED",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Consumo",
-                                    field: "CONSUMO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Opciones",
-                                    field: "action"
-                                }
-                            ];
-                            this.headerTitle = [
-                                "N° Interno",
-                                "Z-Gen",
-                                "Descripcion",
-                                "Unidad Medida",
-                                "Consumo"
-                            ];
-                            this.headerVal = [
-                                "CODART",
-                                "ZGEN",
-                                "NOMBRE",
-                                "UNIMED",
-                                "CONSUMO"
-                            ];
+                            this.column = store.state.columnConsumoAnio;
+                            this.headerTitle =
+                                store.state.headerTitleConsumoAnio;
+                            this.headerVal = store.state.headerValConsumoAnio;
                             this.listaActive = true;
                         }
                     });
@@ -2397,61 +1697,10 @@ export default {
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
-                            this.column = [
-                                {
-                                    label: "Codigo Interno",
-                                    field: "CODART",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo ZGEN",
-                                    field: "ZGEN",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Mes",
-                                    field: "MES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Consumo",
-                                    field: "CONSUMO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Opciones",
-                                    field: "action"
-                                }
-                            ];
-                            this.headerTitle = [
-                                "N° Interno",
-                                "Z-Gen",
-                                "Descripcion",
-                                "Mes",
-                                "Consumo"
-                            ];
-                            this.headerVal = [
-                                "CODART",
-                                "ZGEN",
-                                "NOMBRE",
-                                "MES",
-                                "CONSUMO"
-                            ];
+                            this.column = store.state.columnConsumoMes;
+                            this.headerTitle =
+                                store.state.headerTitleConsumoMes;
+                            this.headerVal = store.state.headerValConsumoMes;
                             this.listaActive = true;
                         }
                     });
@@ -2496,70 +1745,11 @@ export default {
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
-                            this.column = [
-                                {
-                                    label: "Codigo Interno",
-                                    field: "CODART",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo ZGEN",
-                                    field: "ZGEN",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Mes",
-                                    field: "MES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Servicio",
-                                    field: "descripcionServicio",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Consumo",
-                                    field: "CONSUMO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Opciones",
-                                    field: "action"
-                                }
-                            ];
-                            this.headerTitle = [
-                                "N° Interno",
-                                "Z-Gen",
-                                "Descripcion",
-                                "Mes",
-                                "Servicio",
-                                "Consumo"
-                            ];
-                            this.headerVal = [
-                                "CODART",
-                                "ZGEN",
-                                "NOMBRE",
-                                "MES",
-                                "descripcionServicio",
-                                "CONSUMO"
-                            ];
+                            this.column = store.state.columnConsumoMesXServicio;
+                            this.headerTitle =
+                                store.state.headerTitleConsumoMesXServicio;
+                            this.headerVal =
+                                store.state.headerValConsumoMesXServicio;
                             this.listaActive = true;
                         }
                     });
@@ -2594,135 +1784,9 @@ export default {
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
-                            this.column = [
-                                {
-                                    label: "Codigo DEIS Servicio de Salud",
-                                    field: "CDEISSV",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo DEIS establecimiento",
-                                    field: "DEISEST",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo ZGEN",
-                                    field: "ZGEN",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Interno",
-                                    field: "CODART",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label:
-                                        "Medicamento Corresponde al Arsenal del Establecimiento",
-                                    field: "VALMED",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Mes de Recepcion del Medicamento",
-                                    field: "MES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Cantidad Recepcionada",
-                                    field: "CANREC",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio Unitario",
-                                    field: "PRECIO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio Total",
-                                    field: "TOTAL",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Unidad de Medida",
-                                    field: "UNIMED",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label:
-                                        "Mes de Salida de Medicamento a Farmacia Central",
-                                    field: "MESSAL",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Cantidad de Salida a Farmacia",
-                                    field: "DESPACHO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Opciones",
-                                    field: "action"
-                                }
-                            ];
-                            this.headerTitle = [
-                                "Codigo DEIS Servicio de Salud",
-                                "Codigo DEIS establecimiento",
-                                "Codigo ZGEN",
-                                "Codigo Interno",
-                                "Descripcion",
-                                "Medicamento Corresponde al Arsenal del Establecimiento",
-                                "Mes de Recepcion del Medicamento",
-                                "Cantidad Recepcionada",
-                                "Precio Unitario",
-                                "Precio Total",
-                                "Unidad de Medida",
-                                "Mes de Salida de Medicamento a Farmacia Central",
-                                "Cantidad de Salida a Farmacia"
-                            ];
-                            this.headerVal = [
-                                "CDEISSV",
-                                "DEISEST",
-                                "ZGEN",
-                                "CODART",
-                                "NOMBRE",
-                                "VALMED",
-                                "MES",
-                                "CANREC",
-                                "PRECIO",
-                                "TOTAL",
-                                "UNIMED",
-                                "MESSAL",
-                                "DESPACHO"
-                            ];
+                            this.column = store.state.columnZgen;
+                            this.headerTitle = store.state.headerTitleZGen;
+                            this.headerVal = store.state.headerValZGen;
                             this.listaActive = true;
                         }
                     });
@@ -2761,229 +1825,11 @@ export default {
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
                         } else {
-                            this.column = [
-                                {
-                                    label: "Via Adquisicion",
-                                    field: "NUMORD",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo DEIS Servicio de Salud",
-                                    field: "CDEISSV",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo DEIS establecimiento",
-                                    field: "DEISEST",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo ZGEN",
-                                    field: "ZGEN",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Codigo Interno",
-                                    field: "CODART",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Descripcion",
-                                    field: "NOMBRE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label:
-                                        "Medicamento Corresponde al Arsenal del Establecimiento",
-                                    field: "VALMED",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Mes de Recepcion del Medicamento",
-                                    field: "MES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Cantidad Recepcionada",
-                                    field: "STOCKFISICO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio Unitario",
-                                    field: "STOCKBINSAL",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Cantidad Recepcionada Por Compra",
-                                    field: "CANREC",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label:
-                                        "Cantidad ingresada por concepto de devolucion de prestamo de otro establecimiento",
-                                    field: "CANDEL",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label:
-                                        "Cantidad ingresada por prestamo de otro establecimiento",
-                                    field: "CANPRES",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label:
-                                        "Cantidad total dispensada a pacientes",
-                                    field: "CANPAC",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label:
-                                        "Cantidad Prestada o devuelta a otro establecimiento",
-                                    field: "CANPOE",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Unidades Mermadas",
-                                    field: "UMERMA",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Monto Mermado",
-                                    field: "MONMERMA",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Stock Final Físico",
-                                    field: "SALDO",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label:
-                                        "Stock Final en Sistema de Inventario",
-                                    field: "SALDOBIN",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio Unitario (PPP) de stock",
-                                    field: "PRECIO1",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio 1",
-                                    field: "PRECIO2",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio 2",
-                                    field: "PRECIO3",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Precio 3",
-                                    field: "PRECIO4",
-                                    filterOptions: {
-                                        enabled: true
-                                    }
-                                },
-                                {
-                                    label: "Opciones",
-                                    field: "action"
-                                }
-                            ];
-                            this.headerTitle = [
-                                "Via Adquisicion",
-                                "Codigo DEIS Servicio de Salud",
-                                "Codigo DEIS establecimiento",
-                                "Codigo ZGEN",
-                                "Codigo Interno",
-                                "Descripcion",
-                                "Medicamento Corresponde al Arsenal del Establecimiento",
-                                "Mes de Recepcion del Medicamento",
-                                "Cantidad Recepcionada",
-                                "Precio Unitario",
-                                "Cantidad Recepcionada Por Compra",
-                                "Cantidad ingresada por concepto de devolucion de prestamo de otro establecimiento",
-                                "Cantidad ingresada por prestamo de otro establecimiento",
-                                "Cantidad total dispensada a pacientes",
-                                "Cantidad Prestada o devuelta a otro establecimiento",
-                                "Unidades Mermadas",
-                                "Monto Mermado",
-                                "Stock Final Físico",
-                                "Stock Final en Sistema de Inventario",
-                                "Precio Unitario (PPP) de stock",
-                                "Precio 1",
-                                "Precio 2",
-                                "Precio 3"
-                            ];
-                            this.headerVal = [
-                                "NUMORD",
-                                "CDEISSV",
-                                "DEISEST",
-                                "ZGEN",
-                                "CODART",
-                                "NOMBRE",
-                                "VALMED",
-                                "MES",
-                                "STOCKFISICO",
-                                "STOCKBINSAL",
-                                "CANREC",
-                                "CANDEL",
-                                "CANPRES",
-                                "CANPAC",
-                                "CANPOE",
-                                "UMERMA",
-                                "MONMERMA",
-                                "SALDO",
-                                "SALDOBIN",
-                                "PRECIO1",
-                                "PRECIO2",
-                                "PRECIO3",
-                                "PRECIO4"
-                            ];
+                            this.column = store.state.columnZGenPriorizado;
+                            this.headerTitle =
+                                store.state.headerTitleZGenPriorizado;
+                            this.headerVal =
+                                store.state.headerValZGenPriorizado;
                             this.listaActive = true;
                         }
                     });
@@ -2997,7 +1843,7 @@ export default {
                     CODART: codart
                 };
                 this.columnBincard = [];
-                this.ColumnasBincardGeneral();
+                this.columnBincard = store.state.columnBincardGeneral;
                 if (this.idActBin == 1) {
                     axios
                         .post(
@@ -3339,127 +2185,7 @@ export default {
                     CODART: codart
                 };
                 this.columnBincard = [];
-                this.columnBincard = [
-                    {
-                        label: "Tipo",
-                        field: "TIPO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Descripcion",
-                        field: "NOMBRE",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Fecha",
-                        field: "FECHA",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Folio Recepcion",
-                        field: "FOLREC",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Orden de Compra",
-                        field: "NUMORD",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Proveedor",
-                        field: "PROVEEDOR",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Folio Despacho",
-                        field: "FOLDES",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Servicio",
-                        field: "SERVICIO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Codigo Interno",
-                        field: "CODART",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Codigo Barra",
-                        field: "CODBAR",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Precio",
-                        field: "PRECIO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Cantidad",
-                        field: "CANTIDAD",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Saldo",
-                        field: "SALDO",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Cantidad*Precio",
-                        field: "TOTAL1",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Total",
-                        field: "TOTAL2",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "PMP",
-                        field: "PMP",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    },
-                    {
-                        label: "Motivo Anulacion",
-                        field: "NOMMOT",
-                        filterOptions: {
-                            enabled: true
-                        }
-                    }
-                ];
+                this.column = store.state.columnBincard;
                 axios
                     .post(this.localVal + "/api/Reportes/GetBincard", data, {
                         headers: {
@@ -3608,117 +2334,8 @@ export default {
                             if (this.listadoGeneral.length < 0) {
                                 this.mensajeError();
                             } else {
-                                this.column = [
-                                    {
-                                        label: "Codigo Interno",
-                                        field: "CODART",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Nombre",
-                                        field: "NOMBRE",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Unidad Medida",
-                                        field: "UNIMED",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Fecha Vencimiento",
-                                        field: "FECVEN",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Dias de Vencimiento",
-                                        field: "DIASVENCIMIENTO",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Lote",
-                                        field: "LOTE",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Codigo de Barra",
-                                        field: "CODBAR",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Saldo",
-                                        field: "SALDO",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Folio",
-                                        field: "FOLIO",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Fecha Recepcion",
-                                        field: "FRECEP",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Nombre Proveedor",
-                                        field: "NOMPROV",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Tipo Documento",
-                                        field: "TIPDOC",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Numero Documento",
-                                        field: "NUMDOC",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Dias Recepcionado",
-                                        field: "DIASREC",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Ordenes de Compra",
-                                        field: "ORDENCOMPRA",
-                                        filterOptions: {
-                                            enabled: true
-                                        }
-                                    },
-                                    {
-                                        label: "Opciones",
-                                        field: "action"
-                                    }
-                                ];
+                                this.column =
+                                    store.state.columnFechaVencimiento;
                                 this.listaActive = true;
                             }
                         });
@@ -3739,7 +2356,7 @@ export default {
                     .then(res => {
                         this.listadoGeneral = res.data;
                         this.limpiar();
-                        this.ColumnasSaldo();
+                        this.column = store.state.columnSaldos;
                         this.headerTitle = [
                             "N° Interno",
                             "Z-Gen",
@@ -3787,7 +2404,7 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
-                        this.ColumnasSaldoV();
+                        this.column = store.state.columnSaldoV;
                         this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
@@ -3993,7 +2610,23 @@ export default {
                     )
                     .then(res => {
                         this.listadoGeneral = res.data;
-                        this.ColumnasSaldoV();
+                        this.column = store.state.columnSaldoV;
+                        this.headerTitle = [
+                            "N° Interno",
+                            "Descripcion",
+                            "Unidad Medida",
+                            "Saldo",
+                            "Ultimo Precio",
+                            "Total"
+                        ];
+                        this.headerVal = [
+                            "CODART",
+                            "NOMBRE",
+                            "UNIMED",
+                            "saldoCorrecto",
+                            "ULTPRE",
+                            "TOTAL"
+                        ];
                         this.limpiar();
                         if (this.listadoGeneral.length < 0) {
                             this.mensajeError();
@@ -4369,6 +3002,8 @@ export default {
                 this.fechaTermino = date.format("DD/MM/YYYY").toString();
                 this.fechaInicioF = date.format("DD/MM/YYYY").toString();
                 this.fechaTerminoF = date.format("DD/MM/YYYY").toString();
+                this.fechaInicioE = date.format("DD/MM/YYYY").toString();
+                this.fechaTerminoE = date.format("DD/MM/YYYY").toString();
                 this.fechaInicioFE = date.format("DD/MM/YYYY").toString();
                 this.fechaTerminoFE = date.format("DD/MM/YYYY").toString();
             } catch (error) {
