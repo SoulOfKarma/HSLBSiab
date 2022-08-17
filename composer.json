@@ -19,8 +19,9 @@
         "laravel/passport": "^7.3",
         "laravel/tinker": "^2.0",
         "setasign/fpdf": "^1.8",
-        "tymon/jwt-auth": "^1.0",
-        "simplesoftwareio/simple-qrcode": "~2"
+        "setasign/fpdi": "^2.3",
+        "simplesoftwareio/simple-qrcode": "~2",
+        "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

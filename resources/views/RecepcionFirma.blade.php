@@ -1479,10 +1479,9 @@ pre code {
 }
 
 .main-footer{
-    position: fixed;
+  position: fixed;
   left: 0;
   bottom: 0;
-  height: 10%;
   width: 100%;
 }
  
@@ -1648,36 +1647,23 @@ pre code {
                </tbody>
               </table>
             </div>
-
-            <div class="row table-responsive-xl">
-              <table class="table table-bordered table-sm">
-               <tbody>
-                <tr id="OrdenTabla">
-                  <td style="height: 7.33%"><h6 ><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/2.jpg">
-                    </h6></td>
-                  <td style="height: 7.33%"><h6><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/2.jpg"></h6></td>
-                  <td style="height: 7.33%"><h6><img src="http://10.5.23.248:9000/Documentos/users/Documentacion/2.jpg"></h6></td>
-                </tr>
-                <tr>
-                 <td class="badge badge-secondary"><h6>Encargado Seccion Bodega</h6></td>
-                 <td class="badge badge-secondary"><h6>Jefe Bodega</h6></td>
-                 <td class="badge badge-secondary"><h6>Jefe Abastecimiento</h6></td>                 
-                </tr>
-               </tbody>
-              </table>
-            </div>          
+      
         </div>
         <footer class="main-footer" style="position:fixed;bottom:0">
             <div class="float-right d-none d-xs-block">
                 <table class="table table-bordered table-sm">
                     <tbody>
-                     <tr id="OrdenTabla">
-                       {{-- <td style="height: 7.33%"><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(75)->generate('{{$link}}')) }} "></td> --}}
-                       <td style="height: 7.33%"><h5 style="text-align:left">Este documento ha sido firmado electrónicamente,
-                        Para verificar la integridad y autenticidad de este documento
-                        debe ingresar al siguiente Link: {{$link}}
-                        </h5></td>
-                     </tr>
+                        <tr id="OrdenTabla">
+                            <td style="height: 4.33%" ><h6 >
+                              </h6></td>
+                            <td style="height: 4.33%" ><h6></h6></td>
+                            <td style="height: 4.33%" ><h6></h6></td>
+                          </tr>
+                          <tr>
+                           <td style="width: 7.33%" class="badge badge-secondary "><h6>Encargado Seccion Bodega</h6></td>
+                           <td style="width: 7.33%" class="badge badge-secondary "><h6>Jefe Bodega</h6></td>
+                           <td style="width: 7.33%" class="badge badge-secondary "><h6>Jefe Abastecimiento</h6></td>                 
+                          </tr>
                     </tbody>
                    </table>
             </div>

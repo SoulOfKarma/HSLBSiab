@@ -211,6 +211,9 @@ Route::get('/OrdenCompra/OrdenCompraPDF/{NUMINT}', ['middleware' => 'cors', 'use
 Route::post('/Firma/PDFPrueba', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestMultiPdf']);
 Route::post('/Firma/TestFirmaDigital', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestFirmaDigital']);
 
+//FPDF Prueba
+Route::get('/Firma/process', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@process']);
+
 //Get para Verificacion
 Route::get('/Despachos/GetDespachosCerradosV', 'DespachosController@GetDespachosCerrados');
 Route::get('/Recepcion/GetRecepcionCerradasV', 'RecepcionesController@GetRecepcionCerradas');

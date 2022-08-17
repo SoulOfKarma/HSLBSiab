@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Response;
 use PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use setasign\Fpdi\Fpdi;
 
 class FirmasDigitales extends Controller
 {
@@ -109,7 +110,7 @@ class FirmasDigitales extends Controller
                 ]
             ]; 
 
-/*             $datos = [
+        /*  $datos = [
                 'token' => $request->token,
                 'api_token_key' => $request->api_token_key,     
                 'hashes' => [
@@ -146,5 +147,48 @@ class FirmasDigitales extends Controller
         }
 
             
+    }
+
+    public function IncrustarPDF(){
+        try {
+            //code...
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function process(Request $request)
+    {
+        // download sample file.
+        //Storage::disk('local')->put('test.pdf', file_get_contents('http://www.africau.edu/images/default/sample.pdf'));
+        //file_get_contents(Storage::disk('docFirmados')->path('1.pdf'));
+        $outputFile = Storage::disk('docFirmados')->path('1.pdf');
+        // fill data
+        $this->fillPDF(Storage::disk('docFirmados')->path('1.pdf'), $outputFile);
+        //output to browser
+        //Storage::disk('docFirmados')->put('1.pdf',$outputFile);
+        return response()->file($outputFile);
+    }
+
+    public function fillPDF($file, $outputFile)
+    {
+        $fpdi = new FPDI;
+        // merger operations
+        $count = $fpdi->setSourceFile($file);
+        for ($i=1; $i<=$count; $i++) {
+            $template   = $fpdi->importPage($i);
+            $size       = $fpdi->getTemplateSize($template);
+            $fpdi->AddPage($size['orientation'], array($size['width'], $size['height']));
+            $fpdi->useTemplate($template);
+            $left = 35;
+            $top = 264;
+            $fpdi->Image(Storage::disk('docFirmados')->path('logorr.png') , 77 ,259, 45 , 13,'PNG', 'http://10.5.23.248:9000/');
+            $text = nl2br(".");
+            $fpdi->SetFont("helvetica", "", 9);
+            $fpdi->SetTextColor(0,0,0);
+            $fpdi->Text($left,$top,$text);
+        }
+        return $fpdi->Output($outputFile, 'F');
     }
 }

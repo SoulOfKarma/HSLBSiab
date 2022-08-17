@@ -29,6 +29,15 @@
                                 >Firmar con Mas Firmas</vs-button
                             >
                         </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-button
+                                @click="GenerarFirmaDocCreadoV1"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Firmar con Mas Firmas V1</vs-button
+                            >
+                        </div>
                     </div>
                     <div class="vx-row"></div>
                 </div>
@@ -196,6 +205,54 @@ export default {
                         let tok = res.data;
                         const url =
                             this.localVal + "/DocumentosFirmados/" + tok;
+                        window.open(url, "_blank");
+                        //this.cont = parseInt(this.cont) + 1;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GenerarFirmaDocCreadoV1() {
+            try {
+                let secreto = "4a191562d7b2476d8dcb13f265b4c7b1";
+                const jwt = require("jsonwebtoken");
+                let date = moment().add(30, "minutes");
+                let fecha = date.format("YYYY-MM-DDTHH:mm:ss").toString();
+
+                const user = {
+                    entity: "Hospital San Luis de Buin - Paine",
+                    run: "18499714",
+                    expiration: fecha,
+                    purpose: "Desatendido"
+                };
+
+                const token = jwt.sign(user, secreto, {
+                    expiresIn: 60 * 30,
+                    algorithm: "HS256"
+                });
+
+                let doc = this.cont.toString() + ".pdf";
+
+                let tokenaa = "sandbox";
+
+                let data = {
+                    api_token_key: "d7f01566-48df-4a67-8388-4fc0b85d5c37",
+                    token: token,
+                    cont: doc.toString(),
+                    link: this.localVal + "/Verificacion"
+                };
+
+                axios
+                    .get(this.localVal + "/api/Firma/process", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        let tok = res.data;
+                        const url =
+                            this.localVal + "/DocumentosFirmados/output.pdf";
                         window.open(url, "_blank");
                         //this.cont = parseInt(this.cont) + 1;
                     });
