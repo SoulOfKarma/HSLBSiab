@@ -212,7 +212,7 @@ Route::post('/Firma/PDFPrueba', ['middleware' => 'cors', 'uses' => 'FirmasDigita
 Route::post('/Firma/TestFirmaDigital', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestFirmaDigital']);
 
 //FPDF Prueba
-Route::get('/Firma/process', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@process']);
+Route::post('/Firma/process', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@process']);
 
 //Get para Verificacion
 Route::get('/Despachos/GetDespachosCerradosV', 'DespachosController@GetDespachosCerrados');

@@ -11,6 +11,18 @@
                             </h6>
                             <vs-input class="inputx w-full  " v-model="otp" />
                         </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>Seleccione Codigo Perfil</h6>
+                            <br />
+                            <v-select
+                                taggable
+                                v-model="seleccionCod"
+                                placeholder="Ej. 1"
+                                class="w-full select-large"
+                                label="descripcion"
+                                :options="listaPerfil"
+                            ></v-select>
+                        </div>
                         <div class="vx-col w-1/2 mt-5">
                             <vs-button
                                 @click="GenerarJWT"
@@ -80,6 +92,24 @@ export default {
             localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
             //Datos Listado
             rows: [],
+            listaPerfil: [
+                {
+                    id: 1,
+                    descripcion: "1"
+                },
+                {
+                    id: 2,
+                    descripcion: "2"
+                },
+                {
+                    id: 3,
+                    descripcion: "3"
+                }
+            ],
+            seleccionCod: {
+                id: 1,
+                descripcion: "1"
+            },
             otp: 0,
             cont: 1
         };
@@ -239,11 +269,12 @@ export default {
                     api_token_key: "d7f01566-48df-4a67-8388-4fc0b85d5c37",
                     token: token,
                     cont: doc.toString(),
-                    link: this.localVal + "/Verificacion"
+                    link: this.localVal + "/Verificacion",
+                    codPerfil: this.seleccionCod.id
                 };
 
                 axios
-                    .get(this.localVal + "/api/Firma/process", {
+                    .post(this.localVal + "/api/Firma/process", data, {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -251,8 +282,7 @@ export default {
                     })
                     .then(res => {
                         let tok = res.data;
-                        const url =
-                            this.localVal + "/DocumentosFirmados/output.pdf";
+                        const url = this.localVal + "/DocumentosFirmados/1.pdf";
                         window.open(url, "_blank");
                         //this.cont = parseInt(this.cont) + 1;
                     });

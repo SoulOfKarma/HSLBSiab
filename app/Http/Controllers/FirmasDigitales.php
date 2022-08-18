@@ -149,33 +149,33 @@ class FirmasDigitales extends Controller
             
     }
 
-    public function IncrustarPDF(){
-        try {
-            //code...
-        } catch (\Throwable $th) {
-            log::info($th);
-            return false;
-        }
-    }
-
     public function process(Request $request)
     {
-        // download sample file.
-        //Storage::disk('local')->put('test.pdf', file_get_contents('http://www.africau.edu/images/default/sample.pdf'));
-        //file_get_contents(Storage::disk('docFirmados')->path('1.pdf'));
         $outputFile = Storage::disk('docFirmados')->path('1.pdf');
-        // fill data
-        $this->fillPDF(Storage::disk('docFirmados')->path('1.pdf'), $outputFile);
-        //output to browser
-        //Storage::disk('docFirmados')->put('1.pdf',$outputFile);
+        $this->fillPDF(Storage::disk('docFirmados')->path('1.pdf'), $outputFile,$request->codPerfil);
         return response()->file($outputFile);
     }
 
-    public function fillPDF($file, $outputFile)
+    public function fillPDF($file, $outputFile,$cod)
     {
         $fpdi = new FPDI;
         // merger operations
         $count = $fpdi->setSourceFile($file);
+        if($cod == 1){
+            for ($i=1; $i<=$count; $i++) {
+                $template   = $fpdi->importPage($i);
+                $size       = $fpdi->getTemplateSize($template);
+                $fpdi->AddPage($size['orientation'], array($size['width'], $size['height']));
+                $fpdi->useTemplate($template);
+                $left = 35;
+                $top = 264;
+                $fpdi->Image(Storage::disk('docFirmados')->path('logorr.png') , 15 ,259, 45 , 13,'PNG');
+                $text = nl2br(".");
+                $fpdi->SetFont("helvetica", "", 9);
+                $fpdi->SetTextColor(0,0,0);
+                $fpdi->Text($left,$top,$text);
+            }
+        }else if($cod == 2){
         for ($i=1; $i<=$count; $i++) {
             $template   = $fpdi->importPage($i);
             $size       = $fpdi->getTemplateSize($template);
@@ -183,11 +183,26 @@ class FirmasDigitales extends Controller
             $fpdi->useTemplate($template);
             $left = 35;
             $top = 264;
-            $fpdi->Image(Storage::disk('docFirmados')->path('logorr.png') , 77 ,259, 45 , 13,'PNG', 'http://10.5.23.248:9000/');
+            $fpdi->Image(Storage::disk('docFirmados')->path('logorr.png') , 77 ,259, 45 , 13,'PNG');
             $text = nl2br(".");
             $fpdi->SetFont("helvetica", "", 9);
             $fpdi->SetTextColor(0,0,0);
             $fpdi->Text($left,$top,$text);
+        }
+        }else if($cod == 3){
+            for ($i=1; $i<=$count; $i++) {
+                $template   = $fpdi->importPage($i);
+                $size       = $fpdi->getTemplateSize($template);
+                $fpdi->AddPage($size['orientation'], array($size['width'], $size['height']));
+                $fpdi->useTemplate($template);
+                $left = 35;
+                $top = 264;
+                $fpdi->Image(Storage::disk('docFirmados')->path('logorr.png') , 140 ,259, 45 , 13,'PNG');
+                $text = nl2br(".");
+                $fpdi->SetFont("helvetica", "", 9);
+                $fpdi->SetTextColor(0,0,0);
+                $fpdi->Text($left,$top,$text);
+            }
         }
         return $fpdi->Output($outputFile, 'F');
     }
