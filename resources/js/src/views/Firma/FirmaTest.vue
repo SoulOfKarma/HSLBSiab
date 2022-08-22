@@ -173,11 +173,12 @@ export default {
                     api_token_key: "d7f01566-48df-4a67-8388-4fc0b85d5c37",
                     token: token,
                     cont: doc.toString(),
-                    link: this.localVal + "/Verificacion"
+                    link: this.localVal + "/Verificacion",
+                    codPerfil: this.seleccionCod.id
                 };
 
                 axios
-                    .post(this.localVal + "/api/Firma/TestFirmaDigital", data, {
+                    .post(this.localVal + "/api/Firma/process", data, {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -221,7 +222,8 @@ export default {
                     api_token_key: "d7f01566-48df-4a67-8388-4fc0b85d5c37",
                     token: token,
                     cont: doc.toString(),
-                    link: this.localVal + "/Verificacion"
+                    link: this.localVal + "/Verificacion",
+                    codPerfil: this.seleccionCod.id
                 };
 
                 axios

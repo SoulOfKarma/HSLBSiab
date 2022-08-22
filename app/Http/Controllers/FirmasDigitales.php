@@ -20,7 +20,7 @@ use setasign\Fpdi\Fpdi;
 
 class FirmasDigitales extends Controller
 {
-    public function TestFirmaDigital(Request $request){
+    public function TestFirmaDigital($token,$api_token_key,$cont){
         try{
                 $getDet = recepcionDetalles::where('NUMINT',1)
                 ->get();
@@ -31,19 +31,18 @@ class FirmasDigitales extends Controller
                 ->where('NUMINT',1)
                 ->get();
 
-                $file = $request->cont;
-                $link = $request->link;
+                $file = $cont;
 
                 $pdf = App::make("dompdf.wrapper");
-                $pdf->loadView('RecepcionFirma', compact ('getDet','getRec','link'));
+                $pdf->loadView('RecepcionFirma', compact ('getDet','getRec'));
                 $pdf->setOptions(['isJavascriptEnabled' => true]);
                 $pdf->setOptions(['isRemoteEnabled' => true]);
                 $base = chunk_split(base64_encode($pdf->stream($file, array("Attachment" => 0))));
                 $hash = hash('sha256', $pdf->stream($file, array("Attachment" => 0)));
                 //Storage::disk('public')->put('file.pdf',base64_decode($base));
                 $datos = [
-                    'token' => $request->token,
-                    'api_token_key' => $request->api_token_key,
+                    'token' => $token,
+                    'api_token_key' => $api_token_key,
                     'files' => [
                         ["content-type" => "application/pdf",
                         "content" => $base,
@@ -79,28 +78,15 @@ class FirmasDigitales extends Controller
         }
     }
 
-    public function TestMultiPdf(Request $request){
+    public function TestMultiPdf($token,$api_token_key,$cont){
         try{
 
-            $getDet = recepcionDetalles::where('NUMINT',1)
-            ->get();
-
-            $getRec = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMORD','TIPDOC','FECDOC','DCTO',
-            'OBS','CARGO','SUBTOTAL','AJUSTE','USUING','USUMOD','FECSYS','NUMINT','NUMRIB','TIPRECEPCION',
-            DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
-            ->where('NUMINT',1)
-            ->get();
-
-            $file = $request->cont;
+            $file = $cont;
             $base = chunk_split(base64_encode(file_get_contents(Storage::disk('docFirmados')->path('1.pdf'))));
-            //$pdfitem = file_get_contents(Storage::disk('docFirmados')->path($file));
-            //$base = chunk_split(base64_encode($pdfitem));
-            //$hash = hash('sha256', $pdfitem);
             $hash = hash('sha256', file_get_contents(Storage::disk('docFirmados')->path('1.pdf')));
-            //Storage::disk('public')->put('file.pdf',base64_decode($base));
-             $datos = [
-                'token' => $request->token,
-                'api_token_key' => $request->api_token_key,     
+            $datos = [
+                'token' => $token,
+                'api_token_key' => $api_token_key,     
                 'files' => [
                     ["content-type" => "application/pdf",
                     "content" => $base,
@@ -109,17 +95,6 @@ class FirmasDigitales extends Controller
                     ]
                 ]
             ]; 
-
-        /*  $datos = [
-                'token' => $request->token,
-                'api_token_key' => $request->api_token_key,     
-                'hashes' => [
-                    [
-                        "content-type" => "application/pdf",
-                        "content" => $base
-                    ]
-                ]
-            ]; */
 
             $client = new \GuzzleHttp\Client();
             $res = $client->post('https://api.firma.cert.digital.gob.cl/firma/v2/files/tickets',
@@ -151,9 +126,11 @@ class FirmasDigitales extends Controller
 
     public function process(Request $request)
     {
+        $this->TestFirmaDigital($request->token,$request->api_token_key,$request->cont);
         $outputFile = Storage::disk('docFirmados')->path('1.pdf');
         $this->fillPDF(Storage::disk('docFirmados')->path('1.pdf'), $outputFile,$request->codPerfil);
-        return response()->file($outputFile);
+        $this->TestMultiPdf($request->token,$request->api_token_key,$request->cont);
+        return $request->cont;
     }
 
     public function fillPDF($file, $outputFile,$cod)

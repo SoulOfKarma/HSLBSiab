@@ -2185,7 +2185,7 @@ export default {
                     CODART: codart
                 };
                 this.columnBincard = [];
-                this.column = store.state.columnBincard;
+                this.columnBincard = store.state.columnBincard;
                 axios
                     .post(this.localVal + "/api/Reportes/GetBincard", data, {
                         headers: {
