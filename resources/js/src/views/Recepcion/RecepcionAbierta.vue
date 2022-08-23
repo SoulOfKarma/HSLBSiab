@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div class="vx-row" v-if="tiporecepcion == 'Consumo Inmediato'">
-                    <div class="vx-col w-1/2 mt-5">
+                    <div class="vx-col w-full mt-5">
                         <h6>Servicio</h6>
                         <v-select
                             taggable
@@ -148,15 +148,6 @@
                             label="descripcionServicio"
                             :options="listadoServicios"
                         ></v-select>
-                    </div>
-                    <div class="vx-col w-1/2 mt-5">
-                        <h6>
-                            N° Libro Pedido
-                        </h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="numeroLibroPedido"
-                        />
                     </div>
                 </div>
                 <div class="vx-row">
@@ -705,7 +696,7 @@ export default {
             unidadMedidaBase: "",
             descripcionProveedor: "",
             zgen: "",
-            numeroLibroPedido: "",
+            numeroLibroPedido: "-",
             tiporecepcion: "",
             seleccionEstado: {
                 id: 0,

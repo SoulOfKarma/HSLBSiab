@@ -33,6 +33,12 @@ export default [
                 icon: "HomeIcon"
             },
             {
+                url: "/Mantenedor/TipoCompra",
+                name: "Tipo Compra",
+                slug: "/Mantenedor/TipoCompra",
+                icon: "HomeIcon"
+            },
+            {
                 url: "/Mantenedor/Anulacion",
                 name: "Anulacion",
                 slug: "/Mantenedor/Anulacion",
@@ -81,9 +87,15 @@ export default [
                 icon: "HomeIcon"
             },
             {
-                url: "/Mantenedor/ArticuloInsumoEconomato",
-                name: "Articulo Insumo Economato",
-                slug: "/Mantenedor/ArticuloInsumoEconomato",
+                url: "/Mantenedor/ArticuloEconomato",
+                name: "Articulo Economato",
+                slug: "/Mantenedor/ArticuloEconomato",
+                icon: "HomeIcon"
+            },
+            {
+                url: "/Mantenedor/ArticuloInsumo",
+                name: "Articulo Insumo",
+                slug: "/Mantenedor/ArticuloInsumo",
                 icon: "HomeIcon"
             },
             {

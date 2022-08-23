@@ -68,6 +68,11 @@ const router = new Router({
                         import("./views/Mantenedor/Laboratorio.vue")
                 },
                 {
+                    path: "/Mantenedor/TipoCompra",
+                    name: "/Mantenedor/TipoCompra",
+                    component: () => import("./views/Mantenedor/TipoCompra.vue")
+                },
+                {
                     path: "/Mantenedor/Anulacion",
                     name: "/Mantenedor/Anulacion",
                     component: () => import("./views/Mantenedor/Anulacion.vue")
@@ -111,10 +116,16 @@ const router = new Router({
                         import("./views/Mantenedor/ArticuloMedicamento.vue")
                 },
                 {
-                    path: "/Mantenedor/ArticuloInsumoEconomato",
-                    name: "/Mantenedor/ArticuloInsumoEconomato",
+                    path: "/Mantenedor/ArticuloEconomato",
+                    name: "/Mantenedor/ArticuloEconomato",
                     component: () =>
-                        import("./views/Mantenedor/ArticuloInsumoEconomato.vue")
+                        import("./views/Mantenedor/ArticuloEconomato.vue")
+                },
+                {
+                    path: "/Mantenedor/ArticuloInsumo",
+                    name: "/Mantenedor/ArticuloInsumo",
+                    component: () =>
+                        import("./views/Mantenedor/ArticuloInsumo.vue")
                 },
                 {
                     path: "/Mantenedor/Bodega",

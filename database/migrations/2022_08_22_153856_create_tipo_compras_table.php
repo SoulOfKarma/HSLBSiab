@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFirmaRecepcionesTable extends Migration
+class CreateTipoComprasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateFirmaRecepcionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('firma_recepciones', function (Blueprint $table) {
+        Schema::create('tipo_compras', function (Blueprint $table) {
             $table->id();
+            $table->string('NOMTIPCOM')->nullable();
+            $table->string('CATTIPCOM')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateFirmaRecepcionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('firma_recepciones');
+        Schema::dropIfExists('tipo_compras');
     }
 }

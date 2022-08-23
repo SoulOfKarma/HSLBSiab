@@ -44,6 +44,7 @@ class CreateRecepcionesTable extends Migration
             $table->string('NOMARCH_RIB')->nullable();
             $table->string('NOMARCH_CAR')->nullable();
             $table->bigInteger('idServicio')->nullable();
+            $table->bigInteger('idTipoCompra')->nullable();
             $table->string('NUMLIBPED')->nullable();
             $table->string('TIPRECEPCION');
             $table->timestamps();

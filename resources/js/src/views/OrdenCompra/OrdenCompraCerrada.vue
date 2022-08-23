@@ -66,7 +66,7 @@
                 </div>
                 <br />
                 <div class="vx-row">
-                    <div class="vx-col w-1/3 mt-5">
+                    <div class="vx-col w-1/2 mt-5">
                         <h6>
                             Folio Recepcionado
                         </h6>
@@ -76,7 +76,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/3 mt-5">
+                    <div class="vx-col w-1/2 mt-5">
                         <h6>
                             Año
                         </h6>
@@ -85,17 +85,6 @@
                             v-model="anio"
                             disabled
                         />
-                    </div>
-                    <div class="vx-col w-1/3 mt-5">
-                        <h6>Consumo Inmediato?</h6>
-                        <v-select
-                            v-model="seleccionConsumoInmediato"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="descripcionConsumoInmediato"
-                            :options="listaConsumoInmediato"
-                            disabled
-                        ></v-select>
                     </div>
                 </div>
                 <br />
@@ -255,10 +244,6 @@ export default {
             tipoDocumento: "",
             folio: 0,
             descripcionProveedor: "",
-            seleccionConsumoInmediato: {
-                id: 0,
-                descripcionConsumoInmediato: "Seleccione Consumo Inmediato"
-            },
             seleccionProveedores: {
                 id: 0,
                 RUTPROV: "Ej. 22222222-2",

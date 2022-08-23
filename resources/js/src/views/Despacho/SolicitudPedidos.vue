@@ -15,7 +15,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -25,7 +25,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Despacho</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -35,7 +35,7 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Servicio</h6>
                         <v-select
                             v-model="seleccionServicio"
@@ -45,14 +45,7 @@
                             :options="listadoServicios"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
-                        <h6>N° Libro Pedido</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nlibropedido"
-                        />
-                    </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Tipo Despacho</h6>
                         <v-select
                             v-model="seleccionTipoDespacho"
@@ -62,7 +55,7 @@
                             :options="listadoTipoDespacho"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>N° Solicitud</h6>
                         <vs-input
                             class="inputx w-full  "
@@ -490,7 +483,7 @@ export default {
             numint: 0,
             fechaSistema: null,
             fechaDespacho: null,
-            nlibropedido: "",
+            nlibropedido: "-",
             nsolicitud: "",
             Observaciones: "",
             valorTotal: 0,
@@ -710,7 +703,7 @@ export default {
         },
         limpiarCampos() {
             try {
-                this.nlibropedido = "";
+                this.nlibropedido = "-";
                 this.nsolicitud = "";
                 this.Observaciones = "";
                 this.valorTotal = 0;

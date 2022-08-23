@@ -1,12 +1,9 @@
 <template>
     <div>
-        <vx-card title="Insumo/Economato">
+        <vx-card title="Insumo">
             <div>
-                <vs-button
-                    color="primary"
-                    type="filled"
-                    @click="popInsumoEconomato"
-                    >Agregar Insumo/Economato</vs-button
+                <vs-button color="primary" type="filled" @click="popInsumo"
+                    >Agregar Insumo</vs-button
                 >
             </div>
             <br />
@@ -29,12 +26,12 @@
                             </span>
                             <span v-else-if="props.column.field === 'action'">
                                 <plus-circle-icon
-                                    content="Modificar Insumo/Economato"
+                                    content="Modificar Insumo"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        popInsumoEconomatoMod(
+                                        popInsumoMod(
                                             props.row.id,
                                             props.row.NOMBRE,
                                             props.row.UNIMEDBASE,
@@ -59,12 +56,12 @@
                                     "
                                 ></plus-circle-icon>
                                 <plus-circle-icon
-                                    content="Agregar Codigo Insumo/Economato"
+                                    content="Agregar Codigo Insumo"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
-                                        popCodInsumoEconomato(
+                                        popCodInsumo(
                                             props.row.NOMBRE,
                                             props.row.UNIMEDBASE,
                                             props.row.CODART_ONU,
@@ -97,9 +94,9 @@
             </div>
             <!-- Agregar -->
             <vs-popup
-                classContent="AgregarInsumoEco"
-                title="Agregar Insumo/Economato"
-                :active.sync="popUpInsumoEco"
+                classContent="AgregarInsumo"
+                title="Agregar Insumo"
+                :active.sync="popUpInsumo"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
@@ -114,6 +111,7 @@
                                     label="descripcionBodega"
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamilia"
+                                    disabled
                                 ></v-select>
                             </div>
                             <div class="vx-col w-1/2 mt-5">
@@ -328,7 +326,7 @@
                         <div class="vx-row w-full">
                             <div class="vx-col w-1/2 mt-5">
                                 <vs-button
-                                    @click="popUpInsumoEco = false"
+                                    @click="popUpInsumo = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
@@ -337,11 +335,11 @@
                             </div>
                             <div class="vx-col w-1/2 mt-5">
                                 <vs-button
-                                    @click="AgregarInsumoEco"
+                                    @click="AgregarInsumo"
                                     color="success"
                                     type="filled"
                                     class="w-full"
-                                    >Agregar Insumo/Economato</vs-button
+                                    >Agregar Insumo</vs-button
                                 >
                             </div>
                         </div>
@@ -351,9 +349,9 @@
             </vs-popup>
             <!-- Modificar -->
             <vs-popup
-                classContent="InsumoEcoMod"
-                title="Modificar Insumo/Economato"
-                :active.sync="popUpInsumoEcoMod"
+                classContent="InsumoMod"
+                title="Modificar Insumo"
+                :active.sync="popUpInsumoMod"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
@@ -590,7 +588,7 @@
                         <div class="vx-row w-full">
                             <div class="vx-col w-1/2 mt-5">
                                 <vs-button
-                                    @click="popUpInsumoEcoMod = false"
+                                    @click="popUpInsumoMod = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
@@ -599,11 +597,11 @@
                             </div>
                             <div class="vx-col w-1/2 mt-5">
                                 <vs-button
-                                    @click="ModificarInsumoEco"
+                                    @click="ModificarInsumo"
                                     color="success"
                                     type="filled"
                                     class="w-full"
-                                    >Modificar Insumo/Economato</vs-button
+                                    >Modificar Insumo</vs-button
                                 >
                             </div>
                         </div>
@@ -613,9 +611,9 @@
             </vs-popup>
             <!-- Codigo Articulo -->
             <vs-popup
-                classContent="InsumoEcoMod"
-                title="Agregar Codigo Insumo/Economato"
-                :active.sync="popUpCodInsumoEco"
+                classContent="CInsumoMod"
+                title="Agregar Codigo Insumo"
+                :active.sync="popUpCodInsumo"
             >
                 <div class="vx-col md:w-1/1 w-full mb-base">
                     <vx-card title="">
@@ -675,11 +673,11 @@
                                     Agregar
                                 </h6>
                                 <vs-button
-                                    @click="AgregarCodInsumoEco"
+                                    @click="AgregarCodInsumo"
                                     color="success"
                                     type="filled"
                                     class="w-full"
-                                    >Agregar Codigo Insumo/Economato</vs-button
+                                    >Agregar Codigo Insumo</vs-button
                                 >
                             </div>
                         </div>
@@ -723,7 +721,7 @@
                         <div class="vx-row w-full">
                             <div class="vx-col w-full mt-5">
                                 <vs-button
-                                    @click="popUpCodInsumoEco = false"
+                                    @click="popUpCodInsumo = false"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
@@ -782,9 +780,9 @@ export default {
                 }
             },
             //Datos Campos
-            popUpInsumoEco: false,
-            popUpInsumoEcoMod: false,
-            popUpCodInsumoEco: false,
+            popUpInsumo: false,
+            popUpInsumoMod: false,
+            popUpCodInsumo: false,
             codigoBarra: "",
             codigoOnu: "",
             codigoArticulo: "",
@@ -807,8 +805,8 @@ export default {
                 descripcionEstado: ""
             },
             seleccionBodega: {
-                id: 0,
-                descripcionBodega: ""
+                id: 3,
+                descripcionBodega: "Insumos"
             },
             seleccionZona: {
                 id: 0,
@@ -1162,15 +1160,15 @@ export default {
             }
         },
         //PopUp
-        popInsumoEconomato() {
+        popInsumo() {
             try {
-                this.popUpInsumoEco = true;
+                this.popUpInsumo = true;
                 this.limpiarCampos();
             } catch (error) {
                 console.log(error);
             }
         },
-        popInsumoEconomatoMod(
+        popInsumoMod(
             id,
             NOMBRE,
             UNIMEDBASE,
@@ -1194,7 +1192,7 @@ export default {
         ) {
             try {
                 this.limpiarCampos();
-                this.popUpInsumoEcoMod = true;
+                this.popUpInsumoMod = true;
                 this.idMod = id;
                 this.codigoBarra = CODART_BARR;
                 this.codigoOnu = CODART_ONU;
@@ -1336,7 +1334,7 @@ export default {
                 console.log(error);
             }
         },
-        popCodInsumoEconomato(
+        popCodInsumo(
             NOMBRE,
             UNIMEDBASE,
             CODART_ONU,
@@ -1358,7 +1356,7 @@ export default {
         ) {
             try {
                 this.limpiarCampos();
-                this.popUpCodInsumoEco = true;
+                this.popUpCodInsumo = true;
                 this.codigoBarra = CODART_BARR;
                 this.codigoOnu = CODART_ONU;
                 this.codigoArticulo = CODART;
@@ -1526,10 +1524,10 @@ export default {
                 console.log(error);
             }
         },
-        TraerInsumoEconomato() {
+        TraerInsumo() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetInsumoEconomato", {
+                    .get(this.localVal + "/api/Mantenedor/GetInsumo", {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
@@ -1760,7 +1758,7 @@ export default {
                 console.log(error);
             }
         },
-        AgregarInsumoEco() {
+        AgregarInsumo() {
             try {
                 if (this.seleccionBodega.id == 0) {
                     this.$vs.notify({
@@ -1922,18 +1920,18 @@ export default {
                                                     time: 5000,
                                                     title: "Completado",
                                                     text:
-                                                        "Insumo/Economato Ingresado Correctamente",
+                                                        "Insumo Ingresado Correctamente",
                                                     color: "success",
                                                     position: "top-right"
                                                 });
-                                                this.popUpInsumoEco = false;
-                                                this.TraerInsumoEconomato();
+                                                this.popUpInsumo = false;
+                                                this.TraerInsumo();
                                             } else {
                                                 this.$vs.notify({
                                                     time: 5000,
                                                     title: "Error",
                                                     text:
-                                                        "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                                        "No fue posible registrar el Insumo,intentelo nuevamente",
                                                     color: "danger",
                                                     position: "top-right"
                                                 });
@@ -1944,7 +1942,7 @@ export default {
                                         time: 5000,
                                         title: "Error",
                                         text:
-                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                            "No fue posible registrar el Insumo,intentelo nuevamente",
                                         color: "danger",
                                         position: "top-right"
                                     });
@@ -1992,19 +1990,18 @@ export default {
                                     this.$vs.notify({
                                         time: 5000,
                                         title: "Completado",
-                                        text:
-                                            "Insumo/Economato Ingresado Correctamente",
+                                        text: "Insumo Ingresado Correctamente",
                                         color: "success",
                                         position: "top-right"
                                     });
-                                    this.popUpInsumoEco = false;
-                                    this.TraerInsumoEconomato();
+                                    this.popUpInsumo = false;
+                                    this.TraerInsumo();
                                 } else {
                                     this.$vs.notify({
                                         time: 5000,
                                         title: "Error",
                                         text:
-                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                            "No fue posible registrar el Insumo,intentelo nuevamente",
                                         color: "danger",
                                         position: "top-right"
                                     });
@@ -2016,7 +2013,7 @@ export default {
                 console.log(error);
             }
         },
-        ModificarInsumoEco() {
+        ModificarInsumo() {
             try {
                 if (this.seleccionBodega.id == 0) {
                     this.$vs.notify({
@@ -2191,18 +2188,18 @@ export default {
                                                     time: 5000,
                                                     title: "Completado",
                                                     text:
-                                                        "Insumo/Economato Ingresado Correctamente",
+                                                        "Insumo Ingresado Correctamente",
                                                     color: "success",
                                                     position: "top-right"
                                                 });
-                                                this.popUpInsumoEco = false;
-                                                this.TraerInsumoEconomato();
+                                                this.popUpInsumo = false;
+                                                this.TraerInsumo();
                                             } else {
                                                 this.$vs.notify({
                                                     time: 5000,
                                                     title: "Error",
                                                     text:
-                                                        "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                                        "No fue posible registrar el Insumo,intentelo nuevamente",
                                                     color: "danger",
                                                     position: "top-right"
                                                 });
@@ -2213,7 +2210,7 @@ export default {
                                         time: 5000,
                                         title: "Error",
                                         text:
-                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                            "No fue posible registrar el Insumo,intentelo nuevamente",
                                         color: "danger",
                                         position: "top-right"
                                     });
@@ -2269,19 +2266,18 @@ export default {
                                     this.$vs.notify({
                                         time: 5000,
                                         title: "Completado",
-                                        text:
-                                            "Insumo/Economato Ingresado Correctamente",
+                                        text: "Insumo Ingresado Correctamente",
                                         color: "success",
                                         position: "top-right"
                                     });
-                                    this.popUpInsumoEco = false;
-                                    this.TraerInsumoEconomato();
+                                    this.popUpInsumo = false;
+                                    this.TraerInsumo();
                                 } else {
                                     this.$vs.notify({
                                         time: 5000,
                                         title: "Error",
                                         text:
-                                            "No fue posible registrar el Insumo/Economato,intentelo nuevamente",
+                                            "No fue posible registrar el Insumo,intentelo nuevamente",
                                         color: "danger",
                                         position: "top-right"
                                     });
@@ -2293,7 +2289,7 @@ export default {
                 console.log(error);
             }
         },
-        AgregarCodInsumoEco() {
+        AgregarCodInsumo() {
             try {
                 if (this.seleccionBodega.id == 0) {
                     this.$vs.notify({
@@ -2434,12 +2430,11 @@ export default {
                                 this.$vs.notify({
                                     time: 5000,
                                     title: "Completado",
-                                    text:
-                                        "Codigo Insumo/Economato Correctamente",
+                                    text: "Codigo Insumo Correctamente",
                                     color: "success",
                                     position: "top-right"
                                 });
-                                this.TraerInsumoEconomato();
+                                this.TraerInsumo();
                                 this.TraerDetalleByCodInterno(
                                     this.codigoArticulo
                                 );
@@ -2448,7 +2443,7 @@ export default {
                                     time: 5000,
                                     title: "Error",
                                     text:
-                                        "No fue posible agregar el codigo de Insumo/Economato,intentelo nuevamente",
+                                        "No fue posible agregar el codigo de Insumo,intentelo nuevamente",
                                     color: "danger",
                                     position: "top-right"
                                 });
@@ -2493,7 +2488,7 @@ export default {
     beforeMount() {
         this.RefreshToken();
         setTimeout(() => {
-            this.TraerInsumoEconomato();
+            this.TraerInsumo();
             this.TraerEstado();
             this.TraerBodega();
             this.TraerZona();

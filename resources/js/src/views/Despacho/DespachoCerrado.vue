@@ -15,7 +15,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -25,7 +25,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Despacho</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -36,7 +36,7 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Servicio</h6>
                         <v-select
                             v-model="seleccionServicio"
@@ -47,15 +47,7 @@
                             disabled
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
-                        <h6>N° Libro Pedido</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nlibropedido"
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Tipo Despacho</h6>
                         <v-select
                             v-model="seleccionTipoDespacho"
@@ -66,7 +58,7 @@
                             disabled
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>N° Solicitud</h6>
                         <vs-input
                             class="inputx w-full  "
