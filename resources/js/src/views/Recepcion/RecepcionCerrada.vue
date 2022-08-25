@@ -255,7 +255,16 @@
                         </div>
                         <br /><br />
                         <div class="vx-row">
-                            <div class="vx-col w-1/3 mt-5">
+                            <div class="vx-col w-1/4 mt-5">
+                                <vs-button
+                                    @click="ActualizarListado"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Actualizar</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/4 mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
@@ -264,7 +273,7 @@
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/3 mt-5">
+                            <div class="vx-col w-1/4 mt-5">
                                 <vs-button
                                     @click="ImprimirDatos"
                                     color="primary"
@@ -273,7 +282,7 @@
                                     >Imprimir</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/3 mt-5">
+                            <div class="vx-col w-1/4 mt-5">
                                 <vs-button
                                     @click="popAnularTodo"
                                     color="primary"
@@ -620,7 +629,7 @@ export default {
             fechaDocumento: null,
             fechaVencimiento: null,
             codigoBarra: "",
-            Observaciones: "",
+            Observaciones: "-",
             nordencompra: "",
             nrib: "",
             codigoTrack: "",
@@ -1043,6 +1052,51 @@ export default {
                 console.log(error);
             }
         },
+        ActualizarListado() {
+            try {
+                let dat = {
+                    NUMINT: this.numint,
+                    OBS: this.Observaciones.toUpperCase()
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Mantenedor/PutRecepcionTotal",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let resp = res.data;
+                        if (resp == true) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text: "Observacion actualizada Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.TraerRecepcion();
+                            this.TraerDetalleRecepcion();
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible actualizar la Observacion,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         //Funciones Finales Recepcion
         popAnularArticulo(id) {
             try {
@@ -1126,7 +1180,7 @@ export default {
             var data = new FormData();
             //Añadimos la imagen seleccionada
             data.append("avatar", this.image);
-            data.append("id", this.folio);
+            data.append("id", this.numint);
             data.append("nombreDocOriginal", this.nombrearchivo);
 
             axios
@@ -1170,7 +1224,7 @@ export default {
             var data = new FormData();
             //Añadimos la imagen seleccionada
             data.append("avatar", this.imageRib);
-            data.append("id", this.folio);
+            data.append("id", this.numint);
             data.append("nombreDocOriginal", this.nombrearchivoRib);
 
             axios
@@ -1214,7 +1268,7 @@ export default {
             var data = new FormData();
             //Añadimos la imagen seleccionada
             data.append("avatar", this.imageCarta);
-            data.append("id", this.folio);
+            data.append("id", this.numint);
             data.append("nombreDocOriginal", this.nombrearchivoCarta);
 
             axios
@@ -1473,6 +1527,7 @@ export default {
                                 this.nordencompra = value.NUMFAC;
                                 this.nrib = value.NUMRIB;
                                 this.folio = value.FOLIO;
+                                this.Observaciones = value.OBS;
                             });
 
                             c = [];

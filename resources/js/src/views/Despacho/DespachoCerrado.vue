@@ -127,7 +127,6 @@
                                     class="w-full"
                                     v-model="Observaciones"
                                     :options="editorOption"
-                                    disabled
                                 >
                                     <div id="toolbar" slot="toolbar"></div>
                                 </quill-editor>
@@ -149,7 +148,7 @@
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-1/4 mt-5">
+                            <div class="vx-col w-1/5 mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
@@ -158,7 +157,16 @@
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/4 mt-5">
+                            <div class="vx-col w-1/5 mt-5">
+                                <vs-button
+                                    @click="ActualizarListado"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Actualizar Observacion</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/5 mt-5">
                                 <vs-button
                                     @click="ImprimirDatos"
                                     color="primary"
@@ -167,7 +175,7 @@
                                     >Imprimir</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/4 mt-5">
+                            <div class="vx-col w-1/5 mt-5">
                                 <vs-button
                                     @click="RecargarPagina"
                                     color="primary"
@@ -176,7 +184,7 @@
                                     >Hacer Otro Despacho</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/4 mt-5">
+                            <div class="vx-col w-1/5 mt-5">
                                 <vs-button
                                     @click="popAnularTodo"
                                     color="primary"
@@ -422,7 +430,7 @@ export default {
             fechaDespacho: null,
             nlibropedido: "",
             nsolicitud: "",
-            Observaciones: "",
+            Observaciones: "-",
             valorTotal: 0,
             saldoCorrecto: 0,
             NOMBRE: "",
@@ -579,6 +587,51 @@ export default {
                 this.$router.push({
                     name: "SolicitudPedidos"
                 });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ActualizarListado() {
+            try {
+                let data = {
+                    NUMINT: this.numint,
+                    OBS: this.Observaciones.toUpperCase()
+                };
+
+                axios
+                    .post(
+                        this.localVal +
+                            "/api/Despachos/PutDespachoObservaciones",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Error al Actualizar los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Actualizado",
+                                text: "Datos actualizados correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.TraerDespacho();
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
@@ -801,6 +854,7 @@ export default {
                                     .toString();
                                 this.nlibropedido = value.NUMLIBRO;
                                 this.nsolicitud = value.NUMSOL;
+                                this.Observaciones = value.OBS;
                                 this.seleccionServicio = {
                                     id: value.idServicio,
                                     descripcionServicio:

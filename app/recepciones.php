@@ -10,6 +10,6 @@ class recepciones extends Model
         'FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','TIPBOB','NUMDOC','NUMFAC','FECFAC','CODDIG',
         'NOMDIG','NUMORD','TIPDOC','FECDOC','DCTO','OBS','CARGO','SUBTOTAL','AJUSTE','USUING',
         'USUMOD','NUMINT','NUMREC_RF','NOTCRE_RF','NUMRIB','NOMARCH','NOMARCH_RIB','NOMARCH_CAR',
-        'idServicio','idTipoCompra','NUMLIBPED','TIPRECEPCION'
+        'idServicio','idTipoCompra','NUMLIBPED','TIPRECEPCION','TIPORD'
     ];
 }

@@ -151,6 +151,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PutListadoOrdenCompra', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@PutListadoOrdenCompra']);
     Route::post('/Mantenedor/PutOrdenCompras', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@PutOrdenCompras']);
     Route::post('/Despachos/PutDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@PutDespacho']);
+    Route::post('/Despachos/PutDespachoObservaciones', ['middleware' => 'cors', 'uses' => 'DespachosController@PutDespachoObservaciones']);
     Route::post('/Despachos/CerrarDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@CerrarDespacho']);
     Route::post('/Despachos/PostAnularArticulo', ['middleware' => 'cors', 'uses' => 'DespachosController@PostAnularArticulo']);
     Route::post('/Despachos/PostAnularTodo', ['middleware' => 'cors', 'uses' => 'DespachosController@PostAnularTodo']);

@@ -99,7 +99,7 @@ class RecepcionesController extends Controller
     public function GetRecepcionIngresadaByCodInterno(Request $request){
         try {
             $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
-            'TIPDOC','FECDOC','DCTO','OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD',
+            'TIPDOC','FECDOC','DCTO','OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
             'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','idServicio',
             DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
@@ -168,7 +168,7 @@ class RecepcionesController extends Controller
             'DCTO' => $request->DCTO,'TIPDOC' => $request->TIPDOC,'NUMDOC' => $request->NUMDOC,'FECDOC' => $request->FECDOC,
             'NUMFAC' => $request->NUMFAC,'NUMRIB' => $request->NUMRIB,'USUMOD' => $request->USUMOD,
             'OBS' => $request->OBS,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'idServicio' => $request->idServicio,
-            'NUMLIBPED' => $request->NUMLIBPED,'TIPRECEPCION' => $request->TIPRECEPCION]);
+            'NUMLIBPED' => $request->NUMLIBPED,'TIPRECEPCION' => $request->TIPRECEPCION,'TIPORD' => $request->TIPORD]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);
@@ -254,7 +254,8 @@ class RecepcionesController extends Controller
     public function PutRecepcionTotal(Request $request){
         try {
             recepciones::where('NUMINT',$request->NUMINT)
-            ->update(['SUBTOTAL' => $request->SUBTOTAL]);
+            ->update(['SUBTOTAL' => $request->SUBTOTAL,'TIPORD' => $request->TIPORD,
+            'DCTO' => $request->DCTO,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'OBS' => $request->OBS]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);
@@ -371,7 +372,7 @@ class RecepcionesController extends Controller
                 // esta estará dentro de public/defaults/
                
                $url = $request->avatar->store('users/Documentacion');
-               recepciones::where('FOLIO', $request->id)
+               recepciones::where('NUMINT', $request->id)
                 ->update(['NOMARCH_RIB' => $url]);
                return true;
             }else{
@@ -387,7 +388,7 @@ class RecepcionesController extends Controller
 
     public function DestroyDocumentoRecepcionFacturaRib(Request $request){
         try {
-            $res=recepciones::where('FOLIO',$request->id)
+            $res=recepciones::where('NUMINT',$request->id)
             ->update(['NOMARCH_RIB' => ""]);
                return true;
             if($res){
@@ -407,7 +408,7 @@ class RecepcionesController extends Controller
                 // esta estará dentro de public/defaults/
                
                $url = $request->avatar->store('users/Documentacion');
-               recepciones::where('FOLIO', $request->id)
+               recepciones::where('NUMINT', $request->id)
                 ->update(['NOMARCH_CAR' => $url]);
                return true;
             }else{

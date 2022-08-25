@@ -47,7 +47,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -57,7 +57,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Inicio</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -67,7 +67,7 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Proveedor</h6>
                         <v-select
                             v-model="seleccionProveedores"
@@ -78,7 +78,7 @@
                             @input="setProveedor"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Nombre Proveedor</h6>
                         <vs-input
                             class="inputx w-full  "
@@ -111,6 +111,16 @@
                             @on-change="onFromChange"
                             class="w-full "
                         />
+                    </div>
+                    <div class="vx-col w-1/5 mt-5">
+                        <h6>Tipo Compra</h6>
+                        <v-select
+                            v-model="seleccionTipoCompra"
+                            placeholder="Activo"
+                            class="w-full select-large"
+                            label="NOMTIPCOM"
+                            :options="listadoTipoCompra"
+                        ></v-select>
                     </div>
                     <div class="vx-col w-1/5 mt-5">
                         <h6>N° Orden Compra</h6>
@@ -204,7 +214,41 @@
                     </div>
                 </div>
                 <br />
-
+                <div
+                    class="vx-col md:w-1/1 w-full mb-base mt-5"
+                    v-if="listaDetalleRecepcion.length > 0"
+                >
+                    <div class="vx-row">
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarFactura"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR FACTURA</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarRIB"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR RIB</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarCarta"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR CARTA</vs-button
+                            >
+                        </div>
+                    </div>
+                </div>
+                <br />
                 <!-- Detalles Articulos -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
@@ -386,7 +430,60 @@
                                         class="text-nowrap"
                                     >
                                     </span>
-
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'DCTO'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-on:blur="
+                                                ActDCTO(
+                                                    props.row.id,
+                                                    props.row.DCTO
+                                                )
+                                            "
+                                            v-model="props.row.DCTO"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'CARGO'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-on:blur="
+                                                ActCARGO(
+                                                    props.row.id,
+                                                    props.row.CARGO
+                                                )
+                                            "
+                                            v-model="props.row.CARGO"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'AJUSTE'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-on:blur="
+                                                ActAJUSTE(
+                                                    props.row.id,
+                                                    props.row.AJUSTE
+                                                )
+                                            "
+                                            v-model="props.row.AJUSTE"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
                                     <!-- Column: Common -->
                                     <span v-else>
                                         {{
@@ -483,7 +580,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -493,7 +590,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Inicio</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -503,7 +600,7 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Proveedor</h6>
                         <v-select
                             v-model="seleccionProveedores"
@@ -514,7 +611,7 @@
                             @input="setProveedor"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/4 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Nombre Proveedor</h6>
                         <vs-input
                             class="inputx w-full  "
@@ -547,6 +644,16 @@
                             @on-change="onFromChange"
                             class="w-full "
                         />
+                    </div>
+                    <div class="vx-col w-1/5 mt-5">
+                        <h6>Tipo Compra</h6>
+                        <v-select
+                            v-model="seleccionTipoCompra"
+                            placeholder="Activo"
+                            class="w-full select-large"
+                            label="NOMTIPCOM"
+                            :options="listadoTipoCompra"
+                        ></v-select>
                     </div>
                     <div class="vx-col w-1/5 mt-5">
                         <h6>N° Orden Compra</h6>
@@ -654,7 +761,41 @@
                     </div>
                 </div>
                 <br />
-
+                <div
+                    class="vx-col md:w-1/1 w-full mb-base mt-5"
+                    v-if="listaDetalleRecepcion.length > 0"
+                >
+                    <div class="vx-row">
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarFactura"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR FACTURA</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarRIB"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR RIB</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarCarta"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR CARTA</vs-button
+                            >
+                        </div>
+                    </div>
+                </div>
+                <br />
                 <!-- Detalles Articulos -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
@@ -746,7 +887,7 @@
                                             "
                                             v-model="props.row.LOTE"
                                             type="text"
-                                            style="width:100px"
+                                            style="width:300px"
                                         ></vs-input>
                                     </span>
                                     <span
@@ -766,7 +907,7 @@
                                             v-model="props.row.CANREC"
                                             type="text"
                                             @keypress="isNumber($event)"
-                                            style="width:100px"
+                                            style="width:300px"
                                         ></vs-input>
                                     </span>
                                     <span
@@ -786,7 +927,7 @@
                                             v-model="props.row.PREUNI"
                                             type="text"
                                             @keypress="isNumber($event)"
-                                            style="width:100px"
+                                            style="width:300px"
                                         ></vs-input>
                                     </span>
                                     <span
@@ -835,6 +976,60 @@
                                         v-if="props.column.field === 'fullName'"
                                         class="text-nowrap"
                                     >
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'DCTO'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-on:blur="
+                                                ActDCTO(
+                                                    props.row.id,
+                                                    props.row.DCTO
+                                                )
+                                            "
+                                            v-model="props.row.DCTO"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'CARGO'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-on:blur="
+                                                ActCARGO(
+                                                    props.row.id,
+                                                    props.row.CARGO
+                                                )
+                                            "
+                                            v-model="props.row.CARGO"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'AJUSTE'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <vs-input
+                                            v-on:blur="
+                                                ActAJUSTE(
+                                                    props.row.id,
+                                                    props.row.AJUSTE
+                                                )
+                                            "
+                                            v-model="props.row.AJUSTE"
+                                            type="text"
+                                            style="width:100px"
+                                        ></vs-input>
                                     </span>
                                     <!-- Column: Common -->
                                     <span v-else>
@@ -991,7 +1186,7 @@
                         <div class="vx-col w-full mt-5">
                             <h6>Fecha Vencimiento</h6>
                             <flat-pickr
-                                :config="configFromdateTimePicker"
+                                :config="configTodateTimePickerFV"
                                 v-model="fechaRecepcionAct"
                                 placeholder="Fecha Inicio"
                                 @on-change="onFromChange"
@@ -1055,6 +1250,161 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <!-- Documento Factura -->
+        <vs-popup
+            classContent="Factura"
+            title="Factura"
+            :active.sync="popUpAgregarFactura"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6 class="pt-4 text-right">ADJUNTAR FACTURA</h6>
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
+                            <vs-input
+                                type="file"
+                                id="archivo"
+                                @change="getImage"
+                                class="form-control w-full"
+                            />
+                        </div>
+
+                        <div class="vx-col w-1/2 mt-5">
+                            <h5 class="w-full pt-4 text-justify">
+                                <p>
+                                    {{ nombrearchivo }}
+                                </p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpAgregarFactura = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="uploadImage"
+                                color="danger"
+                                type="filled"
+                                class="w-full"
+                                >Subir Documento</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
+        <!-- Documento RIB -->
+        <vs-popup classContent="RIB" title="RIB" :active.sync="popUpAgregarRIB">
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6 class="pt-4 text-justify">ADJUNTAR RIB</h6>
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
+                            <vs-input
+                                type="file"
+                                id="archivo"
+                                @change="getImageRib"
+                                class="form-control w-full"
+                            />
+                        </div>
+
+                        <div class="vx-col w-1/2 mt-5">
+                            <h5 class="w-full pt-4 text-justify">
+                                <p>
+                                    {{ nombrearchivoRib }}
+                                </p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpAgregarRIB = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="uploadImageRib"
+                                color="danger"
+                                type="filled"
+                                class="w-full"
+                                >Subir Documento</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
+        <!-- Documento CARTA -->
+        <vs-popup
+            classContent="CARTA"
+            title="CARTA"
+            :active.sync="popUpAgregarCarta"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/8 mt-5">
+                            <h6 class="pt-4 text-justify">ADJUNTAR CARTA</h6>
+                        </div>
+                        <div class="vx-col w-1/8 mt-5">
+                            <vs-input
+                                type="file"
+                                id="archivo"
+                                @change="getImageCarta"
+                                class="form-control w-full"
+                            />
+                        </div>
+
+                        <div class="vx-col w-1/2 mt-5">
+                            <h5 class="w-full pt-4 text-justify">
+                                <p>
+                                    {{ nombrearchivoCarta }}
+                                </p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpAgregarCarta = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="uploadImageCarta"
+                                color="danger"
+                                type="filled"
+                                class="w-full"
+                                >Subir Documento</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -1104,6 +1454,16 @@ export default {
                 }
             },
             //Datos Campos
+            image: null,
+            nombrearchivo: "",
+            imageRib: null,
+            nombrearchivoRib: "",
+            imageCarta: null,
+            nombrearchivoCarta: "",
+            val_doc: 0,
+            popUpAgregarFactura: false,
+            popUpAgregarRIB: false,
+            popUpAgregarCarta: false,
             FVEN1: "Si",
             FVEN2: "No",
             idFecha: 0,
@@ -1129,7 +1489,7 @@ export default {
             fechaVencimiento: null,
             fechaRecepcionAct: null,
             codigoBarra: "",
-            Observaciones: "",
+            Observaciones: "-",
             nordencompra: "",
             nrib: "",
             codigoTrack: "",
@@ -1156,6 +1516,9 @@ export default {
             zgen: "",
             numeroLibroPedido: "-",
             tiporecepcion: "",
+            dcto: 0,
+            cargos: 0,
+            ajustes: 0,
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -1184,6 +1547,10 @@ export default {
             seleccionTipoDocumento: {
                 id: 0,
                 descripcionDocumento: ""
+            },
+            seleccionTipoCompra: {
+                id: 0,
+                NOMTIPCOM: "Seleccione Tipo Compra"
             },
             seleccionServicio: {
                 id: 0,
@@ -1244,6 +1611,56 @@ export default {
             },
             configTodateTimePicker: {
                 minDate: null,
+                dateFormat: "d/m/Y",
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                        longhand: [
+                            "Domingo",
+                            "Lunes",
+                            "Martes",
+                            "Miércoles",
+                            "Jueves",
+                            "Viernes",
+                            "Sábado"
+                        ]
+                    },
+                    months: {
+                        shorthand: [
+                            "Ene",
+                            "Feb",
+                            "Mar",
+                            "Abr",
+                            "May",
+                            "Jun",
+                            "Jul",
+                            "Ago",
+                            "Sep",
+                            "Оct",
+                            "Nov",
+                            "Dic"
+                        ],
+                        longhand: [
+                            "Enero",
+                            "Febrero",
+                            "Мarzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ]
+                    }
+                }
+            },
+            configTodateTimePickerFV: {
+                minDate: null,
+                maxDate: null,
                 dateFormat: "d/m/Y",
                 locale: {
                     firstDayOfWeek: 1,
@@ -1464,6 +1881,8 @@ export default {
             listadoProveedores: [],
             listadoServicios: [],
             listadespachoDetalles: [],
+            listadoTipoCompra: [],
+            listadoTipoCompraTemporal: [],
             listaFVenciminento: [
                 {
                     id: 1,
@@ -1514,6 +1933,14 @@ export default {
             try {
                 this.recepcion = true;
                 this.consumoi = false;
+                let c = this.listadoTipoCompraTemporal;
+                let d = [];
+                c.forEach((value, index) => {
+                    if ("RECEPCION" == value.CATTIPCOM) {
+                        d.push(value);
+                    }
+                });
+                this.listadoTipoCompra = d;
                 this.limpiarCampos();
                 this.tiporecepcion = "Recepcion";
             } catch (error) {
@@ -1524,6 +1951,14 @@ export default {
             try {
                 this.consumoi = true;
                 this.recepcion = false;
+                let c = this.listadoTipoCompraTemporal;
+                let d = [];
+                c.forEach((value, index) => {
+                    if ("CONSUMO INMEDIATO" == value.CATTIPCOM) {
+                        d.push(value);
+                    }
+                });
+                this.listadoTipoCompra = d;
                 this.limpiarCampos();
                 this.tiporecepcion = "Consumo Inmediato";
             } catch (error) {
@@ -1601,11 +2036,205 @@ export default {
                 console.log(error);
             }
         },
+        //Guardar Documentos
+        popAgregarFactura() {
+            try {
+                this.popUpAgregarFactura = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popAgregarRIB() {
+            try {
+                this.popUpAgregarRIB = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popAgregarCarta() {
+            try {
+                this.popUpAgregarCarta = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        getImage(event) {
+            //Asignamos la imagen a  nuestra data
+            this.image = event.target.files[0];
+            this.nombrearchivo = this.image.name;
+            this.val_doc = 1;
+        },
+        getImageRib(event) {
+            //Asignamos la imagen a  nuestra data
+            this.imageRib = event.target.files[0];
+            this.nombrearchivoRib = this.imageRib.name;
+            this.val_doc = 1;
+        },
+        getImageCarta(event) {
+            //Asignamos la imagen a  nuestra data
+            this.imageCarta = event.target.files[0];
+            this.nombrearchivoCarta = this.imageCarta.name;
+            this.val_doc = 1;
+        },
+        uploadImage() {
+            //Creamos el formData
+
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.image);
+            data.append("id", this.numint);
+            data.append("nombreDocOriginal", this.nombrearchivo);
+
+            axios
+                .post(
+                    this.localVal +
+                        "/api/Recepcion/PostDocumentoRecepcionFactura",
+                    data,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(response => {
+                    let resp = response.data;
+                    if (resp == true) {
+                        this.$vs.notify({
+                            title: "Documento Guardado ",
+                            text:
+                                "Podra Visualizarlo en el listado los usuarios autorizados ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.TraerRecepcion();
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
+        uploadImageRib() {
+            //Creamos el formData
+
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.imageRib);
+            data.append("id", this.numint);
+            data.append("nombreDocOriginal", this.nombrearchivoRib);
+
+            axios
+                .post(
+                    this.localVal +
+                        "/api/Recepcion/PostDocumentoRecepcionFacturaRib",
+                    data,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(response => {
+                    let resp = response.data;
+                    if (resp == true) {
+                        this.$vs.notify({
+                            title: "Documento Guardado ",
+                            text:
+                                "Podra Visualizarlo en el listado los usuarios autorizados ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.TraerRecepcion();
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
+        uploadImageCarta() {
+            //Creamos el formData
+
+            var data = new FormData();
+            //Añadimos la imagen seleccionada
+            data.append("avatar", this.imageCarta);
+            data.append("id", this.numint);
+            data.append("nombreDocOriginal", this.nombrearchivoCarta);
+
+            axios
+                .post(
+                    this.localVal +
+                        "/api/Recepcion/PostDocumentoRecepcionFacturaCarta",
+                    data,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    }
+                )
+                .then(response => {
+                    let resp = response.data;
+                    if (resp == true) {
+                        this.$vs.notify({
+                            title: "Documento Guardado ",
+                            text:
+                                "Podra Visualizarlo en el listado los usuarios autorizados ",
+                            color: "success",
+                            position: "top-right"
+                        });
+                        this.TraerRecepcion();
+                    } else {
+                        this.$vs.notify({
+                            title: "Error al subir el documento ",
+                            text:
+                                "Intente nuevamente con el formato PDF o alguna Imagen ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    }
+                });
+        },
+        //Fin agregar documentos
         volver() {
             try {
                 this.$router.push({
                     name: "home"
                 });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ActDCTO(id, dcto) {
+            try {
+                this.dcto = dcto;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ActCARGO(id, cargo) {
+            try {
+                this.cargos = cargo;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ActAJUSTE(id, ajuste) {
+            try {
+                this.ajustes = ajuste;
             } catch (error) {
                 console.log(error);
             }
@@ -1814,6 +2443,32 @@ export default {
             }
         },
         //Metodos CRUD
+        TraerTipoCompra() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetTipoCompras", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoTipoCompraTemporal = res.data;
+                        if (this.listadoTipoCompraTemporal.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los Laboratorios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerServicio() {
             try {
                 axios
@@ -1939,6 +2594,8 @@ export default {
                         } else {
                             let c = this.listaRecepcion;
                             let idDoc = 0;
+                            let idServicio = 0;
+                            let tipord = "";
                             c.forEach((value, index) => {
                                 this.fechaSistema = moment(value.FECSYS)
                                     .format("DD/MM/YYYY")
@@ -1958,8 +2615,30 @@ export default {
                                     .toString();
                                 this.nordencompra = value.NUMORD;
                                 this.nrib = value.NUMRIB;
+                                this.tiporecepcion = value.TIPRECEPCION;
+                                this.numeroLibroPedido = value.NUMLIBPED;
+                                this.Observaciones = value.OBS;
+                                idServicio = value.idServicio;
+                                tipord = value.TIPORD;
                             });
 
+                            let f = this.listadoTipoCompraTemporal;
+                            let g = [];
+                            f.forEach((value, index) => {
+                                if (
+                                    this.tiporecepcion.toUpperCase() ==
+                                    value.CATTIPCOM
+                                ) {
+                                    g.push(value);
+                                    if (tipord == value.NOMTIPCOM) {
+                                        this.seleccionTipoCompra.id = value.id;
+                                        this.seleccionTipoCompra.NOMTIPCOM =
+                                            value.NOMTIPCOM;
+                                    }
+                                }
+                            });
+
+                            this.listadoTipoCompra = g;
                             this.fechaVencimiento = null;
 
                             c = [];
@@ -1970,6 +2649,16 @@ export default {
                                     this.seleccionTipoDocumento.id;
                                     this.seleccionTipoDocumento.descripcionDocumento =
                                         value.descripcionDocumento;
+                                }
+                            });
+
+                            c = [];
+                            c = this.listadoServicios;
+                            c.forEach((value, index) => {
+                                if (idServicio == value.id) {
+                                    this.seleccionServicio.id = idServicio;
+                                    this.seleccionServicio.descripcionServicio =
+                                        value.descripcionServicio;
                                 }
                             });
                         }
@@ -2308,7 +2997,8 @@ export default {
                         USUING: nombreUsuario.toUpperCase(),
                         idServicio: this.seleccionServicio.id,
                         NUMLIBPED: this.numeroLibroPedido,
-                        TIPRECEPCION: this.tiporecepcion
+                        TIPRECEPCION: this.tiporecepcion,
+                        TIPORD: this.seleccionTipoCompra.NOMTIPCOM
                     };
                     const dat = data;
 
@@ -2506,10 +3196,19 @@ export default {
                     subtotal = subtotal + parseInt(value.VALTOT);
                 });
 
+                subtotal = subtotal - parseInt(this.dcto);
+                subtotal = subtotal + parseInt(this.cargos);
+                subtotal = subtotal + parseInt(this.ajustes);
+
                 let data = this.listaDetalleRecepcion;
                 let dat = {
                     NUMINT: this.numint,
-                    SUBTOTAL: subtotal
+                    SUBTOTAL: subtotal,
+                    DCTO: parseInt(this.dcto),
+                    CARGO: parseInt(this.cargos),
+                    AJUSTE: parseInt(this.ajustes),
+                    OBS: this.Observaciones.toUpperCase(),
+                    TIPORD: this.seleccionTipoCompra.NOMTIPCOM
                 };
 
                 axios
@@ -2822,6 +3521,7 @@ export default {
     },
     beforeMount() {
         this.RefreshToken();
+        this.TraerTipoCompra();
         setTimeout(() => {
             this.TraerServicio();
             this.TraerUltimoNInterno();

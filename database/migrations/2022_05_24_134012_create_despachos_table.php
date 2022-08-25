@@ -34,6 +34,7 @@ class CreateDespachosTable extends Migration
             $table->string('FOLIO_FCIA')->nullable();
             $table->string('FOLIO_SOL')->nullable();
             $table->string('TIPDESP')->nullable();
+            $table->string('NUMPESP')->nullable();
             $table->string('NUMSOL')->nullable();
             $table->timestamps();
         });

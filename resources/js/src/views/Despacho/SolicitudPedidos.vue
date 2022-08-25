@@ -15,6 +15,8 @@
                             disabled
                         />
                     </div>
+                </div>
+                <div class="vx-row" v-if="seleccionTipoDespacho.id == 1">
                     <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
@@ -62,6 +64,61 @@
                             v-model="nsolicitud"
                         />
                     </div>
+                </div>
+                <div class="vx-row" v-if="seleccionTipoDespacho.id == 2">
+                    <div class="vx-col w-1/6 mt-5">
+                        <h6>Fecha Sistema</h6>
+                        <flat-pickr
+                            :config="configFromdateTimePicker"
+                            v-model="fechaSistema"
+                            placeholder="Fecha Sistema"
+                            class="w-full "
+                            disabled
+                        />
+                    </div>
+                    <div class="vx-col w-1/6 mt-5">
+                        <h6>Fecha Despacho</h6>
+                        <flat-pickr
+                            :config="configFromdateTimePicker"
+                            v-model="fechaDespacho"
+                            placeholder="Fecha Despacho"
+                            @on-change="onFromChange"
+                            class="w-full "
+                        />
+                    </div>
+                    <div class="vx-col w-1/6 mt-5">
+                        <h6>Servicio</h6>
+                        <v-select
+                            v-model="seleccionServicio"
+                            placeholder="Activo"
+                            class="w-full select-large"
+                            label="descripcionServicio"
+                            :options="listadoServicios"
+                        ></v-select>
+                    </div>
+                    <div class="vx-col w-1/6 mt-5">
+                        <h6>Tipo Despacho</h6>
+                        <v-select
+                            v-model="seleccionTipoDespacho"
+                            placeholder="Activo"
+                            class="w-full select-large"
+                            label="descripcionTipoDespacho"
+                            :options="listadoTipoDespacho"
+                        ></v-select>
+                    </div>
+                    <div class="vx-col w-1/6 mt-5">
+                        <h6>N° Solicitud</h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="nsolicitud"
+                        />
+                    </div>
+                    <div class="vx-col w-1/6 mt-5">
+                        <h6>N° Pedido Especial</h6>
+                        <vs-input class="inputx w-full  " v-model="numpesp" />
+                    </div>
+                </div>
+                <div class="vx-row">
                     <div class="vx-col w-full mt-5">
                         <vs-button
                             @click="popArticulosDisponibles"
@@ -485,7 +542,7 @@ export default {
             fechaDespacho: null,
             nlibropedido: "-",
             nsolicitud: "",
-            Observaciones: "",
+            Observaciones: "-",
             valorTotal: 0,
             saldoCorrecto: 0,
             NOMBRE: "",
@@ -493,6 +550,7 @@ export default {
             LOTE: "",
             UNIMED: "",
             CODART: "",
+            numpesp: 0,
             diasVencimiento: 0,
             fechaVencimiento: 0,
             PREUNI: 0,
@@ -792,7 +850,8 @@ export default {
                         TIPDESP: this.seleccionTipoDespacho
                             .descripcionTipoDespacho,
                         NUMSOL: this.nsolicitud,
-                        OBS: this.Observaciones.toUpperCase()
+                        OBS: this.Observaciones.toUpperCase(),
+                        NUMPESP: this.numpesp
                     };
 
                     axios
@@ -1093,7 +1152,8 @@ export default {
                                             diasVencimiento: diasVencimiento,
                                             PRECIO: PRECIO,
                                             CANTIDAD: cantidad,
-                                            USUING: nombreUsuario.toUpperCase()
+                                            USUING: nombreUsuario.toUpperCase(),
+                                            NUMPESP: this.numpesp
                                         };
                                     } else {
                                         data = {
@@ -1124,7 +1184,8 @@ export default {
                                             ).format("YYYY-MM-DD"),
                                             PRECIO: PRECIO,
                                             CANTIDAD: cantidad,
-                                            USUING: nombreUsuario.toUpperCase()
+                                            USUING: nombreUsuario.toUpperCase(),
+                                            NUMPESP: this.numpesp
                                         };
                                     }
 
@@ -1197,7 +1258,8 @@ export default {
                                             diasVencimiento: diasVencimiento,
                                             PRECIO: PRECIO,
                                             CANTIDAD: cantidad,
-                                            USUING: nombreUsuario.toUpperCase()
+                                            USUING: nombreUsuario.toUpperCase(),
+                                            NUMPESP: this.numpesp
                                         };
                                     } else {
                                         data = {
@@ -1228,7 +1290,8 @@ export default {
                                             ).format("YYYY-MM-DD"),
                                             PRECIO: PRECIO,
                                             CANTIDAD: cantidad,
-                                            USUING: nombreUsuario.toUpperCase()
+                                            USUING: nombreUsuario.toUpperCase(),
+                                            NUMPESP: this.numpesp
                                         };
                                     }
 

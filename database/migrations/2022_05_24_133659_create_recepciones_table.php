@@ -26,6 +26,7 @@ class CreateRecepcionesTable extends Migration
             $table->string('FECFAC')->nullable();
             $table->string('CODDIG')->nullable();
             $table->string('NOMDIG')->nullable();
+            $table->string('TIPORD')->nullable();
             $table->string('NUMORD')->nullable();
             $table->string('TIPDOC')->nullable();
             $table->string('FECDOC')->nullable();

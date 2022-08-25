@@ -192,7 +192,19 @@ class DespachosController extends Controller
         try {
             despachos::where('NUMINT',$request->NUMINT)
             ->update(['FECDES' => $request->FECDES,'idServicio' => $request->idServicio,'NUMLIBRO' => $request->NUMLIBRO,
-            'TIPDESP' => $request->TIPDESP,'NUMSOL' => $request->NUMSOL,'OBS' => $request->OBS]);
+            'TIPDESP' => $request->TIPDESP,'NUMSOL' => $request->NUMSOL,'OBS' => $request->OBS,
+            'NUMPESP' => $request->NUMPESP]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
+    public function PutDespachoObservaciones(Request $request){
+        try {
+            despachos::where('NUMINT',$request->NUMINT)
+            ->update(['OBS' => $request->OBS]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);
