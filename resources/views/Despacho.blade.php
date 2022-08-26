@@ -1477,6 +1477,13 @@ pre code {
   max-height: 200px !important;
   height: 200px !important;
 }
+
+.main-footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
         </style>
     </head>
               @php
@@ -1592,26 +1599,26 @@ pre code {
                      </tr>
                </tbody>
               </table>
-            </div>
-
-            <div class="row table-responsive-xl">
-              <table class="table table-bordered table-sm">
-               <tbody>
-                <tr id="OrdenTabla">
-                  <td style="height: 7.33%"><h6 ></h6></td>
-                  <td style="height: 7.33%"><h6></h6></td>
-                  <td style="height: 7.33%"><h6></h6></td>
-                </tr>
-                <tr>
-                 <td class="badge badge-secondary"><h6>Encargado Seccion Bodega</h6></td>
-                 <td class="badge badge-secondary"><h6>Jefe Bodega</h6></td>
-                 <td class="badge badge-secondary"><h6>Nombre y Firma Autorizado Para Retirar</h6></td>                 
-                </tr>
-               </tbody>
-              </table>
-            </div>          
+            </div>       
         </div>
-        
+        <footer class="main-footer" style="position:fixed;bottom:0">
+            <div class="float-right d-none d-xs-block">
+                <table class="table table-bordered table-sm">
+                    <tbody>
+                        <tr id="OrdenTabla">
+                          <td style="height: 7.33%"><h6 ></h6></td>
+                          <td style="height: 7.33%"><h6></h6></td>
+                          <td style="height: 7.33%"><h6></h6></td>
+                        </tr>
+                        <tr>
+                         <td class="badge badge-secondary"><h6>Encargado Seccion Bodega</h6></td>
+                         <td class="badge badge-secondary"><h6>Jefe Bodega</h6></td>
+                         <td class="badge badge-secondary"><h6>Nombre y Firma Autorizado Para Retirar</h6></td>                 
+                        </tr>
+                       </tbody>
+                   </table>
+            </div>
+          </footer>
     </body>
    
 </html>

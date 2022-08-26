@@ -807,6 +807,9 @@ export default {
         },
         ActualizarListado() {
             try {
+                if (this.seleccionTipoDespacho.id == 1) {
+                    this.numpesp = 0;
+                }
                 let data = {
                     NUMINT: this.numint,
                     FECDES: moment(this.fechaDespacho, "DD-MM-YYYY").format(

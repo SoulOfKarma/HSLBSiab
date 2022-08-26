@@ -560,8 +560,8 @@ export default {
                 descripcionServicio: ""
             },
             seleccionTipoDespacho: {
-                id: 0,
-                descripcionTipoDespacho: ""
+                id: 1,
+                descripcionTipoDespacho: "Solicitud Pedidos"
             },
             //Columnas Lista de Datos
             colDespachoArticulos: [
@@ -840,6 +840,9 @@ export default {
                         position: "top-right"
                     });
                 } else {
+                    if (this.seleccionTipoDespacho.id == 1) {
+                        this.numpesp = 0;
+                    }
                     let data = {
                         NUMINT: this.numint,
                         FECDES: moment(this.fechaDespacho, "DD-MM-YYYY").format(
@@ -1476,6 +1479,7 @@ export default {
                                     descripcionServicio:
                                         value.descripcionServicio
                                 };
+                                this.numpesp = value.NUMPESP;
                                 if (value.TIPDESP == "Solicitud Pedidos") {
                                     this.seleccionTipoDespacho = {
                                         id: 1,

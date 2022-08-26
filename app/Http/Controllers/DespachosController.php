@@ -124,7 +124,7 @@ class DespachosController extends Controller
     public function GetDespachosAbiertos(){
         try {
             $get = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECDES','servicios.descripcionServicio',
-            'despachos.NUMLIBRO','despachos.USUING')
+            'despachos.NUMLIBRO','despachos.USUING','despachos.NUMPESP','despachos.OBS')
             ->join('servicios','despachos.idServicio','=','servicios.id')
             ->where('FOLIO',null)
             ->get();
@@ -152,7 +152,7 @@ class DespachosController extends Controller
     public function GetDespachos(Request $request){
         try {
             $get = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECSYS','despachos.FECDES','despachos.idServicio','servicios.descripcionServicio',
-            'despachos.NUMLIBRO','despachos.USUING','despachos.TIPDESP','despachos.OBS')
+            'despachos.NUMLIBRO','despachos.USUING','despachos.TIPDESP','despachos.NUMPESP','despachos.OBS')
             ->join('servicios','despachos.idServicio','=','servicios.id')
             ->where('despachos.NUMINT',$request->NUMINT)
             ->get();
