@@ -215,6 +215,7 @@ Route::get('/Despacho/DespachoPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 
 Route::get('/OrdenCompra/OrdenCompraPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GenerarImpresion']);
 Route::post('/Firma/PDFPrueba', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestMultiPdf']);
 Route::post('/Firma/TestFirmaDigital', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestFirmaDigital']);
+Route::post('/Firma/PostUsuarioRecepcionFirma', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@PostUsuarioRecepcionFirma']);
 
 //FPDF Prueba
 Route::post('/Firma/process', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@process']);

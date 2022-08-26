@@ -163,6 +163,8 @@
 import BackToTop from "vue-backtotop";
 import HNavMenu from "@/layouts/components/horizontal-nav-menu/HorizontalNavMenu.vue";
 import navMenuItems from "@/layouts/components/vertical-nav-menu/navMenuItems.js";
+import navMenuItemsA from "@/layouts/components/vertical-nav-menu/navMenuItemsA.js";
+import navMenuItemsJA from "@/layouts/components/vertical-nav-menu/navMenuItemsJA.js";
 import TheNavbarHorizontal from "@/layouts/components/navbar/TheNavbarHorizontal.vue";
 import TheNavbarVertical from "@/layouts/components/navbar/TheNavbarVertical.vue";
 import TheFooter from "@/layouts/components/TheFooter.vue";
@@ -308,9 +310,13 @@ export default {
 
         var aux2 = sessionStorage.getItem("permiso_usuario");
 
-        if (aux2 == 1 || aux2 == 2) {
+        if (aux2 == 1) {
             console.log("Acceso Correcto");
             this.navMenuItems = navMenuItems;
+        } else if (aux2 == 2) {
+            this.navMenuItems = navMenuItemsJA;
+        } else if (aux2 == 3) {
+            this.navMenuItems = navMenuItemsA;
         } else {
             router.push("/pages/login").catch(err => {});
         }

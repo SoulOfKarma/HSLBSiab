@@ -50,6 +50,15 @@
                                 >Firmar con Mas Firmas V1</vs-button
                             >
                         </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-button
+                                @click="TestAgregarFirmaUsers"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Registro Usuarios y Update</vs-button
+                            >
+                        </div>
                     </div>
                     <div class="vx-row"></div>
                 </div>
@@ -288,6 +297,40 @@ export default {
                         window.open(url, "_blank");
                         //this.cont = parseInt(this.cont) + 1;
                     });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        TestAgregarFirmaUsers() {
+            try {
+                let data = {
+                    RUN: sessionStorage.getItem("run"),
+                    idPerfil: sessionStorage.getItem("permiso_usuario"),
+                    NUMINT: 1
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Firma/PostUsuarioRecepcionFirma",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let tok = res.data;
+                        this.GenerarCifrado(tok);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GenerarCifrado(data) {
+            try {
+                console.log(data);
             } catch (error) {
                 console.log(error);
             }

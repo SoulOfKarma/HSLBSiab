@@ -23,7 +23,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->bigInteger('idServicio');
             $table->string('CB_PERIFERICA');
-            $table->string('NB_PERIFERICA');         
+            $table->string('NB_PERIFERICA');
+            $table->string('RUTALOGO')->nullable();          
             $table->rememberToken();
             $table->timestamps();
         });

@@ -10,7 +10,7 @@ use App\recepcionDetalles;
 use App\despachos;
 use App\despachoDetalles;
 use App\recepciones;
-//use Illuminate\Support\Facades\Http;
+use App\FirmaRecepciones;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
 use Response;
@@ -124,12 +124,47 @@ class FirmasDigitales extends Controller
             
     }
 
+    public function PostUsuarioRecepcionFirma(Request $request){
+        try {
+            $datos = FirmaRecepciones::where('NUMINT',$request->NUMINT)->get();
+            $contador = $datos->count();
+            $validador = 1;
+            if($contador == 0){
+                FirmaRecepciones::create($request->all());
+            }else{
+                foreach ($datos as $p) {
+                    if ($p->RUN == $request->RUN) {
+                      $validador = 0;
+                      break;
+                    }
+                  }
+                if($validador == 1){
+                    FirmaRecepciones::create($request->all());
+                }else{
+                    FirmaRecepciones::where('NUMINT',$request->NUMINT)->where('idPerfil',$request->idPerfil)
+                ->update(['RUN' => $request->RUN]);
+                }
+            }
+
+            $datos = FirmaRecepciones::where('NUMINT',$request->NUMINT)->get();
+
+            return $datos;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function process(Request $request)
     {
         $this->TestFirmaDigital($request->token,$request->api_token_key,$request->cont);
         $outputFile = Storage::disk('docFirmados')->path('1.pdf');
-        $this->fillPDF(Storage::disk('docFirmados')->path('1.pdf'), $outputFile,$request->codPerfil);
-        $this->TestMultiPdf($request->token,$request->api_token_key,$request->cont);
+        for ($i=1; $i<=3; $i++) {
+        $this->fillPDF(Storage::disk('docFirmados')->path('1.pdf'), $outputFile,$i);
+        }
+        for ($i=1; $i<=3; $i++) {
+            $this->TestMultiPdf($request->token,$request->api_token_key,$request->cont);
+        }
         return $request->cont;
     }
 
