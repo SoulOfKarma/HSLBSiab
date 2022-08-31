@@ -91,6 +91,8 @@ class FirmasDigitales extends Controller
                     ]
                 ];
 
+                log::info($datos);
+
             $client = new \GuzzleHttp\Client();
             $res = $client->post('https://api.firma.cert.digital.gob.cl/firma/v2/files/tickets',
             [   
@@ -167,7 +169,16 @@ class FirmasDigitales extends Controller
     //Metodo General de los procesos de incrustacion de logo con firma y firma digital 
     public function FirmaDigitalArray(Request $request)
     {
-        $this->GenerarDocumentoPDF($request->token,$request->api_token_key,$request->cont,$request->NUMINT);
+        if($request->token) {
+            $this->GenerarDocumentoPDF($request->token,$request->api_token_key,$request->cont,$request->NUMINT);
+        }
+        else if($request->token1) {
+            $this->GenerarDocumentoPDF($request->token1,$request->api_token_key,$request->cont,$request->NUMINT);
+        }
+        else if($request->token2) {
+            $this->GenerarDocumentoPDF($request->token2,$request->api_token_key,$request->cont,$request->NUMINT);
+        }
+        
         $outputFile = Storage::disk('docFirmados')->path($request->cont);
             if($request->codPerfil==1){
                 $this->fillPDF(Storage::disk('docFirmados')->path($request->cont), $outputFile,$request->codPerfil,$request->descServicio,$request->nombreUsuario);
@@ -360,6 +371,7 @@ class FirmasDigitales extends Controller
 
             $file = $cont;
             $base = chunk_split(base64_encode(file_get_contents(Storage::disk('docFirmados')->path($cont))));
+            log::info(Storage::disk('docFirmados')->path($cont));
             $hash = hash('sha256', file_get_contents(Storage::disk('docFirmados')->path($cont)));
             $datos = [
                 'token' => $token,
@@ -404,7 +416,16 @@ class FirmasDigitales extends Controller
     //Metodo General de los procesos de incrustacion de logo con firma y firma digital 
     public function FirmaDigitalDespachoArray(Request $request)
     {
-        $this->GenerarDocumentoDespachosPDF($request->token,$request->api_token_key,$request->cont,$request->NUMINT);
+        if($request->token) {
+            $this->GenerarDocumentoDespachosPDF($request->token,$request->api_token_key,$request->cont,$request->NUMINT);
+        }
+        else if($request->token1) {
+            $this->GenerarDocumentoDespachosPDF($request->token1,$request->api_token_key,$request->cont,$request->NUMINT);
+        }
+        else if($request->token2) {
+            $this->GenerarDocumentoDespachosPDF($request->token2,$request->api_token_key,$request->cont,$request->NUMINT);
+        }
+        
         $outputFile = Storage::disk('docFirmados')->path($request->cont);
             if($request->codPerfil==1){
                 $this->fillDespachoPDF(Storage::disk('docFirmados')->path($request->cont), $outputFile,$request->codPerfil,$request->descServicio,$request->nombreUsuario);
