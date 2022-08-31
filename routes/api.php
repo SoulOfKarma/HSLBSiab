@@ -213,9 +213,10 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 Route::get('/Recepcion/RecepcionPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GenerarImpresion']);
 Route::get('/Despacho/DespachoPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'DespachosController@GenerarImpresion']);
 Route::get('/OrdenCompra/OrdenCompraPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GenerarImpresion']);
-Route::post('/Firma/PDFPrueba', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestMultiPdf']);
-Route::post('/Firma/TestFirmaDigital', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@TestFirmaDigital']);
 Route::post('/Firma/PostUsuarioRecepcionFirma', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@PostUsuarioRecepcionFirma']);
+Route::post('/Firma/FirmaDigitalArray', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@FirmaDigitalArray']);
+Route::post('/Firma/PostUsuarioDespachosFirma', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@PostUsuarioDespachosFirma']);
+Route::post('/Firma/FirmaDigitalDespachoArray', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@FirmaDigitalDespachoArray']);
 
 //FPDF Prueba
 Route::post('/Firma/process', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@process']);

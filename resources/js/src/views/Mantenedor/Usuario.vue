@@ -37,7 +37,9 @@
                                             props.row.nombre_usuario,
                                             props.row.apellido_usuario,
                                             props.row.anexo,
-                                            props.row.correo_usuario
+                                            props.row.correo_usuario,
+                                            props.row.idServicio,
+                                            props.row.permiso_usuario
                                         )
                                     "
                                 ></plus-circle-icon>
@@ -121,7 +123,7 @@
                                     type="password"
                                 />
                             </div>
-                            <div class="vx-col w-full mt-5">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Servicio</h6>
                                 <br />
                                 <v-select
@@ -131,6 +133,18 @@
                                     class="w-full select-large"
                                     label="descripcionServicio"
                                     :options="listadoServicios"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Perfil</h6>
+                                <br />
+                                <v-select
+                                    taggable
+                                    v-model="seleccionListaPerfil"
+                                    placeholder="descripcionPerfil"
+                                    class="w-full select-large"
+                                    label="descripcionPerfil"
+                                    :options="listaPerfilUsuario"
                                 ></v-select>
                             </div>
                         </div>
@@ -230,7 +244,7 @@
                                     type="password"
                                 />
                             </div>
-                            <div class="vx-col w-full mt-5">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Servicio</h6>
                                 <br />
                                 <v-select
@@ -240,6 +254,18 @@
                                     class="w-full select-large"
                                     label="descripcionServicio"
                                     :options="listadoServicios"
+                                ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Perfil</h6>
+                                <br />
+                                <v-select
+                                    taggable
+                                    v-model="seleccionListaPerfil"
+                                    placeholder="descripcionPerfil"
+                                    class="w-full select-large"
+                                    label="descripcionPerfil"
+                                    :options="listaPerfilUsuario"
                                 ></v-select>
                             </div>
                         </div>
@@ -330,6 +356,10 @@ export default {
                 id: 0,
                 descripcionServicio: ""
             },
+            seleccionListaPerfil: {
+                id: 1,
+                descripcionPerfil: "Encargado Bodega"
+            },
             //Template Columnas Listado Proveedor
             columns: [
                 {
@@ -374,7 +404,29 @@ export default {
             ],
             //Datos Listado Proveedor
             rows: [],
-            listadoServicios: []
+            listadoServicios: [],
+            listaPerfilUsuario: [
+                {
+                    id: 1,
+                    descripcionPerfil: "Encargado Bodega"
+                },
+                {
+                    id: 2,
+                    descripcionPerfil: "Jefe Bodega"
+                },
+                {
+                    id: 3,
+                    descripcionPerfil: "Jefe Abastecimiento y Administrador"
+                },
+                {
+                    id: 4,
+                    descripcionPerfil: "Orden de Compra"
+                },
+                {
+                    id: 5,
+                    descripcionPerfil: "Usuarios Generales"
+                }
+            ]
         };
     },
     methods: {
@@ -427,7 +479,16 @@ export default {
                 console.log(error);
             }
         },
-        popModificarUsuario(id, rut, nombre, apellido, anexo, correo) {
+        popModificarUsuario(
+            id,
+            rut,
+            nombre,
+            apellido,
+            anexo,
+            correo,
+            idServicio,
+            PerfilUsuario
+        ) {
             try {
                 this.run_usuario = rut;
                 this.nombre_usuario = nombre;
@@ -436,6 +497,26 @@ export default {
                 this.correo_usuario = correo;
                 this.idMod = id;
                 this.popUpUsuarioMod = true;
+
+                let c = this.listadoServicios;
+                c.forEach((value, ind) => {
+                    if (idServicio == value.id) {
+                        this.seleccionServicio.id = idServicio;
+                        this.seleccionServicio.descripcionServicio =
+                            value.descripcionServicio;
+                    }
+                });
+
+                c = [];
+
+                c = this.listaPerfilUsuario;
+                c.forEach((value, ind) => {
+                    if (PerfilUsuario == value.id) {
+                        this.seleccionListaPerfil.id = value.id;
+                        this.seleccionListaPerfil.descripcionPerfil =
+                            value.descripcionPerfil;
+                    }
+                });
             } catch (error) {
                 console.log(error);
             }
@@ -572,7 +653,7 @@ export default {
                         idServicio: this.seleccionServicio.id,
                         CB_PERIFERICA: "-",
                         NB_PERIFERICA: "-",
-                        permiso_usuario: 1,
+                        permiso_usuario: this.seleccionListaPerfil.id,
                         estado_login: 1
                     };
 
@@ -698,7 +779,7 @@ export default {
                         password: this.password,
                         CB_PERIFERICA: "-",
                         NB_PERIFERICA: "-",
-                        permiso_usuario: 1,
+                        permiso_usuario: this.seleccionListaPerfil.id,
                         estado_login: 1
                     };
 
@@ -778,8 +859,8 @@ export default {
     },
     beforeMount() {
         this.RefreshToken();
+        this.TraerServicio();
         setTimeout(() => {
-            this.TraerServicio();
             this.TraerUsuarios();
             this.openLoadingColor();
         }, 2000);

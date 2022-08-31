@@ -125,8 +125,10 @@ class LoginController extends Controller
     public function GetUsers(){
         try {
             $get = Users::select('users.run','users.nombre_usuario','users.apellido_usuario','users.anexo',
-            'users.correo_usuario','servicios.descripcionServicio','users.RUTALOGO')
+            'users.correo_usuario','servicios.descripcionServicio','users.idServicio','users.RUTALOGO',
+            'tbl_permiso_usuarios.permiso_usuario')
             ->join('servicios', 'users.idServicio','=','servicios.id')
+            ->join('tbl_permiso_usuarios', 'users.run','=','tbl_permiso_usuarios.run_usuario')
             ->get();
             return $get;
         } catch (\Throwable $th) {
@@ -146,6 +148,14 @@ class LoginController extends Controller
                     'apellido_usuario' => $request->apellido_usuario,'anexo' => $request->anexo,'password' => Hash::make($request->password),
                     'idServicio' => $request->idServicio,'CB_PERIFERICA' => $request->CB_PERIFERICA,'NB_PERIFERICA' => $request->NB_PERIFERICA,
                     'RUTALOGO' => $request->RUTALOGO]);
+
+
+                tblPermisoUsuarios::where('run_usuario',$run)
+                ->update([
+                   'run_usuario' => $run,
+                   'permiso_usuario' => $request->permiso_usuario,
+                   'estado_login' =>  $request->estado_login
+                ]); 
             return true;
         } catch (\Throwable $th) {
             log::info($th);

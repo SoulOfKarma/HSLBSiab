@@ -1606,14 +1606,15 @@ pre code {
                 <table class="table table-bordered table-sm">
                     <tbody>
                         <tr id="OrdenTabla">
-                          <td style="height: 7.33%"><h6 ></h6></td>
-                          <td style="height: 7.33%"><h6></h6></td>
-                          <td style="height: 7.33%"><h6></h6></td>
-                        </tr>
+                            <td style="height: 4.33%" ><h6 >
+                              </h6></td>
+                            <td style="height: 4.33%" ><h6></h6></td>
+                            <td style="height: 4.33%" ><h6></h6></td>
+                          </tr>
                         <tr>
-                         <td class="badge badge-secondary"><h6>Encargado Seccion Bodega</h6></td>
-                         <td class="badge badge-secondary"><h6>Jefe Bodega</h6></td>
-                         <td class="badge badge-secondary"><h6>Nombre y Firma Autorizado Para Retirar</h6></td>                 
+                         <td style="width: 7.33%" class="badge badge-secondary"><h6>Encargado Seccion Bodega</h6></td>
+                         <td style="width: 7.33%" class="badge badge-secondary"><h6>Jefe Bodega</h6></td>
+                         <td style="width: 7.33%" class="badge badge-secondary"><h6>Nombre y Firma Autorizado Para Retirar</h6></td>                 
                         </tr>
                        </tbody>
                    </table>

@@ -163,8 +163,6 @@
 import BackToTop from "vue-backtotop";
 import HNavMenu from "@/layouts/components/horizontal-nav-menu/HorizontalNavMenu.vue";
 import navMenuItems from "@/layouts/components/vertical-nav-menu/navMenuItems.js";
-/* import navMenuItemsA from "./navMenuItemsA.js";
-import navMenuItemsJA from "./navMenuItemsJA.js"; */
 import TheNavbarHorizontal from "@/layouts/components/navbar/TheNavbarHorizontal.vue";
 import TheNavbarVertical from "@/layouts/components/navbar/TheNavbarVertical.vue";
 import TheFooter from "@/layouts/components/TheFooter.vue";
@@ -427,20 +425,6 @@ export default {
                         icon: "HomeIcon"
                     }
                 ]
-            },
-            {
-                url: null,
-                name: "FirmaTest",
-                slug: "FirmaTest",
-                icon: "HomeIcon",
-                submenu: [
-                    {
-                        url: "/Firma/FirmaTest",
-                        name: "FirmaTest",
-                        slug: "/Firma/FirmaTest",
-                        icon: "HomeIcon"
-                    }
-                ]
             }
         ];
 
@@ -658,20 +642,6 @@ export default {
                         icon: "HomeIcon"
                     }
                 ]
-            },
-            {
-                url: null,
-                name: "FirmaTest",
-                slug: "FirmaTest",
-                icon: "HomeIcon",
-                submenu: [
-                    {
-                        url: "/Firma/FirmaTest",
-                        name: "FirmaTest",
-                        slug: "/Firma/FirmaTest",
-                        icon: "HomeIcon"
-                    }
-                ]
             }
         ];
 
@@ -689,12 +659,11 @@ export default {
         var aux2 = sessionStorage.getItem("permiso_usuario");
 
         if (aux2 == 1) {
-            console.log("Acceso Correcto");
-            this.navMenuItems = navMenuItems;
-        } else if (aux2 == 2) {
-            this.navMenuItems = this.NavJA;
-        } else if (aux2 == 3) {
             this.navMenuItems = this.NavA;
+        } else if (aux2 == 2) {
+            this.navMenuItems = navMenuItems;
+        } else if (aux2 == 3) {
+            this.navMenuItems = this.NavJA;
         } else {
             router.push("/pages/login").catch(err => {});
         }

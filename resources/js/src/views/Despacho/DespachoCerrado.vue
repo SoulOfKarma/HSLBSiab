@@ -148,7 +148,7 @@
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-1/5 mt-5">
+                            <div class="vx-col w-1/6 mt-5">
                                 <vs-button
                                     @click="volver"
                                     color="primary"
@@ -157,7 +157,7 @@
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/5 mt-5">
+                            <div class="vx-col w-1/6 mt-5">
                                 <vs-button
                                     @click="ActualizarListado"
                                     color="primary"
@@ -166,7 +166,7 @@
                                     >Actualizar Observacion</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/5 mt-5">
+                            <div class="vx-col w-1/6 mt-5">
                                 <vs-button
                                     @click="ImprimirDatos"
                                     color="primary"
@@ -175,7 +175,7 @@
                                     >Imprimir</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/5 mt-5">
+                            <div class="vx-col w-1/6 mt-5">
                                 <vs-button
                                     @click="RecargarPagina"
                                     color="primary"
@@ -184,13 +184,22 @@
                                     >Hacer Otro Despacho</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/5 mt-5">
+                            <div class="vx-col w-1/6 mt-5">
                                 <vs-button
                                     @click="popAnularTodo"
                                     color="primary"
                                     type="filled"
                                     class="w-full"
                                     >Anular Todo</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/6 mt-5">
+                                <vs-button
+                                    @click="AgregarListadoFirmaUsers"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Firmar Digitalmente</vs-button
                                 >
                             </div>
                         </div>
@@ -917,6 +926,164 @@ export default {
                                 }
                             );
                         }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Firma Digital
+        AgregarListadoFirmaUsers() {
+            try {
+                let run = sessionStorage.getItem("run");
+                if (run.length == 10) {
+                    run = run.substring(0, 8);
+                } else if (run == 9) {
+                    run = run.substring(0, 7);
+                }
+
+                let data = {
+                    RUN: run,
+                    idPerfil: sessionStorage.getItem("permiso_usuario"),
+                    NUMINT: this.numint
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Firma/PostUsuarioDespachosFirma",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let resp = res.data;
+                        this.GenerarCifrado(resp, this.numint);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        GenerarCifrado(data, numint) {
+            try {
+                let secreto = "4a191562d7b2476d8dcb13f265b4c7b1";
+                const jwt = require("jsonwebtoken");
+                let date = moment().add(30, "minutes");
+                let fecha = date.format("YYYY-MM-DDTHH:mm:ss").toString();
+
+                let c = data;
+
+                let token = "";
+                let token1 = "";
+                let token2 = "";
+
+                let codPerfil = "";
+                let codPerfil1 = "";
+                let codPerfil2 = "";
+
+                let descServicio = "";
+                let descServicio1 = "";
+                let descServicio2 = "";
+
+                let nombreUsuario = "";
+                let nombreUsuario1 = "";
+                let nombreUsuario2 = "";
+
+                let doc = "";
+
+                let count = 0;
+
+                c.forEach((value, index) => {
+                    doc = value.NUMINT.toString() + ".pdf";
+                    if (value.idPerfil == 1) {
+                        const user = {
+                            entity: "Hospital San Luis de Buin - Paine",
+                            run: value.RUN,
+                            expiration: fecha,
+                            purpose: "Desatendido"
+                        };
+
+                        token = jwt.sign(user, secreto, {
+                            expiresIn: 60 * 30,
+                            algorithm: "HS256"
+                        });
+                        codPerfil = value.idPerfil;
+                        descServicio = value.descripcionServicio;
+                        nombreUsuario = value.nombre;
+                        count = count + 1;
+                    } else if (value.idPerfil == 2) {
+                        const user = {
+                            entity: "Hospital San Luis de Buin - Paine",
+                            run: value.RUN,
+                            expiration: fecha,
+                            purpose: "Desatendido"
+                        };
+
+                        token1 = jwt.sign(user, secreto, {
+                            expiresIn: 60 * 30,
+                            algorithm: "HS256"
+                        });
+                        codPerfil1 = value.idPerfil;
+                        descServicio1 = value.descripcionServicio;
+                        nombreUsuario1 = value.nombre;
+                        count = count + 1;
+                    } else if (value.idPerfil == 3) {
+                        const user = {
+                            entity: "Hospital San Luis de Buin - Paine",
+                            run: value.RUN,
+                            expiration: fecha,
+                            purpose: "Desatendido"
+                        };
+
+                        token2 = jwt.sign(user, secreto, {
+                            expiresIn: 60 * 30,
+                            algorithm: "HS256"
+                        });
+                        codPerfil2 = value.idPerfil;
+                        descServicio2 = value.descripcionServicio;
+                        nombreUsuario2 = value.nombre;
+                        count = count + 1;
+                    }
+                });
+
+                let dat = {
+                    api_token_key: "d7f01566-48df-4a67-8388-4fc0b85d5c37",
+                    token: token,
+                    token1: token1,
+                    token2: token2,
+                    cont: doc.toString(),
+                    link: this.localVal + "/Verificacion",
+                    codPerfil: codPerfil,
+                    codPerfil1: codPerfil1,
+                    codPerfil2: codPerfil2,
+                    descServicio: descServicio,
+                    descServicio1: descServicio1,
+                    descServicio2: descServicio2,
+                    nombreUsuario: nombreUsuario,
+                    nombreUsuario1: nombreUsuario1,
+                    nombreUsuario2: nombreUsuario2,
+                    count: count,
+                    NUMINT: numint
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Firma/FirmaDigitalDespachoArray",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let tok = res.data;
+                        const url =
+                            this.localVal + "/DocumentosFirmados/" + tok;
+                        window.open(url, "_blank");
                     });
             } catch (error) {
                 console.log(error);
