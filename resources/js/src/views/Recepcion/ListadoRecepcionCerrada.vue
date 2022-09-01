@@ -60,6 +60,17 @@
                                         redireccionarRecepcion(props.row.NUMINT)
                                     "
                                 ></plus-circle-icon>
+                                <plus-circle-icon
+                                    content="Ir a la Recepcion Modificable"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        redireccionarRecepcionExtra(
+                                            props.row.NUMINT
+                                        )
+                                    "
+                                ></plus-circle-icon>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -260,6 +271,18 @@ export default {
             try {
                 this.$router.push({
                     name: "RecepcionCerrada",
+                    params: {
+                        NUMINT: `${numinterno}`
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        redireccionarRecepcionExtra(numinterno) {
+            try {
+                this.$router.push({
+                    name: "RecepcionCerradaExtra",
                     params: {
                         NUMINT: `${numinterno}`
                     }

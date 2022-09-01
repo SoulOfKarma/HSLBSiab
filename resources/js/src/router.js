@@ -197,6 +197,12 @@ const router = new Router({
                     component: () =>
                         import("./views/Recepcion/RecepcionCerrada.vue")
                 },
+                {
+                    path: "/Recepcion/RecepcionCerradaExtra/:NUMINT",
+                    name: "RecepcionCerradaExtra",
+                    component: () =>
+                        import("./views/Recepcion/RecepcionCerradaExtra.vue")
+                },
                 //Router de Orden Compra
                 {
                     path: "/OrdenCompra/OrdenCompra",
@@ -269,6 +275,12 @@ const router = new Router({
                     name: "DespachoCerrado",
                     component: () =>
                         import("./views/Despacho/DespachoCerrado.vue")
+                },
+                {
+                    path: "/Despacho/DespachoCerradoExtra/:NUMINT",
+                    name: "DespachoCerradoExtra",
+                    component: () =>
+                        import("./views/Despacho/DespachoCerradoExtra.vue")
                 },
                 //Router de Reportes
                 {

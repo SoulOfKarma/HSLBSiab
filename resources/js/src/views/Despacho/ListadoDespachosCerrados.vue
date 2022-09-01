@@ -31,6 +31,17 @@
                                         )
                                     "
                                 ></plus-circle-icon>
+                                <plus-circle-icon
+                                    content="Ir al Despacho Modificable"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        redireccionarDespachosCerradosExtra(
+                                            props.row.NUMINT
+                                        )
+                                    "
+                                ></plus-circle-icon>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -160,6 +171,18 @@ export default {
             try {
                 this.$router.push({
                     name: "DespachoCerrado",
+                    params: {
+                        NUMINT: `${numinterno}`
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        redireccionarDespachosCerradosExtra(numinterno) {
+            try {
+                this.$router.push({
+                    name: "DespachoCerradoExtra",
                     params: {
                         NUMINT: `${numinterno}`
                     }
