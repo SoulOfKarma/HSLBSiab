@@ -215,7 +215,7 @@ class FirmasDigitales extends Controller
                 $top = 264;
                 $l = 35;
                 $t = 268;
-                $fpdi->Image(Storage::disk('docFirmados')->path('logof.png') , 15 ,259, 20 , 13,'PNG');
+                $fpdi->Image(Storage::disk('docFirmados')->path('LOGO.png') , 15 ,259, 15 , 13,'PNG');
                 $text = "Ricardo Arturo Soto Gomez";
                 $fpdi->SetFont("helvetica", "", 7);
                 $fpdi->SetTextColor(0,0,0);
@@ -233,7 +233,7 @@ class FirmasDigitales extends Controller
             $top = 264;
             $l = 98;
             $t = 268;
-            $fpdi->Image(Storage::disk('docFirmados')->path('logof.png') , 77 ,259, 20 , 13,'PNG');
+            $fpdi->Image(Storage::disk('docFirmados')->path('LOGO.png') , 77 ,259, 15 , 13,'PNG');
             $text = nl2br("Ricardo Arturo Soto Gomez");
             $fpdi->SetFont("helvetica", "", 7);
             $fpdi->SetTextColor(0,0,0);
@@ -251,7 +251,7 @@ class FirmasDigitales extends Controller
                 $top = 264;
                 $l = 161;
                 $t = 268;
-                $fpdi->Image(Storage::disk('docFirmados')->path('logof.png') , 140 ,259, 20 , 13,'PNG');
+                $fpdi->Image(Storage::disk('docFirmados')->path('LOGO.png') , 140 ,259, 15 , 13,'PNG');
                 $text = nl2br("Ricardo Arturo Soto Gomez");
                 $fpdi->SetFont("helvetica", "", 7);
                 $fpdi->SetTextColor(0,0,0);
@@ -462,7 +462,7 @@ class FirmasDigitales extends Controller
                 $top = 264;
                 $l = 35;
                 $t = 268;
-                $fpdi->Image(Storage::disk('docFirmados')->path('logof.png') , 15 ,259, 20 , 13,'PNG');
+                $fpdi->Image(Storage::disk('docFirmados')->path('LOGO.png') , 15 ,259, 15 , 13,'PNG');
                 $text = "Ricardo Arturo Soto Gomez";
                 $fpdi->SetFont("helvetica", "", 7);
                 $fpdi->SetTextColor(0,0,0);
@@ -480,7 +480,7 @@ class FirmasDigitales extends Controller
             $top = 264;
             $l = 98;
             $t = 268;
-            $fpdi->Image(Storage::disk('docFirmados')->path('logof.png') , 77 ,259, 20 , 13,'PNG');
+            $fpdi->Image(Storage::disk('docFirmados')->path('LOGO.png') , 77 ,259, 15 , 13,'PNG');
             $text = nl2br("Ricardo Arturo Soto Gomez");
             $fpdi->SetFont("helvetica", "", 7);
             $fpdi->SetTextColor(0,0,0);
@@ -498,7 +498,7 @@ class FirmasDigitales extends Controller
                 $top = 264;
                 $l = 161;
                 $t = 268;
-                $fpdi->Image(Storage::disk('docFirmados')->path('logof.png') , 140 ,259, 20 , 13,'PNG');
+                $fpdi->Image(Storage::disk('docFirmados')->path('LOGO.png') , 140 ,259, 15 , 13,'PNG');
                 $text = nl2br("Ricardo Arturo Soto Gomez");
                 $fpdi->SetFont("helvetica", "", 7);
                 $fpdi->SetTextColor(0,0,0);
