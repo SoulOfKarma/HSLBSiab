@@ -1032,10 +1032,6 @@ export default {
                 };
                 this.cantidadEmbalaje = "";
                 this.idBodega = 0;
-                this.seleccionBodega = {
-                    id: 0,
-                    descripcionBodega: ""
-                };
                 this.idZona = 0;
                 this.seleccionZona = {
                     id: 0,
@@ -1163,6 +1159,10 @@ export default {
         popEconomato() {
             try {
                 this.popUpEco = true;
+                this.seleccionBodega = {
+                    id: 2,
+                    descripcionBodega: "Economato"
+                };
                 this.limpiarCampos();
             } catch (error) {
                 console.log(error);
@@ -2501,6 +2501,9 @@ export default {
             this.TraerFamilia5();
             this.openLoadingColor();
         }, 2000);
+        setTimeout(() => {
+            this.cargaItemBodegaFamilia();
+        }, 3000);
     }
 };
 </script>

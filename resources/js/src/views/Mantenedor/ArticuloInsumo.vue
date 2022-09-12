@@ -1032,10 +1032,6 @@ export default {
                 };
                 this.cantidadEmbalaje = "";
                 this.idBodega = 0;
-                this.seleccionBodega = {
-                    id: 0,
-                    descripcionBodega: ""
-                };
                 this.idZona = 0;
                 this.seleccionZona = {
                     id: 0,
