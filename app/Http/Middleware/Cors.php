@@ -8,12 +8,13 @@ class Cors
 {
     private static $allowedOriginsWhitelist = [
         'http://127.0.0.1:8000',
-        'http://10.5.23.248:9000'
+        'http://10.5.23.248:9000',
+        'http://10.5.23.248:8004'
     ];
 
     // All the headers must be a string
 
-    private static $allowedOrigin = ['http://127.0.0.1:8000','http://10.5.23.248:9000'];
+    private static $allowedOrigin = ['http://127.0.0.1:8000','http://10.5.23.248:9000','http://10.5.23.248:8004'];
 
     private static $allowedMethods = 'OPTIONS, GET, POST, PUT, PATCH, DELETE';
 
