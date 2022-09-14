@@ -16,7 +16,7 @@ class CreateDescripcionFamilia03sTable extends Migration
         Schema::create('descripcion_familia03', function (Blueprint $table) {
             $table->id();
             $table->string('descripcionFamilia');
-            $table->BigInteger('CODFAM4');
+            $table->BigInteger('CODFAM4')->nullable();
             $table->BigInteger('idDesFam02');
             $table->timestamps();
         });

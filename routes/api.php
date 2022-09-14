@@ -40,9 +40,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetFamilia4', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia03Controller@GetFamilia']);
     Route::get('/Mantenedor/GetFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@GetFamilia']);
     Route::get('/Mantenedor/GetZona', ['middleware' => 'cors', 'uses' => 'ZonasController@GetZona']);
-    Route::get('/Mantenedor/GetMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetMedicamentos']);
-    Route::get('/Mantenedor/GetInsumo', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetInsumo']);
-    Route::get('/Mantenedor/GetEconomato', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetEconomato']);     
+
+    Route::get('/Mantenedor/GetAllProductos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetAllProductos']);        
     Route::get('/Mantenedor/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@GetUsers']);    
     Route::get('/Mantenedor/GetEstado', ['middleware' => 'cors', 'uses' => 'EstadosController@GetEstado']);    
     Route::get('/Mantenedor/GetStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@GetStockMinMax']);    
@@ -86,11 +85,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PostFamilia4', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia03Controller@PostFamilia']);
     Route::post('/Mantenedor/PostFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@PostFamilia']);
     Route::post('/Mantenedor/PostZona', ['middleware' => 'cors', 'uses' => 'ZonasController@PostZona']);
-    Route::post('/Mantenedor/PostMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostMedicamentos']);
-    Route::post('/Mantenedor/PostInsumoEconomato', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostInsumoEconomato']);
+    Route::post('/Mantenedor/PostArticuloGeneral', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostArticuloGeneral']);
     Route::post('/Mantenedor/RegistrarUsuario', ['middleware' => 'cors', 'uses' => 'LoginController@RegistrarUsuario']);
-    Route::post('/Mantenedor/PostCodMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostCodMedicamentos']);
-    Route::post('/Mantenedor/PostCodInsumoEconomato', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostCodInsumoEconomato']);
+    Route::post('/Mantenedor/PostCodArticuloGeneral', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostCodArticuloGeneral']);
     Route::post('/Mantenedor/PostSaldoInventario', ['middleware' => 'cors', 'uses' => 'SaldoInventariosController@PostSaldoInventario']);
     Route::post('/Mantenedor/PostEstado', ['middleware' => 'cors', 'uses' => 'EstadosController@PostEstado']);
     Route::post('/Mantenedor/PostStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@PostStockMinMax']);
@@ -136,7 +133,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PutFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@PutFamilia']);
     Route::post('/Mantenedor/PutZona', ['middleware' => 'cors', 'uses' => 'ZonasController@PutZona']);
     Route::post('/Mantenedor/PutMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PutMedicamentos']);
-    Route::post('/Mantenedor/PutInsumoEconomato', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PutInsumoEconomato']);    
+    Route::post('/Mantenedor/PutArticuloGeneral', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PutArticuloGeneral']);    
     Route::post('/Mantenedor/PutUsuario', ['middleware' => 'cors', 'uses' => 'LoginController@PutUsuario']);
     Route::post('/Mantenedor/PutEstado', ['middleware' => 'cors', 'uses' => 'EstadosController@PutEstado']);    
     Route::post('/Mantenedor/PutStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@PutStockMinMax']);

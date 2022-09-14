@@ -110,22 +110,10 @@ const router = new Router({
                         import("./views/Mantenedor/UsuarioLaboratorio.vue")
                 },
                 {
-                    path: "/Mantenedor/ArticuloMedicamento",
-                    name: "/Mantenedor/ArticuloMedicamento",
+                    path: "/Mantenedor/IngresoArticulos",
+                    name: "IngresoArticulos",
                     component: () =>
-                        import("./views/Mantenedor/ArticuloMedicamento.vue")
-                },
-                {
-                    path: "/Mantenedor/ArticuloEconomato",
-                    name: "/Mantenedor/ArticuloEconomato",
-                    component: () =>
-                        import("./views/Mantenedor/ArticuloEconomato.vue")
-                },
-                {
-                    path: "/Mantenedor/ArticuloInsumo",
-                    name: "/Mantenedor/ArticuloInsumo",
-                    component: () =>
-                        import("./views/Mantenedor/ArticuloInsumo.vue")
+                        import("./views/Mantenedor/IngresoArticulos.vue")
                 },
                 {
                     path: "/Mantenedor/Bodega",

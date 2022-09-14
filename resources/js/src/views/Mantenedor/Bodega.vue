@@ -1052,7 +1052,6 @@ export default {
                 let a = [];
                 c.forEach((value, index) => {
                     if (b == value.idBodega) {
-                        console.log(value);
                         a.push(value);
                     }
                 });
@@ -1571,7 +1570,7 @@ export default {
                     });
                 } else {
                     let data = {
-                        idBodega: this.seleccionBodega1.id,
+                        idBodega: this.seleccionBodega.id,
                         descripcionFamilia: this.descripcionFamilia1.toUpperCase()
                     };
 
@@ -1638,7 +1637,7 @@ export default {
                 } else {
                     let data = {
                         id: this.idMod,
-                        idBodega: this.seleccionBodegaMod1.id,
+                        idBodega: this.seleccionBodegaMod.id,
                         descripcionFamilia: this.descripcionFamilia1Mod.toUpperCase()
                     };
 

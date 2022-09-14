@@ -81,21 +81,9 @@ export default [
                 icon: "HomeIcon"
             },
             {
-                url: "/Mantenedor/ArticuloMedicamento",
-                name: "Articulo Medicamento",
-                slug: "/Mantenedor/ArticuloMedicamento",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/Mantenedor/ArticuloEconomato",
-                name: "Articulo Economato",
-                slug: "/Mantenedor/ArticuloEconomato",
-                icon: "HomeIcon"
-            },
-            {
-                url: "/Mantenedor/ArticuloInsumo",
-                name: "Articulo Insumo",
-                slug: "/Mantenedor/ArticuloInsumo",
+                url: "/Mantenedor/IngresoArticulos",
+                name: "Ingreso Articulos",
+                slug: "/Mantenedor/IngresoArticulos",
                 icon: "HomeIcon"
             },
             {
