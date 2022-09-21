@@ -1488,8 +1488,8 @@ export default {
         ModificarBodega() {
             try {
                 if (
-                    this.descripcionBodega == "" ||
-                    this.descripcionBodega == null
+                    this.descripcionBodegaMod == "" ||
+                    this.descripcionBodegaMod == null
                 ) {
                     this.$vs.notify({
                         time: 5000,
