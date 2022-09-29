@@ -150,7 +150,23 @@
                                         class="text-nowrap"
                                     >
                                     </span>
-
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'action'
+                                        "
+                                    >
+                                        <plus-circle-icon
+                                            content="Quitar de la Lista"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                popDelDetalleArticulo(
+                                                    props.row.id
+                                                )
+                                            "
+                                        ></plus-circle-icon>
+                                    </span>
                                     <!-- Column: Common -->
                                     <span v-else>
                                         {{
@@ -602,6 +618,10 @@ export default {
                     filterOptions: {
                         enabled: true
                     }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
                 }
             ],
             colArticulosDisponibles: [

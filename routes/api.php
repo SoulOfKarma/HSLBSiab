@@ -133,7 +133,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Mantenedor/PutFamilia5', ['middleware' => 'cors', 'uses' => 'DescripcionFamilia04Controller@PutFamilia']);
     Route::post('/Mantenedor/PutZona', ['middleware' => 'cors', 'uses' => 'ZonasController@PutZona']);
     Route::post('/Mantenedor/PutMedicamentos', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PutMedicamentos']);
-    Route::post('/Mantenedor/PutArticuloGeneral', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PutArticuloGeneral']);    
+    Route::post('/Mantenedor/PutArticuloGeneral', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PutArticuloGeneral']);
+    Route::post('/Mantenedor/PutCodigoBarra', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PutCodigoBarra']);    
     Route::post('/Mantenedor/PutUsuario', ['middleware' => 'cors', 'uses' => 'LoginController@PutUsuario']);
     Route::post('/Mantenedor/PutEstado', ['middleware' => 'cors', 'uses' => 'EstadosController@PutEstado']);    
     Route::post('/Mantenedor/PutStockMinMax', ['middleware' => 'cors', 'uses' => 'StockMinMaxController@PutStockMinMax']);

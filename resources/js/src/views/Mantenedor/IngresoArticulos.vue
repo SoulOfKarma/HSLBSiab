@@ -824,7 +824,24 @@
                                             class="text-nowrap"
                                         >
                                         </span>
-
+                                        <span
+                                            v-else-if="
+                                                props.column.field === 'action'
+                                            "
+                                        >
+                                            <plus-circle-icon
+                                                content="Modificar Codigo"
+                                                v-tippy
+                                                size="1.5x"
+                                                class="custom-class"
+                                                @click="
+                                                    popModificarCodigo(
+                                                        props.row.id,
+                                                        props.row.CODART_BARR
+                                                    )
+                                                "
+                                            ></plus-circle-icon>
+                                        </span>
                                         <!-- Column: Common -->
                                         <span v-else>
                                             {{
@@ -1432,7 +1449,25 @@
                                             class="text-nowrap"
                                         >
                                         </span>
-
+                                        <span
+                                            v-else-if="
+                                                props.column.field === 'action'
+                                            "
+                                        >
+                                            <plus-circle-icon
+                                                content="Modificar Codigo"
+                                                v-tippy
+                                                size="1.5x"
+                                                class="custom-class"
+                                                @click="
+                                                    popModificarCodigo(
+                                                        props.row.id,
+                                                        props.row.CODART_BARR,
+                                                        props.row.CODART
+                                                    )
+                                                "
+                                            ></plus-circle-icon>
+                                        </span>
                                         <!-- Column: Common -->
                                         <span v-else>
                                             {{
@@ -1454,6 +1489,50 @@
                                     type="filled"
                                     class="w-full m-1"
                                     >Volver</vs-button
+                                >
+                            </div>
+                        </div>
+                    </vx-card>
+                    <div class="vx-row"></div>
+                </div>
+            </vs-popup>
+            <!-- Seccion Pop Modificar Codigo Barra -->
+            <vs-popup
+                classContent="ModificarCodigoBarra"
+                title="Modificar Codigo de barra"
+                :active.sync="popUpModificarCodigo"
+            >
+                <div class="vx-col md:w-1/1 w-full mb-base">
+                    <vx-card title="">
+                        <div class="vx-row">
+                            <div class="vx-col w-full mt-5">
+                                <h6>
+                                    Codigo de Barra
+                                </h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codigoBarra"
+                                />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="vx-row w-full">
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    @click="popUpModificarCodigo = false"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <vs-button
+                                    @click="ModificarCodigoBarra"
+                                    color="success"
+                                    type="filled"
+                                    class="w-full"
+                                    >Modificar Codigo de Barra</vs-button
                                 >
                             </div>
                         </div>
@@ -1515,7 +1594,9 @@ export default {
             popUpArticuloGeneral: false,
             popUpArticuloGeneralMod: false,
             popUpCodArticuloGeneral: false,
+            popUpModificarCodigo: false,
             codigoBarra: "",
+            codigoBarraOriginal: "",
             codigoOnu: "",
             codigoTrack: "",
             codigoArticulo: "",
@@ -1539,6 +1620,7 @@ export default {
             unidadMedidaBase: "",
             image: null,
             nombrearchivo: "",
+            codMedEcoIns: 0,
             nomarchivo:
                 "imagenArticulos/00VCY0iWEUQvxC2yTvY2wt41jB3dHeM1bda3djvg.png",
             seleccionEstado: {
@@ -1679,6 +1761,10 @@ export default {
                     filterOptions: {
                         enabled: true
                     }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
                 }
             ],
             //Columnas Medicamentos
@@ -1786,6 +1872,10 @@ export default {
                     filterOptions: {
                         enabled: true
                     }
+                },
+                {
+                    label: "Opciones",
+                    field: "action"
                 }
             ],
             //Datos Listado Proveedor
@@ -1930,7 +2020,24 @@ export default {
                 console.log(error);
             }
         },
-        //Listado de Datos segun familia asociada
+        popModificarCodigo(id, codbar,codart) {
+            try {
+                this.idMod = id;
+                this.codigoBarra = codbar;
+                this.codigoBarraOriginal = codbar;
+                this.popUpModificarCodigo = true;
+                if (this.popUpNCMedicamento == true) {
+                    this.codMedEcoIns = 1;
+                } else {
+                    this.codMedEcoIns = 2;
+                }
+                this.popUpCodArticuloGeneral = false;
+                this.popUpNCMedicamento = false;
+                this.codigoArticulo = codart;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         cargaItemBodegaFamilia() {
             try {
                 if (this.seleccionBodega.id == 1) {
@@ -4278,31 +4385,53 @@ export default {
                 console.log(error);
             }
         },
-        //RefreshToken
-        RefreshToken() {
+        ModificarCodigoBarra() {
             try {
                 let data = {
-                    token: sessionStorage.getItem("token")
+                    id: this.idMod,
+                    CODART_BARR: this.codigoBarraOriginal,
+                    CODART: this.codigoArticulo,
+                    CODART_BAR: this.codigoBarra
                 };
+
                 axios
-                    .post(this.localVal + "/api/auth/RefreshToken", data)
+                    .post(
+                        this.localVal + "/api/Mantenedor/PutCodigoBarra",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
                     .then(res => {
-                        let tok = res.data;
-                        if (tok == "") {
-                        } else if (tok == false) {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Codigo Modificado Agregado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.TraerDetalleByCodInterno(this.codigoArticulo);
+                            this.popUpModificarCodigo = false;
+                            if (this.codMedEcoIns == 1) {
+                                this.popUpNCMedicamento = true;
+                            } else {
+                                this.popUpCodArticuloGeneral = true;
+                            }
+                        } else {
                             this.$vs.notify({
                                 time: 5000,
                                 title: "Error",
                                 text:
-                                    "No se pudo refrescar su sesion, sera redirigido a el inicio de sesion",
+                                    "No fue posible modificar el codigo,intentelo nuevamente",
                                 color: "danger",
                                 position: "top-right"
                             });
-                            window.sessionStorage.clear();
-                            window.localStorage.clear();
-                            router.push("/pages/login");
-                        } else {
-                            sessionStorage.setItem("token", tok);
                         }
                     });
             } catch (error) {
@@ -4311,7 +4440,6 @@ export default {
         }
     },
     beforeMount() {
-        this.RefreshToken();
         setTimeout(() => {
             this.TraerProductos();
             this.TraerEstado();
@@ -4325,9 +4453,6 @@ export default {
             this.TraerFamilia5();
             this.openLoadingColor();
         }, 2000);
-        // setTimeout(() => {
-        //     this.cargaItemBodegaFamilia();
-        // }, 3000);
     }
 };
 </script>

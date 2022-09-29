@@ -222,6 +222,19 @@ class SiabArticulosController extends Controller
         }
     }
 
+    public function PutCodigoBarra(Request $request)
+    {
+        try {
+            siab_articulos::where('CODART_BARR',$request->CODART_BARR)
+            ->where('CODART',$request->CODART)
+            ->update(['CODART_BARR' => $request->CODART_BAR]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function PutArticuloGeneral(Request $request)
     {
         try {

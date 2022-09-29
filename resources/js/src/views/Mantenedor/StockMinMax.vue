@@ -1,69 +1,88 @@
 <template>
     <div>
-        <vx-card title="Stock Insumo/Economato">
-            <div>
-                <vs-button
-                    color="primary"
-                    type="filled"
-                    @click="PopUpListadoArticulos = true"
-                    >Agregar Stock Insumo/Economato</vs-button
-                >
+        <vx-card title="Stock Articulos">
+            <div class="vx-col w-full mt-5">
+                <h6>Bodega</h6>
+
+                <v-select
+                    v-model="seleccionBodegaItem"
+                    placeholder="Activo"
+                    class="w-full select-large"
+                    label="descripcionBodega"
+                    :options="listaBodega"
+                    @input="cargaItemByBodega"
+                ></v-select>
             </div>
             <br />
-            <div>
-                <vx-card>
-                    <vue-good-table
-                        :columns="columns"
-                        :rows="rows"
-                        :pagination-options="{
-                            enabled: true,
-                            perPage: 10
-                        }"
+            <div v-if="stockarticulos">
+                <div>
+                    <vs-button
+                        color="primary"
+                        type="filled"
+                        @click="PopUpListadoArticulos = true"
+                        >Agregar Stock Articulo</vs-button
                     >
-                        <template slot="table-row" slot-scope="props">
-                            <!-- Column: Name -->
-                            <span
-                                v-if="props.column.field === 'fullName'"
-                                class="text-nowrap"
-                            >
-                            </span>
-                            <span v-else-if="props.column.field === 'action'">
-                                <plus-circle-icon
-                                    content="Modificar Stock Insumo/Economato"
-                                    v-tippy
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        popModificarStockMinMax(
-                                            props.row.id,
-                                            props.row.idBodega,
-                                            props.row.idEstadoStock,
-                                            props.row.CODART,
-                                            props.row.NOMBRE,
-                                            props.row.STOCK_MIN,
-                                            props.row.STOCK_MAX,
-                                            props.row.STOCK_CRI,
-                                            props.row.UNIMEDBASE
-                                        )
-                                    "
-                                ></plus-circle-icon>
-                                <plus-circle-icon
-                                    content="Desactivar Stock Insumo/Economato"
-                                    v-tippy
-                                    size="1.5x"
-                                    class="custom-class"
-                                    @click="
-                                        popDesactivarStockMinMax(props.row.id)
-                                    "
-                                ></plus-circle-icon>
-                            </span>
-                            <!-- Column: Common -->
-                            <span v-else>
-                                {{ props.formattedRow[props.column.field] }}
-                            </span>
-                        </template>
-                    </vue-good-table>
-                </vx-card>
+                </div>
+                <br />
+                <div>
+                    <vx-card>
+                        <vue-good-table
+                            :columns="columns"
+                            :rows="rows"
+                            :pagination-options="{
+                                enabled: true,
+                                perPage: 10
+                            }"
+                        >
+                            <template slot="table-row" slot-scope="props">
+                                <!-- Column: Name -->
+                                <span
+                                    v-if="props.column.field === 'fullName'"
+                                    class="text-nowrap"
+                                >
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'action'"
+                                >
+                                    <plus-circle-icon
+                                        content="Modificar Stock Insumo/Economato"
+                                        v-tippy
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="
+                                            popModificarStockMinMax(
+                                                props.row.id,
+                                                props.row.idBodega,
+                                                props.row.idEstadoStock,
+                                                props.row.CODART,
+                                                props.row.NOMBRE,
+                                                props.row.STOCK_MIN,
+                                                props.row.STOCK_MAX,
+                                                props.row.STOCK_CRI,
+                                                props.row.UNIMEDBASE
+                                            )
+                                        "
+                                    ></plus-circle-icon>
+                                    <plus-circle-icon
+                                        content="Desactivar Stock Insumo/Economato"
+                                        v-tippy
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="
+                                            popDesactivarStockMinMax(
+                                                props.row.id
+                                            )
+                                        "
+                                    ></plus-circle-icon>
+                                </span>
+                                <!-- Column: Common -->
+                                <span v-else>
+                                    {{ props.formattedRow[props.column.field] }}
+                                </span>
+                            </template>
+                        </vue-good-table>
+                    </vx-card>
+                </div>
             </div>
             <vs-popup
                 classContent="AgregarStockInsumoEconomato"
@@ -285,7 +304,7 @@
                             <vx-card>
                                 <vue-good-table
                                     :columns="col"
-                                    :rows="listaInsumoEconomato"
+                                    :rows="listaTodosArticulos"
                                     :pagination-options="{
                                         enabled: true,
                                         perPage: 10
@@ -390,6 +409,7 @@ export default {
             popUpStockMinMax: false,
             popUpStockMinMaxMod: false,
             popUpDesactivarStockMinMax: false,
+            stockarticulos: false,
             PopUpListadoArticulos: false,
             descripcionEstado: "",
             idMod: 0,
@@ -402,6 +422,10 @@ export default {
             seleccionBodega: {
                 id: 0,
                 descripcionBodega: ""
+            },
+            seleccionBodegaItem: {
+                id: 0,
+                descripcionBodega: "Ej. Medicamentos"
             },
             seleccionEstado: {
                 id: 0,
@@ -516,7 +540,8 @@ export default {
             listaEstado: [],
             listaBodega: [],
             listaArticulos: [],
-            listaInsumoEconomato: []
+            listaTodosArticulos: [],
+            listaTodosArticulosTemp: []
         };
     },
     methods: {
@@ -552,7 +577,7 @@ export default {
                 this.stockCri = 0;
                 this.seleccionBodega = {
                     id: 0,
-                    descripcionBodega: ""
+                    descripcionBodega: "Ej: Medicamentos"
                 };
                 this.seleccionEstado = {
                     id: 0,
@@ -667,18 +692,52 @@ export default {
                 console.log(error);
             }
         },
+        //Listado de Datos segun familia asociada
+        cargaItemByBodega() {
+            try {
+                let c = this.listaTodosArticulosTemp;
+                let b = [];
+                if (this.seleccionBodegaItem.id == 1) {
+                    this.stockarticulos = true;
+                    c.forEach((value, index) => {
+                        if (this.seleccionBodegaItem.id == value.idBodega) {
+                            b.push(value);
+                        }
+                    });
+                } else if (this.seleccionBodegaItem.id == 2) {
+                    this.stockarticulos = true;
+                    c.forEach((value, index) => {
+                        if (this.seleccionBodegaItem.id == value.idBodega) {
+                            b.push(value);
+                        }
+                    });
+                } else if (this.seleccionBodegaItem.id == 3) {
+                    this.stockarticulos = true;
+                    c.forEach((value, index) => {
+                        if (this.seleccionBodegaItem.id == value.idBodega) {
+                            b.push(value);
+                        }
+                    });
+                }
+                this.listaTodosArticulos = [];
+                this.listaTodosArticulos = b;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         //Metodos CRUD
-        TraerInsumoEconomato() {
+        TraerArticulos() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetInsumoEconomato", {
+                    .get(this.localVal + "/api/Mantenedor/GetAllProductos", {
                         headers: {
                             Authorization:
                                 `Bearer ` + sessionStorage.getItem("token")
                         }
                     })
                     .then(res => {
-                        this.listaInsumoEconomato = res.data;
+                        this.listaTodosArticulos = res.data;
+                        this.listaTodosArticulosTemp = res.data;
                         if (this.rows.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
@@ -1005,7 +1064,7 @@ export default {
     beforeMount() {
         this.RefreshToken();
         setTimeout(() => {
-            this.TraerInsumoEconomato();
+            this.TraerArticulos();
             this.TraerStockMinMax();
             this.TraerEstado();
             this.TraerBodega();

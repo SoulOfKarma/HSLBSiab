@@ -318,14 +318,8 @@ export default {
                     },
                     {
                         url: "/Mantenedor/StockMinMax",
-                        name: "Stock Insumo/Economato",
+                        name: "Stock Articulos",
                         slug: "/Mantenedor/StockMinMax",
-                        icon: "HomeIcon"
-                    },
-                    {
-                        url: "/Mantenedor/StockMinMaxMed",
-                        name: "Stock Medicamentos",
-                        slug: "/Mantenedor/StockMinMaxMed",
                         icon: "HomeIcon"
                     },
                     {
@@ -497,14 +491,8 @@ export default {
                     },
                     {
                         url: "/Mantenedor/StockMinMax",
-                        name: "Stock Insumo/Economato",
+                        name: "Stock Articulos",
                         slug: "/Mantenedor/StockMinMax",
-                        icon: "HomeIcon"
-                    },
-                    {
-                        url: "/Mantenedor/StockMinMaxMed",
-                        name: "Stock Medicamentos",
-                        slug: "/Mantenedor/StockMinMaxMed",
                         icon: "HomeIcon"
                     },
                     {

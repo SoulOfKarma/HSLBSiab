@@ -132,12 +132,6 @@ const router = new Router({
                         import("./views/Mantenedor/StockMinMax.vue")
                 },
                 {
-                    path: "/Mantenedor/StockMinMaxMed",
-                    name: "/Mantenedor/StockMinMaxMed",
-                    component: () =>
-                        import("./views/Mantenedor/StockMinMaxMed.vue")
-                },
-                {
                     path: "/Mantenedor/SaldoInventario",
                     name: "/Mantenedor/SaldoInventario",
                     component: () =>
