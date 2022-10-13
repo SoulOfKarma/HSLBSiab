@@ -992,7 +992,7 @@
                                             "
                                             v-model="props.row.DCTO"
                                             type="text"
-                                            style="width:100px"
+                                            style="width:300px"
                                         ></vs-input>
                                     </span>
                                     <span
@@ -1010,7 +1010,7 @@
                                             "
                                             v-model="props.row.CARGO"
                                             type="text"
-                                            style="width:100px"
+                                            style="width:300px"
                                         ></vs-input>
                                     </span>
                                     <span
@@ -1028,7 +1028,7 @@
                                             "
                                             v-model="props.row.AJUSTE"
                                             type="text"
-                                            style="width:100px"
+                                            style="width:300px"
                                         ></vs-input>
                                     </span>
                                     <!-- Column: Common -->
