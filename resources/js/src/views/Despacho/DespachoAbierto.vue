@@ -1051,12 +1051,26 @@ export default {
                     sessionStorage.getItem("nombre") +
                     " " +
                     sessionStorage.getItem("apellido");
+
+                if (isNaN(cantidad)) {
+                    cantidad = 0;
+                }
+
                 if (parseInt(saldoCorrecto) < parseInt(cantidad)) {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
                         text:
                             "La cantidad ingresada supera el saldo existente, ingrese otro valor e intentelo nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (parseInt(cantidad) < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "La cantidad ingresada No puede ser 0, ingrese otro valor e intentelo nuevamente",
                         color: "danger",
                         position: "top-right"
                     });

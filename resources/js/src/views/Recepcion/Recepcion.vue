@@ -177,7 +177,7 @@
                     >
                         <h6>Fecha Vencimiento</h6>
                         <flat-pickr
-                            :config="configTodateTimePicker"
+                            :config="configTodateTimePickerFV"
                             v-model="fechaVencimiento"
                             @on-change="onFromChange"
                             class="w-full "
@@ -725,7 +725,7 @@
                     >
                         <h6>Fecha Venciminento</h6>
                         <flat-pickr
-                            :config="configTodateTimePicker"
+                            :config="configTodateTimePickerFV"
                             v-model="fechaVencimiento"
                             @on-change="onFromChange"
                             class="w-full "
@@ -1662,6 +1662,7 @@ export default {
                 minDate: null,
                 maxDate: null,
                 dateFormat: "d/m/Y",
+                allowInput: true,
                 locale: {
                     firstDayOfWeek: 1,
                     weekdays: {
@@ -3291,6 +3292,18 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
+                        } else if (
+                            this.nombrearchivo == null ||
+                            this.nombrearchivo.length < 1
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe Ingresar la factura para poder cerrar la recepcion",
+                                color: "danger",
+                                position: "top-right"
+                            });
                         } else {
                             let data = {
                                 NUMINT: this.numint,
@@ -3424,6 +3437,18 @@ export default {
                                 title: "Error",
                                 text:
                                     "No existen datos en el detalle de articulos para generar un N° de Folio",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else if (
+                            this.nombrearchivo == null ||
+                            this.nombrearchivo.length < 1
+                        ) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe Ingresar la factura para poder cerrar la recepcion",
                                 color: "danger",
                                 position: "top-right"
                             });

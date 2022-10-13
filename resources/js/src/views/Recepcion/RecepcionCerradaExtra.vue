@@ -167,7 +167,7 @@
                     >
                         <h6>Fecha Venciminento</h6>
                         <flat-pickr
-                            :config="configTodateTimePicker"
+                            :config="configTodateTimePickerFV"
                             v-model="fechaVencimiento"
                             @on-change="onFromChange"
                             class="w-full "
@@ -1047,6 +1047,7 @@ export default {
             configTodateTimePicker: {
                 minDate: null,
                 dateFormat: "d/m/Y",
+                allowInput: true,
                 locale: {
                     firstDayOfWeek: 1,
                     weekdays: {
@@ -1097,6 +1098,7 @@ export default {
                 minDate: null,
                 maxDate: null,
                 dateFormat: "d/m/Y",
+                allowInput: true,
                 locale: {
                     firstDayOfWeek: 1,
                     weekdays: {

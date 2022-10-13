@@ -5,12 +5,12 @@
                 <h6>Bodega</h6>
 
                 <v-select
-                    v-model="seleccionBodega"
+                    v-model="seleccionBodegaL"
                     placeholder="Activo"
                     class="w-full select-large"
                     label="descripcionBodega"
-                    :options="listaBodega"
-                    @input="cargaItemBodegaFamilia"
+                    :options="listaBodegaL"
+                    @input="cargaItemBodega"
                 ></v-select>
             </div>
             <br />
@@ -1546,6 +1546,7 @@
 <script>
 import axios from "axios";
 import router from "@/router";
+import store from "./storeArticulos.js";
 import vSelect from "vue-select";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
@@ -1631,6 +1632,10 @@ export default {
                 id: 0,
                 descripcionBodega: "Seleccione Bodega"
             },
+            seleccionBodegaL: {
+                id: 0,
+                descripcionBodega: "Seleccione Bodega"
+            },
             seleccionZona: {
                 id: 0,
                 descripcionZonas: ""
@@ -1678,206 +1683,11 @@ export default {
             },
             idMod: 0,
             //Columnas Generales
-            columns: [
-                {
-                    label: "Codigo de Barra",
-                    field: "CODART_BARR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Bodega",
-                    field: "descripcionBodega",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Onu",
-                    field: "CODART_ONU",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Articulo",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Nombre Articulo",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Unidad de Medida",
-                    field: "UNIMEDBASE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Opciones",
-                    field: "action"
-                }
-            ],
-            col: [
-                {
-                    label: "Codigo de Barra",
-                    field: "CODART_BARR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Bodega",
-                    field: "descripcionBodega",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Articulo",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Nombre Medicamento",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Unidad de Medida",
-                    field: "UNIMEDBASE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Opciones",
-                    field: "action"
-                }
-            ],
+            columns: store.state.columns,
+            col: store.state.col,
             //Columnas Medicamentos
-            columnsMed: [
-                {
-                    label: "Codigo de Barra",
-                    field: "CODART_BARR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Bodega",
-                    field: "descripcionBodega",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Articulo",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Nombre Medicamento",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Generico",
-                    field: "GENERICO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Categoria Farmacia",
-                    field: "CAT_FARMACIA",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Unidad de Medida",
-                    field: "UNIMEDBASE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Concentracion",
-                    field: "CONCENTRACION",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Laboratorio",
-                    field: "LABORATORIO",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Estado",
-                    field: "descripcionEstado",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Opciones",
-                    field: "action"
-                }
-            ],
-            colMed: [
-                {
-                    label: "Codigo de Barra",
-                    field: "CODART_BARR",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Codigo Articulo",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Nombre Medicamento",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Unidad de Medida",
-                    field: "UNIMEDBASE",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Opciones",
-                    field: "action"
-                }
-            ],
+            columnsMed: store.state.columnsMed,
+            colMed: store.state.colMed,
             //Datos Listado Proveedor
             rows: [],
             rowsMed: [],
@@ -1885,6 +1695,7 @@ export default {
             listaCodNuevo: [],
             listaEstado: [],
             listaBodega: [],
+            listaBodegaL: [],
             listaZona: [],
             listaFamilia1: [],
             listaFamilia2: [],
@@ -2020,7 +1831,7 @@ export default {
                 console.log(error);
             }
         },
-        popModificarCodigo(id, codbar,codart) {
+        popModificarCodigo(id, codbar, codart) {
             try {
                 this.idMod = id;
                 this.codigoBarra = codbar;
@@ -2038,12 +1849,12 @@ export default {
                 console.log(error);
             }
         },
-        cargaItemBodegaFamilia() {
+        cargaItemBodega() {
             try {
-                if (this.seleccionBodega.id == 1) {
+                if (this.seleccionBodegaL.id == 1) {
                     this.medicamento = true;
                     this.articulosgen = false;
-                } else if (this.seleccionBodega.id > 1) {
+                } else if (this.seleccionBodegaL.id > 1) {
                     this.medicamento = false;
                     this.articulosgen = true;
                 }
@@ -2052,13 +1863,18 @@ export default {
                 let g = [];
 
                 f.forEach((value, index) => {
-                    if (this.seleccionBodega.id == value.idBodega) {
+                    if (this.seleccionBodegaL.id == value.idBodega) {
                         g.push(value);
                     }
                 });
 
                 this.rows = g;
-
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        cargaItemBodegaFamilia() {
+            try {
                 this.listaFamilia1 = [];
                 let c = this.listaTempFamilia1;
                 let b = this.seleccionBodega.id;
@@ -2142,14 +1958,34 @@ export default {
                 console.log(error);
             }
         },
+        cargaBodegaMod(idBodega) {
+            try {
+                this.seleccionBodega = {
+                    id: 0,
+                    descripcionBodega: ""
+                };
+                let c = this.listaBodega;
+                let a = [];
+                c.forEach((value, index) => {
+                    if (idBodega == value.id) {
+                        let dato = {
+                            id: value.id,
+                            descripcionBodega: value.descripcionBodega
+                        };
+                        a = dato;
+                    }
+                });
+
+                this.seleccionBodega.id = a.id;
+                this.seleccionBodega.descripcionBodega = a.descripcionBodega;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         //PopUp General
         popArticuloGeneral() {
             try {
                 this.popUpArticuloGeneral = true;
-                /*                 this.seleccionBodega = {
-                    id: 2,
-                    descripcionBodega: "Economato"
-                }; */
                 this.limpiarCampos();
             } catch (error) {
                 console.log(error);
@@ -2223,17 +2059,7 @@ export default {
                 }
 
                 this.cantidadEmbalaje = CANTXENB;
-                this.idBodega = 0;
-
-                c = this.listaBodega;
-
-                c.forEach((value, index) => {
-                    if (idBodega == value.id) {
-                        this.seleccionBodega.id = value.id;
-                        this.seleccionBodega.descripcionBodega =
-                            value.descripcionBodega;
-                    }
-                });
+                this.cargaBodegaMod(idBodega);
 
                 c = [];
 
@@ -2385,17 +2211,7 @@ export default {
                 }
 
                 this.cantidadEmbalaje = CANTXENB;
-                this.idBodega = 0;
-
-                c = this.listaBodega;
-
-                c.forEach((value, index) => {
-                    if (idBodega == value.id) {
-                        this.seleccionBodega.id = value.id;
-                        this.seleccionBodega.descripcionBodega =
-                            value.descripcionBodega;
-                    }
-                });
+                this.cargaBodegaMod(idBodega);
 
                 c = [];
 
@@ -2551,17 +2367,7 @@ export default {
                     }
                 });
                 this.cantidadEmbalaje = CANTXENB;
-                this.idBodega = 0;
-                c = [];
-                c = this.listaBodega;
-
-                c.forEach((value, index) => {
-                    if (idBodega == value.id) {
-                        this.seleccionBodega.id = value.id;
-                        this.seleccionBodega.descripcionBodega =
-                            value.descripcionBodega;
-                    }
-                });
+                this.cargaBodegaMod(idBodega);
 
                 c = [];
 
@@ -2851,6 +2657,7 @@ export default {
                     })
                     .then(res => {
                         this.listaBodega = res.data;
+                        this.listaBodegaL = res.data;
                         if (this.listaBodega.length < 0) {
                             this.$vs.notify({
                                 time: 5000,

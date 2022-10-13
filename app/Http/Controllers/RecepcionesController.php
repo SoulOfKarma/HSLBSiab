@@ -100,7 +100,7 @@ class RecepcionesController extends Controller
         try {
             $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
             'TIPDOC','FECDOC','DCTO','OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
-            'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','idServicio',
+            'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','idServicio','NOMARCH',
             DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
             ->get();
@@ -336,7 +336,7 @@ class RecepcionesController extends Controller
                 // esta estará dentro de public/defaults/
                
                $url = $request->avatar->store('users/Documentacion');
-               recepciones::where('FOLIO', $request->id)
+               recepciones::where('NUMINT', $request->id)
                 ->update(['NOMARCH' => $url]);
                return true;
             }else{
@@ -352,7 +352,7 @@ class RecepcionesController extends Controller
 
     public function DestroyDocumentoRecepcionFactura(Request $request){
         try {
-            $res=recepciones::where('FOLIO',$request->id)
+            $res=recepciones::where('NUMINT',$request->id)
             ->update(['NOMARCH' => ""]);
                return true;
             if($res){
@@ -424,7 +424,7 @@ class RecepcionesController extends Controller
 
     public function DestroyDocumentoRecepcionFacturaCarta(Request $request){
         try {
-            $res=recepciones::where('FOLIO',$request->id)
+            $res=recepciones::where('NUMINT',$request->id)
             ->update(['NOMARCH_CAR' => ""]);
                return true;
             if($res){

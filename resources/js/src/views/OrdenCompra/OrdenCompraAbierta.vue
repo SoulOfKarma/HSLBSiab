@@ -408,6 +408,7 @@ export default {
             configTodateTimePicker: {
                 minDate: null,
                 dateFormat: "d/m/Y",
+                allowInput: true,
                 locale: {
                     firstDayOfWeek: 1,
                     weekdays: {
