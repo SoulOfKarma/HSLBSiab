@@ -1065,6 +1065,15 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (parseInt(cantidad) < 1 || cantidad.length < 1) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "La cantidad no puede estar vacia o ser 0, ingrese algun valor e intentelo nuevamente",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else if (parseInt(cantidad) < 1) {
                     this.$vs.notify({
                         time: 5000,

@@ -142,6 +142,7 @@
                     <vx-card title="">
                         <div class="vx-row">
                             <vue-good-table
+                                class="w-full"
                                 :columns="colDetalle"
                                 :rows="listaDetalleRecepcion"
                                 :pagination-options="{
@@ -189,6 +190,15 @@
                                             class="custom-class"
                                             @click="
                                                 popAnularArticulo(props.row.id)
+                                            "
+                                        ></plus-circle-icon>
+                                        <plus-circle-icon
+                                            content="Revertir Anulacion"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                popRAnularArticulo(props.row.id)
                                             "
                                         ></plus-circle-icon>
                                     </span>
@@ -331,6 +341,37 @@
                                 type="filled"
                                 class="w-full"
                                 >Anular</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <div class="vx-row"></div>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="RAnulacion"
+            title="Revertir Anulacion"
+            :active.sync="popUpRAnularArticulo"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpRAnularArticulo = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popRAnularDetalleArticulo"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Revertir Anulacion</vs-button
                             >
                         </div>
                     </div>
@@ -619,6 +660,7 @@ export default {
             val_doc: 0,
             idAnulacion: 0,
             popUpAnularArticulo: false,
+            popUpRAnularArticulo: false,
             popUpAnularTodo: false,
             popUpAgregarFactura: false,
             popUpAgregarRIB: false,
@@ -1116,6 +1158,16 @@ export default {
                 console.log(error);
             }
         },
+        //Funciones Finales Recepcion
+        popRAnularArticulo(id) {
+            try {
+                this.idAnulacion = 0;
+                this.idAnulacion = id;
+                this.popUpRAnularArticulo = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         ImprimirDatos() {
             try {
                 if (this.numint != 0 && this.folio != 0) {
@@ -1398,6 +1450,49 @@ export default {
                                 position: "top-right"
                             });
                             this.popUpAnularArticulo = false;
+                            this.TraerDetalleRecepcion();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popRAnularDetalleArticulo() {
+            try {
+                let data = {
+                    id: this.idAnulacion
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Recepcion/PostRAnularArticulo",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo revertir la anulacion del articulo, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text: "Articulo revertido Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpRAnularArticulo = false;
                             this.TraerDetalleRecepcion();
                         }
                     });

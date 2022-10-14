@@ -152,8 +152,10 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Despachos/PutDespachoObservaciones', ['middleware' => 'cors', 'uses' => 'DespachosController@PutDespachoObservaciones']);
     Route::post('/Despachos/CerrarDespacho', ['middleware' => 'cors', 'uses' => 'DespachosController@CerrarDespacho']);
     Route::post('/Despachos/PostAnularArticulo', ['middleware' => 'cors', 'uses' => 'DespachosController@PostAnularArticulo']);
+    Route::post('/Despachos/PostRAnularArticulo', ['middleware' => 'cors', 'uses' => 'DespachosController@PostRAnularArticulo']);
     Route::post('/Despachos/PostAnularTodo', ['middleware' => 'cors', 'uses' => 'DespachosController@PostAnularTodo']);
     Route::post('/Recepcion/PostAnularArticulo', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostAnularArticulo']);
+    Route::post('/Recepcion/PostRAnularArticulo', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostRAnularArticulo']);
     Route::post('/Recepcion/PostAnularTodo', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostAnularTodo']);
     Route::post('/Recepcion/PostCerrarDespacho', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostCerrarDespacho']);
     Route::post('/Recepcion/PostCerrarRecepcionDespacho', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostCerrarRecepcionDespacho']);

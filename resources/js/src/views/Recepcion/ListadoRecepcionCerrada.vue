@@ -21,6 +21,7 @@
                             </span>
                             <span v-else-if="props.column.field === 'NOMARCH'">
                                 <plus-circle-icon
+                                    v-if="props.row.NOMARCH"
                                     content="Abrir Factura"
                                     v-tippy
                                     size="1.5x"
@@ -32,6 +33,7 @@
                                 v-else-if="props.column.field === 'NOMARCH_RIB'"
                             >
                                 <plus-circle-icon
+                                    v-if="props.row.NOMARCH_RIB"
                                     content="Abrir RIB"
                                     v-tippy
                                     size="1.5x"
@@ -43,6 +45,7 @@
                                 v-else-if="props.column.field === 'NOMARCH_CAR'"
                             >
                                 <plus-circle-icon
+                                    v-if="props.row.NOMARCH_CAR"
                                     content="Abrir Carta"
                                     v-tippy
                                     size="1.5x"

@@ -245,6 +245,7 @@
                         <div class="vx-row">
                             <vue-good-table
                                 :columns="colDetalle"
+                                class="w-full"
                                 :rows="listaDetalleRecepcion"
                                 :pagination-options="{
                                     enabled: true,
@@ -1171,73 +1172,43 @@ export default {
             colDetalle: [
                 {
                     label: "Codigo Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODART"
                 },
                 {
                     label: "Especificacion Comprador",
-                    field: "PRODUCTO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "PRODUCTO"
                 },
                 {
                     label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODBAR"
                 },
                 {
                     label: "Unidad Medida",
-                    field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "UNIMED"
                 },
                 {
                     label: "Vencimiento Activo?",
-                    field: "ACT_FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "ACT_FECVEN"
                 },
                 {
                     label: "Fecha Vencimiento",
-                    field: "FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "FECVEN"
                 },
                 {
                     label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "LOTE"
                 },
                 {
                     label: "Cantidad Recepcionada",
-                    field: "CANREC",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CANREC"
                 },
                 {
                     label: "Precio Unitario",
-                    field: "PREUNI",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "PREUNI"
                 },
                 {
                     label: "Total Recepcionado",
-                    field: "VALTOT",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "VALTOT"
                 },
                 {
                     label: "Opciones",
@@ -2358,100 +2329,244 @@ export default {
                         position: "top-right"
                     });
                 } else {
-                    let total = this.precio * this.cantidad;
-                    let valorT = total + parseInt(this.valorTotal);
-                    let nombreUsuario =
-                        sessionStorage.getItem("nombre") +
-                        " " +
-                        sessionStorage.getItem("apellido");
+                    if (this.seleccionFechaVencimiento.id == 1) {
+                        if (this.fechaVencimiento != null) {
+                            let total = this.precio * this.cantidad;
+                            let valorT = total + parseInt(this.valorTotal);
+                            let nombreUsuario =
+                                sessionStorage.getItem("nombre") +
+                                " " +
+                                sessionStorage.getItem("apellido");
 
-                    if (this.fechaVencimiento != null) {
-                        this.fechaVencimiento = moment(
-                            this.fechaVencimiento,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD");
+                            if (this.fechaVencimiento != null) {
+                                this.fechaVencimiento = moment(
+                                    this.fechaVencimiento,
+                                    "DD-MM-YYYY"
+                                ).format("YYYY-MM-DD");
+                            }
+                            let data = {
+                                NUMINT: this.numint,
+                                FECSYS: moment(
+                                    this.fechaSistema,
+                                    "DD-MM-YYYY"
+                                ).format("YYYY-MM-DD"),
+                                FECDES: moment(
+                                    this.fechaRecepcion,
+                                    "DD-MM-YYYY"
+                                ).format("YYYY-MM-DD"),
+                                RUTPRO: this.seleccionProveedores.RUTPROV,
+                                NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
+                                TIPDOC: this.seleccionTipoDocumento.id,
+                                NUMDOC: this.ndocumento.toUpperCase(),
+                                FECDOC: moment(
+                                    this.fechaDocumento,
+                                    "DD-MM-YYYY"
+                                ).format("YYYY-MM-DD"),
+                                NUMORD: this.nordencompra.toUpperCase(),
+                                NUMRIB: this.nrib,
+                                CODART: this.codigoArticulo.toUpperCase(),
+                                PRODUCTO: this.nombre.toUpperCase(),
+                                CODBAR: this.codigoBarra.toUpperCase(),
+                                UNIMED: this.unidadMedidaBase.toUpperCase(),
+                                ACT_FECVEN: this.seleccionFechaVencimiento.id,
+                                FECVEN: this.fechaVencimiento,
+                                LOTE: this.lote,
+                                CANREC: this.cantidad,
+                                CANRECH: 0,
+                                PENDIENTE: 0,
+                                PREUNI: this.precio,
+                                VALTOT: total,
+                                DCTO: 0,
+                                OBS: this.Observaciones.toUpperCase(),
+                                CARGO: 0,
+                                SUBTOTAL: valorT,
+                                AJUSTE: 0,
+                                USUING: nombreUsuario.toUpperCase(),
+                                idServicio: this.seleccionServicio.id,
+                                NUMLIBPED: this.numeroLibroPedido,
+                                TIPRECEPCION: this.tiporecepcion,
+                                TIPORD: this.seleccionTipoCompra.NOMTIPCOM
+                            };
+                            const dat = data;
+
+                            axios
+                                .post(
+                                    this.localVal +
+                                        "/api/Mantenedor/PostArticuloDetalleCodInterno",
+                                    dat,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                                .then(res => {
+                                    const solicitudServer = res.data;
+                                    if (solicitudServer == true) {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Completado",
+                                            text:
+                                                "Articulo Ingresado al detalle Correctamente",
+                                            color: "success",
+                                            position: "top-right"
+                                        });
+                                        this.TraerDetalleRecepcion();
+                                        this.TraerRecepcion();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "Debe ingresar una fecha de vencimiento para continuar",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    } else {
+                        let total = this.precio * this.cantidad;
+                        let valorT = total + parseInt(this.valorTotal);
+                        let nombreUsuario =
+                            sessionStorage.getItem("nombre") +
+                            " " +
+                            sessionStorage.getItem("apellido");
+
+                        let data = {
+                            NUMINT: this.numint,
+                            FECSYS: moment(
+                                this.fechaSistema,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            FECDES: moment(
+                                this.fechaRecepcion,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            RUTPRO: this.seleccionProveedores.RUTPROV,
+                            NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
+                            TIPDOC: this.seleccionTipoDocumento.id,
+                            NUMDOC: this.ndocumento.toUpperCase(),
+                            FECDOC: moment(
+                                this.fechaDocumento,
+                                "DD-MM-YYYY"
+                            ).format("YYYY-MM-DD"),
+                            NUMORD: this.nordencompra.toUpperCase(),
+                            NUMRIB: this.nrib,
+                            CODART: this.codigoArticulo.toUpperCase(),
+                            PRODUCTO: this.nombre.toUpperCase(),
+                            CODBAR: this.codigoBarra.toUpperCase(),
+                            UNIMED: this.unidadMedidaBase.toUpperCase(),
+                            ACT_FECVEN: this.seleccionFechaVencimiento.id,
+                            LOTE: this.lote,
+                            CANREC: this.cantidad,
+                            CANRECH: 0,
+                            PENDIENTE: 0,
+                            PREUNI: this.precio,
+                            VALTOT: total,
+                            DCTO: 0,
+                            OBS: this.Observaciones.toUpperCase(),
+                            CARGO: 0,
+                            SUBTOTAL: valorT,
+                            AJUSTE: 0,
+                            USUING: nombreUsuario.toUpperCase(),
+                            idServicio: this.seleccionServicio.id,
+                            NUMLIBPED: this.numeroLibroPedido,
+                            TIPRECEPCION: this.tiporecepcion,
+                            TIPORD: this.seleccionTipoCompra.NOMTIPCOM
+                        };
+                        const dat = data;
+
+                        if (this.contador > 0) {
+                            axios
+                                .post(
+                                    this.localVal +
+                                        "/api/Mantenedor/PostArticuloDetalleCodInterno",
+                                    dat,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                                .then(res => {
+                                    const solicitudServer = res.data;
+                                    if (solicitudServer == true) {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Completado",
+                                            text:
+                                                "Articulo Ingresado al detalle Correctamente",
+                                            color: "success",
+                                            position: "top-right"
+                                        });
+                                        this.TraerDetalleRecepcion();
+                                        this.TraerRecepcion();
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                });
+                        } else {
+                            axios
+                                .post(
+                                    this.localVal +
+                                        "/api/Mantenedor/PostArticuloDetalle",
+                                    dat,
+                                    {
+                                        headers: {
+                                            Authorization:
+                                                `Bearer ` +
+                                                sessionStorage.getItem("token")
+                                        }
+                                    }
+                                )
+                                .then(res => {
+                                    const solicitudServer = res.data;
+                                    if (solicitudServer == true) {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Completado",
+                                            text:
+                                                "Articulo Ingresado al detalle Correctamente",
+                                            color: "success",
+                                            position: "top-right"
+                                        });
+                                        this.TraerDetalleRecepcion();
+                                        this.TraerRecepcion();
+                                        this.contador = 1;
+                                    } else {
+                                        this.$vs.notify({
+                                            time: 5000,
+                                            title: "Error",
+                                            text:
+                                                "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                            color: "danger",
+                                            position: "top-right"
+                                        });
+                                    }
+                                });
+                        }
                     }
-
-                    let data = {
-                        NUMINT: this.numint,
-                        FECSYS: moment(this.fechaSistema, "DD-MM-YYYY").format(
-                            "YYYY-MM-DD"
-                        ),
-                        FECDES: moment(
-                            this.fechaRecepcion,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        RUTPRO: this.seleccionProveedores.RUTPROV,
-                        NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
-                        TIPDOC: this.seleccionTipoDocumento.id,
-                        NUMDOC: this.ndocumento.toUpperCase(),
-                        FECDOC: moment(
-                            this.fechaDocumento,
-                            "DD-MM-YYYY"
-                        ).format("YYYY-MM-DD"),
-                        NUMORD: this.nordencompra.toUpperCase(),
-                        NUMRIB: this.nrib,
-                        CODART: this.codigoArticulo.toUpperCase(),
-                        PRODUCTO: this.nombre.toUpperCase(),
-                        CODBAR: this.codigoBarra.toUpperCase(),
-                        UNIMED: this.unidadMedidaBase.toUpperCase(),
-                        ACT_FECVEN: this.seleccionFechaVencimiento.id,
-                        FECVEN: this.fechaVencimiento,
-                        LOTE: this.lote,
-                        CANREC: this.cantidad,
-                        CANRECH: 0,
-                        PENDIENTE: 0,
-                        PREUNI: this.precio,
-                        VALTOT: total,
-                        DCTO: 0,
-                        OBS: this.Observaciones.toUpperCase(),
-                        CARGO: 0,
-                        SUBTOTAL: valorT,
-                        AJUSTE: 0,
-                        USUMOD: nombreUsuario.toUpperCase(),
-                        idServicio: this.seleccionServicio.id,
-                        NUMLIBPED: this.numeroLibroPedido,
-                        TIPRECEPCION: this.tiporecepcion
-                    };
-                    const dat = data;
-
-                    axios
-                        .post(
-                            this.localVal +
-                                "/api/Mantenedor/PostArticuloDetalleCodInterno",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
-                                }
-                            }
-                        )
-                        .then(res => {
-                            const solicitudServer = res.data;
-                            if (solicitudServer == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text:
-                                        "Articulo Ingresado al detalle Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.TraerDetalleRecepcion();
-                                this.TraerRecepcion();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        });
                 }
             } catch (error) {
                 console.log(error);
@@ -2506,73 +2621,104 @@ export default {
                     subtotal = subtotal + parseInt(value.VALTOT);
                 });
 
-                subtotal = subtotal - parseInt(this.dcto);
-                subtotal = subtotal + parseInt(this.cargos);
-                subtotal = subtotal + parseInt(this.ajustes);
+                if (subtotal < parseInt(this.dcto)) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "El valor del descuento no puede superar el valor NETO",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (subtotal < parseInt(this.cargos)) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "El valor del Cargo no puede superar el valor NETO",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (subtotal < parseInt(this.ajustes)) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "El valor del Ajuste no puede superar el valor NETO",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else {
+                    subtotal = subtotal - parseInt(this.dcto);
+                    subtotal = subtotal + parseInt(this.cargos);
+                    subtotal = subtotal + parseInt(this.ajustes);
 
-                let data = this.listaDetalleRecepcion;
-                let dat = {
-                    NUMINT: this.numint,
-                    SUBTOTAL: subtotal,
-                    DCTO: parseInt(this.dcto),
-                    CARGO: parseInt(this.cargos),
-                    AJUSTE: parseInt(this.ajustes),
-                    OBS: this.Observaciones.toUpperCase(),
-                    TIPORD: this.seleccionTipoCompra.NOMTIPCOM
-                };
+                    let data = this.listaDetalleRecepcion;
+                    let dat = {
+                        NUMINT: this.numint,
+                        SUBTOTAL: subtotal,
+                        DCTO: parseInt(this.dcto),
+                        CARGO: parseInt(this.cargos),
+                        AJUSTE: parseInt(this.ajustes),
+                        OBS: this.Observaciones.toUpperCase(),
+                        TIPORD: this.seleccionTipoCompra.NOMTIPCOM
+                    };
 
-                axios
-                    .all([
-                        axios.post(
-                            this.localVal +
-                                "/api/Mantenedor/PutListadoArticulosRecepcion",
-                            data,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                    axios
+                        .all([
+                            axios.post(
+                                this.localVal +
+                                    "/api/Mantenedor/PutListadoArticulosRecepcion",
+                                data,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
-                            }
-                        ),
-                        axios.post(
-                            this.localVal + "/api/Mantenedor/PutRecepcionTotal",
-                            dat,
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ` +
-                                        sessionStorage.getItem("token")
+                            ),
+                            axios.post(
+                                this.localVal +
+                                    "/api/Mantenedor/PutRecepcionTotal",
+                                dat,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            sessionStorage.getItem("token")
+                                    }
                                 }
-                            }
-                        )
-                    ])
-                    .then(
-                        axios.spread((res1, res2) => {
-                            let resp1 = res1.data;
-                            let resp2 = res2.data;
-                            if (resp1 == true && resp2 == true) {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Completado",
-                                    text: "Articulos modificados Correctamente",
-                                    color: "success",
-                                    position: "top-right"
-                                });
-                                this.TraerRecepcion();
-                                this.TraerDetalleRecepcion();
-                            } else {
-                                this.$vs.notify({
-                                    time: 5000,
-                                    title: "Error",
-                                    text:
-                                        "No fue posible modificar los articulos,intentelo nuevamente",
-                                    color: "danger",
-                                    position: "top-right"
-                                });
-                            }
-                        })
-                    );
+                            )
+                        ])
+                        .then(
+                            axios.spread((res1, res2) => {
+                                let resp1 = res1.data;
+                                let resp2 = res2.data;
+                                if (resp1 == true && resp2 == true) {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Completado",
+                                        text:
+                                            "Articulos modificados Correctamente",
+                                        color: "success",
+                                        position: "top-right"
+                                    });
+                                    this.TraerRecepcion();
+                                    this.TraerDetalleRecepcion();
+                                } else {
+                                    this.$vs.notify({
+                                        time: 5000,
+                                        title: "Error",
+                                        text:
+                                            "No fue posible modificar los articulos,intentelo nuevamente",
+                                        color: "danger",
+                                        position: "top-right"
+                                    });
+                                }
+                            })
+                        );
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -2816,7 +2962,6 @@ export default {
                 this.fechaRecepcion = date.format("DD/MM/YYYY").toString();
                 this.fechaSistema = date.format("DD/MM/YYYY").toString();
                 this.fechaDocumento = date.format("DD/MM/YYYY").toString();
-                this.fechaVencimiento = date.format("DD/MM/YYYY").toString();
             } catch (error) {
                 console.log("No se cargo la ISO hora");
                 console.log(error);

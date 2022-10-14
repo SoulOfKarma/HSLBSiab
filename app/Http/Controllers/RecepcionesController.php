@@ -294,6 +294,17 @@ class RecepcionesController extends Controller
         }
     }
 
+    public function PostRAnularArticulo(Request $request){
+        try {
+            recepcionDetalles::where('id',$request->id)
+            ->update(['CODMOT' => '','NOMMOT' => '']);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function PostAnularTodo(Request $request){
         try {
             recepcionDetalles::where('NUMINT',$request->NUMINT)

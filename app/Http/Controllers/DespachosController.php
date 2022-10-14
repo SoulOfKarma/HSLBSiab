@@ -236,6 +236,17 @@ class DespachosController extends Controller
         }
     }
 
+    public function PostRAnularArticulo(Request $request){
+        try {
+            despachoDetalles::where('id',$request->id)
+            ->update(['CODMOT' => "",'NOMMOT' => ""]);
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
     public function PostAnularTodo(Request $request){
         try {
             despachoDetalles::where('NUMINT',$request->NUMINT)
@@ -254,6 +265,8 @@ class DespachosController extends Controller
             'despacho_detalles.UNIMED','despacho_detalles.CANTIDAD','despacho_detalles.PRECIO','despacho_detalles.NUMINT','despacho_detalles.CODMOT','despacho_detalles.NOMMOT',
             DB::raw("ROUND((despacho_detalles.CANTIDAD*despacho_detalles.PRECIO),2) as VALORTOTALDESP"))
             ->where('despacho_detalles.NUMINT',$NUMINT)
+            ->whereNull('despacho_detalles.CODMOT')
+            ->orWhere('despacho_detalles.CODMOT','')
             ->get();
 
             $getRec = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECSYS','despachos.FECDES','despachos.idServicio','servicios.descripcionServicio',
