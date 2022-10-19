@@ -65,7 +65,12 @@ class RecepcionesController extends Controller
 
     public function GetRecepcionAbiertas(Request $request){
         try {
-            $get = recepciones::where('FOLIO',null)
+            $get = recepciones::select('AJUSTE','CARGO','CODDIG','DCTO','FECDES','FECDOC','FECFAC',
+            'FECSYS','FOLIO','NOMARCH','NOMARCH_CAR','NOMARCH_RIB','NOMDIG','NOMPRO','NOMPRO','NOTCRE_RF',
+            'NUMDOC','NUMFAC','NUMINT','NUMLIBPED','NUMORD','NUMREC_RF','NUMRIB',
+            DB::raw('fnStripTags(OBS) as OBS'),'RUTPRO','SUBTOTAL','TIPBOB','TIPDOC','TIPORD',
+            'TIPRECEPCION','USUING','USUMOD','id','idServicio','idTipoCompra')
+            ->where('FOLIO',null)
             ->get();
             return $get;
         } catch (\Throwable $th) {
@@ -87,7 +92,12 @@ class RecepcionesController extends Controller
 
     public function GetArticulosIngresadosByCodInterno(Request $request){
         try {
-            $get = recepcionDetalles::where('NUMINT',$request->NUMINT)
+            $get = recepcionDetalles::select('ACT_FECVEN','AJUSTE','CANREC','CANRECH','CANTIDAD','CARGO',
+            'CODART','CODART_OC','CODBAR','CODINT2','CODMOT','DCTO','ESPCOM','ESPPRO','FECDES',
+            'FECSYS','FECVEN','FL','FOLIO','IMPADICIONAL','IVA','LINEA','LOTE','MARCA','NOMMOT',
+            'NUMINT','PENDIENTE','PREUNI','PREUNI2','PRODUCTO','TOTREC','UNIMED','USUING','USUMOD',
+            DB::raw("ROUND(VALTOT,0) as VALTOT"),'id')
+            ->where('NUMINT',$request->NUMINT)
             ->get();
             return $get;
         } catch (\Throwable $th) {
@@ -99,9 +109,9 @@ class RecepcionesController extends Controller
     public function GetRecepcionIngresadaByCodInterno(Request $request){
         try {
             $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
-            'TIPDOC','FECDOC','DCTO','OBS','CARGO','SUBTOTAL','AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
+            'TIPDOC','FECDOC','DCTO','OBS','CARGO',DB::raw("ROUND(SUBTOTAL,0) as SUBTOTAL"),'AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
             'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','idServicio','NOMARCH',
-            DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
+            DB::raw("ROUND(SUBTOTAL,0) as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),0) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,0) as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
             ->get();
             return $get;
@@ -254,8 +264,11 @@ class RecepcionesController extends Controller
     public function PutRecepcionTotal(Request $request){
         try {
             recepciones::where('NUMINT',$request->NUMINT)
-            ->update(['SUBTOTAL' => $request->SUBTOTAL,'TIPORD' => $request->TIPORD,
-            'DCTO' => $request->DCTO,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'OBS' => $request->OBS]);
+            ->update(['SUBTOTAL' => $request->SUBTOTAL,'TIPORD' => $request->TIPORD,'NUMORD' => $request->NUMORD,
+            'DCTO' => $request->DCTO,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'OBS' => $request->OBS,
+            'FECDES' => $request->FECDES,'RUTPRO' => $request->RUTPRO,'NOMPRO' => $request->NOMPRO,'NUMRIB' => $request->NUMRIB,
+            'TIPDOC' => $request->TIPDOC,'NUMDOC' => $request->NUMDOC,'FECDOC' => $request->FECDOC,'NUMLIBPED' => $request->NUMLIBPED,
+            'TIPRECEPCION' => $request->TIPRECEPCION,'USUING' => $request->USUING]); 
             return true;
         } catch (\Throwable $th) {
             log::info($th);
@@ -446,4 +459,5 @@ class RecepcionesController extends Controller
             return false;
         }
     }
+
 }

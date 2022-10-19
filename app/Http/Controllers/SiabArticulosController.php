@@ -299,5 +299,30 @@ class SiabArticulosController extends Controller
         }
     }
 
+    public function BusquedaArticuloCODBAR(Request $request){
+        try {
+            $get = siab_articulos::select('siab_articulo.id','siab_articulo.CODART_TRACK','siab_articulo.NOMBRE','siab_articulo.GENERICO',
+            'siab_articulo.CAT_FARMACIA','siab_articulo.UNIMEDBASE','siab_articulo.CODART_ONU','siab_articulo.CONCENTRACION',
+            'siab_articulo.CODART','siab_articulo.CODART_BARR','auth_estados.descripcionEstado',
+            'siab_articulo.UBICACION','siab_articulo.SECTOR','siab_articulo.ZGEN','bodega.descripcionBodega','zona.descripcionZonas',
+            'siab_articulo.CANTXENB','siab_articulo.ACT_FECVEN as idACT_FECVEN','siab_articulo.ACT_LOTE AS idACTLOTE',
+            'siab_articulo.LABORATORIO','siab_articulo.COVID AS idCOVID',
+            DB::raw("(CASE WHEN siab_articulo.ACT_FECVEN = 1 THEN 'Si' ELSE 'No' END) as ACT_FECVEN"),
+            DB::raw("(CASE WHEN siab_articulo.ACT_LOTE = 1 THEN 'Si' ELSE 'No' END) as ACT_LOTE"),
+            'siab_articulo.idEstado','siab_articulo.idBodega','siab_articulo.idZona','siab_articulo.NOMFAM1','siab_articulo.NOMFAM2',
+            'siab_articulo.NOMFAM3','siab_articulo.NOMFAM4','siab_articulo.NOMFAM5','siab_articulo.NOMARCH'
+            )
+           ->leftjoin('auth_estados','siab_articulo.idEstado','=','auth_estados.id')
+           ->leftjoin('bodega','siab_articulo.idBodega','=','bodega.id')
+           ->leftjoin('zona','siab_articulo.idZona','=','zona.id')
+           ->where('siab_articulo.CODART_BARR',$request->CODBAR)
+           ->get();
+            return $get;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;
+        }
+    }
+
    
 }

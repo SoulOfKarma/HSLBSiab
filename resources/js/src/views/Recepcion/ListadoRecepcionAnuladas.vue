@@ -116,7 +116,7 @@ export default {
                 },
                 {
                     label: "N° RIB",
-                    field: "NUMINT",
+                    field: "NUMRIB",
                     filterOptions: {
                         enabled: true
                     }
@@ -131,6 +131,13 @@ export default {
                 {
                     label: "Observaciones",
                     field: "OBS",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Tipo Recepcion",
+                    field: "TIPRECEPCION",
                     filterOptions: {
                         enabled: true
                     }

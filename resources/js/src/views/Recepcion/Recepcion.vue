@@ -147,7 +147,7 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="codigoBarra"
-                            disabled
+                            v-on:blur="BuscarArticuloCODBAR"
                         />
                     </div>
                     <div class="vx-col w-1/3 mt-5">
@@ -194,7 +194,7 @@
                     </div>
 
                     <br />
-                    <div class="vx-col w-1/2 mt-5">
+                    <div class="vx-col w-1/2 mt-5" v-show="false">
                         <vs-button
                             @click="limpiarCampos"
                             color="primary"
@@ -203,7 +203,7 @@
                             >Limpiar Campos</vs-button
                         >
                     </div>
-                    <div class="vx-col w-1/2 mt-5">
+                    <div class="vx-col w-full mt-5">
                         <vs-button
                             @click="AgregarArticuloDetalle"
                             color="success"
@@ -696,7 +696,7 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="codigoBarra"
-                            disabled
+                            v-on:blur="BuscarArticuloCODBAR"
                         />
                     </div>
                     <div class="vx-col w-1/3 mt-5">
@@ -742,7 +742,7 @@
                         <vs-input class="inputx w-full  " v-model="lote" />
                     </div>
                     <br />
-                    <div class="vx-col w-1/2 mt-5">
+                    <div class="vx-col w-1/2 mt-5" v-show="false">
                         <vs-button
                             @click="limpiarCampos"
                             color="primary"
@@ -751,7 +751,7 @@
                             >Limpiar Campos</vs-button
                         >
                     </div>
-                    <div class="vx-col w-1/2 mt-5">
+                    <div class="vx-col w-full mt-5">
                         <vs-button
                             @click="AgregarArticuloDetalle"
                             color="success"
@@ -1479,8 +1479,8 @@ export default {
             codInternoRecepcion: 0,
             descripcionServicio: "",
             ndocumento: "",
-            cantidad: 0,
-            precio: 0,
+            cantidad: "",
+            precio: "",
             numint: 0,
             valorTotal: 0,
             contador: 0,
@@ -1970,13 +1970,12 @@ export default {
         },
         limpiarCampos() {
             try {
-                this.cantidad = 0;
-                this.precio = 0;
+                this.cantidad = "";
+                this.precio = "";
                 this.codigoBarra = "";
                 this.codigoOnu = "";
                 this.codigoArticulo = "";
                 this.nombre = "";
-                this.nordencompra = "";
                 this.seleccionEstado = {
                     id: 0,
                     descripcionEstado: ""
@@ -3037,6 +3036,10 @@ export default {
                                             });
                                             this.TraerDetalleRecepcion();
                                             this.TraerRecepcion();
+                                            this.cantidad = "";
+                                            this.precio = "";
+                                            this.codigoBarra = "";
+                                            this.lote = "";
                                         } else {
                                             this.$vs.notify({
                                                 time: 5000,
@@ -3077,6 +3080,10 @@ export default {
                                             });
                                             this.TraerDetalleRecepcion();
                                             this.TraerRecepcion();
+                                            this.cantidad = 0;
+                                            this.precio = 0;
+                                            this.codigoBarra = "";
+                                            this.lote = "";
                                             this.contador = 1;
                                         } else {
                                             this.$vs.notify({
@@ -3179,6 +3186,10 @@ export default {
                                         });
                                         this.TraerDetalleRecepcion();
                                         this.TraerRecepcion();
+                                        this.cantidad = "";
+                                        this.precio = "";
+                                        this.codigoBarra = "";
+                                        this.lote = "";
                                     } else {
                                         this.$vs.notify({
                                             time: 5000,
@@ -3217,6 +3228,10 @@ export default {
                                         });
                                         this.TraerDetalleRecepcion();
                                         this.TraerRecepcion();
+                                        this.cantidad = 0;
+                                        this.precio = 0;
+                                        this.codigoBarra = "";
+                                        this.lote = "";
                                         this.contador = 1;
                                     } else {
                                         this.$vs.notify({
@@ -3323,6 +3338,9 @@ export default {
                                 position: "top-right"
                             });
                             this.TraerDetalleRecepcion();
+                            setTimeout(() => {
+                                this.ActualizarListado();
+                            }, 2000);
                             this.popUpDelArt = false;
                         } else {
                             this.$vs.notify({
@@ -3379,6 +3397,11 @@ export default {
                     subtotal = subtotal + parseInt(this.cargos);
                     subtotal = subtotal + parseInt(this.ajustes);
 
+                    let nombreUsuario =
+                        sessionStorage.getItem("nombre") +
+                        " " +
+                        sessionStorage.getItem("apellido");
+
                     let data = this.listaDetalleRecepcion;
                     let dat = {
                         NUMINT: this.numint,
@@ -3387,7 +3410,24 @@ export default {
                         CARGO: parseInt(this.cargos),
                         AJUSTE: parseInt(this.ajustes),
                         OBS: this.Observaciones.toUpperCase(),
-                        TIPORD: this.seleccionTipoCompra.NOMTIPCOM
+                        TIPORD: this.seleccionTipoCompra.NOMTIPCOM,
+                        NUMORD: this.nordencompra.toUpperCase(),
+                        NUMRIB: this.nrib,
+                        FECDES: moment(
+                            this.fechaRecepcion,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        RUTPRO: this.seleccionProveedores.RUTPROV,
+                        NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
+                        TIPDOC: this.seleccionTipoDocumento.id,
+                        NUMDOC: this.ndocumento.toUpperCase(),
+                        FECDOC: moment(
+                            this.fechaDocumento,
+                            "DD-MM-YYYY"
+                        ).format("YYYY-MM-DD"),
+                        NUMLIBPED: this.numeroLibroPedido,
+                        TIPRECEPCION: this.tiporecepcion,
+                        USUING: nombreUsuario.toUpperCase()
                     };
 
                     axios
@@ -3706,6 +3746,117 @@ export default {
                             router.push("/pages/login");
                         } else {
                             sessionStorage.setItem("token", tok);
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        BuscarArticuloCODBAR() {
+            try {
+                let data = {
+                    CODBAR: this.codigoBarra
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Recepcion/BusquedaArticuloCODBAR",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let datoArticulo = res.data;
+                        if (datoArticulo.length < 1) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se encontro Articulo por Codigo de Barra, se sugiere buscar por listado",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            let d = datoArticulo;
+                            d.forEach((val, ind) => {
+                                this.codigoBarra = val.CODART_BARR;
+                                this.codigoOnu = val.CODART_ONU;
+                                this.codigoArticulo = val.CODART;
+                                this.nombre = val.NOMBRE;
+                                let c = this.listaEstado;
+
+                                c.forEach((value, index) => {
+                                    if (val.idEstado == value.id) {
+                                        this.seleccionEstado.id = value.id;
+                                        this.seleccionEstado.descripcionEstado =
+                                            value.descripcionEstado;
+                                    }
+                                });
+
+                                c = [];
+                                if (val.idACT_FECVEN == 1) {
+                                    this.seleccionFechaVencimiento = {
+                                        id: 1,
+                                        descripcionFVen: "Si"
+                                    };
+                                } else {
+                                    this.seleccionFechaVencimiento = {
+                                        id: 2,
+                                        descripcionFVen: "No"
+                                    };
+
+                                    this.fechaVencimiento = null;
+                                }
+
+                                if (val.idACTLOTE == 1) {
+                                    this.seleccionLoteSerie = {
+                                        id: 1,
+                                        descripcionLoteSerie: "Si"
+                                    };
+                                } else {
+                                    this.seleccionLoteSerie = {
+                                        id: 2,
+                                        descripcionLoteSerie: "No"
+                                    };
+                                }
+
+                                this.cantidadEmbalaje = val.CANTXENB;
+                                this.idBodega = val.idBodega;
+
+                                c = this.listaBodega;
+
+                                c.forEach((value, index) => {
+                                    if (this.idBodega == value.id) {
+                                        this.seleccionBodega.id = value.id;
+                                        this.seleccionBodega.descripcionBodega =
+                                            value.descripcionBodega;
+                                    }
+                                });
+
+                                c = [];
+
+                                this.idZona = val.idZona;
+
+                                c = this.listaZona;
+
+                                c.forEach((value, index) => {
+                                    if (this.idZona == value.id) {
+                                        this.seleccionZona.id = value.id;
+                                        this.seleccionZona.descripcionZonas =
+                                            value.descripcionZonas;
+                                    }
+                                });
+
+                                c = [];
+                                this.sector = val.SECTOR;
+                                this.ubicacion = val.UBICACION;
+
+                                this.unidadMedidaBase = val.UNIMEDBASE;
+                            });
                         }
                     });
             } catch (error) {
