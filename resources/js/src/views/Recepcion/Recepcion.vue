@@ -2886,11 +2886,35 @@ export default {
         },
         AgregarArticuloDetalle() {
             try {
+                let fechav = moment(this.fechaVencimiento, "DD-MM-YYYY").format(
+                    "YYYY-MM-DD"
+                );
+
+                let lotev = this.lote;
+
+                let c = this.listaDetalleRecepcion;
+
+                let validacionFL = false;
+                c.forEach((value, index) => {
+                    let dato1 = value.FECVEN;
+                    let dato2 = value.LOTE;
+                    if (fechav == dato1 && lotev == dato2) {
+                        validacionFL = true;
+                    }
+                });
                 if (this.precio == null || this.precio < 1) {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
                         text: "Debe Ingresar un Precio",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (validacionFL) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Articulo ya fue ingresado",
                         color: "danger",
                         position: "top-right"
                     });
