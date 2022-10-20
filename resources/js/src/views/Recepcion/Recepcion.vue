@@ -889,7 +889,7 @@
                                             "
                                             v-model="props.row.LOTE"
                                             type="text"
-                                            style="width:300px"
+                                            style="width:100px"
                                         ></vs-input>
                                     </span>
                                     <span
@@ -909,7 +909,7 @@
                                             v-model="props.row.CANREC"
                                             type="text"
                                             @keypress="isNumber($event)"
-                                            style="width:300px"
+                                            style="width:100px"
                                         ></vs-input>
                                     </span>
                                     <span
@@ -929,7 +929,7 @@
                                             v-model="props.row.PREUNI"
                                             type="text"
                                             @keypress="isNumber($event)"
-                                            style="width:300px"
+                                            style="width:100px"
                                         ></vs-input>
                                     </span>
                                     <span
