@@ -1046,8 +1046,36 @@ export default {
             //Template Columnas Listado Proveedor
             columns: [
                 {
-                    label: "Servicio",
-                    field: "descripcionServicio",
+                    label: "Descripcion Jerarquia",
+                    field: "descripcionSF1",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Sub-Jerarquia",
+                    field: "descripcionSF2",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Departamento",
+                    field: "descripcionSF3",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Unidad",
+                    field: "descripcionSF4",
+                    filterOptions: {
+                        enabled: true
+                    }
+                },
+                {
+                    label: "Descripcion Sub-Unidad",
+                    field: "descripcionSF5",
                     filterOptions: {
                         enabled: true
                     }
@@ -1436,7 +1464,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpJerarquia = false;
-                                this.TraerJerarquia();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -1466,9 +1493,22 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.seleccionSF1Mod.id == 0 ||
+                    this.seleccionSF1Mod.id == "" ||
+                    this.seleccionSF1Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
-                        id: this.seleccionSF1.id,
+                        id: this.seleccionSF1Mod.id,
                         descripcionSF1: this.descripcionJerarquiaMod.toUpperCase()
                     };
 
@@ -1498,7 +1538,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpJerarquia = false;
-                                this.TraerJerarquia();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -1555,6 +1594,19 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.seleccionSF1.id == 0 ||
+                    this.seleccionSF1.id == "" ||
+                    this.seleccionSF1.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
                         descripcionSF2: this.descripcionSubJerarquia.toUpperCase(),
@@ -1583,7 +1635,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpSubJerarquia = false;
-                                this.TraerSubJerarquia();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -1613,11 +1664,37 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.seleccionSF1Mod.id == 0 ||
+                    this.seleccionSF1Mod.id == "" ||
+                    this.seleccionSF1Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF2Mod.id == 0 ||
+                    this.seleccionSF2Mod.id == "" ||
+                    this.seleccionSF2Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Sub-Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
-                        id: this.seleccionSF2.id,
+                        id: this.seleccionSF2Mod.id,
                         descripcionSF2: this.descripcionSubJerarquiaMod.toUpperCase(),
-                        idSF1: this.seleccionSF1.id
+                        idSF1: this.seleccionSF1Mod.id
                     };
 
                     const dat = data;
@@ -1647,7 +1724,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpSubJerarquia = false;
-                                this.TraerSubJerarquia();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -1704,6 +1780,32 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.seleccionSF1.id == 0 ||
+                    this.seleccionSF1.id == "" ||
+                    this.seleccionSF1.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF2.id == 0 ||
+                    this.seleccionSF2.id == "" ||
+                    this.seleccionSF2.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Sub-Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
                         descripcionSF3: this.descripcionDepartamento.toUpperCase(),
@@ -1733,7 +1835,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpDepartamento = false;
-                                this.TraerDepartamento();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -1763,11 +1864,50 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.seleccionSF1Mod.id == 0 ||
+                    this.seleccionSF1Mod.id == "" ||
+                    this.seleccionSF1Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF2Mod.id == 0 ||
+                    this.seleccionSF2Mod.id == "" ||
+                    this.seleccionSF2Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Sub-Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF3Mod.id == 0 ||
+                    this.seleccionSF3Mod.id == "" ||
+                    this.seleccionSF3Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Departamento",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
-                        id: this.seleccionSF3.id,
+                        id: this.seleccionSF3Mod.id,
                         descripcionSF3: this.descripcionDepartamentoMod.toUpperCase(),
-                        idSF2: this.seleccionSF2.id,
+                        idSF2: this.seleccionSF2Mod.id,
                         visualizar: this.VisualizarDepartamentoMod
                     };
 
@@ -1798,7 +1938,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpDepartamento = false;
-                                this.TraerDepartamento();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -1855,6 +1994,45 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.seleccionSF1.id == 0 ||
+                    this.seleccionSF1.id == "" ||
+                    this.seleccionSF1.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF2.id == 0 ||
+                    this.seleccionSF2.id == "" ||
+                    this.seleccionSF2.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Sub-Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF3.id == 0 ||
+                    this.seleccionSF3.id == "" ||
+                    this.seleccionSF3.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Departamento",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
                         descripcionSF4: this.descripcionUnidad.toUpperCase(),
@@ -1883,7 +2061,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpUnidad = false;
-                                this.TraerUnidad();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -1913,11 +2090,62 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.seleccionSF1Mod.id == 0 ||
+                    this.seleccionSF1Mod.id == "" ||
+                    this.seleccionSF1Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF2Mod.id == 0 ||
+                    this.seleccionSF2Mod.id == "" ||
+                    this.seleccionSF2Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Sub-Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF3Mod.id == 0 ||
+                    this.seleccionSF3Mod.id == "" ||
+                    this.seleccionSF3Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Departamento",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF4Mod.id == 0 ||
+                    this.seleccionSF4Mod.id == "" ||
+                    this.seleccionSF4Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe Seleccionar un Item del Listado de Unidad",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
-                        id: this.seleccionSF4.id,
+                        id: this.seleccionSF4Mod.id,
                         descripcionSF4: this.descripcionUnidadMod.toUpperCase(),
-                        idSF3: this.seleccionSF3.id,
+                        idSF3: this.seleccionSF3Mod.id,
                         visualizar: this.VisualizarUnidadMod
                     };
 
@@ -1947,7 +2175,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpUnidad = false;
-                                this.TraerUnidad();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -2004,6 +2231,57 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.seleccionSF1.id == 0 ||
+                    this.seleccionSF1.id == "" ||
+                    this.seleccionSF1.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF2.id == 0 ||
+                    this.seleccionSF2.id == "" ||
+                    this.seleccionSF2.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Sub-Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF3.id == 0 ||
+                    this.seleccionSF3.id == "" ||
+                    this.seleccionSF3.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Departamento",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF4.id == 0 ||
+                    this.seleccionSF4.id == "" ||
+                    this.seleccionSF4.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe Seleccionar un Item del Listado de Unidad",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
                         descripcionSF5: this.descripcionSubUnidad.toUpperCase(),
@@ -2032,7 +2310,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpSubUnidad = false;
-                                this.TraerSubUnidad();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -2062,11 +2339,75 @@ export default {
                         color: "danger",
                         position: "top-right"
                     });
+                } else if (
+                    this.seleccionSF1Mod.id == 0 ||
+                    this.seleccionSF1Mod.id == "" ||
+                    this.seleccionSF1Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF2Mod.id == 0 ||
+                    this.seleccionSF2Mod.id == "" ||
+                    this.seleccionSF2Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Sub-Jerarquia",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF3Mod.id == 0 ||
+                    this.seleccionSF3Mod.id == "" ||
+                    this.seleccionSF3Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Departamento",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF4Mod.id == 0 ||
+                    this.seleccionSF4Mod.id == "" ||
+                    this.seleccionSF4Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe Seleccionar un Item del Listado de Unidad",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (
+                    this.seleccionSF5Mod.id == 0 ||
+                    this.seleccionSF5Mod.id == "" ||
+                    this.seleccionSF5Mod.id == null
+                ) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe Seleccionar un Item del Listado de Sub-Unidad",
+                        color: "danger",
+                        position: "top-right"
+                    });
                 } else {
                     let data = {
-                        id: this.seleccionSF5.id,
+                        id: this.seleccionSF5Mod.id,
                         descripcionSF5: this.descripcionSubUnidadMod.toUpperCase(),
-                        idSF4: this.seleccionSF4.id,
+                        idSF4: this.seleccionSF4Mod.id,
                         visualizar: this.VisualizarSubUnidadMod
                     };
 
@@ -2096,7 +2437,6 @@ export default {
                                     position: "top-right"
                                 });
                                 this.popUpSubUnidad = false;
-                                this.TraerSubUnidad();
                             } else {
                                 this.$vs.notify({
                                     time: 5000,
@@ -2109,6 +2449,33 @@ export default {
                             }
                         });
                 }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Items Agregados Listado
+        TraerTodo() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetServiciosTodos", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + sessionStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.rows = res.data;
+                        if (this.rows.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
@@ -2149,6 +2516,7 @@ export default {
         this.RefreshToken();
         setTimeout(() => {
             this.TraerJerarquia();
+            this.TraerTodo();
             this.openLoadingColor();
         }, 2000);
     }
