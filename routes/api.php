@@ -67,6 +67,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Recepcion/GetDetallesRecepcionesAnulados', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GetDetallesRecepcionesAnulados']);
     Route::get('/Despachos/GetDetallesDespachosAnulados', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDetallesDespachosAnulados']);
     Route::get('/Mantenedor/GetTipoCompras', ['middleware' => 'cors', 'uses' => 'TipoComprasController@GetTipoCompras']);
+    Route::get('/Mantenedor/GetServicioOrganigramas', ['middleware' => 'cors', 'uses' => 'ServicioOrganigramasController@GetServicioOrganigramas']);
+    Route::get('/Mantenedor/GetSF1', ['middleware' => 'cors', 'uses' => 'ServicioFamilia1Controller@GetSF1']);
+    Route::get('/Mantenedor/GetSF2', ['middleware' => 'cors', 'uses' => 'ServicioFamilia2Controller@GetSF2']);
+    Route::get('/Mantenedor/GetSF3', ['middleware' => 'cors', 'uses' => 'ServicioFamilia3sController@GetSF3']);
+    Route::get('/Mantenedor/GetSF4', ['middleware' => 'cors', 'uses' => 'ServicioFamilia4sController@GetSF4']);
+    Route::get('/Mantenedor/GetSF5', ['middleware' => 'cors', 'uses' => 'ServicioFamilia5sController@GetSF5']);
     
     
     //Posts 
@@ -105,6 +111,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Recepcion/PostArticulosDespachoCodInterno', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostArticulosDespachoCodInterno']);
     Route::post('/Mantenedor/PostImagen', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@PostImagen']);
     Route::post('/Mantenedor/PostTipoCompras', ['middleware' => 'cors', 'uses' => 'TipoComprasController@PostTipoCompras']);
+    Route::post('/Mantenedor/PostSF1', ['middleware' => 'cors', 'uses' => 'ServicioFamilia1Controller@PostSF1']);
+    Route::post('/Mantenedor/PostSF2', ['middleware' => 'cors', 'uses' => 'ServicioFamilia2Controller@PostSF2']);
+    Route::post('/Mantenedor/PostSF3', ['middleware' => 'cors', 'uses' => 'ServicioFamilia3sController@PostSF3']);
+    Route::post('/Mantenedor/PostSF4', ['middleware' => 'cors', 'uses' => 'ServicioFamilia4sController@PostSF4']);
+    Route::post('/Mantenedor/PostSF5', ['middleware' => 'cors', 'uses' => 'ServicioFamilia5sController@PostSF5']);
 
     //Post Como Get
     Route::post('/Mantenedor/GetListadoArticulosByCodInterno', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@GetListadoArticulosByCodInterno']);
@@ -116,6 +127,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Despachos/GetDespachos', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachos']);
     Route::post('/Despachos/GetDespachoDetalles', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachoDetalles']);
     Route::post('/Recepcion/BusquedaArticuloCODBAR', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@BusquedaArticuloCODBAR']);
+    Route::post('/Mantenedor/PostServicioOrganigramas', ['middleware' => 'cors', 'uses' => 'ServicioOrganigramasController@PostServicioOrganigramas']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);
@@ -161,6 +173,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Recepcion/PostCerrarDespacho', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostCerrarDespacho']);
     Route::post('/Recepcion/PostCerrarRecepcionDespacho', ['middleware' => 'cors', 'uses' => 'RecepcionesController@PostCerrarRecepcionDespacho']);
     Route::post('/Mantenedor/PutTipoCompras', ['middleware' => 'cors', 'uses' => 'TipoComprasController@PutTipoCompras']);
+    Route::post('/Mantenedor/UpdateSF1', ['middleware' => 'cors', 'uses' => 'ServicioFamilia1Controller@UpdateSF1']);
+    Route::post('/Mantenedor/UpdateSF2', ['middleware' => 'cors', 'uses' => 'ServicioFamilia2Controller@UpdateSF2']);
+    Route::post('/Mantenedor/UpdateSF3', ['middleware' => 'cors', 'uses' => 'ServicioFamilia3sController@UpdateSF3']);
+    Route::post('/Mantenedor/UpdateSF4', ['middleware' => 'cors', 'uses' => 'ServicioFamilia4sController@UpdateSF4']);
+    Route::post('/Mantenedor/UpdateSF5', ['middleware' => 'cors', 'uses' => 'ServicioFamilia5sController@UpdateSF5']);
 
     //Post como Delete
     Route::post('/Mantenedor/DeleteArticuloDetalle', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DeleteArticuloDetalle']);
