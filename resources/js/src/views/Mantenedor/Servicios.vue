@@ -68,6 +68,13 @@
                             >
                             </span>
                             <span v-else-if="props.column.field === 'action'">
+                                <plus-circle-icon
+                                    content="EliminarItem"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="popEliminarItem(props.row.id)"
+                                ></plus-circle-icon>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -77,19 +84,6 @@
                     </vue-good-table>
                 </vx-card>
             </div>
-            <!--             <br />
-            <div>
-                <vx-card>
-                    <div class="vx-col w-full md-5">
-                        <hot-table
-                            :settings="settings"
-                            :data="data"
-                            :rowHeaders="true"
-                            :colHeaders="true"
-                        ></hot-table>
-                    </div>
-                </vx-card>
-            </div> -->
             <!-- Jerarquia -->
             <vs-popup
                 classContent="AgregarJerarquia"
@@ -1043,6 +1037,7 @@ export default {
             },
             listadoSubUnidad: [],
             idMod: 0,
+            popUpEliminarItem: false,
             //Template Columnas Listado Proveedor
             columns: [
                 {
@@ -1167,6 +1162,7 @@ export default {
                 this.listadoUnidad = [];
                 this.listadoSubUnidad = [];
                 this.idMod = 0;
+                this.TraerTodo();
             } catch (error) {
                 console.log(error);
             }
@@ -1208,6 +1204,13 @@ export default {
             try {
                 this.popUpSubUnidad = true;
                 this.limpiarCampos();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        popEliminarItem() {
+            try {
+                this.popUpEliminarItem = true;
             } catch (error) {
                 console.log(error);
             }
