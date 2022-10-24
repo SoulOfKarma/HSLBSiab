@@ -371,7 +371,6 @@ class FirmasDigitales extends Controller
 
             $file = $cont;
             $base = chunk_split(base64_encode(file_get_contents(Storage::disk('docFirmados')->path($cont))));
-            log::info(Storage::disk('docFirmados')->path($cont));
             $hash = hash('sha256', file_get_contents(Storage::disk('docFirmados')->path($cont)));
             $datos = [
                 'token' => $token,
