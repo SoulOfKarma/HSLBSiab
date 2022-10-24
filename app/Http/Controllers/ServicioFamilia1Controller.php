@@ -111,7 +111,11 @@ class ServicioFamilia1Controller extends Controller
                 }
             }
 
-            return $data;
+            $data = json_encode($data);
+
+            $data = json_decode($data,true);
+
+            return $dato;
         } catch (\Throwable $th) {
             log::info($th);
             return false;
