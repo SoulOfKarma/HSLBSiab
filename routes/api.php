@@ -74,6 +74,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/Mantenedor/GetSF4', ['middleware' => 'cors', 'uses' => 'ServicioFamilia4sController@GetSF4']);
     Route::get('/Mantenedor/GetSF5', ['middleware' => 'cors', 'uses' => 'ServicioFamilia5sController@GetSF5']);
     Route::get('/Mantenedor/GetServiciosTodos', ['middleware' => 'cors', 'uses' => 'ServicioFamilia1Controller@GetServiciosTodos']);
+    Route::get('/Mantenedor/GetServiciosActivos', ['middleware' => 'cors', 'uses' => 'ServicioFamilia1Controller@GetServiciosActivos']);
     
     
     //Posts 
