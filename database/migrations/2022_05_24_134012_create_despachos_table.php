@@ -18,7 +18,8 @@ class CreateDespachosTable extends Migration
             $table->string('FOLIO')->unique()->nullable();
             $table->date('FECSYS')->nullable();
             $table->date('FECDES')->nullable();
-            $table->bigInteger('idServicio')->nullable();
+            $table->bigInteger('idServicio')->nullable();            
+            $table->string('NOMSER')->nullable();
             $table->string('NOMTIPCON')->nullable();
             $table->string('TIPPRE')->nullable();
             $table->string('NUMPRO')->nullable();
