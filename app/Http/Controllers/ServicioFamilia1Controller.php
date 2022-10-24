@@ -89,31 +89,9 @@ class ServicioFamilia1Controller extends Controller
                     }
             }
 
-            $data = [];
-
             $dato = json_encode($dato);
 
             $dato = json_decode($dato);
-
-            $valor = 0;
-
-            $nombre = "";
-
-            foreach ($dato as $keys=>$c) {
-                if($valor == 0){
-                    $data[$keys] = ['id' => $keys+1,'descripcionServicio' => $c->descripcionServicio];
-                    $valor = 1;
-                    $nombre = $c->descripcionServicio;
-                }else if($nombre != $c->descripcionServicio){
-                    $data[$keys] = ['id' => $keys+1,'descripcionServicio' => $c->descripcionServicio];
-                    $nombre = "";
-                    $nombre = $c->descripcionServicio;
-                }
-            }
-
-            $data = json_encode($data);
-
-            $data = json_decode($data,true);
 
             return $dato;
         } catch (\Throwable $th) {
