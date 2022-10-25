@@ -392,7 +392,7 @@ export default {
                 },
                 {
                     label: "Servicio",
-                    field: "descripcionServicio",
+                    field: "NOMSER",
                     filterOptions: {
                         enabled: true
                     }
@@ -490,6 +490,14 @@ export default {
             PerfilUsuario
         ) {
             try {
+                this.seleccionServicio = {
+                    id: 0,
+                    descripcionServicio: ""
+                };
+                this.seleccionListaPerfil = {
+                    id: 0,
+                    descripcionPerfil: ""
+                };
                 this.run_usuario = rut;
                 this.nombre_usuario = nombre;
                 this.apellido_usuario = apellido;
@@ -501,7 +509,7 @@ export default {
                 let c = this.listadoServicios;
                 c.forEach((value, ind) => {
                     if (idServicio == value.id) {
-                        this.seleccionServicio.id = idServicio;
+                        this.seleccionServicio.id = value.id;
                         this.seleccionServicio.descripcionServicio =
                             value.descripcionServicio;
                     }
@@ -525,14 +533,33 @@ export default {
         TraerServicio() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                    .get(
+                        this.localVal + "/api/Mantenedor/GetServiciosActivos",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
-                        this.listadoServicios = res.data;
+                        let c = res.data;
+                        let valor = 0;
+
+                        let nombre = "";
+                        let d = [];
+                        c.forEach((val, index) => {
+                            if (valor == 0) {
+                                d.push(val);
+                                valor = 1;
+                                nombre = val.descripcionServicio;
+                            } else if (nombre != val.descripcionServicio) {
+                                d.push(val);
+                                nombre = "";
+                                nombre = val.descripcionServicio;
+                            }
+                        });
+                        this.listadoServicios = d;
                         if (this.listadoServicios.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
@@ -651,6 +678,7 @@ export default {
                         anexo: this.anexo,
                         password: this.password,
                         idServicio: this.seleccionServicio.id,
+                        NOMSER: this.seleccionServicio.descripcionServicio,
                         CB_PERIFERICA: "-",
                         NB_PERIFERICA: "-",
                         permiso_usuario: this.seleccionListaPerfil.id,
@@ -775,6 +803,7 @@ export default {
                         nombre_usuario: this.nombre_usuario.toUpperCase(),
                         apellido_usuario: this.apellido_usuario.toUpperCase(),
                         idServicio: this.seleccionServicio.id,
+                        NOMSER: this.seleccionServicio.descripcionServicio,
                         anexo: this.anexo,
                         password: this.password,
                         CB_PERIFERICA: "-",

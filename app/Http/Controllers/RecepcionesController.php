@@ -69,7 +69,7 @@ class RecepcionesController extends Controller
             'FECSYS','FOLIO','NOMARCH','NOMARCH_CAR','NOMARCH_RIB','NOMDIG','NOMPRO','NOMPRO','NOTCRE_RF',
             'NUMDOC','NUMFAC','NUMINT','NUMLIBPED','NUMORD','NUMREC_RF','NUMRIB',
             DB::raw('fnStripTags(OBS) as OBS'),'RUTPRO','SUBTOTAL','TIPBOB','TIPDOC','TIPORD',
-            'TIPRECEPCION','USUING','USUMOD','id','idServicio','idTipoCompra')
+            'TIPRECEPCION','USUING','USUMOD','id','NOMSER','idTipoCompra')
             ->where('FOLIO',null)
             ->get();
             return $get;
@@ -110,7 +110,7 @@ class RecepcionesController extends Controller
         try {
             $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
             'TIPDOC','FECDOC','DCTO','OBS','CARGO',DB::raw("ROUND(SUBTOTAL,0) as SUBTOTAL"),'AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
-            'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','idServicio','NOMARCH',
+            'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','NOMSER','NOMARCH',
             DB::raw("ROUND(SUBTOTAL,0) as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),0) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,0) as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
             ->get();
@@ -177,7 +177,7 @@ class RecepcionesController extends Controller
             ->update(['RUTPRO' => $request->RUTPRO,'NOMPRO' => $request->NOMPRO,'SUBTOTAL' => $request->SUBTOTAL,
             'DCTO' => $request->DCTO,'TIPDOC' => $request->TIPDOC,'NUMDOC' => $request->NUMDOC,'FECDOC' => $request->FECDOC,
             'NUMFAC' => $request->NUMFAC,'NUMRIB' => $request->NUMRIB,'USUMOD' => $request->USUMOD,
-            'OBS' => $request->OBS,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'idServicio' => $request->idServicio,
+            'OBS' => $request->OBS,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'NOMSER' => $request->NOMSER,
             'NUMLIBPED' => $request->NUMLIBPED,'TIPRECEPCION' => $request->TIPRECEPCION,'TIPORD' => $request->TIPORD]);
             return true;
         } catch (\Throwable $th) {
@@ -210,7 +210,7 @@ class RecepcionesController extends Controller
                 $despachoDetalles->FOLIO = $req['FOLIO'];
                 $despachoDetalles->FECSYS = $req['FECSYS'];
                 $despachoDetalles->FECDES = $req['FECDES'];
-                $despachoDetalles->idServicio = $req['idServicio'];
+                $despachoDetalles->NOMSER = $req['NOMSER'];
                 $despachoDetalles->NUMLIBRO = $req['NUMLIBRO'];
                 $despachoDetalles->LOTE = $req['LOTE'];
                 $despachoDetalles->FECVEN = $req['FECVEN'];
@@ -268,7 +268,7 @@ class RecepcionesController extends Controller
             'DCTO' => $request->DCTO,'CARGO' => $request->CARGO,'AJUSTE' => $request->AJUSTE,'OBS' => $request->OBS,
             'FECDES' => $request->FECDES,'RUTPRO' => $request->RUTPRO,'NOMPRO' => $request->NOMPRO,'NUMRIB' => $request->NUMRIB,
             'TIPDOC' => $request->TIPDOC,'NUMDOC' => $request->NUMDOC,'FECDOC' => $request->FECDOC,'NUMLIBPED' => $request->NUMLIBPED,
-            'TIPRECEPCION' => $request->TIPRECEPCION,'USUING' => $request->USUING]); 
+            'TIPRECEPCION' => $request->TIPRECEPCION,'USUING' => $request->USUING,'NOMSER' => $request->NOMSER]); 
             return true;
         } catch (\Throwable $th) {
             log::info($th);

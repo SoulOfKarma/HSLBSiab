@@ -24,7 +24,8 @@ class CreateUsersTable extends Migration
             $table->bigInteger('idServicio');
             $table->string('CB_PERIFERICA');
             $table->string('NB_PERIFERICA');
-            $table->string('RUTALOGO')->nullable();          
+            $table->string('RUTALOGO')->nullable();
+            $table->string('NOMSER')->nullable();          
             $table->rememberToken();
             $table->timestamps();
         });

@@ -49,12 +49,11 @@ class DespachosController extends Controller
     public function GetDetallesDespachosAnulados(){
         try {
             $get = DB::select('select COUNT(despacho_detalles.FOLIO) AS contador,COUNT(despacho_detalles.CODMOT) AS contadorAnulacion,
-            despachos.NUMINT,despachos.FOLIO,despachos.FECDES,servicios.descripcionServicio,despachos.NUMLIBRO,despachos.USUING
+            despachos.NUMINT,despachos.FOLIO,despachos.FECDES,despachos.NOMSER,despachos.NUMLIBRO,despachos.USUING
             FROM despachos
             JOIN despacho_detalles ON despachos.FOLIO = despacho_detalles.FOLIO
-            JOIN servicios ON despachos.idServicio = servicios.id
             WHERE despacho_detalles.FOLIO = despachos.FOLIO 
-            GROUP BY despachos.NUMINT,despachos.FOLIO,despachos.FECDES,servicios.descripcionServicio,despachos.NUMLIBRO,despachos.USUING
+            GROUP BY despachos.NUMINT,despachos.FOLIO,despachos.FECDES,despachos.NOMSER,despachos.NUMLIBRO,despachos.USUING
             HAVING (contador)-(contadorAnulacion) = 0
             ');
             return $get;
@@ -71,7 +70,7 @@ class DespachosController extends Controller
             'FECDES' => $request->FECDES,'CODBAR' => $request->CODBAR,'LOTE' => $request->LOTE,
             'UNIMED' => $request->UNIMED,'CODART' => $request->CODART],
             ['NUMINT' => $request->NUMINT, 'FECSYS' => $request->FECSYS,'FECVEN' => $request->FECVEN,
-            'FECDES' => $request->FECDES,'idServicio' => $request->idServicio,'TIPDESP' => $request->TIPDESP,
+            'FECDES' => $request->FECDES,'NOMSER' => $request->NOMSER,'TIPDESP' => $request->TIPDESP,
             'NUMSOL' => $request->NUMSOL,'NUMLIBRO' => $request->NUMLIBRO,'NOMART' => $request->NOMART,
             'CODBAR' => $request->CODBAR,'LOTE' => $request->LOTE,'UNIMED' => $request->UNIMED,'CODART' => $request->CODART,
             'PRECIO' => $request->PRECIO,'CANTIDAD' => $request->CANTIDAD,'USUING' => $request->USUING]);
@@ -88,7 +87,7 @@ class DespachosController extends Controller
             'FECDES' => $request->FECDES,'CODBAR' => $request->CODBAR,'LOTE' => $request->LOTE,
             'UNIMED' => $request->UNIMED,'CODART' => $request->CODART],
             ['NUMINT' => $request->NUMINT, 'FECSYS' => $request->FECSYS,'FECVEN' => $request->FECVEN,
-            'FECDES' => $request->FECDES,'idServicio' => $request->idServicio,'TIPDESP' => $request->TIPDESP,
+            'FECDES' => $request->FECDES,'NOMSER' => $request->NOMSER,'TIPDESP' => $request->TIPDESP,
             'NUMSOL' => $request->NUMSOL,'NUMLIBRO' => $request->NUMLIBRO,'NOMART' => $request->NOMART,
             'CODBAR' => $request->CODBAR,'LOTE' => $request->LOTE,'UNIMED' => $request->UNIMED,'CODART' => $request->CODART,
             'PRECIO' => $request->PRECIO,'CANTIDAD' => $request->CANTIDAD,'USUING' => $request->USUING]);
@@ -123,9 +122,8 @@ class DespachosController extends Controller
 
     public function GetDespachosAbiertos(){
         try {
-            $get = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECDES','servicios.descripcionServicio',
+            $get = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECDES','despachos.NOMSER',
             'despachos.NUMLIBRO','despachos.USUING','despachos.NUMPESP','despachos.OBS')
-            ->join('servicios','despachos.idServicio','=','servicios.id')
             ->where('FOLIO',null)
             ->get();
             return $get;
@@ -137,9 +135,8 @@ class DespachosController extends Controller
 
     public function GetDespachosCerrados(){
         try {
-            $get = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECDES','servicios.descripcionServicio',
+            $get = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECDES','despachos.NOMSER',
             'despachos.NUMLIBRO','despachos.USUING')
-            ->join('servicios','despachos.idServicio','=','servicios.id')
             ->whereNotNull('despachos.FOLIO')
             ->get();
             return $get;
@@ -151,9 +148,8 @@ class DespachosController extends Controller
 
     public function GetDespachos(Request $request){
         try {
-            $get = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECSYS','despachos.FECDES','despachos.idServicio','servicios.descripcionServicio',
+            $get = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECSYS','despachos.FECDES','despachos.NOMSER',
             'despachos.NUMLIBRO','despachos.USUING','despachos.TIPDESP','despachos.NUMPESP','despachos.OBS')
-            ->join('servicios','despachos.idServicio','=','servicios.id')
             ->where('despachos.NUMINT',$request->NUMINT)
             ->get();
             return $get;
@@ -191,7 +187,7 @@ class DespachosController extends Controller
     public function PutDespacho(Request $request){
         try {
             despachos::where('NUMINT',$request->NUMINT)
-            ->update(['FECDES' => $request->FECDES,'idServicio' => $request->idServicio,'NUMLIBRO' => $request->NUMLIBRO,
+            ->update(['FECDES' => $request->FECDES,'NOMSER' => $request->NOMSER,'NUMLIBRO' => $request->NUMLIBRO,
             'TIPDESP' => $request->TIPDESP,'NUMSOL' => $request->NUMSOL,'OBS' => $request->OBS,
             'NUMPESP' => $request->NUMPESP]);
             return true;
@@ -269,9 +265,8 @@ class DespachosController extends Controller
             ->orWhere('despacho_detalles.CODMOT','')
             ->get();
 
-            $getRec = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECSYS','despachos.FECDES','despachos.idServicio','servicios.descripcionServicio',
+            $getRec = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECSYS','despachos.FECDES','despachos.NOMSER',
             'despachos.NUMLIBRO','despachos.USUING','despachos.TIPDESP',DB::raw('fnStripTags(despachos.OBS) as OBS'))
-            ->join('servicios','despachos.idServicio','=','servicios.id')
             ->where('despachos.NUMINT',$NUMINT)
             ->get();
 

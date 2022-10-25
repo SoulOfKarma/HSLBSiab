@@ -816,6 +816,7 @@ export default {
                         "YYYY-MM-DD"
                     ),
                     idServicio: this.seleccionServicio.id,
+                    NOMSER: this.seleccionServicio.descripcionServicio,
                     NUMLIBRO: this.nlibropedido,
                     TIPDESP: this.seleccionTipoDespacho.descripcionTipoDespacho,
                     NUMSOL: this.nsolicitud,
@@ -1123,8 +1124,8 @@ export default {
                                                 this.fechaDespacho,
                                                 "DD-MM-YYYY"
                                             ).format("YYYY-MM-DD"),
-                                            idServicio: this.seleccionServicio
-                                                .id,
+                                            NOMSER: this.seleccionServicio
+                                                .descripcionServicio,
                                             TIPDESP: this.seleccionTipoDespacho
                                                 .descripcionTipoDespacho,
                                             NUMSOL: this.nsolicitud,
@@ -1152,8 +1153,8 @@ export default {
                                                 this.fechaDespacho,
                                                 "DD-MM-YYYY"
                                             ).format("YYYY-MM-DD"),
-                                            idServicio: this.seleccionServicio
-                                                .id,
+                                            NOMSER: this.seleccionServicio
+                                                .descripcionServicio,
                                             TIPDESP: this.seleccionTipoDespacho
                                                 .descripcionTipoDespacho,
                                             NUMSOL: this.nsolicitud,
@@ -1229,8 +1230,8 @@ export default {
                                                 this.fechaDespacho,
                                                 "DD-MM-YYYY"
                                             ).format("YYYY-MM-DD"),
-                                            idServicio: this.seleccionServicio
-                                                .id,
+                                            NOMSER: this.seleccionServicio
+                                                .descripcionServicio,
                                             TIPDESP: this.seleccionTipoDespacho
                                                 .descripcionTipoDespacho,
                                             NUMSOL: this.nsolicitud,
@@ -1258,8 +1259,8 @@ export default {
                                                 this.fechaDespacho,
                                                 "DD-MM-YYYY"
                                             ).format("YYYY-MM-DD"),
-                                            idServicio: this.seleccionServicio
-                                                .id,
+                                            NOMSER: this.seleccionServicio
+                                                .descripcionServicio,
                                             TIPDESP: this.seleccionTipoDespacho
                                                 .descripcionTipoDespacho,
                                             NUMSOL: this.nsolicitud,
@@ -1337,6 +1338,8 @@ export default {
                                     "DD-MM-YYYY"
                                 ).format("YYYY-MM-DD"),
                                 saldoCorrecto: saldoCorrecto,
+                                NOMSER: this.seleccionServicio
+                                    .descripcionServicio,
                                 NOMART: NOMBRE,
                                 CODBAR: CODBAR,
                                 LOTE: LOTE,
@@ -1365,7 +1368,8 @@ export default {
                                 UNIMED: UNIMED,
                                 CODART: CODART,
                                 diasVencimiento: diasVencimiento,
-
+                                NOMSER: this.seleccionServicio
+                                    .descripcionServicio,
                                 FECVEN: moment(fechaVencimiento).format(
                                     "YYYY-MM-DD"
                                 ),
@@ -1422,14 +1426,34 @@ export default {
         TraerServicio() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                    .get(
+                        this.localVal + "/api/Mantenedor/GetServiciosActivos",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
-                        this.listadoServicios = res.data;
+                        let c = res.data;
+                        let valor = 0;
+
+                        let nombre = "";
+                        let d = [];
+                        c.forEach((val, index) => {
+                            if (valor == 0) {
+                                d.push(val);
+                                valor = 1;
+                                nombre = val.descripcionServicio;
+                            } else if (nombre != val.descripcionServicio) {
+                                d.push(val);
+                                nombre = "";
+                                nombre = val.descripcionServicio;
+                            }
+                        });
+
+                        this.listadoServicios = d;
                         if (this.listadoServicios.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
@@ -1473,6 +1497,7 @@ export default {
                                 position: "top-right"
                             });
                         } else {
+                            let nomser = "";
                             data.forEach((value, index) => {
                                 this.numint = this.$route.params.NUMINT;
                                 this.fechaSistema = moment(value.FECSYS)
@@ -1483,11 +1508,7 @@ export default {
                                     .toString();
                                 this.nlibropedido = value.NUMLIBRO;
                                 this.nsolicitud = value.NUMSOL;
-                                this.seleccionServicio = {
-                                    id: value.idServicio,
-                                    descripcionServicio:
-                                        value.descripcionServicio
-                                };
+                                nomser = value.NOMSER;
                                 this.Observaciones = value.OBS;
                                 this.numpesp = value.NUMPESP;
                                 if (value.TIPDESP == "Solicitud Pedidos") {
@@ -1501,6 +1522,17 @@ export default {
                                         id: 2,
                                         descripcionTipoDespacho:
                                             "Pedido Especial"
+                                    };
+                                }
+                            });
+
+                            let c = this.listadoServicios;
+                            c.forEach((val, index) => {
+                                if (nomser == val.descripcionServicio) {
+                                    this.seleccionServicio = {
+                                        id: val.id,
+                                        descripcionServicio:
+                                            val.descripcionServicio
                                     };
                                 }
                             });
@@ -1615,8 +1647,8 @@ export default {
     },
     beforeMount() {
         this.RefreshToken();
+        this.TraerServicio();
         setTimeout(() => {
-            this.TraerServicio();
             this.TraerArticulosDisponibles();
             this.TraerDespacho();
             this.TraerDetalleDespacho();

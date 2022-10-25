@@ -1611,6 +1611,8 @@ export default {
                         } else {
                             let c = this.listaRecepcion;
                             let idDoc = 0;
+                            let nomser = "";
+
                             c.forEach((value, index) => {
                                 this.fechaSistema = moment(value.FECSYS)
                                     .format("DD/MM/YYYY")
@@ -1632,6 +1634,7 @@ export default {
                                 this.nrib = value.NUMRIB;
                                 this.folio = value.FOLIO;
                                 this.Observaciones = value.OBS;
+                                nomser = value.NOMSER;
                             });
 
                             c = [];

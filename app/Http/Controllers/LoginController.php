@@ -100,6 +100,7 @@ class LoginController extends Controller
                    'anexo' => $request->anexo,
                    'password' => Hash::make($request->password),
                    'idServicio' => $request->idServicio,
+                   'NOMSER' => $request->NOMSER,
                    'CB_PERIFERICA' => $request->CB_PERIFERICA,
                    'NB_PERIFERICA' => $request->NB_PERIFERICA,
                    'RUTALOGO' => $request->RUTALOGO,
@@ -124,10 +125,9 @@ class LoginController extends Controller
 
     public function GetUsers(){
         try {
-            $get = Users::select('users.run','users.nombre_usuario','users.apellido_usuario','users.anexo',
-            'users.correo_usuario','servicios.descripcionServicio','users.idServicio','users.RUTALOGO',
+            $get = Users::select('users.id','users.run','users.nombre_usuario','users.apellido_usuario','users.anexo',
+            'users.correo_usuario','users.NOMSER','users.idServicio','users.RUTALOGO',
             'tbl_permiso_usuarios.permiso_usuario')
-            ->join('servicios', 'users.idServicio','=','servicios.id')
             ->join('tbl_permiso_usuarios', 'users.run','=','tbl_permiso_usuarios.run_usuario')
             ->get();
             return $get;
@@ -139,16 +139,17 @@ class LoginController extends Controller
 
     public function PutUsuario(Request $request){
         try {
-
+                log::info($request->all());
                 $run = $request->run_usuario;
                 $run = str_replace('.', '', $run);
                 $run = strtoupper($run); 
-                Users::where('id',$request->id)
+                $dato = Users::where('id',$request->id)
                     ->update(['run' => $run,'correo_usuario' => $request->correo_usuario,'nombre_usuario' => $request->nombre_usuario,
                     'apellido_usuario' => $request->apellido_usuario,'anexo' => $request->anexo,'password' => Hash::make($request->password),
-                    'idServicio' => $request->idServicio,'CB_PERIFERICA' => $request->CB_PERIFERICA,'NB_PERIFERICA' => $request->NB_PERIFERICA,
+                    'idServicio' => $request->idServicio,'NOMSER' => $request->NOMSER,'CB_PERIFERICA' => $request->CB_PERIFERICA,'NB_PERIFERICA' => $request->NB_PERIFERICA,
                     'RUTALOGO' => $request->RUTALOGO]);
 
+                log::info($dato);
 
                 tblPermisoUsuarios::where('run_usuario',$run)
                 ->update([

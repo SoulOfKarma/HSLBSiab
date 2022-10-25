@@ -1951,14 +1951,34 @@ export default {
         TraerServicio() {
             try {
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetServicios", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                    .get(
+                        this.localVal + "/api/Mantenedor/GetServiciosActivos",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + sessionStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
-                        this.listadoServicios = res.data;
+                        let c = res.data;
+                        let valor = 0;
+
+                        let nombre = "";
+                        let d = [];
+                        c.forEach((val, index) => {
+                            if (valor == 0) {
+                                d.push(val);
+                                valor = 1;
+                                nombre = val.descripcionServicio;
+                            } else if (nombre != val.descripcionServicio) {
+                                d.push(val);
+                                nombre = "";
+                                nombre = val.descripcionServicio;
+                            }
+                        });
+
+                        this.listadoServicios = d;
                         if (this.listadoServicios.length < 0) {
                             this.$vs.notify({
                                 time: 5000,
@@ -2007,6 +2027,7 @@ export default {
                             let idDoc = 0;
                             let idServicio = 0;
                             let tipord = "";
+                            let nomser = "";
                             c.forEach((value, index) => {
                                 this.fechaSistema = moment(value.FECSYS)
                                     .format("DD/MM/YYYY")
@@ -2030,7 +2051,7 @@ export default {
                                 this.tiporecepcion = value.TIPRECEPCION;
                                 this.numeroLibroPedido = value.NUMLIBPED;
                                 this.Observaciones = value.OBS;
-                                idServicio = value.idServicio;
+                                nomser = value.NOMSER;
                                 tipord = value.TIPORD;
                             });
 
@@ -2066,11 +2087,13 @@ export default {
 
                             c = [];
                             c = this.listadoServicios;
-                            c.forEach((value, index) => {
-                                if (idServicio == value.id) {
-                                    this.seleccionServicio.id = idServicio;
-                                    this.seleccionServicio.descripcionServicio =
-                                        value.descripcionServicio;
+                            c.forEach((val, index) => {
+                                if (nomser == val.descripcionServicio) {
+                                    this.seleccionServicio = {
+                                        id: val.id,
+                                        descripcionServicio:
+                                            val.descripcionServicio
+                                    };
                                 }
                             });
                         }
@@ -2435,6 +2458,8 @@ export default {
                                 AJUSTE: 0,
                                 USUING: nombreUsuario.toUpperCase(),
                                 idServicio: this.seleccionServicio.id,
+                                NOMSER: this.seleccionServicio
+                                    .descripcionServicio,
                                 NUMLIBPED: this.numeroLibroPedido,
                                 TIPRECEPCION: this.tiporecepcion,
                                 TIPORD: this.seleccionTipoCompra.NOMTIPCOM
@@ -2538,6 +2563,7 @@ export default {
                             AJUSTE: 0,
                             USUING: nombreUsuario.toUpperCase(),
                             idServicio: this.seleccionServicio.id,
+                            NOMSER: this.seleccionServicio.descripcionServicio,
                             NUMLIBPED: this.numeroLibroPedido,
                             TIPRECEPCION: this.tiporecepcion,
                             TIPORD: this.seleccionTipoCompra.NOMTIPCOM
@@ -2705,6 +2731,7 @@ export default {
                         ).format("YYYY-MM-DD"),
                         NUMLIBPED: this.numeroLibroPedido,
                         TIPRECEPCION: this.tiporecepcion,
+                        NOMSER: this.seleccionServicio.descripcionServicio,
                         USUING: nombreUsuario.toUpperCase()
                     };
 
@@ -2805,6 +2832,7 @@ export default {
                                 value.FOLIO = this.numFolioDespacho;
                                 value.NUMINT = this.numintDespacho;
                                 value.idServicio = this.seleccionServicio.id;
+                                value.NOMSER = this.seleccionServicio.descripcionServicio;
                                 value.NUMLIBRO = this.numeroLibroPedido;
                                 value.TIPDESP = this.tiporecepcion;
                                 d.push(value);
@@ -2834,6 +2862,8 @@ export default {
                                 OBS: this.Observaciones.toUpperCase(),
                                 USUING: nombreUsuario.toUpperCase(),
                                 idServicio: this.seleccionServicio.id,
+                                NOMSER: this.seleccionServicio
+                                    .descripcionServicio,
                                 NUMLIBRO: this.numeroLibroPedido,
                                 TIPRECEPCION: this.tiporecepcion
                             };

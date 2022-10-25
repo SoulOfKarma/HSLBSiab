@@ -609,8 +609,7 @@ class Reportes extends Controller
             DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
             DB::raw('COALESCE(despacho_detalles.FOLIO,"-") AS FOLDES'),DB::raw("'-' AS FOLREC"),DB::raw("'-' AS NUMORD"),DB::raw("'-' AS PROVEEDOR"),
             'despacho_detalles.CODART AS CODART','despacho_detalles.CODBAR AS CODBAR','despacho_detalles.PRECIO AS PRECIO',
-            'despacho_detalles.CANTIDAD AS CANTIDAD',DB::raw('COALESCE(servicios.descripcionServicio,"-") AS SERVICIO'),DB::raw('COALESCE(despacho_detalles.NOMMOT,"-") AS NOMMOT'))
-            ->leftjoin('servicios','despacho_detalles.idServicio','=','servicios.id')
+            'despacho_detalles.CANTIDAD AS CANTIDAD',DB::raw('COALESCE(despacho_detalles.NOMSER,"-") AS SERVICIO'),DB::raw('COALESCE(despacho_detalles.NOMMOT,"-") AS NOMMOT'))
             ->where('despacho_detalles.CODART',$request->CODART)
             ->union($saldoinv)
             ->union($recepciondet)
@@ -651,8 +650,7 @@ class Reportes extends Controller
             DB::raw("COALESCE(STR_TO_DATE(DATE_FORMAT(despacho_detalles.FECVEN,'%d-%m-%Y %H'),'%d-%m-%Y'),'-') AS FECVEN"),
             DB::raw("COALESCE(despacho_detalles.LOTE,'-') AS LOTE"),
             'despacho_detalles.CODART AS CODART','despacho_detalles.CODBAR AS CODBAR','despacho_detalles.PRECIO AS PRECIO',
-            'despacho_detalles.CANTIDAD AS CANTIDAD',DB::raw('COALESCE(servicios.descripcionServicio,"-") AS SERVICIO'))
-            ->leftjoin('servicios','despacho_detalles.idServicio','=','servicios.id')
+            'despacho_detalles.CANTIDAD AS CANTIDAD',DB::raw('COALESCE(despacho_detalles.NOMSER,"-") AS SERVICIO'))
             ->where('despacho_detalles.CODART',$request->CODART)
             ->union($saldoinv)
             ->union($recepciondet)
@@ -866,13 +864,11 @@ class Reportes extends Controller
     public function GetConsumoMesServicio(Request $request){
         try {
             $get = despachoDetalles::select('despacho_detalles.NOMART AS NOMBRE','despacho_detalles.CODART AS CODART','despacho_detalles.UNIMED AS UNIMED',DB::raw('"'.$request->MES.'" AS MES'),
-            'servicios.descripcionServicio AS descripcionServicio',DB::raw('(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE siab_articulo.CODART = despacho_detalles.CODART LIMIT 1) as ZGEN'),
+            'despacho_detalles.NOMSER AS descripcionServicio',DB::raw('(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE siab_articulo.CODART = despacho_detalles.CODART LIMIT 1) as ZGEN'),
             DB::raw('COALESCE(SUM(despacho_detalles.CANTIDAD),0) AS CONSUMO'))
-            ->join('servicios', 'despacho_detalles.idServicio','=','servicios.id')
-            ->where('servicios.id',$request->idServicio)
             ->whereRaw('DATE_FORMAT(despacho_detalles.FECDES,"%m") = "'.$request->MES.'"')
             ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
-            ->groupBy('despacho_detalles.NOMART','despacho_detalles.CODART','despacho_detalles.UNIMED','servicios.descripcionServicio')
+            ->groupBy('despacho_detalles.NOMART','despacho_detalles.CODART','despacho_detalles.UNIMED','despacho_detalles.NOMSER')
             ->get();
             return $get;
         } catch (\Throwable $th) {
@@ -971,8 +967,7 @@ class Reportes extends Controller
             $get = despachoDetalles::select(DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.FECDES,'%d-%m-%Y'),'%d-%m-%Y') as FECDES"),
             'despacho_detalles.FOLIO','despacho_detalles.CODART','despacho_detalles.NOMART','despacho_detalles.UNIMED',
             DB::raw('ROUND(despacho_detalles.CANTIDAD,0) AS CANTIDAD'),DB::raw('ROUND(despacho_detalles.PRECIO,0) AS PRECIO'),DB::raw('ROUND(despacho_detalles.CANTIDAD*despacho_detalles.PRECIO,0) AS TOTAL'),
-            'servicios.descripcionServicio')
-            ->join('servicios', 'despacho_detalles.idServicio','=','servicios.id')
+            'despacho_detalles.NOMSER')
             ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
             ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
             ->get();
@@ -989,11 +984,10 @@ class Reportes extends Controller
             $get = despachoDetalles::select(DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.FECDES,'%d-%m-%Y'),'%d-%m-%Y') as FECDES"),
             'despacho_detalles.FOLIO','despacho_detalles.CODART','despacho_detalles.NOMART','despacho_detalles.UNIMED',
             DB::raw('ROUND(despacho_detalles.CANTIDAD,0) AS CANTIDAD'),DB::raw('ROUND(despacho_detalles.PRECIO,0) AS PRECIO'),DB::raw('ROUND(despacho_detalles.CANTIDAD*despacho_detalles.PRECIO,0) AS TOTAL'),
-            'servicios.descripcionServicio')
-            ->join('servicios', 'despacho_detalles.idServicio','=','servicios.id')
+            'despacho_detalles.NOMSER')
             ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
             ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
-            ->where('despacho_detalles.idServicio', $request->idServicio)
+            ->where('despacho_detalles.NOMSER', $request->NOMSER)
             ->get();
 
             return $get;
@@ -1008,8 +1002,7 @@ class Reportes extends Controller
             $get = despachoDetalles::select(DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.FECDES,'%d-%m-%Y'),'%d-%m-%Y') as FECDES"),
             'despacho_detalles.FOLIO','despacho_detalles.CODART','despacho_detalles.NOMART','despacho_detalles.UNIMED',
             DB::raw('ROUND(despacho_detalles.CANTIDAD,0) AS CANTIDAD'),DB::raw('ROUND(despacho_detalles.PRECIO,0) AS PRECIO'),DB::raw('ROUND(despacho_detalles.CANTIDAD*despacho_detalles.PRECIO,0) AS TOTAL'),
-            'servicios.descripcionServicio')
-            ->join('servicios', 'despacho_detalles.idServicio','=','servicios.id')
+            'despacho_detalles.NOMSER')
             ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
             ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
             ->get();
@@ -1047,7 +1040,7 @@ class Reportes extends Controller
             DB::raw('ROUND(MAX(despacho_detalles.PRECIO)*SUM(despacho_detalles.CANTIDAD),0) AS TOTAL'))
             ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
             ->whereBetween('despacho_detalles.FECDES', [$request->FECINI, $request->FECTER])
-            ->where('despacho_detalles.idServicio', $request->idServicio)
+            ->where('despacho_detalles.NOMSER', $request->NOMSER)
             ->groupBy('MES','CODART','NOMART','UNIMED')
             ->get();
 

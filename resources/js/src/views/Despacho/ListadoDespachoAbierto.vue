@@ -90,7 +90,7 @@ export default {
                 },
                 {
                     label: "Centro de Costo",
-                    field: "descripcionServicio",
+                    field: "NOMSER",
                     filterOptions: {
                         enabled: true
                     }
