@@ -81,7 +81,12 @@ class RecepcionesController extends Controller
 
     public function GetRecepcionCerradas(Request $request){
         try {
-            $get = recepciones::whereNotNull('FOLIO')
+            $get = recepciones::select('AJUSTE','CARGO','CODDIG','DCTO','FECDES','FECDOC','FECFAC',
+            'FECSYS','FOLIO','NOMARCH','NOMARCH_CAR','NOMARCH_RIB','NOMDIG','NOMPRO','NOMPRO','NOTCRE_RF',
+            'NUMDOC','NUMFAC','NUMINT','NUMLIBPED','NUMORD','NUMREC_RF','NUMRIB',
+            DB::raw('fnStripTags(OBS) as OBS'),'RUTPRO','SUBTOTAL','TIPBOB','TIPDOC','TIPORD',
+            'TIPRECEPCION','USUING','USUMOD','id','NOMSER','idTipoCompra')
+            ->whereNotNull('FOLIO')
             ->get();
             return $get;
         } catch (\Throwable $th) {
