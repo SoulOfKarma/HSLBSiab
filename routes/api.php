@@ -130,6 +130,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Despachos/GetDespachoDetalles', ['middleware' => 'cors', 'uses' => 'DespachosController@GetDespachoDetalles']);
     Route::post('/Recepcion/BusquedaArticuloCODBAR', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@BusquedaArticuloCODBAR']);
     Route::post('/Mantenedor/PostServicioOrganigramas', ['middleware' => 'cors', 'uses' => 'ServicioOrganigramasController@PostServicioOrganigramas']);
+    Route::post('/PAnual/BusquedaArticuloCodArt', ['middleware' => 'cors', 'uses' => 'SiabArticulosController@BusquedaArticuloCodArt']);
 
     //Post Como Put
     Route::post('/Mantenedor/PutProveedor', ['middleware' => 'cors', 'uses' => 'SiabProveedoresController@PutProveedor']);

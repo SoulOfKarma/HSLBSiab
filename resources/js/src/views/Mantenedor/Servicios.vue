@@ -69,7 +69,7 @@
                             </span>
                             <span v-else-if="props.column.field === 'action'">
                                 <plus-circle-icon
-                                    content="EliminarItem"
+                                    content="Eliminar Ultimo Item"
                                     v-tippy
                                     size="1.5x"
                                     class="custom-class"

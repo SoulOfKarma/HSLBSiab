@@ -139,7 +139,6 @@ class LoginController extends Controller
 
     public function PutUsuario(Request $request){
         try {
-                log::info($request->all());
                 $run = $request->run_usuario;
                 $run = str_replace('.', '', $run);
                 $run = strtoupper($run); 
@@ -148,8 +147,6 @@ class LoginController extends Controller
                     'apellido_usuario' => $request->apellido_usuario,'anexo' => $request->anexo,'password' => Hash::make($request->password),
                     'idServicio' => $request->idServicio,'NOMSER' => $request->NOMSER,'CB_PERIFERICA' => $request->CB_PERIFERICA,'NB_PERIFERICA' => $request->NB_PERIFERICA,
                     'RUTALOGO' => $request->RUTALOGO]);
-
-                log::info($dato);
 
                 tblPermisoUsuarios::where('run_usuario',$run)
                 ->update([

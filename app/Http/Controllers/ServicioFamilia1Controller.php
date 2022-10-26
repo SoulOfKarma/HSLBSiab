@@ -42,11 +42,11 @@ class ServicioFamilia1Controller extends Controller
 
     public function GetServiciosTodos(){
         try {
-            $get = ServicioFamilia1::select(DB::raw('servicio_familia1s.descripcionSF1 as descripcionSF1'),
-            DB::raw('servicio_familia2s.descripcionSF2 as descripcionSF2'),
-            DB::raw('COALESCE(servicio_familia3s.descripcionSF3,"No tiene Departamentos") as descripcionSF3'),
-            DB::raw('COALESCE(servicio_familia4s.descripcionSF4,"No Tiene Unidades") as descripcionSF4'),
-            DB::raw('COALESCE(servicio_familia5s.descripcionSF5,"No tiene Sub-Unidades") as descripcionSF5'))
+            $get = ServicioFamilia1::select('servicio_familia1s.id',DB::raw('servicio_familia1s.descripcionSF1 as descripcionSF1'),
+            'servicio_familia2s.id',DB::raw('servicio_familia2s.descripcionSF2 as descripcionSF2'),
+            'servicio_familia3s.id',DB::raw('COALESCE(servicio_familia3s.descripcionSF3,"No tiene Departamentos") as descripcionSF3'),
+            'servicio_familia4s.id',DB::raw('COALESCE(servicio_familia4s.descripcionSF4,"No Tiene Unidades") as descripcionSF4'),
+            'servicio_familia5s.id',DB::raw('COALESCE(servicio_familia5s.descripcionSF5,"No tiene Sub-Unidades") as descripcionSF5'))
             ->join('servicio_familia2s','servicio_familia1s.id','=','servicio_familia2s.idSF1')
             ->leftjoin('servicio_familia3s','servicio_familia2s.id','=','servicio_familia3s.idSF2')
             ->leftjoin('servicio_familia4s','servicio_familia3s.id','=','servicio_familia4s.idSF3')
