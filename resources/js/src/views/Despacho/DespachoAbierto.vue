@@ -392,9 +392,13 @@ import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
+import VueEnterToTab from "vue-enter-to-tab";
+import { EnterToTabMixin } from "vue-enter-to-tab";
+Vue.use(VueEnterToTab, true);
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
 export default {
+    mixins: [EnterToTabMixin],
     components: {
         VueGoodTable,
         "v-select": vSelect,
