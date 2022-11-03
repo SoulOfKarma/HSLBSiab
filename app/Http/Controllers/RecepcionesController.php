@@ -315,7 +315,7 @@ class RecepcionesController extends Controller
     public function PostRAnularArticulo(Request $request){
         try {
             recepcionDetalles::where('id',$request->id)
-            ->update(['CODMOT' => '','NOMMOT' => '']);
+            ->update(['CODMOT' => null,'NOMMOT' => null]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);

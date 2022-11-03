@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <div class="vx-row">
+                    <div class="vx-row" v-if="validarUsuario != 5">
                         <div class="vx-col w-1/3 mt-5">
                             <vs-button
                                 @click="popAgregarFactura"
@@ -184,6 +184,7 @@
                                         "
                                     >
                                         <plus-circle-icon
+                                            v-if="validarUsuario != 5"
                                             content="Anular Articulo"
                                             v-tippy
                                             size="1.5x"
@@ -193,6 +194,7 @@
                                             "
                                         ></plus-circle-icon>
                                         <plus-circle-icon
+                                            v-if="validarUsuario != 5"
                                             content="Revertir Anulacion"
                                             v-tippy
                                             size="1.5x"
@@ -265,17 +267,9 @@
                         </div>
                         <br /><br />
                         <div class="vx-row">
-                            <div class="vx-col w-1/5 mt-5">
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
-                                    @click="ActualizarListado"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Actualizar</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/5 mt-5">
-                                <vs-button
+                                    v-if="validarUsuario == 5"
                                     @click="volver"
                                     color="primary"
                                     type="filled"
@@ -283,8 +277,9 @@
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/5 mt-5">
+                            <div class="vx-col w-1/2 mt-5">
                                 <vs-button
+                                    v-if="validarUsuario == 5"
                                     @click="ImprimirDatos"
                                     color="primary"
                                     type="filled"
@@ -294,6 +289,37 @@
                             </div>
                             <div class="vx-col w-1/5 mt-5">
                                 <vs-button
+                                    v-if="validarUsuario != 5"
+                                    @click="ActualizarListado"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Actualizar</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/5 mt-5">
+                                <vs-button
+                                    v-if="validarUsuario != 5"
+                                    @click="volver"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Volver</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/5 mt-5">
+                                <vs-button
+                                    v-if="validarUsuario != 5"
+                                    @click="ImprimirDatos"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Imprimir</vs-button
+                                >
+                            </div>
+                            <div class="vx-col w-1/5 mt-5">
+                                <vs-button
+                                    v-if="validarUsuario != 5"
                                     @click="popAnularTodo"
                                     color="primary"
                                     type="filled"
@@ -303,6 +329,7 @@
                             </div>
                             <div class="vx-col w-1/5 mt-5">
                                 <vs-button
+                                    v-if="validarUsuario != 5"
                                     @click="AgregarListadoFirmaUsers"
                                     color="primary"
                                     type="filled"
@@ -651,6 +678,7 @@ export default {
                 }
             },
             //Datos Campos
+            validarUsuario: sessionStorage.getItem("permiso_usuario"),
             image: null,
             nombrearchivo: "",
             imageRib: null,
@@ -1084,11 +1112,6 @@ export default {
         },
         generarCodigoBarra(producto, codart, fecven, lote, folio) {
             try {
-                console.log(producto);
-                console.log(codart);
-                console.log(fecven);
-                console.log(lote);
-                console.log(folio);
                 this.barcodeValue = folio;
                 this.popCodigoBarra = true;
             } catch (error) {

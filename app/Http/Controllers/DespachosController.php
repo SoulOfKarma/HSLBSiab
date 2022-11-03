@@ -235,7 +235,7 @@ class DespachosController extends Controller
     public function PostRAnularArticulo(Request $request){
         try {
             despachoDetalles::where('id',$request->id)
-            ->update(['CODMOT' => "",'NOMMOT' => ""]);
+            ->update(['CODMOT' => null,'NOMMOT' => null]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);

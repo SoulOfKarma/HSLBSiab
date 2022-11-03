@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class AuthEstadosController extends Controller
 {
+    //Este Metodo Devuelve Todos los tipos de estados autorizados para el item v-select del frontend
     public function GetAuthEstado(){
         try {
             $get = AuthEstados::all();
@@ -19,6 +20,7 @@ class AuthEstadosController extends Controller
         }
     }
 
+    //Este Metodo Inserta los valores enviados desde el front por post a la base de datos y devuelve true si funciono o false si no lo hizo
     public function PostAuthEstado(Request $request){
         try {
             AuthEstados::create($request->all());
@@ -29,6 +31,7 @@ class AuthEstadosController extends Controller
         }
     }
 
+    //Este Metodo Actualiza los valores enviados desde el front por post a la base de datos si el campo solicitado existe
     public function PutAuthEstado(Request $request){
         try {
             AuthEstados::where('id',$request->id)

@@ -20,12 +20,13 @@ class AuthJWT extends Controller
      * @param  \Closure  $next
      * @return mixed
      */
+
+     //Este Metodo Comprueba la Validez del token y si no lo es, genera un mensaje de invalidacion porque ya vencio 
     public function handle(Request $request)
     {
         try {
             $user = JWTAuth::parseToken()->authenticate($request->token);
             //$user = JWTAuth::parseToken()->authenticate();
-            log::info($user);
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
                 $refreshed = JWTAuth::refresh(JWTAuth::getToken());

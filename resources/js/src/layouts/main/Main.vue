@@ -609,6 +609,158 @@ export default {
             }
         ];
 
+        this.NavOC = [
+            {
+                url: "/home",
+                name: "Inicio",
+                slug: "Inicio",
+                icon: "HomeIcon"
+            },
+            {
+                url: null,
+                name: "Recepcion",
+                slug: "recepcion",
+                icon: "HomeIcon",
+                submenu: [
+                    {
+                        url: "/Recepcion/ListadoRecepcionCerrada",
+                        name: "Rec. Cerradas",
+                        slug: "/Recepcion/ListadoRecepcionCerrada",
+                        icon: "HomeIcon"
+                    },
+                    {
+                        url: "/Recepcion/ListadoRecepcionAnuladas",
+                        name: "Rec. Anuladas",
+                        slug: "/Recepcion/ListadoRecepcionAnuladas",
+                        icon: "HomeIcon"
+                    }
+                ]
+            },
+            {
+                url: null,
+                name: "Despacho",
+                slug: "despacho",
+                icon: "HomeIcon",
+                submenu: [
+                    {
+                        url: "/Despacho/ListadoDespachosCerrados",
+                        name: "Despachos Cerrados",
+                        slug: "/Despacho/ListadoDespachosCerrados",
+                        icon: "HomeIcon"
+                    },
+                    {
+                        url: "/Despacho/ListadoDespachosAnulados",
+                        name: "Despachos Anulados",
+                        slug: "/Despacho/ListadoDespachosAnulados",
+                        icon: "HomeIcon"
+                    }
+                ]
+            },
+            {
+                url: null,
+                name: "Orden Compra",
+                slug: "OrdenCompra",
+                icon: "HomeIcon",
+                submenu: [
+                    {
+                        url: "/OrdenCompra/OrdenCompra",
+                        name: "Orden Compra",
+                        slug: "/OrdenCompra/OrdenCompra",
+                        icon: "HomeIcon"
+                    },
+                    {
+                        url: "/OrdenCompra/ListadoOrdenCompraAbierta",
+                        name: "Lista OC Abierta",
+                        slug: "/OrdenCompra/ListadoOrdenCompraAbierta",
+                        icon: "HomeIcon"
+                    },
+                    {
+                        url: "/OrdenCompra/ListadoOrdenCompraCerrada",
+                        name: "Lista OC Cerrada",
+                        slug: "/OrdenCompra/ListadoOrdenCompraCerrada",
+                        icon: "HomeIcon"
+                    }
+                ]
+            },
+            {
+                url: null,
+                name: "Reportes",
+                slug: "reportes",
+                icon: "HomeIcon",
+                submenu: [
+                    {
+                        url: "/Reportes/Reportes",
+                        name: "Reportes",
+                        slug: "/Reportes/Reportes",
+                        icon: "HomeIcon"
+                    }
+                ]
+            }
+        ];
+
+        this.NavUG = [
+            {
+                url: "/home",
+                name: "Inicio",
+                slug: "Inicio",
+                icon: "HomeIcon"
+            },
+            {
+                url: null,
+                name: "Recepcion",
+                slug: "recepcion",
+                icon: "HomeIcon",
+                submenu: [
+                    {
+                        url: "/Recepcion/ListadoRecepcionCerrada",
+                        name: "Rec. Cerradas",
+                        slug: "/Recepcion/ListadoRecepcionCerrada",
+                        icon: "HomeIcon"
+                    },
+                    {
+                        url: "/Recepcion/ListadoRecepcionAnuladas",
+                        name: "Rec. Anuladas",
+                        slug: "/Recepcion/ListadoRecepcionAnuladas",
+                        icon: "HomeIcon"
+                    }
+                ]
+            },
+            {
+                url: null,
+                name: "Despacho",
+                slug: "despacho",
+                icon: "HomeIcon",
+                submenu: [
+                    {
+                        url: "/Despacho/ListadoDespachosCerrados",
+                        name: "Despachos Cerrados",
+                        slug: "/Despacho/ListadoDespachosCerrados",
+                        icon: "HomeIcon"
+                    },
+                    {
+                        url: "/Despacho/ListadoDespachosAnulados",
+                        name: "Despachos Anulados",
+                        slug: "/Despacho/ListadoDespachosAnulados",
+                        icon: "HomeIcon"
+                    }
+                ]
+            },
+            {
+                url: null,
+                name: "Reportes",
+                slug: "reportes",
+                icon: "HomeIcon",
+                submenu: [
+                    {
+                        url: "/Reportes/Reportes",
+                        name: "Reportes",
+                        slug: "/Reportes/Reportes",
+                        icon: "HomeIcon"
+                    }
+                ]
+            }
+        ];
+
         var aux = sessionStorage.getItem("run");
 
         if (aux == null) {
@@ -628,6 +780,10 @@ export default {
             this.navMenuItems = navMenuItems;
         } else if (aux2 == 3) {
             this.navMenuItems = this.NavJA;
+        } else if (aux2 == 4) {
+            this.navMenuItems = this.NavOC;
+        } else if (aux2 == 5) {
+            this.navMenuItems = this.NavUG;
         } else {
             router.push("/pages/login").catch(err => {});
         }

@@ -420,7 +420,7 @@ export default {
                 },
                 {
                     id: 4,
-                    descripcionPerfil: "Orden de Compra"
+                    descripcionPerfil: "Ejecutiva/o Compras"
                 },
                 {
                     id: 5,
