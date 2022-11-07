@@ -1859,6 +1859,16 @@ export default {
                     this.articulosgen = true;
                 }
 
+                this.seleccionBodega = {
+                    id: 0,
+                    descripcionBodega: ""
+                };
+
+                this.seleccionBodega = {
+                    id: this.seleccionBodegaL.id,
+                    descripcionBodega: this.seleccionBodegaL.descripcionBodega
+                };
+
                 let f = this.rowsMed;
                 let g = [];
 
@@ -1987,6 +1997,7 @@ export default {
             try {
                 this.popUpArticuloGeneral = true;
                 this.limpiarCampos();
+                this.cargaItemBodegaFamilia();
             } catch (error) {
                 console.log(error);
             }
@@ -2305,6 +2316,8 @@ export default {
         popMedicamento() {
             try {
                 this.popUpMedicamento = true;
+                this.limpiarCampos();
+                this.cargaItemBodegaFamilia();
             } catch (error) {
                 console.log(error);
             }
