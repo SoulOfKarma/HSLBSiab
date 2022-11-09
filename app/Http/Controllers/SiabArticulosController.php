@@ -214,7 +214,7 @@ class SiabArticulosController extends Controller
             'idEstado' => $request->idEstado,'ACT_FECVEN' => $request->ACT_FECVEN,'ACT_LOTE' => $request->ACT_LOTE,
             'LABORATORIO' => $request->LABORATORIO,'CANTXENB' => $request->CANTXENB,'idBodega' => $request->idBodega,
             'idZona' => $request->idZona,'SECTOR' => $request->SECTOR,'UBICACION' => $request->UBICACION,'ZGEN' => $request->ZGEN,
-            'COVID'=> $request->COVID,'NOMARCH' => $request->NOMARCH]);
+            'COVID'=> $request->COVID,'NOMARCH' => $request->NOMARCH,'PRECIO_BASE' => $request->PRECIO_BASE]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);
@@ -244,7 +244,7 @@ class SiabArticulosController extends Controller
             'ACT_LOTE' => $request->ACT_LOTE,'idBodega' => $request->idBodega,'idZona' => $request->idZona,
             'SECTOR' => $request->SECTOR,'UBICACION' => $request->UBICACION,'NOMFAM1' => $request->NOMFAM1,
             'NOMFAM2' => $request->NOMFAM2,'NOMFAM3' => $request->NOMFAM3,'NOMFAM4' => $request->NOMFAM4,'NOMFAM5' => $request->NOMFAM5,
-            'COVID'=> $request->COVID,'UNIMEDBASE' => $request->UNIMEDBASE,'NOMARCH' => $request->NOMARCH]);
+            'COVID'=> $request->COVID,'UNIMEDBASE' => $request->UNIMEDBASE,'NOMARCH' => $request->NOMARCH,'PRECIO_BASE' => $request->PRECIO_BASE]);
 
             return true;
         } catch (\Throwable $th) {

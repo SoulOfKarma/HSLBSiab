@@ -1275,7 +1275,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetBodega", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1301,7 +1301,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia1", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1327,7 +1327,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia2", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1353,7 +1353,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia3", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1379,7 +1379,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia4", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1405,7 +1405,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia5", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1453,7 +1453,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1514,7 +1514,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1584,7 +1584,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1651,7 +1651,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1722,7 +1722,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1789,7 +1789,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1860,7 +1860,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1927,7 +1927,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1998,7 +1998,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -2065,7 +2065,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -2136,7 +2136,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -2203,7 +2203,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -2243,7 +2243,7 @@ export default {
         RefreshToken() {
             try {
                 let data = {
-                    token: sessionStorage.getItem("token")
+                    token: localStorage.getItem("token")
                 };
                 axios
                     .post(this.localVal + "/api/auth/RefreshToken", data)
@@ -2259,11 +2259,11 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                            window.sessionStorage.clear();
+                            window.localStorage.clear();
                             window.localStorage.clear();
                             router.push("/pages/login");
                         } else {
-                            sessionStorage.setItem("token", tok);
+                            localStorage.setItem("token", tok);
                         }
                     });
             } catch (error) {

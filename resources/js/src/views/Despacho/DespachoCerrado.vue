@@ -76,10 +76,8 @@
                                 class="w-full"
                                 :columns="colDespachoArticulos"
                                 :rows="listaDespachoArticulos"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -357,6 +355,7 @@ import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
+import store from "../ScriptMenus/store.js";
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
 export default {
@@ -500,7 +499,8 @@ export default {
                 dateFormat: "H:i"
             },
             //Datos Generales
-            validarUsuario: sessionStorage.getItem("permiso_usuario"),
+            PageOptions: store.state.PageOptions,
+            validarUsuario: localStorage.getItem("permiso_usuario"),
             popUpAnularArticulo: false,
             popUpAnularTodo: false,
             popUpRAnularArticulo: false,
@@ -685,7 +685,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -775,7 +775,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -820,7 +820,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -863,7 +863,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -903,7 +903,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -947,7 +947,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetAnulacion", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -979,7 +979,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1050,7 +1050,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1083,7 +1083,7 @@ export default {
         //Firma Digital
         AgregarListadoFirmaUsers() {
             try {
-                let run = sessionStorage.getItem("run");
+                let run = localStorage.getItem("run");
                 if (run.length == 10) {
                     run = run.substring(0, 8);
                 } else if (run == 9) {
@@ -1092,7 +1092,7 @@ export default {
 
                 let data = {
                     RUN: run,
-                    idPerfil: sessionStorage.getItem("permiso_usuario"),
+                    idPerfil: localStorage.getItem("permiso_usuario"),
                     NUMINT: this.numint
                 };
 
@@ -1103,7 +1103,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1224,7 +1224,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1241,7 +1241,7 @@ export default {
         RefreshToken() {
             try {
                 let data = {
-                    token: sessionStorage.getItem("token")
+                    token: localStorage.getItem("token")
                 };
                 axios
                     .post(this.localVal + "/api/auth/RefreshToken", data)
@@ -1257,11 +1257,11 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                            window.sessionStorage.clear();
+                            window.localStorage.clear();
                             window.localStorage.clear();
                             router.push("/pages/login");
                         } else {
-                            sessionStorage.setItem("token", tok);
+                            localStorage.setItem("token", tok);
                         }
                     });
             } catch (error) {

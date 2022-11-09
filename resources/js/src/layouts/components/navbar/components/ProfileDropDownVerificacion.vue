@@ -26,7 +26,7 @@ export default {
     data() {
         return {
             localVal: process.env.MIX_APP_URL,
-            nombre: sessionStorage.getItem("nombre")
+            nombre: localStorage.getItem("nombre")
         };
     },
     computed: {
@@ -39,7 +39,7 @@ export default {
             await axios.post(this.localVal + "/api/Login/Salir", {
                 rut: ""
             });
-            window.sessionStorage.clear();
+            window.localStorage.clear();
             router.push("/pages/login");
         }
     }

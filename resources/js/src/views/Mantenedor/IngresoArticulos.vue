@@ -29,10 +29,8 @@
                         <vue-good-table
                             :columns="columns"
                             :rows="rows"
-                            :pagination-options="{
-                                enabled: true,
-                                perPage: 10
-                            }"
+                            PageOptions: store.state.PageOptions,
+                            theme="black-rhino"
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -127,10 +125,8 @@
                         <vue-good-table
                             :columns="columnsMed"
                             :rows="rows"
-                            :pagination-options="{
-                                enabled: true,
-                                perPage: 10
-                            }"
+                            PageOptions: store.state.PageOptions,
+                            theme="black-rhino"
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -407,7 +403,7 @@
                                     v-model="ubicacion"
                                 />
                             </div>
-                            <div class="vx-col w-full mt-5">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Activacion Covid 19</h6>
 
                                 <v-select
@@ -417,6 +413,15 @@
                                     label="descripcionCovid"
                                     :options="listaCovid"
                                 ></v-select>
+                            </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Precio Base</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="precio_base"
+                                    @keypress="isNumber($event)"
+                                />
                             </div>
                         </div>
                         <br />
@@ -672,6 +677,15 @@
                                     :options="listaCovid"
                                 ></v-select>
                             </div>
+                            <div class="vx-col w-1/2 mt-5">
+                                <h6>Precio Base</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="precio_base"
+                                    @keypress="isNumber($event)"
+                                />
+                            </div>
                         </div>
                         <br />
                         <div class="vx-row w-full">
@@ -740,7 +754,6 @@
                         <div class="vx-row">
                             <div class="vx-col w-1/4 mt-5">
                                 <h6>Bodega</h6>
-
                                 <v-select
                                     v-model="seleccionBodega"
                                     placeholder="Activo"
@@ -806,10 +819,8 @@
                                 <vue-good-table
                                     :columns="col"
                                     :rows="listaCodNuevo"
-                                    :pagination-options="{
-                                        enabled: true,
-                                        perPage: 10
-                                    }"
+                                    PageOptions: store.state.PageOptions,
+                                    theme="black-rhino"
                                 >
                                     <template
                                         slot="table-row"
@@ -1056,6 +1067,15 @@
                                     :options="listaCovid"
                                 ></v-select>
                             </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>Precio Base</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="precio_base"
+                                    @keypress="isNumber($event)"
+                                />
+                            </div>
                         </div>
                         <br />
                         <div class="vx-row w-full">
@@ -1297,6 +1317,15 @@
                                     :options="listaCovid"
                                 ></v-select>
                             </div>
+                            <div class="vx-col w-full mt-5">
+                                <h6>Precio Base</h6>
+
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="precio_base"
+                                    @keypress="isNumber($event)"
+                                />
+                            </div>
                         </div>
                         <br />
                         <div class="vx-row w-full">
@@ -1431,10 +1460,8 @@
                                 <vue-good-table
                                     :columns="colMed"
                                     :rows="listaCodNuevo"
-                                    :pagination-options="{
-                                        enabled: true,
-                                        perPage: 10
-                                    }"
+                                    PageOptions: store.state.PageOptions,
+                                    theme="black-rhino"
                                 >
                                     <template
                                         slot="table-row"
@@ -1557,6 +1584,7 @@ import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
+import storePage from "../ScriptMenus/store.js";
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
 
@@ -1588,6 +1616,7 @@ export default {
                 }
             },
             //Datos Campos
+            PageOptions: storePage.state.PageOptions,
             popUpMedicamento: false,
             popUpMedicamentoMod: false,
             popUpNCMedicamento: false,
@@ -1618,12 +1647,12 @@ export default {
             ubicacion: "",
             hover: "blur",
             zgen: "",
+            precio_base: 0,
             unidadMedidaBase: "",
             image: null,
             nombrearchivo: "",
             codMedEcoIns: 0,
-            nomarchivo:
-                "imagenArticulos/00VCY0iWEUQvxC2yTvY2wt41jB3dHeM1bda3djvg.png",
+            nomarchivo: "",
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -1827,6 +1856,7 @@ export default {
                 };
                 this.unidadMedidaBase = "";
                 this.idMod = 0;
+                this.precio_base = 0;
             } catch (error) {
                 console.log(error);
             }
@@ -2186,7 +2216,6 @@ export default {
                 this.codigoArticulo = CODART;
                 this.nombre = NOMBRE;
                 let c = this.listaEstado;
-
                 c.forEach((value, index) => {
                     if (idEstado == value.id) {
                         this.seleccionEstado.id = value.id;
@@ -2194,9 +2223,7 @@ export default {
                             value.descripcionEstado;
                     }
                 });
-
                 c = [];
-
                 if (idACT_FECVEN == 1) {
                     this.seleccionFechaVenciminento = {
                         id: 1,
@@ -2208,7 +2235,6 @@ export default {
                         descripcionFVen: "No"
                     };
                 }
-
                 if (idACTLOTE == 1) {
                     this.seleccionLoteSerie = {
                         id: 1,
@@ -2220,16 +2246,11 @@ export default {
                         descripcionLoteSerie: "No"
                     };
                 }
-
                 this.cantidadEmbalaje = CANTXENB;
                 this.cargaBodegaMod(idBodega);
-
                 c = [];
-
                 this.idZona = 0;
-
                 c = this.listaZona;
-
                 c.forEach((value, index) => {
                     if (idZona == value.id) {
                         this.seleccionZona.id = value.id;
@@ -2237,13 +2258,10 @@ export default {
                             value.descripcionZonas;
                     }
                 });
-
                 c = [];
                 this.sector = SECTOR;
                 this.ubicacion = UBICACION;
-
                 c = this.listaTempFamilia1;
-
                 c.forEach((value, index) => {
                     if (NOMFAM1 == value.descripcionFamilia) {
                         this.seleccionFamilia1.id = value.id;
@@ -2252,11 +2270,8 @@ export default {
                             value.descripcionFamilia;
                     }
                 });
-
                 c = [];
-
                 c = this.listaTempFamilia2;
-
                 c.forEach((value, index) => {
                     if (NOMFAM2 == value.descripcionFamilia) {
                         this.seleccionFamilia2.id = value.id;
@@ -2265,11 +2280,8 @@ export default {
                             value.descripcionFamilia;
                     }
                 });
-
                 c = [];
-
                 c = this.listaTempFamilia3;
-
                 c.forEach((value, index) => {
                     if (NOMFAM3 == value.descripcionFamilia) {
                         this.seleccionFamilia3.id = value.id;
@@ -2278,11 +2290,8 @@ export default {
                             value.descripcionFamilia;
                     }
                 });
-
                 c = [];
-
                 c = this.listaTempFamilia4;
-
                 c.forEach((value, index) => {
                     if (NOMFAM4 == value.descripcionFamilia) {
                         this.seleccionFamilia4.id = value.id;
@@ -2291,11 +2300,8 @@ export default {
                             value.descripcionFamilia;
                     }
                 });
-
                 c = [];
-
                 c = this.listaTempFamilia5;
-
                 c.forEach((value, index) => {
                     if (NOMFAM5 == value.descripcionFamilia) {
                         this.seleccionFamilia5.id = value.id;
@@ -2304,9 +2310,7 @@ export default {
                             value.descripcionFamilia;
                     }
                 });
-
                 this.unidadMedidaBase = UNIMEDBASE;
-
                 this.TraerDetalleByCodInterno(CODART);
             } catch (error) {
                 console.log(error);
@@ -2343,7 +2347,8 @@ export default {
             CANTXENB,
             idACT_FECVEN,
             idACTLOTE,
-            NOMARCH
+            NOMARCH,
+            PRECIO_BASE
         ) {
             try {
                 this.limpiarCampos();
@@ -2423,6 +2428,7 @@ export default {
                 this.sector = SECTOR;
                 this.ubicacion = UBICACION;
                 this.zgen = ZGEN;
+                this.precio_base = PRECIO_BASE;
             } catch (error) {
                 console.log(error);
             }
@@ -2446,7 +2452,8 @@ export default {
             LABORATORIO,
             CANTXENB,
             idACT_FECVEN,
-            idACTLOTE
+            idACTLOTE,
+            PRECIO_BASE
         ) {
             try {
                 this.limpiarCampos();
@@ -2525,6 +2532,7 @@ export default {
                 this.sector = SECTOR;
                 this.ubicacion = UBICACION;
                 this.zgen = ZGEN;
+                this.precio_base = PRECIO_BASE;
 
                 this.TraerDetalleByCodInterno(CODART);
             } catch (error) {
@@ -2548,7 +2556,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -2569,7 +2577,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -2587,7 +2595,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetLaboratorio", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2613,7 +2621,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetAllProductos", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2639,7 +2647,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetAuthEstado", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2665,7 +2673,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetBodega", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2692,7 +2700,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetZona", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2718,7 +2726,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia1", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2744,7 +2752,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia2", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2770,7 +2778,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia3", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2796,7 +2804,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia4", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2822,7 +2830,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetFamilia5", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2948,7 +2956,7 @@ export default {
                                         "Content-Type": "multipart/form-data",
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -2979,7 +2987,8 @@ export default {
                                         NOMFAM5: this.seleccionFamilia5
                                             .descripcionFamilia,
                                         UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                                        NOMARCH: url
+                                        NOMARCH: url,
+                                        PRECIO_BASE: this.precio_base
                                     };
                                     axios
                                         .post(
@@ -2990,7 +2999,7 @@ export default {
                                                 headers: {
                                                     Authorization:
                                                         `Bearer ` +
-                                                        sessionStorage.getItem(
+                                                        localStorage.getItem(
                                                             "token"
                                                         )
                                                 }
@@ -3010,6 +3019,7 @@ export default {
                                                 });
                                                 this.popUpArticuloGeneral = false;
                                                 this.TraerProductos();
+                                                this.cargaItemBodega();
                                                 setTimeout(() => {
                                                     this.cargaItemBodegaFamilia();
                                                 }, 1000);
@@ -3054,7 +3064,8 @@ export default {
                             NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
                             NOMFAM4: this.seleccionFamilia4.descripcionFamilia,
                             NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
-                            UNIMEDBASE: this.unidadMedidaBase.toUpperCase()
+                            UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
+                            PRECIO_BASE: this.precio_base
                         };
 
                         axios
@@ -3066,7 +3077,7 @@ export default {
                                     headers: {
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -3084,6 +3095,7 @@ export default {
                                     });
                                     this.popUpArticuloGeneral = false;
                                     this.TraerProductos();
+                                    this.cargaItemBodega();
                                     setTimeout(() => {
                                         this.cargaItemBodegaFamilia();
                                     }, 1000);
@@ -3214,7 +3226,7 @@ export default {
                                         "Content-Type": "multipart/form-data",
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -3253,7 +3265,8 @@ export default {
                                             .descripcionFamilia,
                                         UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
                                         NOMARCH: url,
-                                        COVID: Acovid
+                                        COVID: Acovid,
+                                        PRECIO_BASE: this.precio_base
                                     };
                                     const dat = data;
                                     axios
@@ -3265,7 +3278,7 @@ export default {
                                                 headers: {
                                                     Authorization:
                                                         `Bearer ` +
-                                                        sessionStorage.getItem(
+                                                        localStorage.getItem(
                                                             "token"
                                                         )
                                                 }
@@ -3285,6 +3298,7 @@ export default {
                                                 });
                                                 this.popUpArticuloGeneralMod = false;
                                                 this.TraerProductos();
+                                                this.cargaItemBodega();
                                                 setTimeout(() => {
                                                     this.cargaItemBodegaFamilia();
                                                 }, 1000);
@@ -3338,7 +3352,8 @@ export default {
                             NOMFAM5: this.seleccionFamilia5.descripcionFamilia,
                             UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
                             NOMARCH: null,
-                            COVID: Acovid
+                            COVID: Acovid,
+                            PRECIO_BASE: this.precio_base
                         };
                         axios
                             .post(
@@ -3349,7 +3364,7 @@ export default {
                                     headers: {
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -3367,6 +3382,7 @@ export default {
                                     });
                                     this.popUpArticuloGeneral = false;
                                     this.TraerProductos();
+                                    this.cargaItemBodega();
                                     setTimeout(() => {
                                         this.cargaItemBodegaFamilia();
                                     }, 1000);
@@ -3535,7 +3551,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -3551,6 +3567,7 @@ export default {
                                     position: "top-right"
                                 });
                                 this.TraerProductos();
+                                this.cargaItemBodega();
                                 setTimeout(() => {
                                     this.cargaItemBodegaFamilia();
                                 }, 1000);
@@ -3640,7 +3657,7 @@ export default {
                                         "Content-Type": "multipart/form-data",
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -3674,7 +3691,8 @@ export default {
                                         UBICACION: this.ubicacion.toUpperCase(),
                                         ZGEN: this.zgen.toUpperCase(),
                                         NOMARCH: url,
-                                        COVID: Acovid
+                                        COVID: Acovid,
+                                        PRECIO_BASE: this.precio_base
                                     };
 
                                     const dat = data;
@@ -3688,7 +3706,7 @@ export default {
                                                 headers: {
                                                     Authorization:
                                                         `Bearer ` +
-                                                        sessionStorage.getItem(
+                                                        localStorage.getItem(
                                                             "token"
                                                         )
                                                 }
@@ -3760,7 +3778,8 @@ export default {
                             SECTOR: this.sector.toUpperCase(),
                             UBICACION: this.ubicacion.toUpperCase(),
                             ZGEN: this.zgen.toUpperCase(),
-                            COVID: Acovid
+                            COVID: Acovid,
+                            PRECIO_BASE: this.precio_base
                         };
 
                         const dat = data;
@@ -3774,7 +3793,7 @@ export default {
                                     headers: {
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -3878,7 +3897,7 @@ export default {
                                         "Content-Type": "multipart/form-data",
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -3913,7 +3932,8 @@ export default {
                                         UBICACION: this.ubicacion.toUpperCase(),
                                         ZGEN: this.zgen.toUpperCase(),
                                         NOMARCH: url,
-                                        COVID: Acovid
+                                        COVID: Acovid,
+                                        PRECIO_BASE: this.precio_base
                                     };
 
                                     const dat = data;
@@ -3927,7 +3947,7 @@ export default {
                                                 headers: {
                                                     Authorization:
                                                         `Bearer ` +
-                                                        sessionStorage.getItem(
+                                                        localStorage.getItem(
                                                             "token"
                                                         )
                                                 }
@@ -4001,7 +4021,8 @@ export default {
                             UBICACION: this.ubicacion.toUpperCase(),
                             ZGEN: this.zgen.toUpperCase(),
                             NOMARCH: null,
-                            COVID: Acovid
+                            COVID: Acovid,
+                            PRECIO_BASE: this.precio_base
                         };
 
                         const dat = data;
@@ -4015,7 +4036,7 @@ export default {
                                     headers: {
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -4069,7 +4090,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -4167,7 +4188,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -4221,7 +4242,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )

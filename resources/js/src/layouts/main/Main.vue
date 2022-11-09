@@ -258,7 +258,7 @@ export default {
     methods: {
         async salir() {
             await axios.post(this.localVal + "/api/Login/Salir", { rut: "" });
-            window.sessionStorage.clear();
+            window.localStorage.clear();
             window.localStorage.clear();
             router.push("/pages/login");
         },
@@ -761,7 +761,7 @@ export default {
             }
         ];
 
-        var aux = sessionStorage.getItem("run");
+        var aux = localStorage.getItem("run");
 
         if (aux == null) {
             aux = 0;
@@ -772,7 +772,7 @@ export default {
             router.push("/pages/login").catch(err => {});
         }
 
-        var aux2 = sessionStorage.getItem("permiso_usuario");
+        var aux2 = localStorage.getItem("permiso_usuario");
 
         if (aux2 == 1) {
             this.navMenuItems = this.NavA;

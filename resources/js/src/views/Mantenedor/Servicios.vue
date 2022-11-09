@@ -55,10 +55,8 @@
                     <vue-good-table
                         :columns="columns"
                         :rows="rows"
-                        :pagination-options="{
-                            enabled: true,
-                            perPage: 10
-                        }"
+                        :pagination-options="PageOptions"
+                        theme="black-rhino"
                     >
                         <template slot="table-row" slot-scope="props">
                             <!-- Column: Name -->
@@ -903,6 +901,7 @@ import VueTippy, { TippyComponent } from "vue-tippy";
 import { HotTable } from "@handsontable/vue";
 import { ContextMenu } from "handsontable/plugins/contextMenu";
 import { registerAllModules } from "handsontable/registry";
+import store from "../ScriptMenus/store.js";
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
 registerAllModules();
@@ -934,28 +933,8 @@ export default {
                     ]
                 }
             },
-            settings: {
-                colHeaders: [
-                    "Direccion",
-                    "Sub-Direccion",
-                    "Departamento",
-                    "Unidad",
-                    "Sub-Unidad"
-                ],
-                licenseKey: "non-commercial-and-evaluation",
-                contextMenu: {
-                    items: {
-                        row_above: {
-                            name: "Insertar Fila Nueva hacia Arriba"
-                        },
-                        row_below: {
-                            name: "Insertar Fila Nueva hacia Abajo"
-                        },
-                        separator: ContextMenu.SEPARATOR
-                    }
-                }
-            },
             //Datos Campos
+            PageOptions: store.state.PageOptions,
             //Jerarquia
             popUpJerarquia: false,
             popUpJerarquiaMod: false,
@@ -1408,7 +1387,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetSF1", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1452,7 +1431,7 @@ export default {
                         .post(this.localVal + "/api/Mantenedor/PostSF1", dat, {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         })
                         .then(res => {
@@ -1525,7 +1504,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1564,7 +1543,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetSF2", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1622,7 +1601,7 @@ export default {
                         .post(this.localVal + "/api/Mantenedor/PostSF2", dat, {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         })
                         .then(res => {
@@ -1710,7 +1689,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1750,7 +1729,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetSF3", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1822,7 +1801,7 @@ export default {
                         .post(this.localVal + "/api/Mantenedor/PostSF3", dat, {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         })
                         .then(res => {
@@ -1924,7 +1903,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -1964,7 +1943,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetSF4", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2049,7 +2028,7 @@ export default {
                         .post(this.localVal + "/api/Mantenedor/PostSF4", dat, {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         })
                         .then(res => {
@@ -2162,7 +2141,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -2201,7 +2180,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetSF5", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2298,7 +2277,7 @@ export default {
                         .post(this.localVal + "/api/Mantenedor/PostSF5", dat, {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         })
                         .then(res => {
@@ -2424,7 +2403,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -2463,7 +2442,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetServiciosTodos", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2487,7 +2466,7 @@ export default {
         RefreshToken() {
             try {
                 let data = {
-                    token: sessionStorage.getItem("token")
+                    token: localStorage.getItem("token")
                 };
                 axios
                     .post(this.localVal + "/api/auth/RefreshToken", data)
@@ -2503,11 +2482,11 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                            window.sessionStorage.clear();
+                            window.localStorage.clear();
                             window.localStorage.clear();
                             router.push("/pages/login");
                         } else {
-                            sessionStorage.setItem("token", tok);
+                            localStorage.setItem("token", tok);
                         }
                     });
             } catch (error) {

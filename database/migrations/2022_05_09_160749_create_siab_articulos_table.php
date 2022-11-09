@@ -50,6 +50,7 @@ class CreateSiabArticulosTable extends Migration
             $table->string('CODUNIFAR')->nullable();
             $table->string('ZGEN')->nullable();
             $table->boolean('COVID')->nullable();
+            $table->bigInteger('PRECIO_BASE')->nullable();
             $table->timestamps();
         });
     }

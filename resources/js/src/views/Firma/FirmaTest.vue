@@ -128,7 +128,7 @@ export default {
         RefreshToken() {
             try {
                 let data = {
-                    token: sessionStorage.getItem("token")
+                    token: localStorage.getItem("token")
                 };
                 axios
                     .post(this.localVal + "/api/auth/RefreshToken", data)
@@ -144,11 +144,11 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                            window.sessionStorage.clear();
+                            window.localStorage.clear();
                             window.localStorage.clear();
                             router.push("/pages/login");
                         } else {
-                            sessionStorage.setItem("token", tok);
+                            localStorage.setItem("token", tok);
                         }
                     });
             } catch (error) {
@@ -190,7 +190,7 @@ export default {
                     .post(this.localVal + "/api/Firma/process", data, {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -239,7 +239,7 @@ export default {
                     .post(this.localVal + "/api/Firma/PDFPrueba", data, {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -288,7 +288,7 @@ export default {
                     .post(this.localVal + "/api/Firma/process", data, {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -304,8 +304,8 @@ export default {
         TestAgregarFirmaUsers() {
             try {
                 let data = {
-                    RUN: sessionStorage.getItem("run"),
-                    idPerfil: sessionStorage.getItem("permiso_usuario"),
+                    RUN: localStorage.getItem("run"),
+                    idPerfil: localStorage.getItem("permiso_usuario"),
                     NUMINT: 1
                 };
 
@@ -316,7 +316,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )

@@ -118,10 +118,8 @@
                                 class="w-full"
                                 :columns="colDetalle"
                                 :rows="listaDetalleOrdenCompra"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -233,10 +231,8 @@
                             <vue-good-table
                                 :columns="col"
                                 :rows="listaRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -295,6 +291,7 @@ import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
+import store from "../ScriptMenus/store.js";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 Vue.use(VueTippy);
@@ -328,6 +325,7 @@ export default {
                 }
             },
             //Datos Campos
+            PageOptions: store.state.PageOptions,
             popUpRecepciones: false,
             validarRecepcion: false,
             codInternoRecepcion: 0,
@@ -660,7 +658,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -765,7 +763,7 @@ export default {
                                 headers: {
                                     Authorization:
                                         `Bearer ` +
-                                        sessionStorage.getItem("token")
+                                        localStorage.getItem("token")
                                 }
                             }
                         )
@@ -807,7 +805,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -842,7 +840,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -889,7 +887,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -931,7 +929,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -973,7 +971,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetProveedor", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -999,7 +997,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetUltimoNFolioOC", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1115,9 +1113,9 @@ export default {
                         });
                     } else {
                         let nombreUsuario =
-                            sessionStorage.getItem("nombre") +
+                            localStorage.getItem("nombre") +
                             " " +
-                            sessionStorage.getItem("apellido");
+                            localStorage.getItem("apellido");
                         let data = {
                             NUMINT: this.numint,
                             FECSYS: moment(
@@ -1155,7 +1153,7 @@ export default {
                                     headers: {
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -1204,7 +1202,7 @@ export default {
         RefreshToken() {
             try {
                 let data = {
-                    token: sessionStorage.getItem("token")
+                    token: localStorage.getItem("token")
                 };
                 axios
                     .post(this.localVal + "/api/auth/RefreshToken", data)
@@ -1220,11 +1218,11 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                            window.sessionStorage.clear();
+                            window.localStorage.clear();
                             window.localStorage.clear();
                             router.push("/pages/login");
                         } else {
-                            sessionStorage.setItem("token", tok);
+                            localStorage.setItem("token", tok);
                         }
                     });
             } catch (error) {

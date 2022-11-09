@@ -26,7 +26,7 @@ export default new Vuex.Store({
                 }
             },
             {
-                label: "Codigo Articulo",
+                label: "Codigo Interno",
                 field: "CODART",
                 filterOptions: {
                     enabled: true
@@ -67,7 +67,7 @@ export default new Vuex.Store({
                 }
             },
             {
-                label: "Codigo Articulo",
+                label: "Codigo Interno",
                 field: "CODART",
                 filterOptions: {
                     enabled: true
@@ -108,7 +108,7 @@ export default new Vuex.Store({
                 }
             },
             {
-                label: "Codigo Articulo",
+                label: "Codigo Interno",
                 field: "CODART",
                 filterOptions: {
                     enabled: true
@@ -177,7 +177,7 @@ export default new Vuex.Store({
                 }
             },
             {
-                label: "Codigo Articulo",
+                label: "Codigo Interno",
                 field: "CODART",
                 filterOptions: {
                     enabled: true

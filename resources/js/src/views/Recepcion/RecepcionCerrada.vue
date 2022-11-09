@@ -145,10 +145,8 @@
                                 class="w-full"
                                 :columns="colDetalle"
                                 :rows="listaDetalleRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -226,10 +224,8 @@
                                 class="w-full"
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -642,6 +638,7 @@ import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
+import store from "../ScriptMenus/store.js";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 import VueBarcode from "vue-barcode";
@@ -678,7 +675,8 @@ export default {
                 }
             },
             //Datos Campos
-            validarUsuario: sessionStorage.getItem("permiso_usuario"),
+            PageOptions: store.state.PageOptions,
+            validarUsuario: localStorage.getItem("permiso_usuario"),
             image: null,
             nombrearchivo: "",
             imageRib: null,
@@ -1140,7 +1138,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1276,7 +1274,7 @@ export default {
                         headers: {
                             "Content-Type": "multipart/form-data",
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     }
                 )
@@ -1320,7 +1318,7 @@ export default {
                         headers: {
                             "Content-Type": "multipart/form-data",
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     }
                 )
@@ -1364,7 +1362,7 @@ export default {
                         headers: {
                             "Content-Type": "multipart/form-data",
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     }
                 )
@@ -1404,7 +1402,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1449,7 +1447,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1492,7 +1490,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1549,7 +1547,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1583,7 +1581,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetAnulacion", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1616,7 +1614,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1682,7 +1680,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetProveedor", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1708,7 +1706,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetTipoDocumentos", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1734,7 +1732,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetAuthEstado", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1760,7 +1758,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetBodega", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1786,7 +1784,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetZona", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1821,7 +1819,7 @@ export default {
         //Firma Digital
         AgregarListadoFirmaUsers() {
             try {
-                let run = sessionStorage.getItem("run");
+                let run = localStorage.getItem("run");
                 if (run.length == 10) {
                     run = run.substring(0, 8);
                 } else if (run == 9) {
@@ -1830,7 +1828,7 @@ export default {
 
                 let data = {
                     RUN: run,
-                    idPerfil: sessionStorage.getItem("permiso_usuario"),
+                    idPerfil: localStorage.getItem("permiso_usuario"),
                     NUMINT: this.numint
                 };
 
@@ -1841,7 +1839,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -1959,7 +1957,7 @@ export default {
                     .post(this.localVal + "/api/Firma/FirmaDigitalArray", dat, {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -1975,7 +1973,7 @@ export default {
         RefreshToken() {
             try {
                 let data = {
-                    token: sessionStorage.getItem("token")
+                    token: localStorage.getItem("token")
                 };
                 axios
                     .post(this.localVal + "/api/auth/RefreshToken", data)
@@ -1991,11 +1989,11 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                            window.sessionStorage.clear();
+                            window.localStorage.clear();
                             window.localStorage.clear();
                             router.push("/pages/login");
                         } else {
-                            sessionStorage.setItem("token", tok);
+                            localStorage.setItem("token", tok);
                         }
                     });
             } catch (error) {

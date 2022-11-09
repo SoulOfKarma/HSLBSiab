@@ -151,19 +151,19 @@ export default {
                         .then(response => {
                             if (response.data.length > 0) {
                                 if (response.data != 1) {
-                                    sessionStorage.setItem(
+                                    localStorage.setItem(
                                         "nombre",
                                         response.data[0].nombre_usuario
                                     );
-                                    sessionStorage.setItem(
+                                    localStorage.setItem(
                                         "apellido",
                                         response.data[0].apellido_usuario
                                     );
-                                    sessionStorage.setItem(
+                                    localStorage.setItem(
                                         "run",
                                         response.data[0].run
                                     );
-                                    sessionStorage.setItem(
+                                    localStorage.setItem(
                                         "id",
                                         response.data[0].id
                                     );
@@ -176,14 +176,11 @@ export default {
                         .catch(error => console.log(error));
                     await axios
                         .post(this.localVal + "/api/auth/login", {
-                            run: sessionStorage.getItem("run"),
+                            run: localStorage.getItem("run"),
                             password: this.password
                         })
                         .then(function(response) {
-                            sessionStorage.setItem(
-                                "token",
-                                response.data.token
-                            );
+                            localStorage.setItem("token", response.data.token);
                         })
                         .catch(error => console.log(error));
                     console.log(sw);
@@ -196,7 +193,7 @@ export default {
                             .then(function(response2) {
                                 if (response2.data.length > 0) {
                                     if (response2.data[0].estado_login == 1) {
-                                        sessionStorage.setItem(
+                                        localStorage.setItem(
                                             "permiso_usuario",
                                             response2.data[0].permiso_usuario
                                         );

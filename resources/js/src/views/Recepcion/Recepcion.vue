@@ -160,7 +160,23 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-                    <div class="vx-col w-1/3 mt-5">
+                    <div
+                        class="vx-col w-1/3 mt-5"
+                        v-if="seleccionLoteSerie.id == 2"
+                    >
+                        <h6>
+                            Precio
+                        </h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="precio"
+                            @keypress="isNumber($event)"
+                        />
+                    </div>
+                    <div
+                        class="vx-col w-1/3 mt-5"
+                        v-if="seleccionLoteSerie.id == 1"
+                    >
                         <h6>
                             Precio
                         </h6>
@@ -190,7 +206,11 @@
                         <h6>
                             Lote/Serie
                         </h6>
-                        <vs-input class="inputx w-full  " v-model="lote" />
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="lote"
+                            @keyup.enter="AgregarArticuloDetalle"
+                        />
                     </div>
 
                     <br />
@@ -257,10 +277,9 @@
                                 :columns="colDetalle"
                                 class="w-full"
                                 :rows="listaDetalleRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
+                                styleClass="vgt-table condensed"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -419,10 +438,9 @@
                                 class="w-full"
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
+                                styleClass="vgt-table condensed"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -709,7 +727,23 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-                    <div class="vx-col w-1/3 mt-5">
+                    <div
+                        class="vx-col w-1/3 mt-5"
+                        v-if="seleccionLoteSerie.id == 2"
+                    >
+                        <h6>
+                            Precio
+                        </h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="precio"
+                            @keypress="isNumber($event)"
+                        />
+                    </div>
+                    <div
+                        class="vx-col w-1/3 mt-5"
+                        v-if="seleccionLoteSerie.id == 1"
+                    >
                         <h6>
                             Precio
                         </h6>
@@ -724,7 +758,7 @@
                         class="vx-col w-1/2 mt-5"
                         v-if="seleccionFechaVencimiento.id == 1"
                     >
-                        <h6>Fecha Venciminento</h6>
+                        <h6>Fecha Vencimiento</h6>
                         <flat-pickr
                             :config="configTodateTimePickerFV"
                             v-model="fechaVencimiento"
@@ -739,7 +773,11 @@
                         <h6>
                             Lote/Serie
                         </h6>
-                        <vs-input class="inputx w-full  " v-model="lote" />
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="lote"
+                            @keyup.enter="AgregarArticuloDetalle"
+                        />
                     </div>
                     <br />
                     <div class="vx-col w-1/2 mt-5" v-show="false">
@@ -805,10 +843,9 @@
                                 :columns="colDetalle"
                                 class="w-full"
                                 :rows="listaDetalleRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
+                                styleClass="vgt-table condensed"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -967,10 +1004,8 @@
                                 class="w-full"
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -1120,10 +1155,8 @@
                             <vue-good-table
                                 :columns="col"
                                 :rows="listaArticulos"
-                                :pagination-options="{
-                                    enabled: true,
-                                    perPage: 10
-                                }"
+                                :pagination-options="PageOptions"
+                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -1426,6 +1459,7 @@ import { PlusCircleIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 import VueEnterToTab from "vue-enter-to-tab";
+import store from "../ScriptMenus/store.js";
 import { EnterToTabMixin } from "vue-enter-to-tab";
 Vue.use(VueEnterToTab, true);
 Vue.use(VueTippy);
@@ -1460,6 +1494,7 @@ export default {
                 }
             },
             //Datos Campos
+            PageOptions: store.state.PageOptions,
             image: null,
             nombrearchivo: "",
             imageRib: null,
@@ -1525,6 +1560,7 @@ export default {
             dcto: 0,
             cargos: 0,
             ajustes: 0,
+            validarNInterno: false,
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -1542,8 +1578,8 @@ export default {
                 descripcionFVen: "Seleccione Fecha Venciminento"
             },
             seleccionLoteSerie: {
-                id: 0,
-                descripcionLoteSerie: "Seleccione Lote/Serie"
+                id: 2,
+                descripcionLoteSerie: "No"
             },
             seleccionProveedores: {
                 id: 0,
@@ -2100,7 +2136,7 @@ export default {
                         headers: {
                             "Content-Type": "multipart/form-data",
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     }
                 )
@@ -2144,7 +2180,7 @@ export default {
                         headers: {
                             "Content-Type": "multipart/form-data",
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     }
                 )
@@ -2188,7 +2224,7 @@ export default {
                         headers: {
                             "Content-Type": "multipart/form-data",
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     }
                 )
@@ -2455,7 +2491,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetTipoCompras", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2483,7 +2519,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -2527,7 +2563,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetAllArticulos", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2561,7 +2597,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -2602,7 +2638,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -2708,7 +2744,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -2735,7 +2771,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetProveedor", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2761,7 +2797,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetTipoDocumentos", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2787,7 +2823,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetAuthEstado", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2813,7 +2849,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetBodega", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2839,7 +2875,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetZona", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2865,7 +2901,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetUltimoNInterno", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2891,7 +2927,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetUltimoNFolio", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -2913,6 +2949,11 @@ export default {
         },
         AgregarArticuloDetalle() {
             try {
+                if (this.validarNInterno) {
+                } else {
+                    this.TraerUltimoNInterno();
+                    this.validarNInterno = true;
+                }
                 let fechav = moment(this.fechaVencimiento, "DD-MM-YYYY").format(
                     "YYYY-MM-DD"
                 );
@@ -2998,21 +3039,178 @@ export default {
                         position: "top-right"
                     });
                 } else {
-                    if (this.seleccionFechaVencimiento.id == 1) {
-                        if (this.fechaVencimiento != null) {
+                    setTimeout(() => {
+                        if (this.seleccionFechaVencimiento.id == 1) {
+                            if (this.fechaVencimiento != null) {
+                                let total = this.precio * this.cantidad;
+                                let valorT = total + parseInt(this.valorTotal);
+                                let nombreUsuario =
+                                    localStorage.getItem("nombre") +
+                                    " " +
+                                    localStorage.getItem("apellido");
+
+                                if (this.fechaVencimiento != null) {
+                                    this.fechaVencimiento = moment(
+                                        this.fechaVencimiento,
+                                        "DD-MM-YYYY"
+                                    ).format("YYYY-MM-DD");
+                                }
+                                let data = {
+                                    NUMINT: this.numint,
+                                    FECSYS: moment(
+                                        this.fechaSistema,
+                                        "DD-MM-YYYY"
+                                    ).format("YYYY-MM-DD"),
+                                    FECDES: moment(
+                                        this.fechaRecepcion,
+                                        "DD-MM-YYYY"
+                                    ).format("YYYY-MM-DD"),
+                                    RUTPRO: this.seleccionProveedores.RUTPROV,
+                                    NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
+                                    TIPDOC: this.seleccionTipoDocumento.id,
+                                    NUMDOC: this.ndocumento.toUpperCase(),
+                                    FECDOC: moment(
+                                        this.fechaDocumento,
+                                        "DD-MM-YYYY"
+                                    ).format("YYYY-MM-DD"),
+                                    NUMORD: this.nordencompra.toUpperCase(),
+                                    NUMRIB: this.nrib,
+                                    CODART: this.codigoArticulo.toUpperCase(),
+                                    PRODUCTO: this.nombre.toUpperCase(),
+                                    CODBAR: this.codigoBarra.toUpperCase(),
+                                    UNIMED: this.unidadMedidaBase.toUpperCase(),
+                                    ACT_FECVEN: this.seleccionFechaVencimiento
+                                        .id,
+                                    FECVEN: this.fechaVencimiento,
+                                    LOTE: this.lote,
+                                    CANREC: this.cantidad,
+                                    CANRECH: 0,
+                                    PENDIENTE: 0,
+                                    PREUNI: this.precio,
+                                    VALTOT: total,
+                                    DCTO: 0,
+                                    OBS: this.Observaciones.toUpperCase(),
+                                    CARGO: 0,
+                                    SUBTOTAL: valorT,
+                                    AJUSTE: 0,
+                                    USUING: nombreUsuario.toUpperCase(),
+                                    idServicio: this.seleccionServicio.id,
+                                    NOMSER: this.seleccionServicio
+                                        .descripcionServicio,
+                                    NUMLIBPED: this.numeroLibroPedido,
+                                    TIPRECEPCION: this.tiporecepcion,
+                                    TIPORD: this.seleccionTipoCompra.NOMTIPCOM
+                                };
+                                const dat = data;
+
+                                if (this.contador > 0) {
+                                    axios
+                                        .post(
+                                            this.localVal +
+                                                "/api/Mantenedor/PostArticuloDetalleCodInterno",
+                                            dat,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        localStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                        .then(res => {
+                                            const solicitudServer = res.data;
+                                            if (solicitudServer == true) {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Completado",
+                                                    text:
+                                                        "Articulo Ingresado al detalle Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                this.TraerDetalleRecepcion();
+                                                this.TraerRecepcion();
+                                                this.cantidad = "";
+                                                this.precio = "";
+                                                this.codigoBarra = "";
+                                                this.lote = "";
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            }
+                                        });
+                                } else {
+                                    axios
+                                        .post(
+                                            this.localVal +
+                                                "/api/Mantenedor/PostArticuloDetalle",
+                                            dat,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        localStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                        .then(res => {
+                                            const solicitudServer = res.data;
+                                            if (solicitudServer == true) {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Completado",
+                                                    text:
+                                                        "Articulo Ingresado al detalle Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                this.TraerDetalleRecepcion();
+                                                this.TraerRecepcion();
+                                                this.cantidad = 0;
+                                                this.precio = 0;
+                                                this.codigoBarra = "";
+                                                this.lote = "";
+                                                this.contador = 1;
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            }
+                                        });
+                                }
+                            } else {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "Debe ingresar una fecha de vencimiento para continuar",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            }
+                        } else {
                             let total = this.precio * this.cantidad;
                             let valorT = total + parseInt(this.valorTotal);
                             let nombreUsuario =
-                                sessionStorage.getItem("nombre") +
+                                localStorage.getItem("nombre") +
                                 " " +
-                                sessionStorage.getItem("apellido");
+                                localStorage.getItem("apellido");
 
-                            if (this.fechaVencimiento != null) {
-                                this.fechaVencimiento = moment(
-                                    this.fechaVencimiento,
-                                    "DD-MM-YYYY"
-                                ).format("YYYY-MM-DD");
-                            }
                             let data = {
                                 NUMINT: this.numint,
                                 FECSYS: moment(
@@ -3038,7 +3236,6 @@ export default {
                                 CODBAR: this.codigoBarra.toUpperCase(),
                                 UNIMED: this.unidadMedidaBase.toUpperCase(),
                                 ACT_FECVEN: this.seleccionFechaVencimiento.id,
-                                FECVEN: this.fechaVencimiento,
                                 LOTE: this.lote,
                                 CANREC: this.cantidad,
                                 CANRECH: 0,
@@ -3070,7 +3267,7 @@ export default {
                                             headers: {
                                                 Authorization:
                                                     `Bearer ` +
-                                                    sessionStorage.getItem(
+                                                    localStorage.getItem(
                                                         "token"
                                                     )
                                             }
@@ -3114,7 +3311,7 @@ export default {
                                             headers: {
                                                 Authorization:
                                                     `Bearer ` +
-                                                    sessionStorage.getItem(
+                                                    localStorage.getItem(
                                                         "token"
                                                     )
                                             }
@@ -3150,156 +3347,8 @@ export default {
                                         }
                                     });
                             }
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "Debe ingresar una fecha de vencimiento para continuar",
-                                color: "danger",
-                                position: "top-right"
-                            });
                         }
-                    } else {
-                        let total = this.precio * this.cantidad;
-                        let valorT = total + parseInt(this.valorTotal);
-                        let nombreUsuario =
-                            sessionStorage.getItem("nombre") +
-                            " " +
-                            sessionStorage.getItem("apellido");
-
-                        let data = {
-                            NUMINT: this.numint,
-                            FECSYS: moment(
-                                this.fechaSistema,
-                                "DD-MM-YYYY"
-                            ).format("YYYY-MM-DD"),
-                            FECDES: moment(
-                                this.fechaRecepcion,
-                                "DD-MM-YYYY"
-                            ).format("YYYY-MM-DD"),
-                            RUTPRO: this.seleccionProveedores.RUTPROV,
-                            NOMPRO: this.seleccionProveedores.NOMRAZSOC.toUpperCase(),
-                            TIPDOC: this.seleccionTipoDocumento.id,
-                            NUMDOC: this.ndocumento.toUpperCase(),
-                            FECDOC: moment(
-                                this.fechaDocumento,
-                                "DD-MM-YYYY"
-                            ).format("YYYY-MM-DD"),
-                            NUMORD: this.nordencompra.toUpperCase(),
-                            NUMRIB: this.nrib,
-                            CODART: this.codigoArticulo.toUpperCase(),
-                            PRODUCTO: this.nombre.toUpperCase(),
-                            CODBAR: this.codigoBarra.toUpperCase(),
-                            UNIMED: this.unidadMedidaBase.toUpperCase(),
-                            ACT_FECVEN: this.seleccionFechaVencimiento.id,
-                            LOTE: this.lote,
-                            CANREC: this.cantidad,
-                            CANRECH: 0,
-                            PENDIENTE: 0,
-                            PREUNI: this.precio,
-                            VALTOT: total,
-                            DCTO: 0,
-                            OBS: this.Observaciones.toUpperCase(),
-                            CARGO: 0,
-                            SUBTOTAL: valorT,
-                            AJUSTE: 0,
-                            USUING: nombreUsuario.toUpperCase(),
-                            idServicio: this.seleccionServicio.id,
-                            NOMSER: this.seleccionServicio.descripcionServicio,
-                            NUMLIBPED: this.numeroLibroPedido,
-                            TIPRECEPCION: this.tiporecepcion,
-                            TIPORD: this.seleccionTipoCompra.NOMTIPCOM
-                        };
-                        const dat = data;
-
-                        if (this.contador > 0) {
-                            axios
-                                .post(
-                                    this.localVal +
-                                        "/api/Mantenedor/PostArticuloDetalleCodInterno",
-                                    dat,
-                                    {
-                                        headers: {
-                                            Authorization:
-                                                `Bearer ` +
-                                                sessionStorage.getItem("token")
-                                        }
-                                    }
-                                )
-                                .then(res => {
-                                    const solicitudServer = res.data;
-                                    if (solicitudServer == true) {
-                                        this.$vs.notify({
-                                            time: 5000,
-                                            title: "Completado",
-                                            text:
-                                                "Articulo Ingresado al detalle Correctamente",
-                                            color: "success",
-                                            position: "top-right"
-                                        });
-                                        this.TraerDetalleRecepcion();
-                                        this.TraerRecepcion();
-                                        this.cantidad = "";
-                                        this.precio = "";
-                                        this.codigoBarra = "";
-                                        this.lote = "";
-                                    } else {
-                                        this.$vs.notify({
-                                            time: 5000,
-                                            title: "Error",
-                                            text:
-                                                "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                            color: "danger",
-                                            position: "top-right"
-                                        });
-                                    }
-                                });
-                        } else {
-                            axios
-                                .post(
-                                    this.localVal +
-                                        "/api/Mantenedor/PostArticuloDetalle",
-                                    dat,
-                                    {
-                                        headers: {
-                                            Authorization:
-                                                `Bearer ` +
-                                                sessionStorage.getItem("token")
-                                        }
-                                    }
-                                )
-                                .then(res => {
-                                    const solicitudServer = res.data;
-                                    if (solicitudServer == true) {
-                                        this.$vs.notify({
-                                            time: 5000,
-                                            title: "Completado",
-                                            text:
-                                                "Articulo Ingresado al detalle Correctamente",
-                                            color: "success",
-                                            position: "top-right"
-                                        });
-                                        this.TraerDetalleRecepcion();
-                                        this.TraerRecepcion();
-                                        this.cantidad = 0;
-                                        this.precio = 0;
-                                        this.codigoBarra = "";
-                                        this.lote = "";
-                                        this.contador = 1;
-                                    } else {
-                                        this.$vs.notify({
-                                            time: 5000,
-                                            title: "Error",
-                                            text:
-                                                "No fue posible agregar el Articulo al detalle,intentelo nuevamente",
-                                            color: "danger",
-                                            position: "top-right"
-                                        });
-                                    }
-                                });
-                        }
-                    }
+                    }, 1000);
                 }
             } catch (error) {
                 console.log(error);
@@ -3314,7 +3363,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -3344,7 +3393,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -3377,7 +3426,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -3452,9 +3501,9 @@ export default {
                     subtotal = subtotal + parseInt(this.ajustes);
 
                     let nombreUsuario =
-                        sessionStorage.getItem("nombre") +
+                        localStorage.getItem("nombre") +
                         " " +
-                        sessionStorage.getItem("apellido");
+                        localStorage.getItem("apellido");
 
                     let data = this.listaDetalleRecepcion;
                     let dat = {
@@ -3495,7 +3544,7 @@ export default {
                                     headers: {
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             ),
@@ -3507,7 +3556,7 @@ export default {
                                     headers: {
                                         Authorization:
                                             `Bearer ` +
-                                            sessionStorage.getItem("token")
+                                            localStorage.getItem("token")
                                     }
                                 }
                             )
@@ -3602,9 +3651,9 @@ export default {
                             const array = d;
 
                             let nombreUsuario =
-                                sessionStorage.getItem("nombre") +
+                                localStorage.getItem("nombre") +
                                 " " +
-                                sessionStorage.getItem("apellido");
+                                localStorage.getItem("apellido");
                             let dataDespacho = {
                                 FOLIO: this.numFolioDespacho,
                                 NUMINT: this.numintDespacho,
@@ -3640,7 +3689,7 @@ export default {
                                             headers: {
                                                 Authorization:
                                                     `Bearer ` +
-                                                    sessionStorage.getItem(
+                                                    localStorage.getItem(
                                                         "token"
                                                     )
                                             }
@@ -3654,7 +3703,7 @@ export default {
                                             headers: {
                                                 Authorization:
                                                     `Bearer ` +
-                                                    sessionStorage.getItem(
+                                                    localStorage.getItem(
                                                         "token"
                                                     )
                                             }
@@ -3668,7 +3717,7 @@ export default {
                                             headers: {
                                                 Authorization:
                                                     `Bearer ` +
-                                                    sessionStorage.getItem(
+                                                    localStorage.getItem(
                                                         "token"
                                                     )
                                             }
@@ -3753,7 +3802,7 @@ export default {
                                         headers: {
                                             Authorization:
                                                 `Bearer ` +
-                                                sessionStorage.getItem("token")
+                                                localStorage.getItem("token")
                                         }
                                     }
                                 )
@@ -3783,7 +3832,7 @@ export default {
         RefreshToken() {
             try {
                 let data = {
-                    token: sessionStorage.getItem("token")
+                    token: localStorage.getItem("token")
                 };
                 axios
                     .post(this.localVal + "/api/auth/RefreshToken", data)
@@ -3799,11 +3848,11 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                            window.sessionStorage.clear();
+                            window.localStorage.clear();
                             window.localStorage.clear();
                             router.push("/pages/login");
                         } else {
-                            sessionStorage.setItem("token", tok);
+                            localStorage.setItem("token", tok);
                         }
                     });
             } catch (error) {
@@ -3823,7 +3872,7 @@ export default {
                         {
                             headers: {
                                 Authorization:
-                                    `Bearer ` + sessionStorage.getItem("token")
+                                    `Bearer ` + localStorage.getItem("token")
                             }
                         }
                     )
@@ -3938,7 +3987,6 @@ export default {
         this.TraerTipoCompra();
         setTimeout(() => {
             this.TraerServicio();
-            this.TraerUltimoNInterno();
             this.TraerUltimoNFolio();
             this.TraerTipoDocumentos();
             this.TraerProveedores();

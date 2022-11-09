@@ -256,7 +256,7 @@ export default {
     methods: {
         async salir() {
             await axios.post(this.localVal + "/api/Login/Salir", { rut: "" });
-            window.sessionStorage.clear();
+            window.localStorage.clear();
             window.localStorage.clear();
             router.push("/pages/login");
         },

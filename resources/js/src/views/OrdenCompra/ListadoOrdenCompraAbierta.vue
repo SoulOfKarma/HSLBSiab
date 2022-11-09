@@ -7,10 +7,8 @@
                     <vue-good-table
                         :columns="columns"
                         :rows="rows"
-                        :pagination-options="{
-                            enabled: true,
-                            perPage: 10
-                        }"
+                        :pagination-options="PageOptions"
+                        theme="black-rhino"
                     >
                         <template slot="table-row" slot-scope="props">
                             <!-- Column: Name -->
@@ -51,6 +49,7 @@ import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
+import store from "../ScriptMenus/store.js";
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
 
@@ -65,6 +64,7 @@ export default {
             localVal: process.env.MIX_APP_URL,
             //Datos Campos
             idMod: 0,
+            PageOptions: store.state.PageOptions,
             //Template Columnas Listado Proveedor
             columns: [
                 {
@@ -126,7 +126,7 @@ export default {
                     .get(this.localVal + "/api/Mantenedor/GetOCAbiertas", {
                         headers: {
                             Authorization:
-                                `Bearer ` + sessionStorage.getItem("token")
+                                `Bearer ` + localStorage.getItem("token")
                         }
                     })
                     .then(res => {
@@ -161,7 +161,7 @@ export default {
         RefreshToken() {
             try {
                 let data = {
-                    token: sessionStorage.getItem("token")
+                    token: localStorage.getItem("token")
                 };
                 axios
                     .post(this.localVal + "/api/auth/RefreshToken", data)
@@ -177,11 +177,11 @@ export default {
                                 color: "danger",
                                 position: "top-right"
                             });
-                            window.sessionStorage.clear();
+                            window.localStorage.clear();
                             window.localStorage.clear();
                             router.push("/pages/login");
                         } else {
-                            sessionStorage.setItem("token", tok);
+                            localStorage.setItem("token", tok);
                         }
                     });
             } catch (error) {
