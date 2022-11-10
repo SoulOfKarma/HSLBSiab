@@ -58,7 +58,7 @@
                         />
                     </div>
                     <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Inicio</h6>
+                        <h6>Fecha Recepcion</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaRecepcion"
@@ -278,7 +278,6 @@
                                 class="w-full"
                                 :rows="listaDetalleRecepcion"
                                 :pagination-options="PageOptions"
-                                theme="black-rhino"
                                 styleClass="vgt-table condensed"
                             >
                                 <template slot="table-row" slot-scope="props">
@@ -439,7 +438,6 @@
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
                                 :pagination-options="PageOptions"
-                                theme="black-rhino"
                                 styleClass="vgt-table condensed"
                             >
                                 <template slot="table-row" slot-scope="props">
@@ -610,7 +608,7 @@
                         />
                     </div>
                     <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Inicio</h6>
+                        <h6>Fecha Recepcion</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaRecepcion"
@@ -844,7 +842,6 @@
                                 class="w-full"
                                 :rows="listaDetalleRecepcion"
                                 :pagination-options="PageOptions"
-                                theme="black-rhino"
                                 styleClass="vgt-table condensed"
                             >
                                 <template slot="table-row" slot-scope="props">
@@ -1005,7 +1002,6 @@
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
                                 :pagination-options="PageOptions"
-                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -1156,7 +1152,6 @@
                                 :columns="col"
                                 :rows="listaArticulos"
                                 :pagination-options="PageOptions"
-                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->

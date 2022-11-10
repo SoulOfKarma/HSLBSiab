@@ -13,7 +13,6 @@
                         :columns="columns"
                         :rows="rows"
                         :pagination-options="PageOptions"
-                        theme="black-rhino"
                     >
                         <template slot="table-row" slot-scope="props">
                             <!-- Column: Name -->

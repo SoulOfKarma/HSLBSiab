@@ -30,7 +30,7 @@
                             :columns="columns"
                             :rows="rows"
                             PageOptions: store.state.PageOptions,
-                            theme="black-rhino"
+                            
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -126,7 +126,7 @@
                             :columns="columnsMed"
                             :rows="rows"
                             PageOptions: store.state.PageOptions,
-                            theme="black-rhino"
+                            
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -820,7 +820,7 @@
                                     :columns="col"
                                     :rows="listaCodNuevo"
                                     PageOptions: store.state.PageOptions,
-                                    theme="black-rhino"
+                                    
                                 >
                                     <template
                                         slot="table-row"
@@ -1461,7 +1461,7 @@
                                     :columns="colMed"
                                     :rows="listaCodNuevo"
                                     PageOptions: store.state.PageOptions,
-                                    theme="black-rhino"
+                                    
                                 >
                                     <template
                                         slot="table-row"

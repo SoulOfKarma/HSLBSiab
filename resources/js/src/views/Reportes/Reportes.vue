@@ -866,7 +866,6 @@
                                 :columns="column"
                                 :rows="listadoGeneral"
                                 :pagination-options="PageOptions"
-                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -928,7 +927,6 @@
                             :columns="columnBincard"
                             :rows="listaBincard"
                             :pagination-options="PageOptions"
-                            theme="black-rhino"
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -960,7 +958,6 @@
                             :columns="columnBincard"
                             :rows="listaBincard"
                             :pagination-options="PageOptions"
-                            theme="black-rhino"
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -1084,119 +1081,10 @@ export default {
             headerVal: [],
             activePrompt: false,
             //Datos Fechas
-            configFromdateTimePicker: {
-                minDate: null,
-                maxDate: "today",
-                dateFormat: "d/m/Y",
-                locale: {
-                    firstDayOfWeek: 1,
-                    weekdays: {
-                        shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                        longhand: [
-                            "Domingo",
-                            "Lunes",
-                            "Martes",
-                            "Miércoles",
-                            "Jueves",
-                            "Viernes",
-                            "Sábado"
-                        ]
-                    },
-                    months: {
-                        shorthand: [
-                            "Ene",
-                            "Feb",
-                            "Mar",
-                            "Abr",
-                            "May",
-                            "Jun",
-                            "Jul",
-                            "Ago",
-                            "Sep",
-                            "Оct",
-                            "Nov",
-                            "Dic"
-                        ],
-                        longhand: [
-                            "Enero",
-                            "Febrero",
-                            "Мarzo",
-                            "Abril",
-                            "Mayo",
-                            "Junio",
-                            "Julio",
-                            "Agosto",
-                            "Septiembre",
-                            "Octubre",
-                            "Noviembre",
-                            "Diciembre"
-                        ]
-                    }
-                }
-            },
-            configTodateTimePicker: {
-                minDate: "today",
-                maxDate: null,
-                dateFormat: "d/m/Y",
-                locale: {
-                    firstDayOfWeek: 1,
-                    weekdays: {
-                        shorthand: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                        longhand: [
-                            "Domingo",
-                            "Lunes",
-                            "Martes",
-                            "Miércoles",
-                            "Jueves",
-                            "Viernes",
-                            "Sábado"
-                        ]
-                    },
-                    months: {
-                        shorthand: [
-                            "Ene",
-                            "Feb",
-                            "Mar",
-                            "Abr",
-                            "May",
-                            "Jun",
-                            "Jul",
-                            "Ago",
-                            "Sep",
-                            "Оct",
-                            "Nov",
-                            "Dic"
-                        ],
-                        longhand: [
-                            "Enero",
-                            "Febrero",
-                            "Мarzo",
-                            "Abril",
-                            "Mayo",
-                            "Junio",
-                            "Julio",
-                            "Agosto",
-                            "Septiembre",
-                            "Octubre",
-                            "Noviembre",
-                            "Diciembre"
-                        ]
-                    }
-                }
-            },
-            configdateTimePicker: {
-                enableTime: false,
-                //enableSeconds: true,
-                noCalendar: true,
-                time_24hr: true,
-                dateFormat: "H:i"
-            },
-            configdateToTimePicker: {
-                enableTime: false,
-                noCalendar: true,
-                time_24hr: true,
-                dateFormat: "H:i"
-            },
+            configFromdateTimePicker: store.state.configFromdateTimePicker,
+            configTodateTimePicker: store.state.configTodateTimePicker,
+            configdateTimePicker: store.state.configdateTimePicker,
+            configdateToTimePicker: store.state.configdateToTimePicker,
             //Configuracion Columnas
             column: [],
             columnBincard: [],
@@ -1205,102 +1093,8 @@ export default {
             listadoGeneral: [],
             listaBincard: [],
             listadoServicios: [],
-            listadoReportes: [
-                {
-                    id: 1,
-                    descripcionReporte: "Saldos"
-                },
-                {
-                    id: 3,
-                    descripcionReporte: "Bincard General"
-                },
-                {
-                    id: 10,
-                    descripcionReporte: "Saldo Valorizado PMP"
-                },
-                {
-                    id: 4,
-                    descripcionReporte: "Consumo por Año"
-                },
-                {
-                    id: 5,
-                    descripcionReporte: "Consumo por Mes"
-                },
-                {
-                    id: 6,
-                    descripcionReporte: "Consumo por Mes/Servicio"
-                },
-                {
-                    id: 11,
-                    descripcionReporte: "Despacho por Servicio"
-                },
-                {
-                    id: 12,
-                    descripcionReporte: "Consolidado Despacho"
-                },
-                {
-                    id: 7,
-                    descripcionReporte: "Fecha Vencimiento/Cenabast"
-                },
-                {
-                    id: 8,
-                    descripcionReporte: "ZGEN"
-                },
-                {
-                    id: 9,
-                    descripcionReporte: "ZGEN Priorizados"
-                }
-            ],
-            listadoMes: [
-                {
-                    id: 1,
-                    descripcionMes: "Enero"
-                },
-                {
-                    id: 2,
-                    descripcionMes: "Febrero"
-                },
-                {
-                    id: 3,
-                    descripcionMes: "Marzo"
-                },
-                {
-                    id: 4,
-                    descripcionMes: "Abril"
-                },
-                {
-                    id: 5,
-                    descripcionMes: "Mayo"
-                },
-                {
-                    id: 6,
-                    descripcionMes: "Junio"
-                },
-                {
-                    id: 7,
-                    descripcionMes: "Julio"
-                },
-                {
-                    id: 8,
-                    descripcionMes: "Agosto"
-                },
-                {
-                    id: 9,
-                    descripcionMes: "Septiembre"
-                },
-                {
-                    id: 10,
-                    descripcionMes: "Octubre"
-                },
-                {
-                    id: 11,
-                    descripcionMes: "Noviembre"
-                },
-                {
-                    id: 12,
-                    descripcionMes: "Diciembre"
-                }
-            ]
+            listadoReportes: store.state.listadoReportes,
+            listadoMes: store.state.listadoMes
         };
     },
     methods: {
@@ -1326,13 +1120,15 @@ export default {
             this.fechaTerminoE = null;
             this.fechaInicioFE = null;
             this.fechaTerminoFE = null;
-            this.codini = "";
-            this.codter = "";
-            this.codiniC = "";
-            this.codterC = "";
-            this.codiniCO = "";
-            this.codterCO = "";
-            this.cargarHoras();
+            //this.codini = "";
+            //this.codter = "";
+            //this.codiniC = "";
+            //this.codterC = "";
+            //this.codiniCO = "";
+            //this.codterCO = "";
+            setTimeout(() => {
+                this.cargarHoras();
+            }, 1000);
         },
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
@@ -1393,7 +1189,6 @@ export default {
                     this.GetSaldos();
                 } else if (this.seleccionReporte.id == 3) {
                     this.column = store.state.columnBincardInicial;
-
                     this.bincardTipo = true;
                     this.ListadoVistas();
                     this.GetSaldoArticulos(1);

@@ -30,7 +30,7 @@
                         />
                     </div>
                     <div class="vx-col w-1/4 mt-5">
-                        <h6>Fecha Inicio</h6>
+                        <h6>Fecha Recepcion</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaRecepcion"
@@ -146,7 +146,6 @@
                                 :columns="colDetalle"
                                 :rows="listaDetalleRecepcion"
                                 :pagination-options="PageOptions"
-                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -225,7 +224,6 @@
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
                                 :pagination-options="PageOptions"
-                                theme="black-rhino"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
