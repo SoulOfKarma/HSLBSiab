@@ -8,6 +8,7 @@
                         :columns="columns"
                         :rows="rows"
                         :pagination-options="PageOptions"
+                        styleClass="vgt-table condensed bordered"
                     >
                         <template slot="table-row" slot-scope="props">
                             <!-- Column: Name -->
@@ -67,6 +68,7 @@ export default {
                 {
                     label: "N° Interno",
                     field: "NUMINT",
+                    width: "70px",
                     filterOptions: {
                         enabled: true
                     }
@@ -74,6 +76,7 @@ export default {
                 {
                     label: "Folio",
                     field: "FOLIO",
+                    width: "70px",
                     filterOptions: {
                         enabled: true
                     }
@@ -81,6 +84,7 @@ export default {
                 {
                     label: "N° Orden Compra",
                     field: "NUMORD",
+                    width: "150px",
                     filterOptions: {
                         enabled: true
                     }

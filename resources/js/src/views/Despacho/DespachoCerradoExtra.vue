@@ -139,6 +139,7 @@
                                 :columns="colDespachoArticulos"
                                 :rows="listaDespachoArticulos"
                                 :pagination-options="PageOptions"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -254,6 +255,7 @@
                                 :columns="colArticulosDisponibles"
                                 :rows="listaArticulosDisponibles"
                                 :pagination-options="PageOptions"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->

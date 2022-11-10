@@ -146,6 +146,7 @@
                                 :columns="colDetalle"
                                 :rows="listaDetalleRecepcion"
                                 :pagination-options="PageOptions"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -224,6 +225,7 @@
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
                                 :pagination-options="PageOptions"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->

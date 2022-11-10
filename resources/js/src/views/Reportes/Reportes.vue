@@ -866,6 +866,7 @@
                                 :columns="column"
                                 :rows="listadoGeneral"
                                 :pagination-options="PageOptions"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -927,6 +928,7 @@
                             :columns="columnBincard"
                             :rows="listaBincard"
                             :pagination-options="PageOptions"
+                            styleClass="vgt-table condensed bordered"
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -958,6 +960,7 @@
                             :columns="columnBincard"
                             :rows="listaBincard"
                             :pagination-options="PageOptions"
+                            styleClass="vgt-table condensed bordered"
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -1120,14 +1123,21 @@ export default {
             this.fechaTerminoE = null;
             this.fechaInicioFE = null;
             this.fechaTerminoFE = null;
-            //this.codini = "";
-            //this.codter = "";
-            //this.codiniC = "";
-            //this.codterC = "";
-            //this.codiniCO = "";
-            //this.codterCO = "";
+            this.codini = "";
+            this.codter = "";
+            this.codiniC = "";
+            this.codterC = "";
+            this.codiniCO = "";
+            this.codterCO = "";
             setTimeout(() => {
                 this.cargarHoras();
+                this.configFromdateTimePicker =
+                    store.state.configFromdateTimePicker;
+                this.configTodateTimePicker =
+                    store.state.configTodateTimePicker;
+                this.configdateTimePicker = store.state.configdateTimePicker;
+                this.configdateToTimePicker =
+                    store.state.configdateToTimePicker;
             }, 1000);
         },
         isNumber: function(evt) {
@@ -1670,7 +1680,7 @@ export default {
                         )
                         .then(res => {
                             let saldo = 0;
-                            this.limpiar();
+                            //this.limpiar();
                             let c = res.data;
                             if (c.length < 0) {
                                 this.mensajeError();
@@ -2006,7 +2016,7 @@ export default {
                     })
                     .then(res => {
                         let saldo = 0;
-                        this.limpiar();
+                        //this.limpiar();
                         let c = res.data;
                         if (c.length < 0) {
                             this.mensajeError();

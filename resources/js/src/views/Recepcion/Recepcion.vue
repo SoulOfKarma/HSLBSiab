@@ -36,6 +36,8 @@
                             >Buscar Articulo</vs-button
                         >
                     </div>
+                </div>
+                <div class="vx-row">
                     <div
                         class="vx-col w-full mt-5"
                         v-if="listaDetalleRecepcion.length > 0"
@@ -47,27 +49,29 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                </div>
+                <div class="grid grid-cols-5 gap-5 flex items-start">
+                    <div class="vx-col mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaSistema"
                             placeholder="Fecha Sistema"
-                            class="w-full "
+                            class="w-full"
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col mt-5">
                         <h6>Fecha Recepcion</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaRecepcion"
                             placeholder="Fecha Inicio"
                             @on-change="onFromChange"
-                            class="w-full "
+                            class="w-full"
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col mt-5">
                         <h6>Proveedor</h6>
                         <v-select
                             v-model="seleccionProveedores"
@@ -78,15 +82,15 @@
                             @input="setProveedor"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col mt-5">
                         <h6>Nombre Proveedor</h6>
                         <vs-input
-                            class="inputx w-full  "
+                            class="inputx w-full"
                             v-model="descripcionProveedor"
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col mt-5">
                         <h6>Tipo Documento</h6>
                         <v-select
                             v-model="seleccionTipoDocumento"
@@ -96,14 +100,13 @@
                             :options="listaTipoDocumento"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                </div>
+                <div class="grid grid-cols-5 gap-5 flex items-start">
+                    <div class="vx-col mt-5">
                         <h6>N° Documento</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="ndocumento"
-                        />
+                        <vs-input class="inputx w-full " v-model="ndocumento" />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col mt-5">
                         <h6>Fecha Documento</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -112,33 +115,33 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+
+                    <div class="vx-col mt-5">
                         <h6>Tipo Compra</h6>
                         <v-select
                             v-model="seleccionTipoCompra"
                             placeholder="Activo"
-                            class="w-full select-large"
+                            class="w-full select-large "
                             label="NOMTIPCOM"
                             :options="listadoTipoCompra"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col mt-5">
                         <h6>N° Orden Compra</h6>
                         <vs-input
-                            class="inputx w-full  "
+                            class="inputx w-full "
                             v-model="nordencompra"
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col mt-5">
                         <h6>N° RIB</h6>
                         <vs-input
-                            class="inputx w-full  "
+                            class="inputx w-full "
                             v-model="nrib"
                             @keypress="isNumber($event)"
                         />
                     </div>
                 </div>
-                <br />
                 <div class="vx-row">
                     <div class="vx-col w-1/3 mt-5">
                         <h6>
@@ -160,10 +163,7 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-                    <div
-                        class="vx-col w-1/3 mt-5"
-                        v-if="seleccionLoteSerie.id == 2"
-                    >
+                    <div class="vx-col w-1/3 mt-5">
                         <h6>
                             Precio
                         </h6>
@@ -173,20 +173,6 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-                    <div
-                        class="vx-col w-1/3 mt-5"
-                        v-if="seleccionLoteSerie.id == 1"
-                    >
-                        <h6>
-                            Precio
-                        </h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="precio"
-                            @keypress="isNumber($event)"
-                        />
-                    </div>
-
                     <div
                         class="vx-col w-1/2 mt-5"
                         v-if="seleccionFechaVencimiento.id == 1"
@@ -206,11 +192,7 @@
                         <h6>
                             Lote/Serie
                         </h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="lote"
-                            @keyup.enter="AgregarArticuloDetalle"
-                        />
+                        <vs-input class="inputx w-full  " v-model="lote" />
                     </div>
 
                     <br />
@@ -233,7 +215,6 @@
                         >
                     </div>
                 </div>
-                <br />
                 <div
                     class="vx-col md:w-1/1 w-full mb-base mt-5"
                     v-if="listaDetalleRecepcion.length > 0"
@@ -268,7 +249,6 @@
                         </div>
                     </div>
                 </div>
-                <br />
                 <!-- Detalles Articulos -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
@@ -277,8 +257,7 @@
                                 :columns="colDetalle"
                                 class="w-full"
                                 :rows="listaDetalleRecepcion"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -304,29 +283,6 @@
                                             type="text"
                                             style="width:100px"
                                         ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'ACT_FECVEN'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-chip
-                                            color="success"
-                                            v-if="props.row.ACT_FECVEN == 1"
-                                            v-model="FVEN1"
-                                            type="text"
-                                            style="width:100px"
-                                            >Si</vs-chip
-                                        >
-                                        <vs-chip
-                                            v-else
-                                            color="primary"
-                                            v-model="FVEN2"
-                                            type="text"
-                                            style="width:100px"
-                                            >No</vs-chip
-                                        >
                                     </span>
                                     <span
                                         v-else-if="
@@ -437,8 +393,7 @@
                                 class="w-full"
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -725,10 +680,7 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-                    <div
-                        class="vx-col w-1/3 mt-5"
-                        v-if="seleccionLoteSerie.id == 2"
-                    >
+                    <div class="vx-col w-1/3 mt-5">
                         <h6>
                             Precio
                         </h6>
@@ -738,20 +690,6 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-                    <div
-                        class="vx-col w-1/3 mt-5"
-                        v-if="seleccionLoteSerie.id == 1"
-                    >
-                        <h6>
-                            Precio
-                        </h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="precio"
-                            @keypress="isNumber($event)"
-                        />
-                    </div>
-
                     <div
                         class="vx-col w-1/2 mt-5"
                         v-if="seleccionFechaVencimiento.id == 1"
@@ -771,11 +709,7 @@
                         <h6>
                             Lote/Serie
                         </h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="lote"
-                            @keyup.enter="AgregarArticuloDetalle"
-                        />
+                        <vs-input class="inputx w-full  " v-model="lote" />
                     </div>
                     <br />
                     <div class="vx-col w-1/2 mt-5" v-show="false">
@@ -841,8 +775,7 @@
                                 :columns="colDetalle"
                                 class="w-full"
                                 :rows="listaDetalleRecepcion"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -868,29 +801,6 @@
                                             type="text"
                                             style="width:100px"
                                         ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'ACT_FECVEN'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-chip
-                                            color="success"
-                                            v-if="props.row.ACT_FECVEN == 1"
-                                            v-model="FVEN1"
-                                            type="text"
-                                            style="width:100px"
-                                            >Si</vs-chip
-                                        >
-                                        <vs-chip
-                                            v-else
-                                            color="primary"
-                                            v-model="FVEN2"
-                                            type="text"
-                                            style="width:100px"
-                                            >No</vs-chip
-                                        >
                                     </span>
                                     <span
                                         v-else-if="
@@ -1001,7 +911,7 @@
                                 class="w-full"
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
-                                :pagination-options="PageOptions"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -1152,6 +1062,7 @@
                                 :columns="col"
                                 :rows="listaArticulos"
                                 :pagination-options="PageOptions"
+                                styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -1785,13 +1696,6 @@ export default {
                 {
                     label: "Unidad Medida",
                     field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Vencimiento Activo?",
-                    field: "ACT_FECVEN",
                     filterOptions: {
                         enabled: true
                     }
