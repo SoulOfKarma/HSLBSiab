@@ -29,7 +29,7 @@
                         <vue-good-table
                             :columns="columns"
                             :rows="rows"
-                            PageOptions: store.state.PageOptions,
+                            :pagination-options="PageOptions"
                             
                         >
                             <template slot="table-row" slot-scope="props">
@@ -125,7 +125,7 @@
                         <vue-good-table
                             :columns="columnsMed"
                             :rows="rows"
-                            PageOptions: store.state.PageOptions,
+                            :pagination-options="PageOptions"
                             
                         >
                             <template slot="table-row" slot-scope="props">
@@ -819,7 +819,7 @@
                                 <vue-good-table
                                     :columns="col"
                                     :rows="listaCodNuevo"
-                                    PageOptions: store.state.PageOptions,
+                                    :pagination-options="PageOptions"
                                     
                                 >
                                     <template
@@ -1460,7 +1460,7 @@
                                 <vue-good-table
                                     :columns="colMed"
                                     :rows="listaCodNuevo"
-                                    PageOptions: store.state.PageOptions,
+                                    :pagination-options="PageOptions"
                                     
                                 >
                                     <template

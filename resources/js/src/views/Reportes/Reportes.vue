@@ -99,6 +99,14 @@
                     <!-- Carga Saldo General - Valorizado -->
                     <div class="vx-row" v-if="saldoGeneral">
                         <div class="vx-col w-1/2 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>.</h6>
                             <vs-button
                                 @click="GetSaldos"
                                 color="primary"
@@ -108,6 +116,14 @@
                             >
                         </div>
                         <div class="vx-col w-1/2 mt-5">
+                            <h6>Codigo Inicial</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codini"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>.</h6>
                             <vs-button
                                 @click="GetSaldoValorizado"
                                 color="primary"

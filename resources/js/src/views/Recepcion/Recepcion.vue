@@ -192,7 +192,11 @@
                         <h6>
                             Lote/Serie
                         </h6>
-                        <vs-input class="inputx w-full  " v-model="lote" />
+                        <vs-input
+                            class="inputx w-full"
+                            v-model="lote"
+                            v-on:keydown.enter="AgregarArticuloDetalle"
+                        />
                     </div>
 
                     <br />
@@ -709,7 +713,11 @@
                         <h6>
                             Lote/Serie
                         </h6>
-                        <vs-input class="inputx w-full  " v-model="lote" />
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="lote"
+                            v-on:keydown.enter="AgregarArticuloDetalle"
+                        />
                     </div>
                     <br />
                     <div class="vx-col w-1/2 mt-5" v-show="false">

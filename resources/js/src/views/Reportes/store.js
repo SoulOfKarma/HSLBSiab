@@ -102,6 +102,7 @@ export default new Vuex.Store({
         configFromdateTimePicker: {
             minDate: null,
             maxDate: "today",
+            allowInput: true,
             dateFormat: "d/m/Y",
             locale: {
                 firstDayOfWeek: 1,
@@ -152,6 +153,7 @@ export default new Vuex.Store({
         configTodateTimePicker: {
             minDate: "today",
             maxDate: null,
+            allowInput: true,
             dateFormat: "d/m/Y",
             locale: {
                 firstDayOfWeek: 1,

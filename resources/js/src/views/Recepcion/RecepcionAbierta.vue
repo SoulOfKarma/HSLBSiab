@@ -199,7 +199,7 @@
                         <vs-input
                             class="inputx w-full  "
                             v-model="lote"
-                            @keyup.enter="AgregarArticuloDetalle"
+                            v-on:keydown.enter="AgregarArticuloDetalle"
                         />
                     </div>
 

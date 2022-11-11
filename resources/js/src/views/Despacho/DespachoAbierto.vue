@@ -326,8 +326,8 @@
                                             type="text"
                                             style="width:100px"
                                             @keypress="isNumber($event)"
-                                            @keyup.enter="
-                                                AgregarArticuloDisponible(
+                                            v-on:keydown.enter="
+                                                AgregarArticuloDetalle(
                                                     props.row.saldoCorrecto,
                                                     props.row.NOMBRE,
                                                     props.row.CODBAR,
