@@ -25,18 +25,11 @@
             </vx-card>
             <br />
             <!-- Recepcion -->
-            <vx-card title="Recepcion Normal" v-if="recepcion">
-                <div class="vx-row">
-                    <div class="vx-col w-full mt-5">
-                        <vs-button
-                            @click="popArticulos"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Buscar Articulo</vs-button
-                        >
-                    </div>
-                </div>
+            <vx-card
+                title="Recepcion Normal"
+                v-if="recepcion"
+                style="line-height: 0.8; font-size: 13px;"
+            >
                 <div class="vx-row">
                     <div
                         class="vx-col w-full mt-5"
@@ -50,9 +43,12 @@
                         />
                     </div>
                 </div>
-                <div class="grid grid-cols-5 gap-5 flex items-start">
-                    <div class="vx-col mt-5">
-                        <h6>Fecha Sistema</h6>
+                <div class="vx-row">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 6.8% !important;"
+                    >
+                        <h6>F. Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaSistema"
@@ -61,8 +57,11 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col mt-5">
-                        <h6>Fecha Recepcion</h6>
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 7% !important;"
+                    >
+                        <h6>F. Recepcion</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaRecepcion"
@@ -71,7 +70,10 @@
                             class="w-full"
                         />
                     </div>
-                    <div class="vx-col mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 12.7% !important;"
+                    >
                         <h6>Proveedor</h6>
                         <v-select
                             v-model="seleccionProveedores"
@@ -82,7 +84,10 @@
                             @input="setProveedor"
                         ></v-select>
                     </div>
-                    <div class="vx-col mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 14% !important;"
+                    >
                         <h6>Nombre Proveedor</h6>
                         <vs-input
                             class="inputx w-full"
@@ -90,7 +95,10 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 11.6% !important;"
+                    >
                         <h6>Tipo Documento</h6>
                         <v-select
                             v-model="seleccionTipoDocumento"
@@ -100,14 +108,18 @@
                             :options="listaTipoDocumento"
                         ></v-select>
                     </div>
-                </div>
-                <div class="grid grid-cols-5 gap-5 flex items-start">
-                    <div class="vx-col mt-5">
-                        <h6>N° Documento</h6>
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 7% !important;"
+                    >
+                        <h6>N° Doc</h6>
                         <vs-input class="inputx w-full " v-model="ndocumento" />
                     </div>
-                    <div class="vx-col mt-5">
-                        <h6>Fecha Documento</h6>
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 8.3% !important;"
+                    >
+                        <h6>F. Doc</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaDocumento"
@@ -116,8 +128,11 @@
                         />
                     </div>
 
-                    <div class="vx-col mt-5">
-                        <h6>Tipo Compra</h6>
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 14.3% !important;"
+                    >
+                        <h6>T. Compra</h6>
                         <v-select
                             v-model="seleccionTipoCompra"
                             placeholder="Activo"
@@ -126,20 +141,37 @@
                             :options="listadoTipoCompra"
                         ></v-select>
                     </div>
-                    <div class="vx-col mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 11.5% !important;"
+                    >
                         <h6>N° Orden Compra</h6>
                         <vs-input
                             class="inputx w-full "
                             v-model="nordencompra"
                         />
                     </div>
-                    <div class="vx-col mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 5.8% !important;"
+                    >
                         <h6>N° RIB</h6>
                         <vs-input
                             class="inputx w-full "
                             v-model="nrib"
                             @keypress="isNumber($event)"
                         />
+                    </div>
+                </div>
+                <div class="vx-row">
+                    <div class="vx-col w-full mt-5">
+                        <vs-button
+                            @click="popArticulos"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Buscar Articulo</vs-button
+                        >
                     </div>
                 </div>
                 <div class="vx-row">
@@ -480,6 +512,7 @@
                             <h6>Observaciones</h6>
                             <br /><br />
                             <quill-editor
+                                style="height: 100%;"
                                 class="w-full"
                                 v-model="Observaciones"
                                 :options="editorOption"
@@ -534,17 +567,12 @@
                 </div>
             </vx-card>
             <!-- Consumo Inmediato -->
-            <vx-card title="Consumo Inmediato" v-if="consumoi">
+            <vx-card
+                title="Consumo Inmediato"
+                v-if="consumoi"
+                style="line-height: 0.8; font-size: 13px;"
+            >
                 <div class="vx-row">
-                    <div class="vx-col w-full mt-5">
-                        <vs-button
-                            @click="popArticulos"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Buscar Articulo</vs-button
-                        >
-                    </div>
                     <div
                         class="vx-col w-full mt-5"
                         v-if="listaDetalleRecepcion.length > 0"
@@ -556,27 +584,36 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Sistema</h6>
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 6.8% !important;"
+                    >
+                        <h6>F. Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaSistema"
                             placeholder="Fecha Sistema"
-                            class="w-full "
+                            class="w-full"
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Recepcion</h6>
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 7% !important;"
+                    >
+                        <h6>F. Recepcion</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaRecepcion"
                             placeholder="Fecha Inicio"
                             @on-change="onFromChange"
-                            class="w-full "
+                            class="w-full"
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 12.7% !important;"
+                    >
                         <h6>Proveedor</h6>
                         <v-select
                             v-model="seleccionProveedores"
@@ -587,15 +624,21 @@
                             @input="setProveedor"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 14% !important;"
+                    >
                         <h6>Nombre Proveedor</h6>
                         <vs-input
-                            class="inputx w-full  "
+                            class="inputx w-full"
                             v-model="descripcionProveedor"
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 11.6% !important;"
+                    >
                         <h6>Tipo Documento</h6>
                         <v-select
                             v-model="seleccionTipoDocumento"
@@ -605,15 +648,18 @@
                             :options="listaTipoDocumento"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° Documento</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="ndocumento"
-                        />
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 7% !important;"
+                    >
+                        <h6>N° Doc</h6>
+                        <vs-input class="inputx w-full " v-model="ndocumento" />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Documento</h6>
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 8.3% !important;"
+                    >
+                        <h6>F. Doc</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
                             v-model="fechaDocumento"
@@ -621,33 +667,42 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Tipo Compra</h6>
+
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 14.3% !important;"
+                    >
+                        <h6>T. Compra</h6>
                         <v-select
                             v-model="seleccionTipoCompra"
                             placeholder="Activo"
-                            class="w-full select-large"
+                            class="w-full select-large "
                             label="NOMTIPCOM"
                             :options="listadoTipoCompra"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 11.5% !important;"
+                    >
                         <h6>N° Orden Compra</h6>
                         <vs-input
-                            class="inputx w-full  "
+                            class="inputx w-full "
                             v-model="nordencompra"
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div
+                        class="vx-col mt-5"
+                        style="padding: 0 0.2rem; width: 5.8% !important;"
+                    >
                         <h6>N° RIB</h6>
                         <vs-input
-                            class="inputx w-full  "
+                            class="inputx w-full "
                             v-model="nrib"
                             @keypress="isNumber($event)"
                         />
                     </div>
                 </div>
-                <br />
                 <div class="vx-row">
                     <div class="vx-col w-full mt-5">
                         <h6>Servicio</h6>
@@ -661,8 +716,15 @@
                         ></v-select>
                     </div>
                 </div>
-
-                <br />
+                <div class="vx-col w-full mt-5">
+                    <vs-button
+                        @click="popArticulos"
+                        color="primary"
+                        type="filled"
+                        class="w-full"
+                        >Buscar Articulo</vs-button
+                    >
+                </div>
                 <div class="vx-row">
                     <div class="vx-col w-1/3 mt-5">
                         <h6>
@@ -1002,6 +1064,7 @@
                             <h6>Observaciones</h6>
                             <br /><br />
                             <quill-editor
+                                style="height: 100%;"
                                 class="w-full"
                                 v-model="Observaciones"
                                 :options="editorOption"
@@ -1489,7 +1552,7 @@ export default {
             },
             seleccionFechaVencimiento: {
                 id: 0,
-                descripcionFVen: "Seleccione Fecha Venciminento"
+                descripcionFVen: "Ej.15/11/2022"
             },
             seleccionLoteSerie: {
                 id: 2,
@@ -1506,7 +1569,7 @@ export default {
             },
             seleccionTipoCompra: {
                 id: 0,
-                NOMTIPCOM: "Seleccione Tipo Compra"
+                NOMTIPCOM: "Ej.Cenabast"
             },
             seleccionServicio: {
                 id: 0,
