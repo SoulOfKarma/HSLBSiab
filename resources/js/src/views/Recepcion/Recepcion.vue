@@ -31,7 +31,7 @@
                 style="line-height: 0.8; font-size: 13px;"
             >
                 <div class="vx-row">
-                    <div
+<!--                     <div
                         class="vx-col w-full mt-5"
                         v-if="listaDetalleRecepcion.length > 0"
                     >
@@ -41,7 +41,7 @@
                             v-model="numint"
                             disabled
                         />
-                    </div>
+                    </div> -->
                 </div>
                 <div class="vx-row">
                     <div
@@ -573,7 +573,7 @@
                 style="line-height: 0.8; font-size: 13px;"
             >
                 <div class="vx-row">
-                    <div
+<!--                     <div
                         class="vx-col w-full mt-5"
                         v-if="listaDetalleRecepcion.length > 0"
                     >
@@ -583,7 +583,7 @@
                             v-model="numint"
                             disabled
                         />
-                    </div>
+                    </div> -->
                     <div
                         class="vx-col mt-5"
                         style="padding: 0 0.2rem; width: 6.8% !important;"
