@@ -133,37 +133,6 @@
                         />
                     </div>
                 </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <div class="vx-row" v-if="validarUsuario != 5">
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarFactura"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR FACTURA</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarRIB"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR RIB</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarCarta"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR CARTA</vs-button
-                            >
-                        </div>
-                    </div>
-                </div>
                 <!-- Detalles Articulos -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
@@ -172,8 +141,7 @@
                                 class="w-full"
                                 :columns="colDetalle"
                                 :rows="listaDetalleRecepcion"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed bordered"
+                                styleClass="vgt-table bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
                                     <!-- Column: Name -->
@@ -181,6 +149,47 @@
                                         v-if="props.column.field === 'fullName'"
                                         class="text-nowrap"
                                     >
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'CODART'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <span
+                                            style="font-size: 14px; align-items: center;"
+                                            >{{ props.row.CODART }}</span
+                                        >
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'PRODUCTO'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <span style="font-size: 14px;">{{
+                                            props.row.PRODUCTO
+                                        }}</span>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'UNIMED'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <span style="font-size: 14px;">{{
+                                            props.row.UNIMED
+                                        }}</span>
+                                    </span>
+                                    <span
+                                        v-else-if="
+                                            props.column.field === 'VALTOT'
+                                        "
+                                        class="text-nowrap"
+                                    >
+                                        <span style="font-size: 14px;">{{
+                                            props.row.VALTOT
+                                        }}</span>
                                     </span>
                                     <span
                                         v-else-if="
@@ -251,7 +260,6 @@
                                 class="w-full"
                                 :columns="colTotal"
                                 :rows="listaRecepcion"
-                                :pagination-options="PageOptions"
                                 styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
@@ -275,94 +283,117 @@
                     </vx-card>
                     <div class="vx-row"></div>
                 </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <h6>Observaciones</h6>
-                            <br /><br />
-                            <quill-editor
+                <vx-card title="">
+                    <div class="vx-row">
+                        <h6>Observaciones</h6>
+                        <vs-textarea v-model="Observaciones" />
+                    </div>
+                </vx-card>
+                <vx-card title="">
+                    <div class="vx-row" v-if="validarUsuario != 5">
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarFactura"
+                                color="primary"
+                                type="filled"
                                 class="w-full"
-                                v-model="Observaciones"
-                                :options="editorOption"
+                                >ADJUNTAR FACTURA</vs-button
                             >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
                         </div>
-                        <br /><br />
-                        <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
-                                <vs-button
-                                    v-if="validarUsuario == 5"
-                                    @click="volver"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Volver</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <vs-button
-                                    v-if="validarUsuario == 5"
-                                    @click="ImprimirDatos"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Imprimir</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/5 mt-5">
-                                <vs-button
-                                    v-if="validarUsuario != 5"
-                                    @click="ActualizarListado"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Actualizar</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/5 mt-5">
-                                <vs-button
-                                    v-if="validarUsuario != 5"
-                                    @click="volver"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Volver</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/5 mt-5">
-                                <vs-button
-                                    v-if="validarUsuario != 5"
-                                    @click="ImprimirDatos"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Imprimir</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/5 mt-5">
-                                <vs-button
-                                    v-if="validarUsuario != 5"
-                                    @click="popAnularTodo"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Anular Todo</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/5 mt-5">
-                                <vs-button
-                                    v-if="validarUsuario != 5"
-                                    @click="AgregarListadoFirmaUsers"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Firmar Digitalmente</vs-button
-                                >
-                            </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarRIB"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR RIB</vs-button
+                            >
                         </div>
-                    </vx-card>
-                </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <vs-button
+                                @click="popAgregarCarta"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >ADJUNTAR CARTA</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                v-if="validarUsuario == 5"
+                                @click="volver"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                v-if="validarUsuario == 5"
+                                @click="ImprimirDatos"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Imprimir</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <vs-button
+                                v-if="validarUsuario != 5"
+                                @click="ActualizarListado"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Actualizar</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <vs-button
+                                v-if="validarUsuario != 5"
+                                @click="volver"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <vs-button
+                                v-if="validarUsuario != 5"
+                                @click="ImprimirDatos"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Imprimir</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <vs-button
+                                v-if="validarUsuario != 5"
+                                @click="popAnularTodo"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Anular Todo</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/5 mt-5">
+                            <vs-button
+                                v-if="validarUsuario != 5"
+                                @click="AgregarListadoFirmaUsers"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Firmar Digitalmente</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
             </vx-card>
             <div class="vx-row"></div>
         </div>
@@ -658,10 +689,6 @@ import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";
 import router from "@/router";
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
@@ -676,7 +703,6 @@ export default {
     components: {
         VueGoodTable,
         "v-select": vSelect,
-        quillEditor,
         PlusCircleIcon,
         flatPickr,
         barcode: VueBarcode
@@ -686,21 +712,6 @@ export default {
             //Datos Locales - Variables de Entorno
             localVal: process.env.MIX_APP_URL,
             localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
-            editorOption: {
-                modules: {
-                    toolbar: [
-                        ["bold", "italic", "underline", "strike"],
-                        ["blockquote", "code-block"],
-                        [{ header: 1 }, { header: 2 }],
-                        [{ list: "ordered" }, { list: "bullet" }],
-                        [{ indent: "-1" }, { indent: "+1" }],
-                        [{ direction: "rtl" }],
-                        [{ font: [] }],
-                        [{ align: [] }],
-                        ["clean"]
-                    ]
-                }
-            },
             //Datos Campos
             PageOptions: store.state.PageOptions,
             validarUsuario: localStorage.getItem("permiso_usuario"),

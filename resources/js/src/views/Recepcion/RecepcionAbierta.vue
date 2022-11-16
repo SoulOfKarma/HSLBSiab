@@ -1,20 +1,8 @@
 <template>
     <div>
-        <div class="vx-col md:w-1/1 w-full mb-base">
-            <vx-card
-                title="Recepcion"
-                style="line-height: 0.8; font-size: 13px;"
-            >
-                <div class="vx-row">
-                    <div class="vx-col w-full mt-5">
-                        <vs-button
-                            @click="popArticulos"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Buscar Articulo</vs-button
-                        >
-                    </div>
+        <div class="vx-col md:w-1/1 w-full mb-2">
+            <vx-card title="Recepcion" style="font-size: 12px;" fixedHeight>
+                <div class="vx-row" style="margin: 0 0.1rem;">
                     <!--                     <div
                         class="vx-col w-full mt-5"
                         v-if="listaDetalleRecepcion.length > 0"
@@ -28,7 +16,7 @@
                     </div> -->
                     <div
                         class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 6.8% !important;"
+                        style="padding: 0 1rem; width: 7.3% !important;"
                     >
                         <h6>F. Sistema</h6>
                         <flat-pickr
@@ -41,7 +29,7 @@
                     </div>
                     <div
                         class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 7% !important;"
+                        style="padding: 0 0.1rem; width: 7% !important;"
                     >
                         <h6>F. Recepcion</h6>
                         <flat-pickr
@@ -135,7 +123,7 @@
                     </div>
                     <div
                         class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 5.8% !important;"
+                        style="padding: 0 0.1rem; width: 5.4% !important;"
                     >
                         <h6>N° RIB</h6>
                         <vs-input
@@ -145,8 +133,17 @@
                         />
                     </div>
                 </div>
-                <div class="vx-row">
-                    <div class="vx-col w-1/3 mt-5">
+                <div class="vx-col w-full mt-5">
+                    <vs-button
+                        @click="popArticulos"
+                        color="primary"
+                        type="filled"
+                        class="w-full"
+                        >Buscar Articulo</vs-button
+                    >
+                </div>
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>
                             Codigo de Barra
                         </h6>
@@ -156,7 +153,7 @@
                             v-on:blur="BuscarArticuloCODBAR"
                         />
                     </div>
-                    <div class="vx-col w-1/3 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>
                             Cantidad
                         </h6>
@@ -166,7 +163,7 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-                    <div class="vx-col w-1/3 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>
                             Precio
                         </h6>
@@ -176,8 +173,24 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
+                    <div class="vx-col w-1/4 mt-5">
+                        <h6>
+                            .
+                        </h6>
+                        <vs-button
+                            @click="AgregarArticuloDetalle"
+                            color="success"
+                            type="filled"
+                            class="w-full"
+                            >Agregar Articulo</vs-button
+                        >
+                    </div>
                 </div>
-                <div class="vx-row" v-if="tiporecepcion == 'Consumo Inmediato'">
+                <div
+                    class="vx-row"
+                    v-if="tiporecepcion == 'Consumo Inmediato'"
+                    style="margin: 0 0.1rem;"
+                >
                     <div class="vx-col w-full mt-5">
                         <h6>Servicio</h6>
                         <v-select
@@ -190,12 +203,12 @@
                         ></v-select>
                     </div>
                 </div>
-                <div class="vx-row">
+                <div class="vx-row" style="margin: 0 0.1rem;">
                     <div
                         class="vx-col w-1/2 mt-5"
                         v-if="seleccionFechaVencimiento.id == 1"
                     >
-                        <h6>Fecha Venciminento</h6>
+                        <h6>Fecha Vencimiento</h6>
                         <flat-pickr
                             :config="configTodateTimePickerFV"
                             v-model="fechaVencimiento"
@@ -216,370 +229,326 @@
                             v-on:keydown.enter="AgregarArticuloDetalle"
                         />
                     </div>
-
-                    <br />
-                    <div class="vx-col w-1/2 mt-5" v-show="false">
-                        <vs-button
-                            @click="limpiarCampos"
-                            color="primary"
-                            type="filled"
-                            class="w-full"
-                            >Limpiar Campos</vs-button
-                        >
-                    </div>
-                    <div class="vx-col w-full mt-5">
-                        <vs-button
-                            @click="AgregarArticuloDetalle"
-                            color="success"
-                            type="filled"
-                            class="w-full"
-                            >Agregar Articulo</vs-button
-                        >
-                    </div>
-                </div>
-                <br />
-                <div
-                    class="vx-col md:w-1/1 w-full mb-base mt-5"
-                    v-if="listaDetalleRecepcion.length > 0"
-                >
-                    <div class="vx-row">
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarFactura"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR FACTURA</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarRIB"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR RIB</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarCarta"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR CARTA</vs-button
-                            >
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <!-- Detalles Articulos -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vue-good-table
-                                :columns="colDetalle"
-                                class="w-full"
-                                :rows="listaDetalleRecepcion"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed bordered"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CODBAR'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActCodigoBarra(
-                                                    props.row.id,
-                                                    props.row.CODBAR
-                                                )
-                                            "
-                                            v-model="props.row.CODBAR"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'ACT_FECVEN'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-chip
-                                            color="success"
-                                            v-if="props.row.ACT_FECVEN == 1"
-                                            v-model="FVEN1"
-                                            type="text"
-                                            style="width:100px"
-                                            >Si</vs-chip
-                                        >
-                                        <vs-chip
-                                            v-else
-                                            color="primary"
-                                            v-model="FVEN2"
-                                            type="text"
-                                            style="width:100px"
-                                            >No</vs-chip
-                                        >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'FECVEN'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-chip
-                                            @click.native="
-                                                popFechaVen(props.row.id)
-                                            "
-                                            color="primary"
-                                            type="filled"
-                                            class="w-full"
-                                            >{{ props.row.FECVEN }}</vs-chip
-                                        >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'LOTE'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActLote(
-                                                    props.row.id,
-                                                    props.row.LOTE
-                                                )
-                                            "
-                                            v-model="props.row.LOTE"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CANREC'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActCantRecepcionada(
-                                                    props.row.id,
-                                                    props.row.CANREC,
-                                                    props.row.PREUNI
-                                                )
-                                            "
-                                            v-model="props.row.CANREC"
-                                            type="text"
-                                            @keypress="isNumber($event)"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'PREUNI'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActPrecioUnitario(
-                                                    props.row.id,
-                                                    props.row.CANREC,
-                                                    props.row.PREUNI
-                                                )
-                                            "
-                                            v-model="props.row.PREUNI"
-                                            type="text"
-                                            @keypress="isNumber($event)"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            content="Eliminar Articulo del Detalle"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="popDelDetalle(props.row.id)"
-                                        ></plus-circle-icon>
-                                    </span>
-
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-                <!-- Calculos -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vue-good-table
-                                class="w-full"
-                                :columns="colTotal"
-                                :rows="listaRecepcion"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed bordered"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'DCTO'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActDCTO(
-                                                    props.row.id,
-                                                    props.row.DCTO
-                                                )
-                                            "
-                                            v-model="props.row.DCTO"
-                                            type="text"
-                                            style="width:300px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CARGO'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActCARGO(
-                                                    props.row.id,
-                                                    props.row.CARGO
-                                                )
-                                            "
-                                            v-model="props.row.CARGO"
-                                            type="text"
-                                            style="width:300px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'AJUSTE'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActAJUSTE(
-                                                    props.row.id,
-                                                    props.row.AJUSTE
-                                                )
-                                            "
-                                            v-model="props.row.AJUSTE"
-                                            type="text"
-                                            style="width:300px"
-                                        ></vs-input>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <h6>Observaciones</h6>
-                            <br /><br />
-                            <quill-editor
-                                class="w-full"
-                                v-model="Observaciones"
-                                :options="editorOption"
-                            >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
-                        </div>
-                        <br /><br />
-                    </vx-card>
-                </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="ActualizarListado"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Actualizar</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="ImprimirDatos"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Imprimir</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="volver"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Volver</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/4 mt-5">
-                                <vs-button
-                                    @click="CerrarRecepcion"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Cerrar Recepcion</vs-button
-                                >
-                            </div>
-                        </div>
-                    </vx-card>
                 </div>
             </vx-card>
-            <div class="vx-row"></div>
+            <!-- Detalles Articulos -->
+            <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+                <vx-card title="">
+                    <div class="vx-row" style="margin: 0 0.1rem;">
+                        <vue-good-table
+                            :columns="colDetalle"
+                            class="w-full"
+                            :rows="listaDetalleRecepcion"
+                            styleClass="vgt-table condensed bordered"
+                        >
+                            <template slot="table-row" slot-scope="props">
+                                <!-- Column: Name -->
+                                <span
+                                    v-if="props.column.field === 'fullName'"
+                                    class="text-nowrap"
+                                >
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'CODART'"
+                                    class="text-nowrap"
+                                >
+                                    <span
+                                        style="font-size: 14px; align-items: center;"
+                                        >{{ props.row.CODART }}</span
+                                    >
+                                </span>
+                                <span
+                                    v-else-if="
+                                        props.column.field === 'PRODUCTO'
+                                    "
+                                    class="text-nowrap"
+                                >
+                                    <span
+                                        style="font-size: 14px; align-items: center;"
+                                        >{{ props.row.PRODUCTO }}</span
+                                    >
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'UNIMED'"
+                                    class="text-nowrap"
+                                >
+                                    <span
+                                        style="font-size: 14px; align-items: center;"
+                                        >{{ props.row.UNIMED }}</span
+                                    >
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'VALTOT'"
+                                    class="text-nowrap"
+                                >
+                                    <span
+                                        style="font-size: 14px; align-items: center;"
+                                        >{{ props.row.VALTOT }}</span
+                                    >
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'CODBAR'"
+                                    class="text-nowrap"
+                                >
+                                    <vs-input
+                                        v-on:blur="
+                                            ActCodigoBarra(
+                                                props.row.id,
+                                                props.row.CODBAR
+                                            )
+                                        "
+                                        v-model="props.row.CODBAR"
+                                        type="text"
+                                        style="width:140px; align-items: center;"
+                                    ></vs-input>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'FECVEN'"
+                                    class="text-nowrap"
+                                >
+                                    <vs-chip
+                                        style="align-items: center;"
+                                        @click.native="
+                                            popFechaVen(props.row.id)
+                                        "
+                                        color="primary"
+                                        type="filled"
+                                        class="w-full"
+                                        >{{ props.row.FECVEN }}</vs-chip
+                                    >
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'LOTE'"
+                                    class="text-nowrap"
+                                >
+                                    <vs-input
+                                        v-on:blur="
+                                            ActLote(
+                                                props.row.id,
+                                                props.row.LOTE
+                                            )
+                                        "
+                                        v-model="props.row.LOTE"
+                                        type="text"
+                                        style="width:100px; align-items: center;"
+                                    ></vs-input>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'CANREC'"
+                                    class="text-nowrap"
+                                >
+                                    <vs-input
+                                        v-on:blur="
+                                            ActCantRecepcionada(
+                                                props.row.id,
+                                                props.row.CANREC,
+                                                props.row.PREUNI
+                                            )
+                                        "
+                                        v-model="props.row.CANREC"
+                                        type="text"
+                                        @keypress="isNumber($event)"
+                                        style="width:163px; align-items: center;"
+                                    ></vs-input>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'PREUNI'"
+                                    class="text-nowrap"
+                                >
+                                    <vs-input
+                                        v-on:blur="
+                                            ActPrecioUnitario(
+                                                props.row.id,
+                                                props.row.CANREC,
+                                                props.row.PREUNI
+                                            )
+                                        "
+                                        v-model="props.row.PREUNI"
+                                        type="text"
+                                        @keypress="isNumber($event)"
+                                        style="width:100px; align-items: center;"
+                                    ></vs-input>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'action'"
+                                >
+                                    <plus-circle-icon
+                                        content="Eliminar Articulo del Detalle"
+                                        v-tippy
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="popDelDetalle(props.row.id)"
+                                    ></plus-circle-icon>
+                                </span>
+
+                                <!-- Column: Common -->
+                                <span v-else>
+                                    {{ props.formattedRow[props.column.field] }}
+                                </span>
+                            </template>
+                        </vue-good-table>
+                    </div>
+                </vx-card>
+            </div>
+            <!-- Calculos -->
+            <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+                <vx-card title="">
+                    <div class="vx-row" style="margin: 0 0.1rem;">
+                        <vue-good-table
+                            class="w-full"
+                            :columns="colTotal"
+                            :rows="listaRecepcion"
+                            styleClass="vgt-table condensed bordered"
+                        >
+                            <template slot="table-row" slot-scope="props">
+                                <!-- Column: Name -->
+                                <span
+                                    v-if="props.column.field === 'fullName'"
+                                    class="text-nowrap"
+                                >
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'DCTO'"
+                                    class="text-nowrap"
+                                >
+                                    <vs-input
+                                        v-on:blur="
+                                            ActDCTO(
+                                                props.row.id,
+                                                props.row.DCTO
+                                            )
+                                        "
+                                        v-model="props.row.DCTO"
+                                        type="text"
+                                        style="width:360px"
+                                    ></vs-input>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'CARGO'"
+                                    class="text-nowrap"
+                                >
+                                    <vs-input
+                                        v-on:blur="
+                                            ActCARGO(
+                                                props.row.id,
+                                                props.row.CARGO
+                                            )
+                                        "
+                                        v-model="props.row.CARGO"
+                                        type="text"
+                                        style="width:360px"
+                                    ></vs-input>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'AJUSTE'"
+                                    class="text-nowrap"
+                                >
+                                    <vs-input
+                                        v-on:blur="
+                                            ActAJUSTE(
+                                                props.row.id,
+                                                props.row.AJUSTE
+                                            )
+                                        "
+                                        v-model="props.row.AJUSTE"
+                                        type="text"
+                                        style="width:360px"
+                                    ></vs-input>
+                                </span>
+                                <!-- Column: Common -->
+                                <span v-else>
+                                    {{ props.formattedRow[props.column.field] }}
+                                </span>
+                            </template>
+                        </vue-good-table>
+                    </div>
+                </vx-card>
+            </div>
+            <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+                <vx-card title="">
+                    <div class="vx-row" style="margin: 0 0.1rem;">
+                        <h6>Observaciones</h6>
+                        <vs-textarea v-model="Observaciones" height="70px" />
+                    </div>
+                </vx-card>
+            </div>
+
+            <div class="vx-col md:w-1/1 w-full mb-base mt-1">
+                <vx-card title="">
+                    <div class="vx-row" style="margin: 0 0.1rem;">
+                        <div
+                            class="vx-col md:w-1/1 w-full mb-2 mt-1"
+                            v-if="listaDetalleRecepcion.length > 0"
+                        >
+                            <div class="vx-row" style="margin: 0 0.1rem;">
+                                <div class="vx-col w-1/3 mt-5">
+                                    <vs-button
+                                        @click="popAgregarFactura"
+                                        color="primary"
+                                        type="filled"
+                                        class="w-full"
+                                        >ADJUNTAR FACTURA</vs-button
+                                    >
+                                </div>
+                                <div class="vx-col w-1/3 mt-5">
+                                    <vs-button
+                                        @click="popAgregarRIB"
+                                        color="primary"
+                                        type="filled"
+                                        class="w-full"
+                                        >ADJUNTAR RIB</vs-button
+                                    >
+                                </div>
+                                <div class="vx-col w-1/3 mt-5">
+                                    <vs-button
+                                        @click="popAgregarCarta"
+                                        color="primary"
+                                        type="filled"
+                                        class="w-full"
+                                        >ADJUNTAR CARTA</vs-button
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <vs-button
+                                @click="ActualizarListado"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Actualizar</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <vs-button
+                                @click="ImprimirDatos"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Imprimir</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <vs-button
+                                @click="volver"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <vs-button
+                                @click="CerrarRecepcion"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Cerrar Recepcion</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
         </div>
         <!-- Listado Articulos -->
         <vs-popup
@@ -887,11 +856,7 @@ import "flatpickr/dist/flatpickr.css";
 import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
 import router from "@/router";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
@@ -909,7 +874,6 @@ export default {
     components: {
         VueGoodTable,
         "v-select": vSelect,
-        quillEditor,
         PlusCircleIcon,
         flatPickr
     },
@@ -917,21 +881,6 @@ export default {
         return {
             //Datos Locales - Variables de Entorno
             localVal: process.env.MIX_APP_URL,
-            editorOption: {
-                modules: {
-                    toolbar: [
-                        ["bold", "italic", "underline", "strike"],
-                        ["blockquote", "code-block"],
-                        [{ header: 1 }, { header: 2 }],
-                        [{ list: "ordered" }, { list: "bullet" }],
-                        [{ indent: "-1" }, { indent: "+1" }],
-                        [{ direction: "rtl" }],
-                        [{ font: [] }],
-                        [{ align: [] }],
-                        ["clean"]
-                    ]
-                }
-            },
             //Datos Campos
             PageOptions: store.state.PageOptions,
             image: null,
@@ -1030,7 +979,7 @@ export default {
             },
             seleccionTipoCompra: {
                 id: 0,
-                NOMTIPCOM: "Seleccione Tipo Compra"
+                NOMTIPCOM: "Ej. Cenabast"
             },
             seleccionServicio: {
                 id: 0,
@@ -1219,10 +1168,6 @@ export default {
                 {
                     label: "Unidad Medida",
                     field: "UNIMED"
-                },
-                {
-                    label: "Vencimiento Activo?",
-                    field: "ACT_FECVEN"
                 },
                 {
                     label: "Fecha Vencimiento",
