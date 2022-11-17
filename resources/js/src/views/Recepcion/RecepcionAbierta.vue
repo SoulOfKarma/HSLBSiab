@@ -1,7 +1,10 @@
 <template>
     <div>
         <div class="vx-col md:w-1/1 w-full mb-2">
-            <vx-card title="Recepcion" style="font-size: 12px;" fixedHeight>
+            <vx-card
+                title="Recepcion"
+                style="line-height: 0.8; font-size: 12px;"
+            >
                 <div class="vx-row" style="margin: 0 0.1rem;">
                     <!--                     <div
                         class="vx-col w-full mt-5"
@@ -14,6 +17,8 @@
                             disabled
                         />
                     </div> -->
+                </div>
+                <div class="vx-row">
                     <div
                         class="vx-col mt-5"
                         style="padding: 0 1rem; width: 7.3% !important;"
@@ -119,6 +124,7 @@
                         <vs-input
                             class="inputx w-full "
                             v-model="nordencompra"
+                            v-on:keydown.enter="AbrirVinculo"
                         />
                     </div>
                     <div
@@ -133,16 +139,18 @@
                         />
                     </div>
                 </div>
-                <div class="vx-col w-full mt-5">
-                    <vs-button
-                        @click="popArticulos"
-                        color="primary"
-                        type="filled"
-                        class="w-full"
-                        >Buscar Articulo</vs-button
-                    >
+                <div class="vx-row">
+                    <div class="vx-col w-full mt-5">
+                        <vs-button
+                            @click="popArticulos"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Buscar Articulo</vs-button
+                        >
+                    </div>
                 </div>
-                <div class="vx-row" style="margin: 0 0.1rem;">
+                <div class="vx-row">
                     <div class="vx-col w-1/4 mt-5">
                         <h6>
                             Codigo de Barra
@@ -1323,6 +1331,16 @@ export default {
                 evt.preventDefault();
             } else {
                 return true;
+            }
+        },
+        //Este Metodo Hace que al accionar la tecla Enter, abra una nueva pestaña que abre mercado publico en su buscador
+        AbrirVinculo() {
+            try {
+                const url =
+                    "https://www.mercadopublico.cl/Portal/Modules/Site/Busquedas/BuscadorAvanzado.aspx?qs=2";
+                window.open(url, "_blank");
+            } catch (error) {
+                console.log(error);
             }
         },
         limpiarCampos() {
@@ -2647,10 +2665,6 @@ export default {
                         position: "top-right"
                     });
                 } else {
-                    subtotal = subtotal - parseInt(this.dcto);
-                    subtotal = subtotal + parseInt(this.cargos);
-                    subtotal = subtotal + parseInt(this.ajustes);
-
                     let nombreUsuario =
                         localStorage.getItem("nombre") +
                         " " +

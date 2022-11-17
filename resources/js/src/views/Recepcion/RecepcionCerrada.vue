@@ -3,7 +3,7 @@
         <div class="vx-col md:w-1/1 w-full mb-base">
             <vx-card
                 title="Recepcion"
-                style="line-height: 0.8; font-size: 13px;"
+                style="line-height: 0.8; font-size: 12px;"
             >
                 <div class="vx-row">
                     <!-- class="vx-col w-1/2 mt-5">
@@ -16,7 +16,7 @@
                     </div> -->
                     <div
                         class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 6.8% !important;"
+                        style="padding: 0 1rem; width: 7.3% !important;"
                     >
                         <h6>F. Sistema</h6>
                         <flat-pickr
@@ -38,6 +38,7 @@
                             placeholder="Fecha Inicio"
                             @on-change="onFromChange"
                             class="w-full"
+                            disabled
                         />
                     </div>
                     <div
@@ -52,6 +53,7 @@
                             label="RUTPROV"
                             :options="listadoProveedores"
                             @input="setProveedor"
+                            disabled
                         ></v-select>
                     </div>
                     <div
@@ -76,6 +78,7 @@
                             class="w-full select-large"
                             label="descripcionDocumento"
                             :options="listaTipoDocumento"
+                            disabled
                         ></v-select>
                     </div>
                     <div
@@ -83,7 +86,11 @@
                         style="padding: 0 0.2rem; width: 7% !important;"
                     >
                         <h6>N° Doc</h6>
-                        <vs-input class="inputx w-full " v-model="ndocumento" />
+                        <vs-input
+                            class="inputx w-full "
+                            v-model="ndocumento"
+                            disabled
+                        />
                     </div>
                     <div
                         class="vx-col mt-5"
@@ -95,6 +102,7 @@
                             v-model="fechaDocumento"
                             @on-change="onFromChange"
                             class="w-full "
+                            disabled
                         />
                     </div>
 
@@ -109,6 +117,7 @@
                             class="w-full select-large "
                             label="NOMTIPCOM"
                             :options="listadoTipoCompra"
+                            disabled
                         ></v-select>
                     </div>
                     <div
@@ -119,6 +128,7 @@
                         <vs-input
                             class="inputx w-full "
                             v-model="nordencompra"
+                            disabled
                         />
                     </div>
                     <div
@@ -130,167 +140,154 @@
                             class="inputx w-full "
                             v-model="nrib"
                             @keypress="isNumber($event)"
+                            disabled
                         />
                     </div>
                 </div>
-                <!-- Detalles Articulos -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vue-good-table
-                                class="w-full"
-                                :columns="colDetalle"
-                                :rows="listaDetalleRecepcion"
-                                styleClass="vgt-table bordered"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CODART'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <span
-                                            style="font-size: 14px; align-items: center;"
-                                            >{{ props.row.CODART }}</span
-                                        >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'PRODUCTO'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <span style="font-size: 14px;">{{
-                                            props.row.PRODUCTO
-                                        }}</span>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'UNIMED'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <span style="font-size: 14px;">{{
-                                            props.row.UNIMED
-                                        }}</span>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'VALTOT'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <span style="font-size: 14px;">{{
-                                            props.row.VALTOT
-                                        }}</span>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'FOLIO'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            content="Generar Codigo de Barra"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                generarCodigoBarra(
-                                                    props.row.PRODUCTO,
-                                                    props.row.CODART,
-                                                    props.row.FECVEN,
-                                                    props.row.LOTE,
-                                                    props.row.FOLIO
-                                                )
-                                            "
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            v-if="validarUsuario != 5"
-                                            content="Anular Articulo"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                popAnularArticulo(props.row.id)
-                                            "
-                                        ></plus-circle-icon>
-                                        <plus-circle-icon
-                                            v-if="validarUsuario != 5"
-                                            content="Revertir Anulacion"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                popRAnularArticulo(props.row.id)
-                                            "
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-                <!-- Calculos -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vue-good-table
-                                class="w-full"
-                                :columns="colTotal"
-                                :rows="listaRecepcion"
-                                styleClass="vgt-table condensed bordered"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
+            </vx-card>
+            <!-- Detalles Articulos -->
+            <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                 <vx-card title="">
                     <div class="vx-row">
-                        <h6>Observaciones</h6>
-                        <vs-textarea v-model="Observaciones" />
+                        <vue-good-table
+                            class="w-full"
+                            :columns="colDetalle"
+                            :rows="listaDetalleRecepcion"
+                            styleClass="vgt-table bordered"
+                        >
+                            <template slot="table-row" slot-scope="props">
+                                <!-- Column: Name -->
+                                <span
+                                    v-if="props.column.field === 'fullName'"
+                                    class="text-nowrap"
+                                >
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'CODART'"
+                                    class="text-nowrap"
+                                >
+                                    <span
+                                        style="font-size: 14px; align-items: center;"
+                                        >{{ props.row.CODART }}</span
+                                    >
+                                </span>
+                                <span
+                                    v-else-if="
+                                        props.column.field === 'PRODUCTO'
+                                    "
+                                    class="text-nowrap"
+                                >
+                                    <span style="font-size: 14px;">{{
+                                        props.row.PRODUCTO
+                                    }}</span>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'UNIMED'"
+                                    class="text-nowrap"
+                                >
+                                    <span style="font-size: 14px;">{{
+                                        props.row.UNIMED
+                                    }}</span>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'VALTOT'"
+                                    class="text-nowrap"
+                                >
+                                    <span style="font-size: 14px;">{{
+                                        props.row.VALTOT
+                                    }}</span>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'FOLIO'"
+                                >
+                                    <plus-circle-icon
+                                        content="Generar Codigo de Barra"
+                                        v-tippy
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="
+                                            generarCodigoBarra(
+                                                props.row.PRODUCTO,
+                                                props.row.CODART,
+                                                props.row.FECVEN,
+                                                props.row.LOTE,
+                                                props.row.FOLIO
+                                            )
+                                        "
+                                    ></plus-circle-icon>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'action'"
+                                >
+                                    <plus-circle-icon
+                                        v-if="validarUsuario != 5"
+                                        content="Anular Articulo"
+                                        v-tippy
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="popAnularArticulo(props.row.id)"
+                                    ></plus-circle-icon>
+                                    <plus-circle-icon
+                                        v-if="validarUsuario != 5"
+                                        content="Revertir Anulacion"
+                                        v-tippy
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="
+                                            popRAnularArticulo(props.row.id)
+                                        "
+                                    ></plus-circle-icon>
+                                </span>
+                                <!-- Column: Common -->
+                                <span v-else>
+                                    {{ props.formattedRow[props.column.field] }}
+                                </span>
+                            </template>
+                        </vue-good-table>
                     </div>
                 </vx-card>
+            </div>
+            <!-- Calculos -->
+            <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                 <vx-card title="">
-                    <div class="vx-row" v-if="validarUsuario != 5">
+                    <div class="vx-row">
+                        <vue-good-table
+                            class="w-full"
+                            :columns="colTotal"
+                            :rows="listaRecepcion"
+                            styleClass="vgt-table condensed bordered"
+                        >
+                            <template slot="table-row" slot-scope="props">
+                                <!-- Column: Name -->
+                                <span
+                                    v-if="props.column.field === 'fullName'"
+                                    class="text-nowrap"
+                                >
+                                </span>
+                                <!-- Column: Common -->
+                                <span v-else>
+                                    {{ props.formattedRow[props.column.field] }}
+                                </span>
+                            </template>
+                        </vue-good-table>
+                    </div>
+                </vx-card>
+            </div>
+            <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+                <vx-card title="">
+                    <div class="vx-row" style="margin: 0 0.1rem;">
+                        <h6>Observaciones</h6>
+                        <vs-textarea v-model="Observaciones" height="70px" />
+                    </div>
+                </vx-card>
+            </div>
+            <div class="vx-col md:w-1/1 w-full mb-base mt-1">
+                <vx-card title="">
+                    <div
+                        class="vx-row"
+                        style="margin: 0 0.1rem;"
+                        v-if="validarUsuario != 5"
+                    >
                         <div class="vx-col w-1/3 mt-5">
                             <vs-button
                                 @click="popAgregarFactura"
@@ -319,9 +316,7 @@
                             >
                         </div>
                     </div>
-                </vx-card>
-                <vx-card title="">
-                    <div class="vx-row">
+                    <div class="vx-row" style="margin: 0 0.1rem;">
                         <div class="vx-col w-1/2 mt-5">
                             <vs-button
                                 v-if="validarUsuario == 5"
@@ -394,8 +389,7 @@
                         </div>
                     </div>
                 </vx-card>
-            </vx-card>
-            <div class="vx-row"></div>
+            </div>
         </div>
         <vs-popup
             classContent="Anulacion"
@@ -797,6 +791,10 @@ export default {
                 id: 0,
                 descripcionDocumento: ""
             },
+            seleccionTipoCompra: {
+                id: 0,
+                NOMTIPCOM: "Ej. Cenabast"
+            },
             seleccionAnulacion: {
                 id: 0,
                 CODMOT: "",
@@ -1100,6 +1098,7 @@ export default {
             listaTipoDocumento: [],
             listaZona: [],
             listadoProveedores: [],
+            listadoTipoCompra: [],
             listaFVenciminento: [
                 {
                     id: 1,
@@ -1569,6 +1568,33 @@ export default {
             }
         },
         //Metodos CRUD
+        //Este Metodo Retorna los datos de los Tipos de Compra Existentes En la BD y Los Asigna a una variable tipo Array;
+        TraerTipoCompra() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetTipoCompras", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + localStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoTipoCompra = res.data;
+                        if (this.listadoTipoCompra.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los Laboratorios correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerDetalleRecepcion() {
             try {
                 let data = {
@@ -1671,6 +1697,7 @@ export default {
                             let c = this.listaRecepcion;
                             let idDoc = 0;
                             let nomser = "";
+                            let tipord = "";
 
                             c.forEach((value, index) => {
                                 this.fechaSistema = moment(value.FECSYS)
@@ -1694,6 +1721,7 @@ export default {
                                 this.folio = value.FOLIO;
                                 this.Observaciones = value.OBS;
                                 nomser = value.NOMSER;
+                                tipord = value.TIPORD;
                             });
 
                             c = [];
@@ -1704,6 +1732,15 @@ export default {
                                     this.seleccionTipoDocumento.id;
                                     this.seleccionTipoDocumento.descripcionDocumento =
                                         value.descripcionDocumento;
+                                }
+                            });
+
+                            let f = this.listadoTipoCompra;
+                            f.forEach((value, index) => {
+                                if (tipord == value.NOMTIPCOM) {
+                                    this.seleccionTipoCompra.id = value.id;
+                                    this.seleccionTipoCompra.NOMTIPCOM =
+                                        value.NOMTIPCOM;
                                 }
                             });
                         }
@@ -2041,13 +2078,14 @@ export default {
     },
     beforeMount() {
         this.RefreshToken();
+        this.TraerTipoDocumentos();
+        this.TraerProveedores();
+        this.TraerEstado();
+        this.TraerBodega();
+        this.TraerZona();
+        this.TraerAnulaciones();
+        this.TraerTipoCompra();
         setTimeout(() => {
-            this.TraerTipoDocumentos();
-            this.TraerProveedores();
-            this.TraerEstado();
-            this.TraerBodega();
-            this.TraerZona();
-            this.TraerAnulaciones();
             this.TraerDetalleRecepcion();
             this.TraerRecepcion();
             this.cargarHoras();

@@ -116,7 +116,7 @@ class RecepcionesController extends Controller
             $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
             'TIPDOC','FECDOC','DCTO','OBS','CARGO',DB::raw("ROUND(SUBTOTAL,0) as SUBTOTAL"),'AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
             'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','NOMSER','NOMARCH',
-            DB::raw("ROUND(SUBTOTAL,0) as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),0) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,0) as TOTAL"))
+            DB::raw("ROUND(SUBTOTAL,0) as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),0) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,0)+AJUSTE+CARGO-DCTO as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
             ->get();
             return $get;

@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="vx-col md:w-1/1 w-full mb-base">
+            <!--  Visualizacion Seccion seleccion Tipo Recepcion -->
             <vx-card title="Recepciones">
                 <div class="vx-row">
                     <div class="vx-col w-1/2 mt-5">
@@ -23,25 +24,14 @@
                     </div>
                 </div>
             </vx-card>
-            <!-- Recepcion -->
+
+            <!--  Visualizacion del formulario Recepcion Normal -->
             <vx-card
                 title="Recepcion Normal"
                 v-if="recepcion"
                 style="line-height: 0.8; font-size: 12px;"
             >
-                <div class="vx-row" style="margin: 0 0.1rem;">
-                    <!--                     <div
-                        class="vx-col w-full mt-5"
-                        v-if="listaDetalleRecepcion.length > 0"
-                    >
-                        <h6>N° Interno</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="numint"
-                            disabled
-                        />
-                    </div> -->
-                </div>
+                <!--  Visualizacion del formulario seccion Inicial Recepcion Normal -->
                 <div class="vx-row">
                     <div
                         class="vx-col mt-5"
@@ -148,6 +138,7 @@
                         <vs-input
                             class="inputx w-full "
                             v-model="nordencompra"
+                            v-on:keydown.enter="AbrirVinculo"
                         />
                     </div>
                     <div
@@ -243,7 +234,7 @@
                     </div>
                 </div>
             </vx-card>
-            <!-- Detalles Articulos -->
+            <!--  Visualizacion del formulario seccion Detalle Articulos Recepcion Normal -->
             <div class="vx-col md:w-1/1 w-full mb-2 mt-3" v-if="recepcion">
                 <vx-card title="">
                     <div class="vx-row" style="margin: 0 0.1rem;">
@@ -400,7 +391,8 @@
                     </div>
                 </vx-card>
             </div>
-            <!-- Calculos -->
+
+            <!--  Visualizacion del formulario seccion Calculos Recepcion Normal -->
             <div class="vx-col md:w-1/1 w-full mb-2 mt-3" v-if="recepcion">
                 <vx-card title="">
                     <div class="vx-row" style="margin: 0 0.1rem;">
@@ -474,6 +466,7 @@
                     </div>
                 </vx-card>
             </div>
+            <!--  Visualizacion del formulario seccion Observaciones Recepcion Normal -->
             <div class="vx-col md:w-1/1 w-full mb-2 mt-3" v-if="recepcion">
                 <vx-card title="">
                     <div class="vx-row" style="margin: 0 0.1rem;">
@@ -482,7 +475,7 @@
                     </div>
                 </vx-card>
             </div>
-
+            <!--  Visualizacion del formulario seccion Final Recepcion Normal -->
             <div class="vx-col md:w-1/1 w-full mb-base mt-1" v-if="recepcion">
                 <vx-card title="">
                     <div class="vx-row" style="margin: 0 0.1rem;">
@@ -559,25 +552,12 @@
                     </div>
                 </vx-card>
             </div>
-            <!-- Consumo Inmediato -->
+            <!--  Visualizacion del formulario Consumo Inmediato -->
             <vx-card
                 title="Consumo Inmediato"
                 v-if="consumoi"
                 style="line-height: 0.8; font-size: 12px;"
             >
-                <div class="vx-row" style="margin: 0 0.1rem;">
-                    <!--                     <div
-                        class="vx-col w-full mt-5"
-                        v-if="listaDetalleRecepcion.length > 0"
-                    >
-                        <h6>N° Interno</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="numint"
-                            disabled
-                        />
-                    </div> -->
-                </div>
                 <div class="vx-row">
                     <div
                         class="vx-col mt-5"
@@ -684,6 +664,7 @@
                         <vs-input
                             class="inputx w-full "
                             v-model="nordencompra"
+                            v-on:keydown.enter="AbrirVinculo"
                         />
                     </div>
                     <div
@@ -790,7 +771,7 @@
                     </div>
                 </div>
             </vx-card>
-            <!-- Detalles Articulos -->
+            <!--  Visualizacion del formulario seccion Detalle Articulos Consumo Inmediato -->
             <div class="vx-col md:w-1/1 w-full mb-2 mt-3" v-if="consumoi">
                 <vx-card title="">
                     <div class="vx-row" style="margin: 0 0.1rem;">
@@ -947,7 +928,7 @@
                     </div>
                 </vx-card>
             </div>
-            <!-- Calculos -->
+            <!--  Visualizacion del formulario seccion Calculos Consumo Inmediato -->
             <div class="vx-col md:w-1/1 w-full mb-2 mt-3" v-if="consumoi">
                 <vx-card title="">
                     <div class="vx-row" style="margin: 0 0.1rem;">
@@ -1020,8 +1001,8 @@
                         </vue-good-table>
                     </div>
                 </vx-card>
-                <div class="vx-row"></div>
             </div>
+            <!--  Visualizacion del formulario seccion Observaciones Consumo Inmediato -->
             <div class="vx-col md:w-1/1 w-full mb-2 mt-3" v-if="consumoi">
                 <vx-card title="">
                     <div class="vx-row" style="margin: 0 0.1rem;">
@@ -1030,7 +1011,7 @@
                     </div>
                 </vx-card>
             </div>
-
+            <!--  Visualizacion del formulario seccion Final Consumo Inmediato -->
             <div class="vx-col md:w-1/1 w-full mb-base mt-1" v-if="consumoi">
                 <vx-card title="">
                     <div class="vx-row" style="margin: 0 0.1rem;">
@@ -1110,7 +1091,7 @@
                 </vx-card>
             </div>
         </div>
-        <!-- Listado Articulos -->
+        <!-- Visualizacion pop Up del Listado Articulos -->
         <vs-popup
             classContent="ListadoArticulos"
             title="Listado Articulos"
@@ -1175,9 +1156,9 @@
                         </vx-card>
                     </div>
                 </vx-card>
-                <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <!--  Visualizacion Pop Up Para Cambiar la Fecha de vencimiento del detalle -->
         <vs-popup
             classContent="Cambiar Fecha Vencimiento"
             title="Fecha Vencimiento"
@@ -1222,6 +1203,7 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <!--  Visualizacion Pop Up Para Quitar Articulo del Detalle -->
         <vs-popup
             classContent="RemoverArticulo"
             title="Remover Articulo"
@@ -1253,7 +1235,7 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
-        <!-- Documento Factura -->
+        <!-- Visualizacion Pop Up Para Guardar Documento Factura -->
         <vs-popup
             classContent="Factura"
             title="Factura"
@@ -1306,7 +1288,7 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
-        <!-- Documento RIB -->
+        <!-- Visualizacion Pop Up Para Guardar Documento RIB -->
         <vs-popup classContent="RIB" title="RIB" :active.sync="popUpAgregarRIB">
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="">
@@ -1355,7 +1337,7 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
-        <!-- Documento CARTA -->
+        <!--Visualizacion Pop Up Para Guardar Documento CARTA -->
         <vs-popup
             classContent="CARTA"
             title="CARTA"
@@ -1411,16 +1393,13 @@
     </div>
 </template>
 <script>
+//Importacion de Funciones Para ejecucion de la plataforma.
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";
-import "quill/dist/quill.core.css";
 import router from "@/router";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
@@ -1434,33 +1413,20 @@ Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
 
 export default {
+    //Componente Especial Para funcion de boton Enter como Tabulador.
     mixins: [EnterToTabMixin],
+    //Declaracion de Componentes.
     components: {
         VueGoodTable,
         "v-select": vSelect,
-        quillEditor,
         PlusCircleIcon,
         flatPickr
     },
+    //Seccion Data es para Declarar las variables que se utilizaran en el formulario y Metodos.
     data() {
         return {
-            //Datos Locales - Variables de Entorno
+            //Datos Locales - Variables de Entorno Ubicada en el Archivo .Env del proyecto.
             localVal: process.env.MIX_APP_URL,
-            editorOption: {
-                modules: {
-                    toolbar: [
-                        ["bold", "italic", "underline", "strike"],
-                        ["blockquote", "code-block"],
-                        [{ header: 1 }, { header: 2 }],
-                        [{ list: "ordered" }, { list: "bullet" }],
-                        [{ indent: "-1" }, { indent: "+1" }],
-                        [{ direction: "rtl" }],
-                        [{ font: [] }],
-                        [{ align: [] }],
-                        ["clean"]
-                    ]
-                }
-            },
             //Datos Campos
             PageOptions: store.state.PageOptions,
             image: null,
@@ -1567,7 +1533,7 @@ export default {
                 descripcionServicio: ""
             },
             idMod: 0,
-            //Datos Fechas
+            //Datos Configuracion Fechas
             configFromdateTimePicker: {
                 minDate: null,
                 maxDate: "today",
@@ -1911,15 +1877,18 @@ export default {
     },
     methods: {
         //Metodos Reusables
+        //Este Metodo es para ajustar el comportamiento de la fecha de termina al seleccionar la fecha de inicio para poner dia limite.
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
         },
+        //Este metodo desplega una pantalla de carga mientras se ejecutan las cargas de datos iniciales.
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
             setTimeout(() => {
                 this.$vs.loading.close();
             }, 1000);
         },
+        //Este metodo sirve para validar los campos que sea solo numeros y decimales con .
         isNumber: function(evt) {
             evt = evt ? evt : window.event;
             var charCode = evt.which ? evt.which : evt.keyCode;
@@ -1933,6 +1902,17 @@ export default {
                 return true;
             }
         },
+        //Este Metodo Hace que al accionar la tecla Enter, abra una nueva pestaña que abre mercado publico en su buscador
+        AbrirVinculo() {
+            try {
+                const url =
+                    "https://www.mercadopublico.cl/Portal/Modules/Site/Busquedas/BuscadorAvanzado.aspx?qs=2";
+                window.open(url, "_blank");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Este metodo carga el tipo de recepcion seleccionada, en este caso, Recepcion Normal
         FormRecepcion() {
             try {
                 this.recepcion = true;
@@ -1951,6 +1931,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo carga el tipo de recepcion seleccionada, en este caso, Recepcion Consumo Inmediato
         FormConsumoI() {
             try {
                 this.consumoi = true;
@@ -1969,6 +1950,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo vacia los campos para guardar nuevos datos.
         limpiarCampos() {
             try {
                 this.cantidad = "";
@@ -2010,6 +1992,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo se ejecuta cuando se selecciona el rut del proveedor y deja cargado al proveedor asociado.
         setProveedor() {
             try {
                 this.descripcionProveedor = "";
@@ -2018,6 +2001,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo se ejecuta al presionar el boton de Imprimir, este abre una nueva ventana y se visualiza el documento solicitado.
         ImprimirDatos() {
             try {
                 if (this.numint != 0 && this.folio != 0) {
@@ -2040,6 +2024,7 @@ export default {
             }
         },
         //Guardar Documentos
+        //Este metodo activa el pop up para guardar el documenta tipo Factura.
         popAgregarFactura() {
             try {
                 this.popUpAgregarFactura = true;
@@ -2047,6 +2032,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo activa el pop up para guardar el documenta tipo RIB.
         popAgregarRIB() {
             try {
                 this.popUpAgregarRIB = true;
@@ -2054,6 +2040,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo activa el pop up para guardar el documenta tipo CARTA.
         popAgregarCarta() {
             try {
                 this.popUpAgregarCarta = true;
@@ -2061,27 +2048,31 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo recoge la imagen y la guarda en las variables correspondientes, Tipo Factura.
         getImage(event) {
             //Asignamos la imagen a  nuestra data
             this.image = event.target.files[0];
             this.nombrearchivo = this.image.name;
             this.val_doc = 1;
         },
+        //Este metodo recoge la imagen y la guarda en las variables correspondientes, Tipo RIB.
         getImageRib(event) {
             //Asignamos la imagen a  nuestra data
             this.imageRib = event.target.files[0];
             this.nombrearchivoRib = this.imageRib.name;
             this.val_doc = 1;
         },
+        //Este metodo recoge la imagen y la guarda en las variables correspondientes, Tipo CARTA.
         getImageCarta(event) {
             //Asignamos la imagen a  nuestra data
             this.imageCarta = event.target.files[0];
             this.nombrearchivoCarta = this.imageCarta.name;
             this.val_doc = 1;
         },
+        //Este metodo Ejecuta la subida y guardado del archivo en el servidor y los nombres en la base de datos.
+        //Tipo Factura.
         uploadImage() {
             //Creamos el formData
-
             var data = new FormData();
             //Añadimos la imagen seleccionada
             data.append("avatar", this.image);
@@ -2123,15 +2114,15 @@ export default {
                     }
                 });
         },
+        //Este metodo Ejecuta la subida y guardado del archivo en el servidor y los nombres en la base de datos.
+        //Tipo RIB.
         uploadImageRib() {
             //Creamos el formData
-
             var data = new FormData();
             //Añadimos la imagen seleccionada
             data.append("avatar", this.imageRib);
             data.append("id", this.numint);
             data.append("nombreDocOriginal", this.nombrearchivoRib);
-
             axios
                 .post(
                     this.localVal +
@@ -2167,9 +2158,10 @@ export default {
                     }
                 });
         },
+        //Este metodo Ejecuta la subida y guardado del archivo en el servidor y los nombres en la base de datos.
+        //Tipo Carta.
         uploadImageCarta() {
             //Creamos el formData
-
             var data = new FormData();
             //Añadimos la imagen seleccionada
             data.append("avatar", this.imageCarta);
@@ -2212,6 +2204,7 @@ export default {
                 });
         },
         //Fin agregar documentos
+        //Este metodo se ejecuta cuando se presiona el boton volver, lo que hace es regresar a la vista anterior que reviso.
         volver() {
             try {
                 this.$router.push({
@@ -2221,6 +2214,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo guarda el valor del Descuento para ajustar valores al actualizar la recepcion.
         ActDCTO(id, dcto) {
             try {
                 this.dcto = dcto;
@@ -2228,6 +2222,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo guarda el valor del cargo para ajustar valores al actualizar la recepcion.
         ActCARGO(id, cargo) {
             try {
                 this.cargos = cargo;
@@ -2235,6 +2230,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo guarda el valor del ajuste para ajustar valores al actualizar la recepcion.
         ActAJUSTE(id, ajuste) {
             try {
                 this.ajustes = ajuste;
@@ -2242,6 +2238,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo guarda temporalmente el valor del lote cambiado en el detalle de la recepcion hasta que se actualicen los datos.
         ActLote(id, lote) {
             try {
                 let c = this.listaDetalleRecepcion;
@@ -2257,6 +2254,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo guarda temporalmente el valor del codigo de barra cambiado en el detalle de la recepcion hasta que se actualicen los datos.
         ActCodigoBarra(id, codigoBarra) {
             try {
                 let c = this.listaDetalleRecepcion;
@@ -2272,6 +2270,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo guarda temporalmente el valor de la fecha de vencimiento cambiada en el detalle de la recepcion hasta que se actualicen los datos.
         ActFechaVencimiento() {
             try {
                 let id = this.idFecha;
@@ -2291,6 +2290,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo guarda temporalmente el valor de la cantidad recepcionada en el detalle de la recepcion hasta que se actualicen los datos.
         ActCantRecepcionada(id, cantRecepcionada, precioUnitario) {
             try {
                 let c = this.listaDetalleRecepcion;
@@ -2308,6 +2308,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo guarda temporalmente el valor del precio unitario cambiado en el detalle de la recepcion hasta que se actualicen los datos.
         ActPrecioUnitario(id, cantRecepcionada, precioUnitario) {
             try {
                 let c = this.listaDetalleRecepcion;
@@ -2326,6 +2327,7 @@ export default {
             }
         },
         //PopUp
+        //Este metodo permite que se despliegue el menu de los articulos disponibles a recepcionar.
         popArticulos() {
             try {
                 this.popUpArticulos = true;
@@ -2333,6 +2335,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo permite que se despliegue el menu para cambiar la fecha de vencimiento del detalle de la recepcion.
         popFechaVen(id) {
             try {
                 this.idFecha = id;
@@ -2341,6 +2344,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo permite que se despliegue el menu para quitar un articulo del listado del detalle recepcionado.
         popDelDetalle(id) {
             try {
                 this.idRemoverArt = id;
@@ -2349,6 +2353,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este metodo precarga los datos del articulo seleccionado en el listado para guardarlo en el detalle de la recepcion.
         popAgregarArticulo(
             NOMBRE,
             UNIMEDBASE,
@@ -2446,6 +2451,7 @@ export default {
             }
         },
         //Metodos CRUD
+        //Este Metodo se comunica con la API interna para retornar el listado de tipo de compras en la BD.
         TraerTipoCompra() {
             try {
                 axios
@@ -2472,6 +2478,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar el listado de servicios habilitados en la BD.
         TraerServicio() {
             try {
                 axios
@@ -2518,6 +2525,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar el listado de articulos disponibles en la BD.
         TraerArticulos() {
             try {
                 axios
@@ -2544,6 +2552,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar el listado de los articulos guardados en el detalle de recepcion en la BD.
         TraerDetalleRecepcion() {
             try {
                 let data = {
@@ -2586,6 +2595,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar la recepcion asociada al N°Interno en la BD.
         TraerRecepcion() {
             try {
                 let data = {
@@ -2693,6 +2703,8 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar
+        //el listado del detalle del despacho para guardarlo en caso de que sea un consumo inmediato.
         TraerDetalleDespachos() {
             try {
                 let data = {
@@ -2726,6 +2738,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar el listado de proveedores disponibles.
         TraerProveedores() {
             try {
                 axios
@@ -2752,6 +2765,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar el listado de los tipos de documentos.
         TraerTipoDocumentos() {
             try {
                 axios
@@ -2778,6 +2792,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar los tipos de estado y validar los articulos activos y pasivos.
         TraerEstado() {
             try {
                 axios
@@ -2804,6 +2819,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar los tipos de bodegas disponibles.
         TraerBodega() {
             try {
                 axios
@@ -2830,6 +2846,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar las zonas donde se ubican los articulos.
         TraerZona() {
             try {
                 axios
@@ -2856,6 +2873,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar el ultimo N°Interno para guardar el detalle inicial de la recepcion.
         TraerUltimoNInterno() {
             try {
                 axios
@@ -2882,6 +2900,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar el ultimo N°Folio para finalizar la recepcion(o Consumo Inmediato).
         TraerUltimoNFolio() {
             try {
                 axios
@@ -2908,6 +2927,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para guardar los datos del articulo recepcionado en el detalle y asignar N°Interno.
         AgregarArticuloDetalle() {
             try {
                 if (this.validarNInterno) {
@@ -3315,6 +3335,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar el N°Interno del despacho en caso de que sea Consumo Inmediato.
         TraerUltimoNInternoDespacho() {
             try {
                 axios
@@ -3345,6 +3366,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para retornar el N°Folio del despacho en caso de que sea Consumo Inmediato.
         TraerUltimoNFolioDespacho() {
             try {
                 axios
@@ -3375,6 +3397,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para quitar articulo del detalle.
         RemoverArticuloDetalle() {
             try {
                 let data = {
@@ -3421,6 +3444,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para actualizar los cambios realizados en la recepcion completa presionando en el boton de actualizar.
         ActualizarListado() {
             try {
                 let c = this.listaDetalleRecepcion;
@@ -3457,10 +3481,6 @@ export default {
                         position: "top-right"
                     });
                 } else {
-                    subtotal = subtotal - parseInt(this.dcto);
-                    subtotal = subtotal + parseInt(this.cargos);
-                    subtotal = subtotal + parseInt(this.ajustes);
-
                     let nombreUsuario =
                         localStorage.getItem("nombre") +
                         " " +
@@ -3554,6 +3574,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para finalizar el proceso de recepcion y asignar los N°Folio Correspondientes.
         CerrarRecepcion() {
             try {
                 this.TraerUltimoNFolioDespacho();
@@ -3790,6 +3811,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo refresca el token para continuar usando la plataforma.
         RefreshToken() {
             try {
                 let data = {
@@ -3820,6 +3842,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para buscar los articulos por Codigo de Barra.
         BuscarArticuloCODBAR() {
             try {
                 let data = {
@@ -3931,6 +3954,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo Asignar la horas por default del formulario inicial.
         cargarHoras() {
             try {
                 let date = moment().endOf("day");
