@@ -18,7 +18,7 @@
                             >
                             </span>
                             <span v-else-if="props.column.field === 'action'">
-                                <plus-circle-icon
+                                <edit-icon
                                     content="Ir al Despacho"
                                     v-tippy
                                     size="1.5x"
@@ -28,7 +28,7 @@
                                             props.row.NUMINT
                                         )
                                     "
-                                ></plus-circle-icon>
+                                ></edit-icon>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -47,6 +47,7 @@ import router from "@/router";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
+import { EditIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 import store from "../ScriptMenus/store.js";
@@ -56,7 +57,8 @@ Vue.component("tippy", TippyComponent);
 export default {
     components: {
         VueGoodTable,
-        PlusCircleIcon
+        PlusCircleIcon,
+        EditIcon
     },
     data() {
         return {

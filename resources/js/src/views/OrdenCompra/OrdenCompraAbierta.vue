@@ -1,220 +1,225 @@
 <template>
     <div>
-        <div class="vx-col md:w-1/1 w-full mb-base">
-            <!-- Orden de Compra -->
-            <vx-card title="Orden de Compra">
+        <!-- Orden de Compra -->
+        <vx-card title="Orden de Compra" class="md:w-1/1 w-full mb-2 mt-3">
+            <div class="vx-row">
+                <div class="vx-col w-full mt-5">
+                    <vs-button
+                        @click="popRecepciones"
+                        color="primary"
+                        type="filled"
+                        class="w-full"
+                        >Buscar Recepciones</vs-button
+                    >
+                </div>
+                <div
+                    class="vx-col w-full mt-5"
+                    v-if="listaDetalleOrdenCompra.length > 0"
+                >
+                    <h6>N° Interno</h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="numint"
+                        disabled
+                    />
+                </div>
+            </div>
+        </vx-card>
+        <vx-card title="" class="md:w-1/1 w-full mb-2 mt-3">
+            <div class="vx-row">
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 1rem; width: 7.3% !important;"
+                >
+                    <h6>F. Sistema</h6>
+                    <flat-pickr
+                        :config="configFromdateTimePicker"
+                        v-model="fechaSistema"
+                        placeholder="Fecha Sistema"
+                        class="w-full "
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 7.3% !important;"
+                >
+                    <h6>F. Inicio</h6>
+                    <flat-pickr
+                        :config="configFromdateTimePicker"
+                        v-model="fechaOrdenCompra"
+                        placeholder="Fecha Inicio"
+                        @on-change="onFromChange"
+                        class="w-full "
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 14.3% !important;"
+                >
+                    <h6>Proveedor</h6>
+                    <v-select
+                        v-model="seleccionProveedores"
+                        placeholder="Activo"
+                        class="w-full select-large"
+                        label="RUTPROV"
+                        :options="listadoProveedores"
+                        @input="setProveedor"
+                        disabled
+                    ></v-select>
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 16.3% !important;"
+                >
+                    <h6>Nombre Proveedor</h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="descripcionProveedor"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 7.3% !important;"
+                >
+                    <h6>Sigfe</h6>
+                    <vs-input class="inputx w-full  " v-model="nsigfe" />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 10.3% !important;"
+                >
+                    <h6>
+                        Folio Recepcionado
+                    </h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="nfoliorecepcionado"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 7.3% !important;"
+                >
+                    <h6>
+                        Año
+                    </h6>
+                    <vs-input class="inputx w-full  " v-model="anio" />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 29.3% !important;"
+                >
+                    <h6>
+                        .
+                    </h6>
+                    <vs-button
+                        @click="AgregarRecepcionCerrada"
+                        color="success"
+                        type="filled"
+                        class="w-full"
+                        >Añadir</vs-button
+                    >
+                </div>
+            </div>
+        </vx-card>
+        <!-- Detalles Orden Compra -->
+        <div class="vx-col md:w-1/1 w-full mb-base mt-5">
+            <vx-card title="">
+                <div class="vx-row">
+                    <vue-good-table
+                        class="w-full"
+                        :columns="colDetalle"
+                        :rows="listaDetalleOrdenCompra"
+                        :pagination-options="PageOptions"
+                        styleClass="vgt-table condensed bordered"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+                            <span v-else-if="props.column.field === 'action'">
+                                <plus-circle-icon
+                                    content="Modificar Orden Compra"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="popModDetalle(props.row.id)"
+                                ></plus-circle-icon>
+                            </span>
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template>
+                    </vue-good-table>
+                </div>
+            </vx-card>
+            <div class="vx-row"></div>
+        </div>
+        <!-- Observaciones y totales -->
+        <div class="vx-col md:w-1/1 w-full mb-base mt-5">
+            <vx-card title="">
                 <div class="vx-row">
                     <div class="vx-col w-full mt-5">
-                        <vs-button
-                            @click="popRecepciones"
-                            color="primary"
-                            type="filled"
+                        <h6>
+                            Total
+                        </h6>
+                        <vs-input
+                            class="inputx w-full  "
+                            v-model="valorTotal"
+                            disabled
+                        />
+                    </div>
+                    <div class="vx-col w-full mt-5">
+                        <h6>Observaciones</h6>
+                        <quill-editor
                             class="w-full"
-                            >Buscar Recepciones</vs-button
+                            v-model="Observaciones"
+                            :options="editorOption"
                         >
-                    </div>
-                    <div
-                        class="vx-col w-full mt-5"
-                        v-if="listaDetalleOrdenCompra.length > 0"
-                    >
-                        <h6>N° Interno</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="numint"
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Sistema</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaSistema"
-                            placeholder="Fecha Sistema"
-                            class="w-full "
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Inicio</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaOrdenCompra"
-                            placeholder="Fecha Inicio"
-                            @on-change="onFromChange"
-                            class="w-full "
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Proveedor</h6>
-                        <v-select
-                            v-model="seleccionProveedores"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="RUTPROV"
-                            :options="listadoProveedores"
-                            @input="setProveedor"
-                            disabled
-                        ></v-select>
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Nombre Proveedor</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="descripcionProveedor"
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Sigfe</h6>
-                        <vs-input class="inputx w-full  " v-model="nsigfe" />
+                            <div id="toolbar" slot="toolbar"></div>
+                        </quill-editor>
                     </div>
                 </div>
-                <br />
+                <br /><br />
+            </vx-card>
+        </div>
+        <div class="vx-col md:w-1/1 w-full mb-base mt-5">
+            <vx-card title="">
                 <div class="vx-row">
-                    <div class="vx-col w-1/2 mt-5">
-                        <h6>
-                            Folio Recepcionado
-                        </h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nfoliorecepcionado"
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/2 mt-5">
-                        <h6>
-                            Año
-                        </h6>
-                        <vs-input class="inputx w-full  " v-model="anio" />
-                    </div>
-
-                    <br />
-                    <div class="vx-col w-1/2 mt-5">
+                    <div class="vx-col w-1/3 mt-5">
                         <vs-button
-                            @click="limpiarCampos"
+                            @click="ActualizarListado"
                             color="primary"
                             type="filled"
                             class="w-full"
-                            >Limpiar Campos</vs-button
+                            >Actualizar</vs-button
                         >
                     </div>
-                    <div class="vx-col w-1/2 mt-5">
+                    <div class="vx-col w-1/3 mt-5">
                         <vs-button
-                            @click="AgregarRecepcionCerrada"
-                            color="success"
+                            @click="volver"
+                            color="primary"
                             type="filled"
                             class="w-full"
-                            >Añadir</vs-button
+                            >Volver</vs-button
                         >
                     </div>
-                </div>
-                <br />
-
-                <!-- Detalles Orden Compra -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vue-good-table
-                                class="w-full"
-                                :columns="colDetalle"
-                                :rows="listaDetalleOrdenCompra"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed bordered"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            content="Modificar Orden Compra"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="popModDetalle(props.row.id)"
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-                <!-- Observaciones y totales -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <div class="vx-col w-full mt-5">
-                                <h6>
-                                    Total
-                                </h6>
-                                <vs-input
-                                    class="inputx w-full  "
-                                    v-model="valorTotal"
-                                    disabled
-                                />
-                            </div>
-                            <div class="vx-col w-full mt-5">
-                                <h6>Observaciones</h6>
-                                <quill-editor
-                                    class="w-full"
-                                    v-model="Observaciones"
-                                    :options="editorOption"
-                                >
-                                    <div id="toolbar" slot="toolbar"></div>
-                                </quill-editor>
-                            </div>
-                        </div>
-                        <br /><br />
-                    </vx-card>
-                </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <div class="vx-col w-1/3 mt-5">
-                                <vs-button
-                                    @click="ActualizarListado"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Actualizar</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/3 mt-5">
-                                <vs-button
-                                    @click="volver"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Volver</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/3 mt-5">
-                                <vs-button
-                                    @click="CerrarOrdenCompra"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Cerrar Orden Compra</vs-button
-                                >
-                            </div>
-                        </div>
-                    </vx-card>
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            @click="CerrarOrdenCompra"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Cerrar Orden Compra</vs-button
+                        >
+                    </div>
                 </div>
             </vx-card>
         </div>
@@ -470,45 +475,27 @@ export default {
             colDetalle: [
                 {
                     label: "Folio Recepcion",
-                    field: "FOLREC",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "FOLREC"
                 },
                 {
                     label: "Tipo Documento",
-                    field: "TIPDOC",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "TIPDOC"
                 },
                 {
                     label: "N° Documento",
-                    field: "NUMDOC",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "NUMDOC"
                 },
                 {
                     label: "Fecha Documento",
-                    field: "FECDOC",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "FECDOC"
                 },
                 {
                     label: "OC Recepcion",
-                    field: "NOMORD",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "NOMORD"
                 },
                 {
                     label: "Total",
-                    field: "TOTAL",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "TOTAL"
                 }
             ],
             col: [

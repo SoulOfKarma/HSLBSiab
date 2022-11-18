@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vx-card title="Listado Orden Compra Abiertas">
+        <vx-card title="Listado Orden Compra Cerrada">
             <br />
             <div>
                 <vx-card>

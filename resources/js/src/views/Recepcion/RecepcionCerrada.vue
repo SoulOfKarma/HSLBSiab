@@ -1,491 +1,375 @@
 <template>
     <div>
-        <div class="vx-col md:w-1/1 w-full mb-base">
-            <vx-card
-                title="Recepcion"
-                style="line-height: 0.8; font-size: 12px;"
-            >
-                <div class="vx-row">
-                    <!-- class="vx-col w-1/2 mt-5">
-                        <h6>N° Interno</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="numint"
-                            disabled
-                        />
-                    </div> -->
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 1rem; width: 7.3% !important;"
-                    >
-                        <h6>F. Sistema</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaSistema"
-                            placeholder="Fecha Sistema"
-                            class="w-full"
-                            disabled
-                        />
-                    </div>
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 7% !important;"
-                    >
-                        <h6>F. Recepcion</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaRecepcion"
-                            placeholder="Fecha Inicio"
-                            @on-change="onFromChange"
-                            class="w-full"
-                            disabled
-                        />
-                    </div>
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 12.7% !important;"
-                    >
-                        <h6>Proveedor</h6>
-                        <v-select
-                            v-model="seleccionProveedores"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="RUTPROV"
-                            :options="listadoProveedores"
-                            @input="setProveedor"
-                            disabled
-                        ></v-select>
-                    </div>
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 14% !important;"
-                    >
-                        <h6>Nombre Proveedor</h6>
-                        <vs-input
-                            class="inputx w-full"
-                            v-model="descripcionProveedor"
-                            disabled
-                        />
-                    </div>
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 11.6% !important;"
-                    >
-                        <h6>Tipo Documento</h6>
-                        <v-select
-                            v-model="seleccionTipoDocumento"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="descripcionDocumento"
-                            :options="listaTipoDocumento"
-                            disabled
-                        ></v-select>
-                    </div>
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 7% !important;"
-                    >
-                        <h6>N° Doc</h6>
-                        <vs-input
-                            class="inputx w-full "
-                            v-model="ndocumento"
-                            disabled
-                        />
-                    </div>
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 8.3% !important;"
-                    >
-                        <h6>F. Doc</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaDocumento"
-                            @on-change="onFromChange"
-                            class="w-full "
-                            disabled
-                        />
-                    </div>
+        <vx-card title="Recepcion" style="line-height: 0.8; font-size: 12px;">
+            <!--  Visualizacion Recepcion Cerrada Seccion Inicial-->
+            <div class="vx-row">
+                <div
+                    class="vx-col w-1/2 mt-5"
+                    v-if="listaDetalleRecepcion.length > 0"
+                >
+                    <h6>N° Interno</h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="numint"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col w-1/2 mt-5"
+                    v-if="listaDetalleRecepcion.length > 0"
+                >
+                    <h6>N° Folio</h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="folio"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 1rem; width: 7.3% !important;"
+                >
+                    <h6>F. Sistema</h6>
+                    <flat-pickr
+                        :config="configFromdateTimePicker"
+                        v-model="fechaSistema"
+                        placeholder="Fecha Sistema"
+                        class="w-full"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 1rem; width: 7.4% !important;"
+                >
+                    <h6>F. Recepcion</h6>
+                    <flat-pickr
+                        :config="configFromdateTimePicker"
+                        v-model="fechaRecepcion"
+                        placeholder="Fecha Inicio"
+                        @on-change="onFromChange"
+                        class="w-full"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 12.7% !important;"
+                >
+                    <h6>Proveedor</h6>
+                    <v-select
+                        v-model="seleccionProveedores"
+                        placeholder="Activo"
+                        class="w-full select-large"
+                        label="RUTPROV"
+                        :options="listadoProveedores"
+                        @input="setProveedor"
+                        disabled
+                    ></v-select>
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 14% !important;"
+                >
+                    <h6>Nombre Proveedor</h6>
+                    <vs-input
+                        class="inputx w-full"
+                        v-model="descripcionProveedor"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 11.6% !important;"
+                >
+                    <h6>Tipo Documento</h6>
+                    <v-select
+                        v-model="seleccionTipoDocumento"
+                        placeholder="Activo"
+                        class="w-full select-large"
+                        label="descripcionDocumento"
+                        :options="listaTipoDocumento"
+                        disabled
+                    ></v-select>
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 7% !important;"
+                >
+                    <h6>N° Doc</h6>
+                    <vs-input
+                        class="inputx w-full "
+                        v-model="ndocumento"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 8.3% !important;"
+                >
+                    <h6>F. Doc</h6>
+                    <flat-pickr
+                        :config="configFromdateTimePicker"
+                        v-model="fechaDocumento"
+                        @on-change="onFromChange"
+                        class="w-full "
+                        disabled
+                    />
+                </div>
 
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 14.3% !important;"
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 14.3% !important;"
+                >
+                    <h6>T. Compra</h6>
+                    <v-select
+                        v-model="seleccionTipoCompra"
+                        placeholder="Activo"
+                        class="w-full select-large "
+                        label="NOMTIPCOM"
+                        :options="listadoTipoCompra"
+                        disabled
+                    ></v-select>
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 11.5% !important;"
+                >
+                    <h6>N° Orden Compra</h6>
+                    <vs-input
+                        class="inputx w-full "
+                        v-model="nordencompra"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 5.8% !important;"
+                >
+                    <h6>N° RIB</h6>
+                    <vs-input
+                        class="inputx w-full "
+                        v-model="nrib"
+                        @keypress="isNumber($event)"
+                        disabled
+                    />
+                </div>
+            </div>
+        </vx-card>
+        <!--  Visualizacion del formulario seccion Detalle Articulos Recepcion Cerrada -->
+        <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+            <vx-card title="">
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <vue-good-table
+                        class="w-full"
+                        :columns="colDetalle"
+                        :rows="listaDetalleRecepcion"
+                        styleClass="vgt-table condensed bordered"
                     >
-                        <h6>T. Compra</h6>
-                        <v-select
-                            v-model="seleccionTipoCompra"
-                            placeholder="Activo"
-                            class="w-full select-large "
-                            label="NOMTIPCOM"
-                            :options="listadoTipoCompra"
-                            disabled
-                        ></v-select>
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'CODART'"
+                                class="text-nowrap"
+                            >
+                                <span
+                                    style="font-size: 14px; align-items: center;"
+                                    >{{ props.row.CODART }}</span
+                                >
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'PRODUCTO'"
+                                class="text-nowrap"
+                            >
+                                <span
+                                    style="font-size: 14px; align-items: center;"
+                                    >{{ props.row.PRODUCTO }}</span
+                                >
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'UNIMED'"
+                                class="text-nowrap"
+                            >
+                                <span
+                                    style="font-size: 14px; align-items: center;"
+                                    >{{ props.row.UNIMED }}</span
+                                >
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'VALTOT'"
+                                class="text-nowrap"
+                            >
+                                <span
+                                    style="font-size: 14px; align-items: center;"
+                                    >{{ props.row.VALTOT }}</span
+                                >
+                            </span>
+                            <span v-else-if="props.column.field === 'FOLIO'">
+                                <bar-chart-icon
+                                    content="Generar Codigo de Barra"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        generarCodigoBarra(
+                                            props.row.PRODUCTO,
+                                            props.row.CODART,
+                                            props.row.FECVEN,
+                                            props.row.LOTE,
+                                            props.row.FOLIO
+                                        )
+                                    "
+                                ></bar-chart-icon>
+                            </span>
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template>
+                    </vue-good-table>
+                </div>
+            </vx-card>
+        </div>
+        <!--  Visualizacion del formulario seccion Calculos Recepcion Cerrada -->
+        <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+            <vx-card title="">
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <vue-good-table
+                        class="w-full"
+                        :columns="colTotal"
+                        :rows="listaRecepcion"
+                        styleClass="vgt-table condensed bordered"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template>
+                    </vue-good-table>
+                </div>
+            </vx-card>
+        </div>
+        <!--  Visualizacion del formulario seccion Observaciones Recepcion Cerrada -->
+        <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+            <vx-card title="">
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <h6>Observaciones</h6>
+                    <vs-textarea v-model="Observaciones" height="70px" />
+                </div>
+            </vx-card>
+        </div>
+        <!--  Visualizacion del formulario seccion Final Recepcion Cerrada -->
+        <div class="vx-col md:w-1/1 w-full mb-base mt-1">
+            <vx-card title="">
+                <div
+                    class="vx-row"
+                    style="margin: 0 0.1rem;"
+                    v-if="validarUsuario != 5"
+                >
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            @click="popAgregarFactura"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >ADJUNTAR FACTURA</vs-button
+                        >
                     </div>
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 11.5% !important;"
-                    >
-                        <h6>N° Orden Compra</h6>
-                        <vs-input
-                            class="inputx w-full "
-                            v-model="nordencompra"
-                            disabled
-                        />
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            @click="popAgregarRIB"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >ADJUNTAR RIB</vs-button
+                        >
                     </div>
-                    <div
-                        class="vx-col mt-5"
-                        style="padding: 0 0.2rem; width: 5.8% !important;"
-                    >
-                        <h6>N° RIB</h6>
-                        <vs-input
-                            class="inputx w-full "
-                            v-model="nrib"
-                            @keypress="isNumber($event)"
-                            disabled
-                        />
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            @click="popAgregarCarta"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >ADJUNTAR CARTA</vs-button
+                        >
+                    </div>
+                </div>
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <div class="vx-col w-1/2 mt-5">
+                        <vs-button
+                            v-if="validarUsuario == 5"
+                            @click="volver"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Volver</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/2 mt-5">
+                        <vs-button
+                            v-if="validarUsuario == 5"
+                            @click="ImprimirDatos"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Imprimir</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/4 mt-5">
+                        <vs-button
+                            v-if="validarUsuario != 5"
+                            @click="volver"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Volver</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/4 mt-5">
+                        <vs-button
+                            v-if="validarUsuario != 5"
+                            @click="ActualizarListado"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Actualizar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/4 mt-5">
+                        <vs-button
+                            v-if="validarUsuario != 5"
+                            @click="ImprimirDatos"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Imprimir</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/4 mt-5">
+                        <vs-button
+                            v-if="validarUsuario != 5"
+                            @click="AgregarListadoFirmaUsers"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Firmar Digitalmente</vs-button
+                        >
                     </div>
                 </div>
             </vx-card>
-            <!-- Detalles Articulos -->
-            <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                <vx-card title="">
-                    <div class="vx-row">
-                        <vue-good-table
-                            class="w-full"
-                            :columns="colDetalle"
-                            :rows="listaDetalleRecepcion"
-                            styleClass="vgt-table bordered"
-                        >
-                            <template slot="table-row" slot-scope="props">
-                                <!-- Column: Name -->
-                                <span
-                                    v-if="props.column.field === 'fullName'"
-                                    class="text-nowrap"
-                                >
-                                </span>
-                                <span
-                                    v-else-if="props.column.field === 'CODART'"
-                                    class="text-nowrap"
-                                >
-                                    <span
-                                        style="font-size: 14px; align-items: center;"
-                                        >{{ props.row.CODART }}</span
-                                    >
-                                </span>
-                                <span
-                                    v-else-if="
-                                        props.column.field === 'PRODUCTO'
-                                    "
-                                    class="text-nowrap"
-                                >
-                                    <span style="font-size: 14px;">{{
-                                        props.row.PRODUCTO
-                                    }}</span>
-                                </span>
-                                <span
-                                    v-else-if="props.column.field === 'UNIMED'"
-                                    class="text-nowrap"
-                                >
-                                    <span style="font-size: 14px;">{{
-                                        props.row.UNIMED
-                                    }}</span>
-                                </span>
-                                <span
-                                    v-else-if="props.column.field === 'VALTOT'"
-                                    class="text-nowrap"
-                                >
-                                    <span style="font-size: 14px;">{{
-                                        props.row.VALTOT
-                                    }}</span>
-                                </span>
-                                <span
-                                    v-else-if="props.column.field === 'FOLIO'"
-                                >
-                                    <plus-circle-icon
-                                        content="Generar Codigo de Barra"
-                                        v-tippy
-                                        size="1.5x"
-                                        class="custom-class"
-                                        @click="
-                                            generarCodigoBarra(
-                                                props.row.PRODUCTO,
-                                                props.row.CODART,
-                                                props.row.FECVEN,
-                                                props.row.LOTE,
-                                                props.row.FOLIO
-                                            )
-                                        "
-                                    ></plus-circle-icon>
-                                </span>
-                                <span
-                                    v-else-if="props.column.field === 'action'"
-                                >
-                                    <plus-circle-icon
-                                        v-if="validarUsuario != 5"
-                                        content="Anular Articulo"
-                                        v-tippy
-                                        size="1.5x"
-                                        class="custom-class"
-                                        @click="popAnularArticulo(props.row.id)"
-                                    ></plus-circle-icon>
-                                    <plus-circle-icon
-                                        v-if="validarUsuario != 5"
-                                        content="Revertir Anulacion"
-                                        v-tippy
-                                        size="1.5x"
-                                        class="custom-class"
-                                        @click="
-                                            popRAnularArticulo(props.row.id)
-                                        "
-                                    ></plus-circle-icon>
-                                </span>
-                                <!-- Column: Common -->
-                                <span v-else>
-                                    {{ props.formattedRow[props.column.field] }}
-                                </span>
-                            </template>
-                        </vue-good-table>
-                    </div>
-                </vx-card>
-            </div>
-            <!-- Calculos -->
-            <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                <vx-card title="">
-                    <div class="vx-row">
-                        <vue-good-table
-                            class="w-full"
-                            :columns="colTotal"
-                            :rows="listaRecepcion"
-                            styleClass="vgt-table condensed bordered"
-                        >
-                            <template slot="table-row" slot-scope="props">
-                                <!-- Column: Name -->
-                                <span
-                                    v-if="props.column.field === 'fullName'"
-                                    class="text-nowrap"
-                                >
-                                </span>
-                                <!-- Column: Common -->
-                                <span v-else>
-                                    {{ props.formattedRow[props.column.field] }}
-                                </span>
-                            </template>
-                        </vue-good-table>
-                    </div>
-                </vx-card>
-            </div>
-            <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
-                <vx-card title="">
-                    <div class="vx-row" style="margin: 0 0.1rem;">
-                        <h6>Observaciones</h6>
-                        <vs-textarea v-model="Observaciones" height="70px" />
-                    </div>
-                </vx-card>
-            </div>
-            <div class="vx-col md:w-1/1 w-full mb-base mt-1">
-                <vx-card title="">
-                    <div
-                        class="vx-row"
-                        style="margin: 0 0.1rem;"
-                        v-if="validarUsuario != 5"
-                    >
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarFactura"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR FACTURA</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarRIB"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR RIB</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarCarta"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR CARTA</vs-button
-                            >
-                        </div>
-                    </div>
-                    <div class="vx-row" style="margin: 0 0.1rem;">
-                        <div class="vx-col w-1/2 mt-5">
-                            <vs-button
-                                v-if="validarUsuario == 5"
-                                @click="volver"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Volver</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <vs-button
-                                v-if="validarUsuario == 5"
-                                @click="ImprimirDatos"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Imprimir</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/5 mt-5">
-                            <vs-button
-                                v-if="validarUsuario != 5"
-                                @click="ActualizarListado"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Actualizar</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/5 mt-5">
-                            <vs-button
-                                v-if="validarUsuario != 5"
-                                @click="volver"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Volver</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/5 mt-5">
-                            <vs-button
-                                v-if="validarUsuario != 5"
-                                @click="ImprimirDatos"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Imprimir</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/5 mt-5">
-                            <vs-button
-                                v-if="validarUsuario != 5"
-                                @click="popAnularTodo"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Anular Todo</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/5 mt-5">
-                            <vs-button
-                                v-if="validarUsuario != 5"
-                                @click="AgregarListadoFirmaUsers"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Firmar Digitalmente</vs-button
-                            >
-                        </div>
-                    </div>
-                </vx-card>
-            </div>
         </div>
-        <vs-popup
-            classContent="Anulacion"
-            title="Anulacion"
-            :active.sync="popUpAnularArticulo"
-        >
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="">
-                    <div class="vx-row">
-                        <div class="vx-col w-full mt-5">
-                            <h6>Seleccione Tipo de Anulacion</h6>
-                            <v-select
-                                v-model="seleccionAnulacion"
-                                placeholder="Activo"
-                                class="w-full select-large"
-                                label="NOMMOT"
-                                :options="listadoAnulacion"
-                            ></v-select>
-                        </div>
-                        <div class="vx-col w-full mt-5">
-                            <vs-button
-                                @click="popAnularDetalleArticulo"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Anular</vs-button
-                            >
-                        </div>
-                    </div>
-                </vx-card>
-                <div class="vx-row"></div>
-            </div>
-        </vs-popup>
-        <vs-popup
-            classContent="RAnulacion"
-            title="Revertir Anulacion"
-            :active.sync="popUpRAnularArticulo"
-        >
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="">
-                    <div class="vx-row">
-                        <div class="vx-col w-1/2 mt-5">
-                            <vs-button
-                                @click="popUpRAnularArticulo = false"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Volver</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <vs-button
-                                @click="popRAnularDetalleArticulo"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Revertir Anulacion</vs-button
-                            >
-                        </div>
-                    </div>
-                </vx-card>
-                <div class="vx-row"></div>
-            </div>
-        </vs-popup>
-        <vs-popup
-            classContent="Anulacion"
-            title="Anulacion"
-            :active.sync="popUpAnularTodo"
-        >
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="">
-                    <div class="vx-row">
-                        <div class="vx-col w-full mt-5">
-                            <h6>Seleccione Tipo de Anulacion</h6>
-                            <v-select
-                                v-model="seleccionAnulacion"
-                                placeholder="Activo"
-                                class="w-full select-large"
-                                label="NOMMOT"
-                                :options="listadoAnulacion"
-                            ></v-select>
-                        </div>
-                        <div class="vx-col w-full mt-5">
-                            <vs-button
-                                @click="AnularTodo"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Anular</vs-button
-                            >
-                        </div>
-                    </div>
-                </vx-card>
-                <div class="vx-row"></div>
-            </div>
-        </vs-popup>
         <!-- Documento Factura -->
         <vs-popup
             classContent="Factura"
@@ -686,6 +570,7 @@ import router from "@/router";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
+import { BarChartIcon } from "vue-feather-icons";
 import store from "../ScriptMenus/store.js";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
@@ -699,7 +584,8 @@ export default {
         "v-select": vSelect,
         PlusCircleIcon,
         flatPickr,
-        barcode: VueBarcode
+        barcode: VueBarcode,
+        BarChartIcon
     },
     data() {
         return {
@@ -716,10 +602,6 @@ export default {
             imageCarta: null,
             nombrearchivoCarta: "",
             val_doc: 0,
-            idAnulacion: 0,
-            popUpAnularArticulo: false,
-            popUpRAnularArticulo: false,
-            popUpAnularTodo: false,
             popUpAgregarFactura: false,
             popUpAgregarRIB: false,
             popUpAgregarCarta: false,
@@ -918,102 +800,55 @@ export default {
             colDetalle: [
                 {
                     label: "Codigo Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODART"
                 },
                 {
                     label: "Especificacion Comprador",
-                    field: "PRODUCTO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "PRODUCTO"
                 },
                 {
                     label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODBAR"
                 },
                 {
                     label: "Unidad Medida",
-                    field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Vencimiento Activo?",
-                    field: "ACT_FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "UNIMED"
                 },
                 {
                     label: "Fecha Vencimiento",
-                    field: "FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "FECVEN"
                 },
                 {
                     label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "LOTE"
                 },
                 {
                     label: "Cantidad Recepcionada",
-                    field: "CANREC",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CANREC"
                 },
                 {
                     label: "Cantidad Rechazada",
-                    field: "CANRECH",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CANRECH"
                 },
                 {
                     label: "Cantidad Pendiente",
-                    field: "PENDIENTE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "PENDIENTE"
                 },
                 {
                     label: "Precio Unitario",
-                    field: "PREUNI",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "PREUNI"
                 },
                 {
                     label: "Total Recepcionado",
-                    field: "VALTOT",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "VALTOT"
                 },
                 {
                     label: "Anulado?",
-                    field: "NOMMOT",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "NOMMOT"
                 },
                 {
                     label: "Generar Codigo de barra",
                     field: "FOLIO"
-                },
-                {
-                    label: "Opciones",
-                    field: "action"
                 }
             ],
             col: [
@@ -1202,26 +1037,6 @@ export default {
                             });
                         }
                     });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        //Funciones Finales Recepcion
-        popAnularArticulo(id) {
-            try {
-                this.idAnulacion = 0;
-                this.idAnulacion = id;
-                this.popUpAnularArticulo = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        //Funciones Finales Recepcion
-        popRAnularArticulo(id) {
-            try {
-                this.idAnulacion = 0;
-                this.idAnulacion = id;
-                this.popUpRAnularArticulo = true;
             } catch (error) {
                 console.log(error);
             }
@@ -1463,94 +1278,6 @@ export default {
                                 position: "top-right"
                             });
                             this.popUpAnularTodo = false;
-                            this.TraerDetalleRecepcion();
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popAnularDetalleArticulo() {
-            try {
-                let data = {
-                    id: this.idAnulacion,
-                    CODMOT: this.seleccionAnulacion.CODMOT,
-                    NOMMOT: this.seleccionAnulacion.NOMMOT
-                };
-                axios
-                    .post(
-                        this.localVal + "/api/Recepcion/PostAnularArticulo",
-                        data,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + localStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        let dat = res.data;
-                        if (dat == false) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No se pudo anular el articulo, intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Finalizado",
-                                text: "Articulo anulado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpAnularArticulo = false;
-                            this.TraerDetalleRecepcion();
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popRAnularDetalleArticulo() {
-            try {
-                let data = {
-                    id: this.idAnulacion
-                };
-                axios
-                    .post(
-                        this.localVal + "/api/Recepcion/PostRAnularArticulo",
-                        data,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + localStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        let dat = res.data;
-                        if (dat == false) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No se pudo revertir la anulacion del articulo, intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Finalizado",
-                                text: "Articulo revertido Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpRAnularArticulo = false;
                             this.TraerDetalleRecepcion();
                         }
                     });

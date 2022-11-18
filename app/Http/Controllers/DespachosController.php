@@ -163,8 +163,8 @@ class DespachosController extends Controller
         try {
             $get = despachoDetalles::select('despacho_detalles.id','despacho_detalles.FECSYS','despacho_detalles.FECDES','despacho_detalles.NUMLIBRO',
             'despacho_detalles.LOTE','despacho_detalles.FECVEN','despacho_detalles.CODBAR','despacho_detalles.CODART','despacho_detalles.NOMART',
-            'despacho_detalles.UNIMED','despacho_detalles.CANTIDAD','despacho_detalles.PRECIO','despacho_detalles.NUMINT','despacho_detalles.CODMOT','despacho_detalles.NOMMOT',
-            DB::raw("ROUND((despacho_detalles.CANTIDAD*despacho_detalles.PRECIO),2) as VALORTOTALDESP"))
+            'despacho_detalles.UNIMED','despacho_detalles.CANTIDAD',DB::raw('ROUND(despacho_detalles.PRECIO+(despacho_detalles.PRECIO*0.19),0) AS PRECIO'),'despacho_detalles.NUMINT','despacho_detalles.CODMOT','despacho_detalles.NOMMOT',
+            DB::raw("ROUND((despacho_detalles.CANTIDAD*(despacho_detalles.PRECIO+(despacho_detalles.PRECIO*0.19))),2) as VALORTOTALDESP"))
             ->where('despacho_detalles.NUMINT',$request->NUMINT)
             ->get();
             return $get;

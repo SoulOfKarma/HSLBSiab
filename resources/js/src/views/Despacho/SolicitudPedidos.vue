@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="vx-row" v-if="seleccionTipoDespacho.id == 1">
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -27,7 +27,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Fecha Despacho</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -37,7 +37,7 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Servicio</h6>
                         <v-select
                             v-model="seleccionServicio"
@@ -47,7 +47,7 @@
                             :options="listadoServicios"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Tipo Despacho</h6>
                         <v-select
                             v-model="seleccionTipoDespacho"
@@ -56,17 +56,10 @@
                             label="descripcionTipoDespacho"
                             :options="listadoTipoDespacho"
                         ></v-select>
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° Solicitud</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nsolicitud"
-                        />
                     </div>
                 </div>
                 <div class="vx-row" v-if="seleccionTipoDespacho.id == 2">
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -76,7 +69,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Despacho</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -86,7 +79,7 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Servicio</h6>
                         <v-select
                             v-model="seleccionServicio"
@@ -96,7 +89,7 @@
                             :options="listadoServicios"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>Tipo Despacho</h6>
                         <v-select
                             v-model="seleccionTipoDespacho"
@@ -106,14 +99,7 @@
                             :options="listadoTipoDespacho"
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/6 mt-5">
-                        <h6>N° Solicitud</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nsolicitud"
-                        />
-                    </div>
-                    <div class="vx-col w-1/6 mt-5">
+                    <div class="vx-col w-1/5 mt-5">
                         <h6>N° Pedido Especial</h6>
                         <vs-input class="inputx w-full  " v-model="numpesp" />
                     </div>
@@ -153,7 +139,7 @@
                                             props.column.field === 'action'
                                         "
                                     >
-                                        <plus-circle-icon
+                                        <trash-icon
                                             content="Quitar de la Lista"
                                             v-tippy
                                             size="1.5x"
@@ -163,7 +149,7 @@
                                                     props.row.id
                                                 )
                                             "
-                                        ></plus-circle-icon>
+                                        ></trash-icon>
                                     </span>
                                     <!-- Column: Common -->
                                     <span v-else>
@@ -185,13 +171,10 @@
                         <div class="vx-row">
                             <div class="vx-col w-full mt-5">
                                 <h6>Observaciones</h6>
-                                <quill-editor
-                                    class="w-full"
+                                <vs-textarea
                                     v-model="Observaciones"
-                                    :options="editorOption"
-                                >
-                                    <div id="toolbar" slot="toolbar"></div>
-                                </quill-editor>
+                                    height="70px"
+                                />
                             </div>
                             <div class="vx-col w-full mt-5">
                                 <h6>
@@ -204,7 +187,6 @@
                                 />
                             </div>
                         </div>
-                        <br /><br />
                     </vx-card>
                 </div>
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
@@ -400,6 +382,7 @@ import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
+import { TrashIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 import VueEnterToTab from "vue-enter-to-tab";
@@ -415,7 +398,8 @@ export default {
         "v-select": vSelect,
         quillEditor,
         PlusCircleIcon,
-        flatPickr
+        flatPickr,
+        TrashIcon
     },
     data() {
         return {
@@ -583,66 +567,39 @@ export default {
             colDespachoArticulos: [
                 {
                     label: "N° Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODART"
                 },
                 {
                     label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODBAR"
                 },
                 {
                     label: "Descripcion",
-                    field: "NOMART",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "NOMART"
                 },
                 {
                     label: "Unidad Medida",
-                    field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "UNIMED"
                 },
                 {
                     label: "Precio Unitario",
-                    field: "PRECIO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "PRECIO"
                 },
                 {
                     label: "Fecha Vencimiento",
-                    field: "FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "FECVEN"
                 },
                 {
                     label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "LOTE"
                 },
                 {
                     label: "Cantidad Despachada",
-                    field: "CANTIDAD",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CANTIDAD"
                 },
                 {
                     label: "Valor Total Despacho",
-                    field: "VALORTOTALDESP",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "VALORTOTALDESP"
                 },
                 {
                     label: "Opciones",

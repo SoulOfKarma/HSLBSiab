@@ -1,7 +1,153 @@
 <template>
     <div>
-        <div class="vx-col md:w-1/1 w-full mb-base">
-            <vx-card title="Recepcion">
+        <vx-card
+            title="Recepcion Modificable"
+            class="md:w-1/1 w-full mb-2 mt-3"
+        >
+            <!--  Visualizacion Recepcion Extra Seccion Inicial-->
+            <div class="vx-row">
+                <div
+                    class="vx-col w-1/2 mt-5"
+                    v-if="listaDetalleRecepcion.length > 0"
+                >
+                    <h6>N° Interno</h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="numint"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col w-1/2 mt-5"
+                    v-if="listaDetalleRecepcion.length > 0"
+                >
+                    <h6>N° Folio</h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="folio"
+                        disabled
+                    />
+                </div>
+            </div>
+        </vx-card>
+        <vx-card title="" style="line-height: 0.8; font-size: 12px;">
+            <div class="vx-row">
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 1rem; width: 7.3% !important;"
+                >
+                    <h6>F. Sistema</h6>
+                    <flat-pickr
+                        :config="configFromdateTimePicker"
+                        v-model="fechaSistema"
+                        class="w-full "
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 7% !important;"
+                >
+                    <h6>F. Recepcion</h6>
+                    <flat-pickr
+                        :config="configFromdateTimePicker"
+                        v-model="fechaRecepcion"
+                        @on-change="onFromChange"
+                        class="w-full "
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 12.7% !important;"
+                >
+                    <h6>Proveedor</h6>
+                    <v-select
+                        v-model="seleccionProveedores"
+                        placeholder="Activo"
+                        class="w-full select-large"
+                        label="RUTPROV"
+                        :options="listadoProveedores"
+                        @input="setProveedor"
+                    ></v-select>
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 14% !important;"
+                >
+                    <h6>Nombre Proveedor</h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="descripcionProveedor"
+                        disabled
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 11.6% !important;"
+                >
+                    <h6>Tipo Documento</h6>
+                    <v-select
+                        v-model="seleccionTipoDocumento"
+                        placeholder="Activo"
+                        class="w-full select-large"
+                        label="descripcionDocumento"
+                        :options="listaTipoDocumento"
+                    ></v-select>
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 7% !important;"
+                >
+                    <h6>N° Doc</h6>
+                    <vs-input class="inputx w-full  " v-model="ndocumento" />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 8.3% !important;"
+                >
+                    <h6>F. Doc</h6>
+                    <flat-pickr
+                        :config="configFromdateTimePicker"
+                        v-model="fechaDocumento"
+                        @on-change="onFromChange"
+                        class="w-full "
+                    />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 14.3% !important;"
+                >
+                    <h6>T. Compra</h6>
+                    <v-select
+                        v-model="seleccionTipoCompra"
+                        placeholder="Activo"
+                        class="w-full select-large"
+                        label="NOMTIPCOM"
+                        :options="listadoTipoCompra"
+                    ></v-select>
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 11.5% !important;"
+                >
+                    <h6>N° Orden Compra</h6>
+                    <vs-input class="inputx w-full  " v-model="nordencompra" />
+                </div>
+                <div
+                    class="vx-col mt-5"
+                    style="padding: 0 0.2rem; width: 5.8% !important;"
+                >
+                    <h6>N° RIB</h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="nrib"
+                        @keypress="isNumber($event)"
+                    />
+                </div>
+            </div>
+        </vx-card>
+        <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+            <vx-card title="">
                 <div class="vx-row">
                     <div class="vx-col w-full mt-5">
                         <vs-button
@@ -12,122 +158,7 @@
                             >Buscar Articulo</vs-button
                         >
                     </div>
-                    <div
-                        class="vx-col w-1/2 mt-5"
-                        v-if="listaDetalleRecepcion.length > 0"
-                    >
-                        <h6>N° Interno</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="numint"
-                            disabled
-                        />
-                    </div>
-                    <div
-                        class="vx-col w-1/2 mt-5"
-                        v-if="listaDetalleRecepcion.length > 0"
-                    >
-                        <h6>N° Folio</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="folio"
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Sistema</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaSistema"
-                            placeholder="Fecha Sistema"
-                            class="w-full "
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Recepcion</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaRecepcion"
-                            placeholder="Fecha Inicio"
-                            @on-change="onFromChange"
-                            class="w-full "
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Proveedor</h6>
-                        <v-select
-                            v-model="seleccionProveedores"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="RUTPROV"
-                            :options="listadoProveedores"
-                            @input="setProveedor"
-                        ></v-select>
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Nombre Proveedor</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="descripcionProveedor"
-                            disabled
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Tipo Documento</h6>
-                        <v-select
-                            v-model="seleccionTipoDocumento"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="descripcionDocumento"
-                            :options="listaTipoDocumento"
-                        ></v-select>
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° Documento</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="ndocumento"
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Fecha Documento</h6>
-                        <flat-pickr
-                            :config="configFromdateTimePicker"
-                            v-model="fechaDocumento"
-                            @on-change="onFromChange"
-                            class="w-full "
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>Tipo Compra</h6>
-                        <v-select
-                            v-model="seleccionTipoCompra"
-                            placeholder="Activo"
-                            class="w-full select-large"
-                            label="NOMTIPCOM"
-                            :options="listadoTipoCompra"
-                        ></v-select>
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° Orden Compra</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nordencompra"
-                        />
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° RIB</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nrib"
-                            @keypress="isNumber($event)"
-                        />
-                    </div>
-                </div>
-                <br />
-                <div class="vx-row">
-                    <div class="vx-col w-1/3 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>
                             Codigo de Barra
                         </h6>
@@ -137,7 +168,7 @@
                             v-on:blur="BuscarArticuloCODBAR"
                         />
                     </div>
-                    <div class="vx-col w-1/3 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>
                             Cantidad
                         </h6>
@@ -147,10 +178,7 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-                    <div
-                        class="vx-col w-1/3 mt-5"
-                        v-if="seleccionLoteSerie.id == 2"
-                    >
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>
                             Precio
                         </h6>
@@ -160,18 +188,17 @@
                             @keypress="isNumber($event)"
                         />
                     </div>
-                    <div
-                        class="vx-col w-1/3 mt-5"
-                        v-if="seleccionLoteSerie.id == 1"
-                    >
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>
-                            Precio
+                            .
                         </h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="precio"
-                            @keypress="isNumber($event)"
-                        />
+                        <vs-button
+                            @click="AgregarArticuloDetalle"
+                            color="success"
+                            type="filled"
+                            class="w-full"
+                            >Agregar Articulo</vs-button
+                        >
                     </div>
                 </div>
                 <div class="vx-row" v-if="tiporecepcion == 'Consumo Inmediato'">
@@ -192,7 +219,7 @@
                         class="vx-col w-1/2 mt-5"
                         v-if="seleccionFechaVencimiento.id == 1"
                     >
-                        <h6>Fecha Venciminento</h6>
+                        <h6>Fecha Vencimiento</h6>
                         <flat-pickr
                             :config="configTodateTimePickerFV"
                             v-model="fechaVencimiento"
@@ -213,357 +240,285 @@
                             v-on:keydown.enter="AgregarArticuloDetalle"
                         />
                     </div>
-
-                    <br />
-                    <div class="vx-col w-1/2 mt-5" v-show="false">
+                </div>
+            </vx-card>
+        </div>
+        <!--  Visualizacion del formulario seccion Detalle Articulos Recepcion Extra -->
+        <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+            <vx-card title="">
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <vue-good-table
+                        class="w-full"
+                        :columns="colDetalle"
+                        :rows="listaDetalleRecepcion"
+                        styleClass="vgt-table condensed bordered"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'CODBAR'"
+                                class="text-nowrap"
+                            >
+                                <vs-input
+                                    v-on:blur="
+                                        ActCodigoBarra(
+                                            props.row.id,
+                                            props.row.CODBAR
+                                        )
+                                    "
+                                    v-model="props.row.CODBAR"
+                                    type="text"
+                                    style="width:100px; font-size: 14px; align-items: center;"
+                                ></vs-input>
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'FECVEN'"
+                                class="text-nowrap"
+                            >
+                                <vs-chip
+                                    @click.native="popFechaVen(props.row.id)"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >{{ props.row.FECVEN }}</vs-chip
+                                >
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'LOTE'"
+                                class="text-nowrap"
+                            >
+                                <vs-input
+                                    v-on:blur="
+                                        ActLote(props.row.id, props.row.LOTE)
+                                    "
+                                    v-model="props.row.LOTE"
+                                    type="text"
+                                    style="width:100px; font-size: 14px; align-items: center;"
+                                ></vs-input>
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'CANREC'"
+                                class="text-nowrap"
+                            >
+                                <vs-input
+                                    v-on:blur="
+                                        ActCantRecepcionada(
+                                            props.row.id,
+                                            props.row.CANREC,
+                                            props.row.PREUNI
+                                        )
+                                    "
+                                    v-model="props.row.CANREC"
+                                    type="text"
+                                    @keypress="isNumber($event)"
+                                    style="width:100px; font-size: 14px; align-items: center;"
+                                ></vs-input>
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'PREUNI'"
+                                class="text-nowrap"
+                            >
+                                <vs-input
+                                    v-on:blur="
+                                        ActPrecioUnitario(
+                                            props.row.id,
+                                            props.row.CANREC,
+                                            props.row.PREUNI
+                                        )
+                                    "
+                                    v-model="props.row.PREUNI"
+                                    type="text"
+                                    @keypress="isNumber($event)"
+                                    style="width:100px; font-size: 14px; align-items: center;"
+                                ></vs-input>
+                            </span>
+                            <span v-else-if="props.column.field === 'action'">
+                                <alert-triangle-icon
+                                    v-if="validarUsuario != 5"
+                                    content="Anular Articulo"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="popAnularArticulo(props.row.id)"
+                                ></alert-triangle-icon>
+                                <alert-circle-icon
+                                    v-if="validarUsuario != 5"
+                                    content="Revertir Anulacion"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="popRAnularArticulo(props.row.id)"
+                                ></alert-circle-icon>
+                                <trash-icon
+                                    content="Eliminar Articulo del Detalle"
+                                    v-tippy
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="popDelDetalle(props.row.id)"
+                                ></trash-icon>
+                            </span>
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template>
+                    </vue-good-table>
+                </div>
+            </vx-card>
+        </div>
+        <!--  Visualizacion del formulario seccion Calculos Recepcion Extra -->
+        <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+            <vx-card title="">
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <vue-good-table
+                        class="w-full"
+                        :columns="colTotal"
+                        :rows="listaRecepcion"
+                        styleClass="vgt-table condensed bordered"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'DCTO'"
+                                class="text-nowrap"
+                            >
+                                <vs-input
+                                    v-on:blur="
+                                        ActDCTO(props.row.id, props.row.DCTO)
+                                    "
+                                    v-model="props.row.DCTO"
+                                    type="text"
+                                    style="width:300px"
+                                ></vs-input>
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'CARGO'"
+                                class="text-nowrap"
+                            >
+                                <vs-input
+                                    v-on:blur="
+                                        ActCARGO(props.row.id, props.row.CARGO)
+                                    "
+                                    v-model="props.row.CARGO"
+                                    type="text"
+                                    style="width:300px"
+                                ></vs-input>
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'AJUSTE'"
+                                class="text-nowrap"
+                            >
+                                <vs-input
+                                    v-on:blur="
+                                        ActAJUSTE(
+                                            props.row.id,
+                                            props.row.AJUSTE
+                                        )
+                                    "
+                                    v-model="props.row.AJUSTE"
+                                    type="text"
+                                    style="width:300px"
+                                ></vs-input>
+                            </span>
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template>
+                    </vue-good-table>
+                </div>
+            </vx-card>
+        </div>
+        <!--  Visualizacion del formulario seccion Observaciones Recepcion Extra -->
+        <div class="vx-col md:w-1/1 w-full mb-2 mt-3">
+            <vx-card title="">
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <h6>Observaciones</h6>
+                    <vs-textarea v-model="Observaciones" height="70px" />
+                </div>
+            </vx-card>
+        </div>
+        <!--  Visualizacion del formulario seccion Final Recepcion Cerrada -->
+        <div class="vx-col md:w-1/1 w-full mb-base mt-1">
+            <vx-card title="">
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <div class="vx-col w-1/3 mt-5">
                         <vs-button
-                            @click="limpiarCampos"
+                            @click="popAgregarFactura"
                             color="primary"
                             type="filled"
                             class="w-full"
-                            >Limpiar Campos</vs-button
+                            >ADJUNTAR FACTURA</vs-button
                         >
                     </div>
-                    <div class="vx-col w-full mt-5">
+                    <div class="vx-col w-1/3 mt-5">
                         <vs-button
-                            @click="AgregarArticuloDetalle"
-                            color="success"
+                            @click="popAgregarRIB"
+                            color="primary"
                             type="filled"
                             class="w-full"
-                            >Agregar Articulo</vs-button
+                            >ADJUNTAR RIB</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            @click="popAgregarCarta"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >ADJUNTAR CARTA</vs-button
                         >
                     </div>
                 </div>
-                <div
-                    class="vx-col md:w-1/1 w-full mb-base mt-5"
-                    v-if="listaDetalleRecepcion.length > 0"
-                >
-                    <div class="vx-row">
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarFactura"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR FACTURA</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarRIB"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR RIB</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <vs-button
-                                @click="popAgregarCarta"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >ADJUNTAR CARTA</vs-button
-                            >
-                        </div>
+                <div class="vx-row" style="margin: 0 0.1rem;">
+                    <div class="vx-col w-1/4 mt-5">
+                        <vs-button
+                            @click="volver"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Volver</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/4 mt-5">
+                        <vs-button
+                            @click="ActualizarListado"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Actualizar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/4 mt-5">
+                        <vs-button
+                            @click="ImprimirDatos"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Imprimir</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/4 mt-5">
+                        <vs-button
+                            @click="popAnularTodo"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Anular Todo</vs-button
+                        >
                     </div>
                 </div>
-                <!-- Detalles Articulos -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vue-good-table
-                                :columns="colDetalle"
-                                :rows="listaDetalleRecepcion"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed bordered"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CODBAR'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActCodigoBarra(
-                                                    props.row.id,
-                                                    props.row.CODBAR
-                                                )
-                                            "
-                                            v-model="props.row.CODBAR"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'ACT_FECVEN'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-chip
-                                            color="success"
-                                            v-if="props.row.ACT_FECVEN == 1"
-                                            v-model="FVEN1"
-                                            type="text"
-                                            style="width:100px"
-                                            >Si</vs-chip
-                                        >
-                                        <vs-chip
-                                            v-else
-                                            color="primary"
-                                            v-model="FVEN2"
-                                            type="text"
-                                            style="width:100px"
-                                            >No</vs-chip
-                                        >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'FECVEN'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-chip
-                                            @click.native="
-                                                popFechaVen(props.row.id)
-                                            "
-                                            color="primary"
-                                            type="filled"
-                                            class="w-full"
-                                            >{{ props.row.FECVEN }}</vs-chip
-                                        >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'LOTE'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActLote(
-                                                    props.row.id,
-                                                    props.row.LOTE
-                                                )
-                                            "
-                                            v-model="props.row.LOTE"
-                                            type="text"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CANREC'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActCantRecepcionada(
-                                                    props.row.id,
-                                                    props.row.CANREC,
-                                                    props.row.PREUNI
-                                                )
-                                            "
-                                            v-model="props.row.CANREC"
-                                            type="text"
-                                            @keypress="isNumber($event)"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'PREUNI'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActPrecioUnitario(
-                                                    props.row.id,
-                                                    props.row.CANREC,
-                                                    props.row.PREUNI
-                                                )
-                                            "
-                                            v-model="props.row.PREUNI"
-                                            type="text"
-                                            @keypress="isNumber($event)"
-                                            style="width:100px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            content="Eliminar Articulo del Detalle"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="popDelDetalle(props.row.id)"
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-                <!-- Calculos -->
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <vue-good-table
-                                class="w-full"
-                                :columns="colTotal"
-                                :rows="listaRecepcion"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed bordered"
-                            >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'DCTO'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActDCTO(
-                                                    props.row.id,
-                                                    props.row.DCTO
-                                                )
-                                            "
-                                            v-model="props.row.DCTO"
-                                            type="text"
-                                            style="width:300px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CARGO'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActCARGO(
-                                                    props.row.id,
-                                                    props.row.CARGO
-                                                )
-                                            "
-                                            v-model="props.row.CARGO"
-                                            type="text"
-                                            style="width:300px"
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'AJUSTE'
-                                        "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-on:blur="
-                                                ActAJUSTE(
-                                                    props.row.id,
-                                                    props.row.AJUSTE
-                                                )
-                                            "
-                                            v-model="props.row.AJUSTE"
-                                            type="text"
-                                            style="width:300px"
-                                        ></vs-input>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <h6>Observaciones</h6>
-                            <br /><br />
-                            <quill-editor
-                                class="w-full"
-                                v-model="Observaciones"
-                                :options="editorOption"
-                            >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
-                        </div>
-                        <br /><br />
-                    </vx-card>
-                </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <div class="vx-col w-1/3 mt-5">
-                                <vs-button
-                                    @click="ActualizarListado"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Actualizar</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/3 mt-5">
-                                <vs-button
-                                    @click="ImprimirDatos"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Imprimir</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/3 mt-5">
-                                <vs-button
-                                    @click="volver"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Volver</vs-button
-                                >
-                            </div>
-                        </div>
-                    </vx-card>
-                </div>
             </vx-card>
-            <div class="vx-row"></div>
         </div>
         <!-- Listado Articulos -->
         <vs-popup
@@ -863,6 +818,98 @@
                 <div class="vx-row"></div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="Anulacion"
+            title="Anulacion"
+            :active.sync="popUpAnularArticulo"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Seleccione Tipo de Anulacion</h6>
+                            <v-select
+                                v-model="seleccionAnulacion"
+                                placeholder="Activo"
+                                class="w-full select-large"
+                                label="NOMMOT"
+                                :options="listadoAnulacion"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-button
+                                @click="popAnularDetalleArticulo"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Anular</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="RAnulacion"
+            title="Revertir Anulacion"
+            :active.sync="popUpRAnularArticulo"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popUpRAnularArticulo = false"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Volver</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                @click="popRAnularDetalleArticulo"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Revertir Anulacion</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+        </vs-popup>
+        <vs-popup
+            classContent="Anulacion"
+            title="Anulacion"
+            :active.sync="popUpAnularTodo"
+        >
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="">
+                    <div class="vx-row">
+                        <div class="vx-col w-full mt-5">
+                            <h6>Seleccione Tipo de Anulacion</h6>
+                            <v-select
+                                v-model="seleccionAnulacion"
+                                placeholder="Activo"
+                                class="w-full select-large"
+                                label="NOMMOT"
+                                :options="listadoAnulacion"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-button
+                                @click="AnularTodo"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Anular</vs-button
+                            >
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+        </vs-popup>
     </div>
 </template>
 <script>
@@ -879,6 +926,9 @@ import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
+import { AlertCircleIcon } from "vue-feather-icons";
+import { AlertTriangleIcon } from "vue-feather-icons";
+import { TrashIcon } from "vue-feather-icons";
 import store from "../ScriptMenus/store.js";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
@@ -891,7 +941,10 @@ export default {
         "v-select": vSelect,
         quillEditor,
         PlusCircleIcon,
-        flatPickr
+        flatPickr,
+        TrashIcon,
+        AlertCircleIcon,
+        AlertTriangleIcon
     },
     data() {
         return {
@@ -921,6 +974,10 @@ export default {
             imageCarta: null,
             nombrearchivoCarta: "",
             val_doc: 0,
+            idAnulacion: 0,
+            popUpAnularTodo: false,
+            popUpRAnularArticulo: false,
+            popUpAnularArticulo: false,
             popUpAgregarFactura: false,
             popUpAgregarRIB: false,
             popUpAgregarCarta: false,
@@ -993,7 +1050,7 @@ export default {
             },
             seleccionFechaVencimiento: {
                 id: 0,
-                descripcionFVen: "Seleccione Fecha Venciminento"
+                descripcionFVen: "Seleccione F. Ven."
             },
             seleccionLoteSerie: {
                 id: 0,
@@ -1010,7 +1067,7 @@ export default {
             },
             seleccionTipoCompra: {
                 id: 0,
-                NOMTIPCOM: "Seleccione Tipo Compra"
+                NOMTIPCOM: "Seleccione T. Compra"
             },
             seleccionServicio: {
                 id: 0,
@@ -1187,73 +1244,39 @@ export default {
             colDetalle: [
                 {
                     label: "Codigo Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODART"
                 },
                 {
                     label: "Especificacion Comprador",
-                    field: "PRODUCTO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "PRODUCTO"
                 },
                 {
                     label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODBAR"
                 },
                 {
                     label: "Unidad Medida",
-                    field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Vencimiento Activo?",
-                    field: "ACT_FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "UNIMED"
                 },
                 {
                     label: "Fecha Vencimiento",
-                    field: "FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "FECVEN"
                 },
                 {
                     label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "LOTE"
                 },
                 {
                     label: "Cantidad Recepcionada",
-                    field: "CANREC",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CANREC"
                 },
                 {
                     label: "Precio Unitario",
-                    field: "PREUNI",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "PREUNI"
                 },
                 {
                     label: "Total Recepcionado",
-                    field: "VALTOT",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "VALTOT"
                 },
                 {
                     label: "Opciones",
@@ -1456,6 +1479,34 @@ export default {
                         position: "top-right"
                     });
                 }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Este metodo Ejecuta la opcion pop Up para anular todos los articulos
+        popAnularTodo() {
+            try {
+                this.popUpAnularTodo = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Este metodo Ejecuta la opcion pop Up para anular un articulo
+        popAnularArticulo(id) {
+            try {
+                this.idAnulacion = 0;
+                this.idAnulacion = id;
+                this.popUpAnularArticulo = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Este metodo Ejecuta la opcion pop Up para revertir la anulacion un articulo
+        popRAnularArticulo(id) {
+            try {
+                this.idAnulacion = 0;
+                this.idAnulacion = id;
+                this.popUpRAnularArticulo = true;
             } catch (error) {
                 console.log(error);
             }
@@ -3139,6 +3190,142 @@ export default {
 
                                 this.unidadMedidaBase = val.UNIMEDBASE;
                             });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Este Metodo Anula un Articulo recepcionado
+        popAnularDetalleArticulo() {
+            try {
+                let data = {
+                    id: this.idAnulacion,
+                    CODMOT: this.seleccionAnulacion.CODMOT,
+                    NOMMOT: this.seleccionAnulacion.NOMMOT
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Recepcion/PostAnularArticulo",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + localStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo anular el articulo, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text: "Articulo anulado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpAnularArticulo = false;
+                            this.TraerDetalleRecepcion();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Este Metodo Revierte la anulacion de un articulo
+        popRAnularDetalleArticulo() {
+            try {
+                let data = {
+                    id: this.idAnulacion
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Recepcion/PostRAnularArticulo",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + localStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo revertir la anulacion del articulo, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text: "Articulo revertido Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpRAnularArticulo = false;
+                            this.TraerDetalleRecepcion();
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Este Metodo Ejecuta la accion de anular todos los articulos
+        AnularTodo() {
+            try {
+                let data = {
+                    NUMINT: this.numint,
+                    CODMOT: this.seleccionAnulacion.CODMOT,
+                    NOMMOT: this.seleccionAnulacion.NOMMOT
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Recepcion/PostAnularTodo",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + localStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let dat = res.data;
+                        if (dat == false) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No se pudo anular la recepcion, intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text: "Recepcion anulado Correctamente",
+                                color: "success",
+                                position: "top-right"
+                            });
+                            this.popUpAnularTodo = false;
+                            this.TraerDetalleRecepcion();
                         }
                     });
             } catch (error) {

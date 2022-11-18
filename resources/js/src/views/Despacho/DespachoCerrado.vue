@@ -15,7 +15,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Fecha Sistema</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -25,7 +25,7 @@
                             disabled
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Fecha Despacho</h6>
                         <flat-pickr
                             :config="configFromdateTimePicker"
@@ -36,7 +36,7 @@
                             class="w-full "
                         />
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Servicio</h6>
                         <v-select
                             v-model="seleccionServicio"
@@ -47,7 +47,7 @@
                             disabled
                         ></v-select>
                     </div>
-                    <div class="vx-col w-1/5 mt-5">
+                    <div class="vx-col w-1/4 mt-5">
                         <h6>Tipo Despacho</h6>
                         <v-select
                             v-model="seleccionTipoDespacho"
@@ -57,14 +57,6 @@
                             :options="listadoTipoDespacho"
                             disabled
                         ></v-select>
-                    </div>
-                    <div class="vx-col w-1/5 mt-5">
-                        <h6>N° Solicitud</h6>
-                        <vs-input
-                            class="inputx w-full  "
-                            v-model="nsolicitud"
-                            disabled
-                        />
                     </div>
                 </div>
                 <br />
@@ -86,32 +78,6 @@
                                         class="text-nowrap"
                                     >
                                     </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
-                                        "
-                                    >
-                                        <plus-circle-icon
-                                            v-if="validarUsuario != 5"
-                                            content="Anular Articulo"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                popAnularArticulo(props.row.id)
-                                            "
-                                        ></plus-circle-icon>
-                                        <plus-circle-icon
-                                            v-if="validarUsuario != 5"
-                                            content="Revertir Anulacion Articulo"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                popRAnularArticulo(props.row.id)
-                                            "
-                                        ></plus-circle-icon>
-                                    </span>
                                     <!-- Column: Common -->
                                     <span v-else>
                                         {{
@@ -132,13 +98,10 @@
                         <div class="vx-row">
                             <div class="vx-col w-full mt-5">
                                 <h6>Observaciones</h6>
-                                <quill-editor
-                                    class="w-full"
+                                <vs-textarea
                                     v-model="Observaciones"
-                                    :options="editorOption"
-                                >
-                                    <div id="toolbar" slot="toolbar"></div>
-                                </quill-editor>
+                                    height="70px"
+                                />
                             </div>
                             <div class="vx-col w-full mt-5">
                                 <h6>
@@ -177,7 +140,7 @@
                                     >Imprimir</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/6 mt-5">
+                            <div class="vx-col w-1/5 mt-5">
                                 <vs-button
                                     v-if="validarUsuario != 5"
                                     @click="volver"
@@ -187,7 +150,7 @@
                                     >Volver</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/6 mt-5">
+                            <div class="vx-col w-1/5 mt-5">
                                 <vs-button
                                     v-if="validarUsuario != 5"
                                     @click="ActualizarListado"
@@ -197,7 +160,7 @@
                                     >Actualizar Observacion</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/6 mt-5">
+                            <div class="vx-col w-1/5 mt-5">
                                 <vs-button
                                     v-if="validarUsuario != 5"
                                     @click="ImprimirDatos"
@@ -207,7 +170,7 @@
                                     >Imprimir</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/6 mt-5">
+                            <div class="vx-col w-1/5 mt-5">
                                 <vs-button
                                     v-if="validarUsuario != 5"
                                     @click="RecargarPagina"
@@ -217,17 +180,7 @@
                                     >Hacer Otro Despacho</vs-button
                                 >
                             </div>
-                            <div class="vx-col w-1/6 mt-5">
-                                <vs-button
-                                    v-if="validarUsuario != 5"
-                                    @click="popAnularTodo"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Anular Todo</vs-button
-                                >
-                            </div>
-                            <div class="vx-col w-1/6 mt-5">
+                            <div class="vx-col w-1/5 mt-5">
                                 <vs-button
                                     v-if="validarUsuario != 5"
                                     @click="AgregarListadoFirmaUsers"
@@ -241,101 +194,6 @@
                     </vx-card>
                 </div>
             </vx-card>
-            <vs-popup
-                classContent="RevertirAnulacion"
-                title="Revertir Anulacion"
-                :active.sync="popUpRAnularArticulo"
-            >
-                <div class="vx-col md:w-1/1 w-full mb-base">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <div class="vx-col w-1/2 mt-5">
-                                <vs-button
-                                    @click="popUpRAnularArticulo == false"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Volver
-                                </vs-button>
-                            </div>
-                            <div class="vx-col w-1/2 mt-5">
-                                <vs-button
-                                    @click="popRAnularDetalleArticulo"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Revertir Anulacion</vs-button
-                                >
-                            </div>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-            </vs-popup>
-            <vs-popup
-                classContent="Anulacion"
-                title="Anulacion"
-                :active.sync="popUpAnularArticulo"
-            >
-                <div class="vx-col md:w-1/1 w-full mb-base">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <div class="vx-col w-full mt-5">
-                                <h6>Seleccione Tipo de Anulacion</h6>
-                                <v-select
-                                    v-model="seleccionAnulacion"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="NOMMOT"
-                                    :options="listadoAnulacion"
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-full mt-5">
-                                <vs-button
-                                    @click="popAnularDetalleArticulo"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Anular</vs-button
-                                >
-                            </div>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-            </vs-popup>
-            <vs-popup
-                classContent="Anulacion"
-                title="Anulacion"
-                :active.sync="popUpAnularTodo"
-            >
-                <div class="vx-col md:w-1/1 w-full mb-base">
-                    <vx-card title="">
-                        <div class="vx-row">
-                            <div class="vx-col w-full mt-5">
-                                <h6>Seleccione Tipo de Anulacion</h6>
-                                <v-select
-                                    v-model="seleccionAnulacion"
-                                    placeholder="Activo"
-                                    class="w-full select-large"
-                                    label="NOMMOT"
-                                    :options="listadoAnulacion"
-                                ></v-select>
-                            </div>
-                            <div class="vx-col w-full mt-5">
-                                <vs-button
-                                    @click="AnularTodo"
-                                    color="primary"
-                                    type="filled"
-                                    class="w-full"
-                                    >Anular</vs-button
-                                >
-                            </div>
-                        </div>
-                    </vx-card>
-                    <div class="vx-row"></div>
-                </div>
-            </vs-popup>
         </div>
     </div>
 </template>
@@ -530,92 +388,48 @@ export default {
                 id: 0,
                 descripcionTipoDespacho: ""
             },
-            seleccionAnulacion: {
-                id: 0,
-                CODMOT: "",
-                NOMMOT: ""
-            },
             //Columnas Lista de Datos
             colDespachoArticulos: [
                 {
                     label: "N° Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODART"
                 },
                 {
                     label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODBAR"
                 },
                 {
                     label: "Descripcion",
-                    field: "NOMART",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "NOMART"
                 },
                 {
                     label: "Unidad Medida",
-                    field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "UNIMED"
                 },
                 {
                     label: "Precio Unitario",
-                    field: "PRECIO",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "PRECIO"
                 },
                 {
                     label: "Fecha Vencimiento",
-                    field: "FECVEN",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "FECVEN"
                 },
                 {
                     label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "LOTE"
                 },
                 {
                     label: "Cantidad Despachada",
-                    field: "CANTIDAD",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CANTIDAD"
                 },
                 {
                     label: "Valor Total Despacho",
-                    field: "VALORTOTALDESP",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Anulado?",
-                    field: "NOMMOT",
-                    filterOptions: {
-                        enabled: true
-                    }
-                },
-                {
-                    label: "Opciones",
-                    field: "action"
+                    field: "VALORTOTALDESP"
                 }
             ],
             //Listado de Datos
             listadoServicios: [],
             listaDespachoArticulos: [],
-            listadoAnulacion: [],
             listadoTipoDespacho: [
                 {
                     id: 1,
@@ -715,24 +529,6 @@ export default {
                 console.log(error);
             }
         },
-        popAnularArticulo(id) {
-            try {
-                this.idAnulacion = 0;
-                this.idAnulacion = id;
-                this.popUpAnularArticulo = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popRAnularArticulo(id) {
-            try {
-                this.idAnulacion = 0;
-                this.idAnulacion = id;
-                this.popUpRAnularArticulo = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
         ImprimirDatos() {
             try {
                 if (this.numint != 0) {
@@ -750,146 +546,6 @@ export default {
                         position: "top-right"
                     });
                 }
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popAnularTodo() {
-            try {
-                this.popUpAnularTodo = true;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        AnularTodo() {
-            try {
-                let data = {
-                    NUMINT: this.numint,
-                    CODMOT: this.seleccionAnulacion.CODMOT,
-                    NOMMOT: this.seleccionAnulacion.NOMMOT
-                };
-                axios
-                    .post(
-                        this.localVal + "/api/Despachos/PostAnularTodo",
-                        data,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + localStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        let dat = res.data;
-                        if (dat == false) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No se pudo anular el despacho, intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Finalizado",
-                                text: "Despacho anulado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpAnularTodo = false;
-                            this.TraerDetalleDespacho();
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popAnularDetalleArticulo() {
-            try {
-                let data = {
-                    id: this.idAnulacion,
-                    CODMOT: this.seleccionAnulacion.CODMOT,
-                    NOMMOT: this.seleccionAnulacion.NOMMOT
-                };
-                axios
-                    .post(
-                        this.localVal + "/api/Despachos/PostAnularArticulo",
-                        data,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + localStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        let dat = res.data;
-                        if (dat == false) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No se pudo anular el articulo, intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Finalizado",
-                                text: "Articulo anulado Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpAnularArticulo = false;
-                            this.TraerDetalleDespacho();
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        popRAnularDetalleArticulo() {
-            try {
-                let data = {
-                    id: this.idAnulacion
-                };
-                axios
-                    .post(
-                        this.localVal + "/api/Despachos/PostRAnularArticulo",
-                        data,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ` + localStorage.getItem("token")
-                            }
-                        }
-                    )
-                    .then(res => {
-                        let dat = res.data;
-                        if (dat == false) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No se pudo Revertir la anulacion del articulo, intentelo nuevamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Finalizado",
-                                text: "Articulo revertido Correctamente",
-                                color: "success",
-                                position: "top-right"
-                            });
-                            this.popUpRAnularArticulo = false;
-                            this.TraerDetalleDespacho();
-                        }
-                    });
             } catch (error) {
                 console.log(error);
             }
@@ -932,32 +588,6 @@ export default {
                                 title: "Error",
                                 text:
                                     "No hay datos o no se cargaron los datos de los servicios correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        TraerAnulaciones() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetAnulacion", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listadoAnulacion = res.data;
-                        if (this.listadoAnulacion.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos correctamente",
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -1275,7 +905,6 @@ export default {
             this.TraerServicio();
             this.TraerDespacho();
             this.TraerDetalleDespacho();
-            this.TraerAnulaciones();
             this.openLoadingColor();
         }, 2000);
     }
