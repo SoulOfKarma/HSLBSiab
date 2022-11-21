@@ -9,6 +9,13 @@
                         :rows="rows"
                         :pagination-options="PageOptions"
                         styleClass="vgt-table condensed bordered"
+                        :sort-options="{
+                            enabled: true,
+                            initialSortBy: {
+                                field: 'FOLIO',
+                                type: 'desc'
+                            }
+                        }"
                     >
                         <template slot="table-row" slot-scope="props">
                             <!-- Column: Name -->
@@ -118,15 +125,17 @@ export default {
             //Template Columnas Listado Proveedor
             columns: [
                 {
-                    label: "N° Interno",
-                    field: "NUMINT",
+                    label: "Folio",
+                    field: "FOLIO",
+                    type: "number",
+                    sortable: true,
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Folio",
-                    field: "FOLIO",
+                    label: "N° Interno",
+                    field: "NUMINT",
                     filterOptions: {
                         enabled: true
                     }

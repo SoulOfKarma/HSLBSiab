@@ -529,11 +529,32 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="">
                     <div class="vx-row">
+                        <div class="vx-col w-3/4 mt-5">
+                            <h6>Ingrese Detalle a Buscar</h6>
+                            <vs-input
+                                class="inputx w-full"
+                                v-model="datogeneral"
+                            />
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>
+                                Buscar
+                            </h6>
+                            <vs-button
+                                @click="TraerArticulosNCB"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Articulos</vs-button
+                            >
+                        </div>
+                    </div>
+                    <br />
+                    <div class="vx-row">
                         <vx-card>
                             <vue-good-table
                                 :columns="col"
                                 :rows="listaArticulos"
-                                :pagination-options="PageOptions"
                                 styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
@@ -967,6 +988,7 @@ export default {
             },
             //Datos Campos
             PageOptions: store.state.PageOptions,
+            validarUsuario: localStorage.getItem("permiso_usuario"),
             image: null,
             nombrearchivo: "",
             imageRib: null,
@@ -975,6 +997,7 @@ export default {
             nombrearchivoCarta: "",
             val_doc: 0,
             idAnulacion: 0,
+            datogeneral: "",
             popUpAnularTodo: false,
             popUpRAnularArticulo: false,
             popUpAnularArticulo: false,
@@ -1072,6 +1095,11 @@ export default {
             seleccionServicio: {
                 id: 0,
                 descripcionServicio: ""
+            },
+            seleccionAnulacion: {
+                id: 0,
+                CODMOT: "",
+                NOMMOT: ""
             },
             idMod: 0,
             //Datos Fechas
@@ -1358,6 +1386,7 @@ export default {
             rows: [],
             listaArticulos: [],
             listaDetalleRecepcion: [],
+            listadoAnulacion: [],
             listaRecepcion: [],
             listaEstado: [],
             listaBodega: [],
@@ -1804,6 +1833,7 @@ export default {
         popArticulos() {
             try {
                 this.popUpArticulos = true;
+                this.listaArticulos = [];
             } catch (error) {
                 console.log(error);
             }
@@ -1921,6 +1951,33 @@ export default {
             }
         },
         //Metodos CRUD
+        //Este Metodo Trae todos los tipos de anulaciones de la base de datos
+        TraerAnulaciones() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetAnulacion", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + localStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listadoAnulacion = res.data;
+                        if (this.listadoAnulacion.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerTipoCompra() {
             try {
                 axios
@@ -1947,15 +2004,24 @@ export default {
                 console.log(error);
             }
         },
-        TraerArticulos() {
+        //Este Metodo se comunica con la API interna para retornar el listado de articulos disponibles en la BD.
+        //Con Datos Tales como CODART,NOMBRE ARTICULO O CODBAR
+        TraerArticulosNCB() {
             try {
+                let data = {
+                    DATO: this.datogeneral
+                };
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetAllArticulos", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
+                    .post(
+                        this.localVal + "/api/Recepcion/BusquedaArticuloNC",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + localStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         this.listaArticulos = res.data;
                         if (this.listaArticulos.length < 0) {
@@ -3374,8 +3440,8 @@ export default {
             this.TraerTipoDocumentos();
             this.TraerUltimoNFolio();
             this.TraerProveedores();
-            this.TraerArticulos();
             this.TraerEstado();
+            this.TraerAnulaciones();
             this.TraerBodega();
             this.TraerZona();
             this.TraerDetalleRecepcion();
@@ -3388,6 +3454,6 @@ export default {
 </script>
 <style lang="stylus">
 .con-vs-popup .vs-popup {
-  width: 1500px;
+  width: 1000px;
 }
 </style>

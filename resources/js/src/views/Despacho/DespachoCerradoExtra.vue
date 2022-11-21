@@ -365,126 +365,136 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="">
                     <div class="vx-row">
-                        <vx-card>
-                            <vue-good-table
-                                :columns="colArticulosDisponibles"
-                                :rows="listaArticulosDisponibles"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed bordered"
+                        <div class="vx-col w-3/4 mt-5">
+                            <h6>Ingrese Detalle a Buscar</h6>
+                            <vs-input
+                                class="inputx w-full"
+                                v-model="datogeneral"
+                                v-on:keydown.enter="TraerArticulosNCB"
+                            />
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>
+                                Buscar
+                            </h6>
+                            <vs-button
+                                @click="TraerArticulosNCB"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Articulos</vs-button
                             >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
+                        </div>
+                    </div>
+                    <br />
+                    <div class="vx-row">
+                        <vue-good-table
+                            :columns="colArticulosDisponibles"
+                            :rows="listaArticulosDisponibles"
+                            class="w-full"
+                            styleClass="vgt-table condensed bordered"
+                        >
+                            <template slot="table-row" slot-scope="props">
+                                <!-- Column: Name -->
+                                <span
+                                    v-if="props.column.field === 'fullName'"
+                                    class="text-nowrap"
+                                >
+                                </span>
+                                <span
+                                    v-else-if="
+                                        props.column.field === 'diasVencimiento'
+                                    "
+                                    class="text-nowrap"
+                                >
+                                    <vs-chip
+                                        color="danger"
+                                        v-if="props.row.diasVencimiento < 91"
+                                        type="text"
+                                        style="width:100px"
+                                        >{{
+                                            props.row.diasVencimiento
+                                        }}</vs-chip
                                     >
-                                    </span>
-                                    <span
+                                    <vs-chip
                                         v-else-if="
-                                            props.column.field ===
-                                                'diasVencimiento'
+                                            props.row.diasVencimiento > 90 &&
+                                                props.row.diasVencimiento < 181
                                         "
-                                        class="text-nowrap"
+                                        color="warning"
+                                        type="text"
+                                        style="width:100px"
+                                        >{{
+                                            props.row.diasVencimiento
+                                        }}</vs-chip
                                     >
-                                        <vs-chip
-                                            color="danger"
-                                            v-if="
-                                                props.row.diasVencimiento < 91
-                                            "
-                                            type="text"
-                                            style="width:100px"
-                                            >{{
-                                                props.row.diasVencimiento
-                                            }}</vs-chip
-                                        >
-                                        <vs-chip
-                                            v-else-if="
-                                                props.row.diasVencimiento >
-                                                    90 &&
-                                                    props.row.diasVencimiento <
-                                                        181
-                                            "
-                                            color="warning"
-                                            type="text"
-                                            style="width:100px"
-                                            >{{
-                                                props.row.diasVencimiento
-                                            }}</vs-chip
-                                        >
-                                        <vs-chip
-                                            v-else
-                                            color="success"
-                                            type="text"
-                                            style="width:100px"
-                                            >{{
-                                                props.row.diasVencimiento
-                                            }}</vs-chip
-                                        >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'CANTIDAD'
+                                    <vs-chip
+                                        v-else
+                                        color="success"
+                                        type="text"
+                                        style="width:100px"
+                                        >{{
+                                            props.row.diasVencimiento
+                                        }}</vs-chip
+                                    >
+                                </span>
+                                <span
+                                    v-else-if="
+                                        props.column.field === 'CANTIDAD'
+                                    "
+                                    class="text-nowrap"
+                                >
+                                    <vs-input
+                                        v-model="props.row.CANTIDAD"
+                                        type="text"
+                                        style="width:100px"
+                                        @keypress="isNumber($event)"
+                                        v-on:keydown.enter="
+                                            AgregarArticuloDisponible(
+                                                props.row.saldoCorrecto,
+                                                props.row.NOMBRE,
+                                                props.row.CODBAR,
+                                                props.row.LOTE,
+                                                props.row.UNIMED,
+                                                props.row.CODART,
+                                                props.row.diasVencimiento,
+                                                props.row.fechaVencimiento,
+                                                props.row.PREUNI,
+                                                props.row.CANTIDAD
+                                            )
                                         "
-                                        class="text-nowrap"
-                                    >
-                                        <vs-input
-                                            v-model="props.row.CANTIDAD"
-                                            type="text"
-                                            style="width:100px"
-                                            @keypress="isNumber($event)"
-                                            v-on:keydown.enter="
-                                                AgregarArticuloDetalle(
-                                                    props.row.saldoCorrecto,
-                                                    props.row.NOMBRE,
-                                                    props.row.CODBAR,
-                                                    props.row.LOTE,
-                                                    props.row.UNIMED,
-                                                    props.row.CODART,
-                                                    props.row.diasVencimiento,
-                                                    props.row.fechaVencimiento,
-                                                    props.row.PREUNI,
-                                                    props.row.CANTIDAD
-                                                )
-                                            "
-                                        ></vs-input>
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
+                                    ></vs-input>
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'action'"
+                                >
+                                    <plus-circle-icon
+                                        content="Agregar Articulo al listado"
+                                        v-tippy
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="
+                                            AgregarArticuloDisponible(
+                                                props.row.saldoCorrecto,
+                                                props.row.NOMBRE,
+                                                props.row.CODBAR,
+                                                props.row.LOTE,
+                                                props.row.UNIMED,
+                                                props.row.CODART,
+                                                props.row.diasVencimiento,
+                                                props.row.fechaVencimiento,
+                                                props.row.PREUNI,
+                                                props.row.CANTIDAD
+                                            )
                                         "
-                                    >
-                                        <plus-circle-icon
-                                            content="Agregar Articulo al listado"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                AgregarArticuloDisponible(
-                                                    props.row.saldoCorrecto,
-                                                    props.row.NOMBRE,
-                                                    props.row.CODBAR,
-                                                    props.row.LOTE,
-                                                    props.row.UNIMED,
-                                                    props.row.CODART,
-                                                    props.row.diasVencimiento,
-                                                    props.row.fechaVencimiento,
-                                                    props.row.PREUNI,
-                                                    props.row.CANTIDAD
-                                                )
-                                            "
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </vx-card>
+                                    ></plus-circle-icon>
+                                </span>
+                                <!-- Column: Common -->
+                                <span v-else>
+                                    {{ props.formattedRow[props.column.field] }}
+                                </span>
+                            </template>
+                        </vue-good-table>
                     </div>
                 </vx-card>
             </div>
@@ -662,6 +672,7 @@ export default {
             popUpArticulosDisponibles: false,
             numint: 0,
             idAnulacion: 0,
+            datogeneral: "",
             popUpAnularTodo: false,
             popUpAnularArticulo: false,
             popUpRAnularArticulo: false,
@@ -745,66 +756,39 @@ export default {
             colArticulosDisponibles: [
                 {
                     label: "N° Interno",
-                    field: "CODART",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODART"
                 },
                 {
                     label: "Descripcion",
-                    field: "NOMBRE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "NOMBRE"
                 },
                 {
                     label: "Unidad Medida",
-                    field: "UNIMED",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "UNIMED"
                 },
                 {
                     label: "Fecha Vencimiento",
-                    field: "fechaVencimiento",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "fechaVencimiento"
                 },
                 {
                     label: "Alerta",
-                    field: "diasVencimiento",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "diasVencimiento"
                 },
                 {
                     label: "Lote",
-                    field: "LOTE",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "LOTE"
                 },
                 {
                     label: "Codigo Barra",
-                    field: "CODBAR",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CODBAR"
                 },
                 {
                     label: "Saldo",
-                    field: "saldoCorrecto",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "saldoCorrecto"
                 },
                 {
                     label: "Cantidad a Despachar",
-                    field: "CANTIDAD",
-                    filterOptions: {
-                        enabled: true
-                    }
+                    field: "CANTIDAD"
                 },
                 {
                     label: "Opciones",
@@ -1066,7 +1050,6 @@ export default {
                                 position: "top-right"
                             });
                             this.TraerDetalleDespacho();
-                            this.TraerArticulosDisponibles();
                         }
                     });
             } catch (error) {
@@ -1289,6 +1272,7 @@ export default {
                     this.seleccionServicio.id != 0
                 ) {
                     this.popUpArticulosDisponibles = true;
+                    this.listaArticulosDisponibles = [];
                 } else {
                     this.$vs.notify({
                         time: 5000,
@@ -1456,8 +1440,6 @@ export default {
                                                     color: "success",
                                                     position: "top-right"
                                                 });
-                                                //this.popUpArticulosDisponibles = false;
-                                                this.TraerArticulosDisponibles();
                                                 this.TraerDetalleDespacho();
                                             }
                                         });
@@ -1562,8 +1544,6 @@ export default {
                                                     color: "success",
                                                     position: "top-right"
                                                 });
-                                                //this.popUpArticulosDisponibles = false;
-                                                this.TraerArticulosDisponibles();
                                                 this.TraerDetalleDespacho();
                                             }
                                         });
@@ -1657,8 +1637,6 @@ export default {
                                         color: "success",
                                         position: "top-right"
                                     });
-                                    //this.popUpArticulosDisponibles = false;
-                                    this.TraerArticulosDisponibles();
                                     this.TraerDetalleDespacho();
                                 }
                             });
@@ -1830,12 +1808,17 @@ export default {
                 console.log(error);
             }
         },
-        TraerArticulosDisponibles() {
+        //Este Metodo Traer los Articulos Filtrados Por CODIGO ARTICULO, NOMBRE O CODIGO BARRA
+        TraerArticulosNCB() {
             try {
+                let data = {
+                    DATO: this.datogeneral
+                };
                 axios
-                    .get(
+                    .post(
                         this.localVal +
-                            "/api/Despachos/GetDetallesArticulosDisponibles",
+                            "/api/Despachos/BusquedaArticulosDisponiblesNCB",
+                        data,
                         {
                             headers: {
                                 Authorization:
@@ -1921,7 +1904,6 @@ export default {
         this.RefreshToken();
         setTimeout(() => {
             this.TraerServicio();
-            this.TraerArticulosDisponibles();
             this.TraerDespacho();
             this.TraerDetalleDespacho();
             this.TraerAnulaciones();

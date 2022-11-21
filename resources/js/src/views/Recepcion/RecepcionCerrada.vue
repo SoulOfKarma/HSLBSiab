@@ -379,6 +379,11 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="">
                     <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <h6 class="pt-4 text-left">
+                                N° Documento {{ ndocumento }}
+                            </h6>
+                        </div>
                         <div class="vx-col w-1/8 mt-5">
                             <h6 class="pt-4 text-right">ADJUNTAR FACTURA</h6>
                         </div>
@@ -1830,6 +1835,6 @@ export default {
 }
 
 .con-vs-popup .vs-popup {
-  width: 1500px;
+  width: 1000px;
 }
 </style>

@@ -1088,60 +1088,74 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="">
                     <div class="vx-row">
-                        <vx-card>
-                            <vue-good-table
-                                :columns="col"
-                                :rows="listaArticulos"
-                                :pagination-options="PageOptions"
-                                styleClass="vgt-table condensed bordered"
+                        <div class="vx-col w-3/4 mt-5">
+                            <h6>Ingrese Detalle a Buscar</h6>
+                            <vs-input
+                                class="inputx w-full"
+                                v-model="datogeneral"
+                            />
+                        </div>
+                        <div class="vx-col w-1/4 mt-5">
+                            <h6>
+                                Buscar
+                            </h6>
+                            <vs-button
+                                @click="TraerArticulosNCB"
+                                color="primary"
+                                type="filled"
+                                class="w-full"
+                                >Buscar Articulos</vs-button
                             >
-                                <template slot="table-row" slot-scope="props">
-                                    <!-- Column: Name -->
-                                    <span
-                                        v-if="props.column.field === 'fullName'"
-                                        class="text-nowrap"
-                                    >
-                                    </span>
-                                    <span
-                                        v-else-if="
-                                            props.column.field === 'action'
+                        </div>
+                    </div>
+                    <br />
+                    <div class="vx-row">
+                        <vue-good-table
+                            :columns="col"
+                            :rows="listaArticulos"
+                            :pagination-options="PageOptions"
+                            styleClass="vgt-table condensed bordered"
+                        >
+                            <template slot="table-row" slot-scope="props">
+                                <!-- Column: Name -->
+                                <span
+                                    v-if="props.column.field === 'fullName'"
+                                    class="text-nowrap"
+                                >
+                                </span>
+                                <span
+                                    v-else-if="props.column.field === 'action'"
+                                >
+                                    <plus-circle-icon
+                                        content="Agregar Articulo al listado"
+                                        v-tippy
+                                        size="1.5x"
+                                        class="custom-class"
+                                        @click="
+                                            popAgregarArticulo(
+                                                props.row.NOMBRE,
+                                                props.row.UNIMEDBASE,
+                                                props.row.CODART_ONU,
+                                                props.row.CODART,
+                                                props.row.CODART_BARR,
+                                                props.row.idEstado,
+                                                props.row.UBICACION,
+                                                props.row.SECTOR,
+                                                props.row.idBodega,
+                                                props.row.idZona,
+                                                props.row.CANTXENB,
+                                                props.row.idACT_FECVEN,
+                                                props.row.idACTLOTE
+                                            )
                                         "
-                                    >
-                                        <plus-circle-icon
-                                            content="Agregar Articulo al listado"
-                                            v-tippy
-                                            size="1.5x"
-                                            class="custom-class"
-                                            @click="
-                                                popAgregarArticulo(
-                                                    props.row.NOMBRE,
-                                                    props.row.UNIMEDBASE,
-                                                    props.row.CODART_ONU,
-                                                    props.row.CODART,
-                                                    props.row.CODART_BARR,
-                                                    props.row.idEstado,
-                                                    props.row.UBICACION,
-                                                    props.row.SECTOR,
-                                                    props.row.idBodega,
-                                                    props.row.idZona,
-                                                    props.row.CANTXENB,
-                                                    props.row.idACT_FECVEN,
-                                                    props.row.idACTLOTE
-                                                )
-                                            "
-                                        ></plus-circle-icon>
-                                    </span>
-                                    <!-- Column: Common -->
-                                    <span v-else>
-                                        {{
-                                            props.formattedRow[
-                                                props.column.field
-                                            ]
-                                        }}
-                                    </span>
-                                </template>
-                            </vue-good-table>
-                        </vx-card>
+                                    ></plus-circle-icon>
+                                </span>
+                                <!-- Column: Common -->
+                                <span v-else>
+                                    {{ props.formattedRow[props.column.field] }}
+                                </span>
+                            </template>
+                        </vue-good-table>
                     </div>
                 </vx-card>
             </div>
@@ -1232,6 +1246,11 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="">
                     <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <h6 class="pt-4 text-left">
+                                N° Documento {{ ndocumento }}
+                            </h6>
+                        </div>
                         <div class="vx-col w-1/8 mt-5">
                             <h6 class="pt-4 text-right">ADJUNTAR FACTURA</h6>
                         </div>
@@ -1426,6 +1445,7 @@ export default {
             imageCarta: null,
             nombrearchivoCarta: "",
             val_doc: 0,
+            datogeneral: "",
             popUpAgregarFactura: false,
             popUpAgregarRIB: false,
             popUpAgregarCarta: false,
@@ -2297,6 +2317,7 @@ export default {
         popArticulos() {
             try {
                 this.popUpArticulos = true;
+                this.listaArticulos = [];
             } catch (error) {
                 console.log(error);
             }
@@ -2496,15 +2517,23 @@ export default {
             }
         },
         //Este Metodo se comunica con la API interna para retornar el listado de articulos disponibles en la BD.
-        TraerArticulos() {
+        //Con Datos Tales como CODART,NOMBRE ARTICULO O CODBAR
+        TraerArticulosNCB() {
             try {
+                let data = {
+                    DATO: this.datogeneral
+                };
                 axios
-                    .get(this.localVal + "/api/Mantenedor/GetAllArticulos", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
+                    .post(
+                        this.localVal + "/api/Recepcion/BusquedaArticuloNC",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + localStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         this.listaArticulos = res.data;
                         if (this.listaArticulos.length < 0) {
@@ -3952,7 +3981,6 @@ export default {
             this.TraerUltimoNFolio();
             this.TraerTipoDocumentos();
             this.TraerProveedores();
-            this.TraerArticulos();
             this.TraerEstado();
             this.TraerBodega();
             this.TraerZona();
@@ -3964,6 +3992,6 @@ export default {
 </script>
 <style lang="stylus">
 .con-vs-popup .vs-popup {
-  width: 1500px;
+  width: 1000px;
 }
 </style>

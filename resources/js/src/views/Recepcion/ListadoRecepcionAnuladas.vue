@@ -68,15 +68,15 @@ export default {
             //Template Columnas Listado Proveedor
             columns: [
                 {
-                    label: "N° Interno",
-                    field: "NUMINT",
+                    label: "Folio",
+                    field: "FOLIO",
                     filterOptions: {
                         enabled: true
                     }
                 },
                 {
-                    label: "Folio",
-                    field: "FOLIO",
+                    label: "N° Interno",
+                    field: "NUMINT",
                     filterOptions: {
                         enabled: true
                     }
