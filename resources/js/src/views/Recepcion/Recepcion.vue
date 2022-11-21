@@ -182,7 +182,18 @@
                         @keypress="isNumber($event)"
                     />
                 </div>
-                <div class="vx-col w-1/4 mt-5">
+                <div class="vx-col w-1/4 mt-5" v-if="validarPrecio == 2">
+                    <h6>
+                        Precio
+                    </h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="precio"
+                        @keypress="isNumber($event)"
+                        v-on:keydown.enter="AgregarArticuloDetalle"
+                    />
+                </div>
+                <div class="vx-col w-1/4 mt-5" v-if="validarPrecio == 1">
                     <h6>
                         Precio
                     </h6>
@@ -704,7 +715,18 @@
                         @keypress="isNumber($event)"
                     />
                 </div>
-                <div class="vx-col w-1/4 mt-5">
+                <div class="vx-col w-1/4 mt-5" v-if="validarPrecio == 2">
+                    <h6>
+                        Precio
+                    </h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="precio"
+                        @keypress="isNumber($event)"
+                        v-on:keydown.enter="AgregarArticuloDetalle"
+                    />
+                </div>
+                <div class="vx-col w-1/4 mt-5" v-if="validarPrecio == 1">
                     <h6>
                         Precio
                     </h6>
@@ -1410,6 +1432,7 @@ export default {
             FVEN1: "Si",
             FVEN2: "No",
             idFecha: 0,
+            validarPrecio: 2,
             idRemoverArt: 0,
             popUpArticulos: false,
             recepcion: false,
@@ -2331,11 +2354,13 @@ export default {
 
                 c = [];
                 if (idACT_FECVEN == 1) {
+                    this.validarPrecio = 1;
                     this.seleccionFechaVencimiento = {
                         id: 1,
                         descripcionFVen: "Si"
                     };
                 } else {
+                    this.validarPrecio = 2;
                     this.seleccionFechaVencimiento = {
                         id: 2,
                         descripcionFVen: "No"
@@ -2345,11 +2370,13 @@ export default {
                 }
 
                 if (idACTLOTE == 1) {
+                    this.validarPrecio = 1;
                     this.seleccionLoteSerie = {
                         id: 1,
                         descripcionLoteSerie: "Si"
                     };
                 } else {
+                    this.validarPrecio = 2;
                     this.seleccionLoteSerie = {
                         id: 2,
                         descripcionLoteSerie: "No"
@@ -3836,11 +3863,13 @@ export default {
 
                                 c = [];
                                 if (val.idACT_FECVEN == 1) {
+                                    this.validarPrecio = 1;
                                     this.seleccionFechaVencimiento = {
                                         id: 1,
                                         descripcionFVen: "Si"
                                     };
                                 } else {
+                                    this.validarPrecio = 2;
                                     this.seleccionFechaVencimiento = {
                                         id: 2,
                                         descripcionFVen: "No"
@@ -3850,11 +3879,13 @@ export default {
                                 }
 
                                 if (val.idACTLOTE == 1) {
+                                    this.validarPrecio = 1;
                                     this.seleccionLoteSerie = {
                                         id: 1,
                                         descripcionLoteSerie: "Si"
                                     };
                                 } else {
+                                    this.validarPrecio = 2;
                                     this.seleccionLoteSerie = {
                                         id: 2,
                                         descripcionLoteSerie: "No"
