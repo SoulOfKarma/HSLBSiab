@@ -1584,6 +1584,7 @@ export default {
                             position: "top-right"
                         });
                         this.TraerRecepcion();
+                        this.popUpAgregarFactura = false;
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",
@@ -1628,6 +1629,7 @@ export default {
                             position: "top-right"
                         });
                         this.TraerRecepcion();
+                        this.popUpAgregarRIB = false;
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",
@@ -1672,6 +1674,7 @@ export default {
                             position: "top-right"
                         });
                         this.TraerRecepcion();
+                        this.popUpAgregarCarta = false;
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",

@@ -149,7 +149,8 @@ class DespachosController extends Controller
     public function GetDespachos(Request $request){
         try {
             $get = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECSYS','despachos.FECDES','despachos.NOMSER',
-            'despachos.NUMLIBRO','despachos.USUING','despachos.TIPDESP','despachos.NUMPESP','despachos.OBS')
+            'despachos.NUMLIBRO','despachos.USUING','despachos.TIPDESP','despachos.NUMPESP',
+            DB::raw('fnStripTags(despachos.OBS) as OBS'))
             ->where('despachos.NUMINT',$request->NUMINT)
             ->get();
             return $get;
@@ -256,16 +257,19 @@ class DespachosController extends Controller
 
     public function GenerarImpresion($NUMINT){
         try {
-            $getDet = despachoDetalles::select('despacho_detalles.id','despacho_detalles.FECSYS','despacho_detalles.FECDES','despacho_detalles.NUMLIBRO',
-            'despacho_detalles.LOTE','despacho_detalles.FECVEN','despacho_detalles.CODBAR','despacho_detalles.CODART','despacho_detalles.NOMART',
-            'despacho_detalles.UNIMED','despacho_detalles.CANTIDAD','despacho_detalles.PRECIO','despacho_detalles.NUMINT','despacho_detalles.CODMOT','despacho_detalles.NOMMOT',
-            DB::raw("ROUND((despacho_detalles.CANTIDAD*despacho_detalles.PRECIO),2) as VALORTOTALDESP"))
+            $getDet = despachoDetalles::select('despacho_detalles.id',DB::raw("DATE_FORMAT(despacho_detalles.FECSYS,'%d/%m/%Y') as FECSYS"),
+            DB::raw("DATE_FORMAT(despacho_detalles.FECDES,'%d/%m/%Y') as FECDES"),'despacho_detalles.NUMLIBRO','despacho_detalles.LOTE',
+            DB::raw("DATE_FORMAT(despacho_detalles.FECVEN,'%d/%m/%Y') as FECVEN"),'despacho_detalles.CODBAR','despacho_detalles.CODART','despacho_detalles.NOMART',
+            'despacho_detalles.UNIMED','despacho_detalles.CANTIDAD','despacho_detalles.PRECIO','despacho_detalles.NUMINT',
+            'despacho_detalles.CODMOT','despacho_detalles.NOMMOT',
+            DB::raw("ROUND((despacho_detalles.CANTIDAD*despacho_detalles.PRECIO),0) as VALORTOTALDESP"))
             ->where('despacho_detalles.NUMINT',$NUMINT)
             ->whereNull('despacho_detalles.CODMOT')
             ->orWhere('despacho_detalles.CODMOT','')
             ->get();
 
-            $getRec = despachos::select('despachos.NUMINT','despachos.FOLIO','despachos.FECSYS','despachos.FECDES','despachos.NOMSER',
+            $getRec = despachos::select('despachos.NUMINT','despachos.FOLIO',
+            DB::raw("DATE_FORMAT(despachos.FECSYS,'%d/%m/%Y') as FECSYS"),DB::raw("DATE_FORMAT(despachos.FECDES,'%d/%m/%Y') as FECDES"),'despachos.NOMSER',
             'despachos.NUMLIBRO','despachos.USUING','despachos.TIPDESP',DB::raw('fnStripTags(despachos.OBS) as OBS'))
             ->where('despachos.NUMINT',$NUMINT)
             ->get();

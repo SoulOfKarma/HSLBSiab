@@ -1141,6 +1141,7 @@ export default {
                             position: "top-right"
                         });
                         this.TraerRecepcion();
+                        this.popUpAgregarFactura = false;
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",
@@ -1185,6 +1186,7 @@ export default {
                             position: "top-right"
                         });
                         this.TraerRecepcion();
+                        this.popUpAgregarRIB = false;
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",
@@ -1229,6 +1231,7 @@ export default {
                             position: "top-right"
                         });
                         this.TraerRecepcion();
+                        this.popUpAgregarCarta = false;
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",
@@ -1443,7 +1446,7 @@ export default {
                                 this.fechaDocumento = moment(value.FECDOC)
                                     .format("DD/MM/YYYY")
                                     .toString();
-                                this.nordencompra = value.NUMFAC;
+                                this.nordencompra = value.NUMORD;
                                 this.nrib = value.NUMRIB;
                                 this.folio = value.FOLIO;
                                 this.Observaciones = value.OBS;

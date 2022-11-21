@@ -1462,7 +1462,6 @@ export default {
             dcto: 0,
             cargos: 0,
             ajustes: 0,
-            validarNInterno: false,
             seleccionEstado: {
                 id: 0,
                 descripcionEstado: ""
@@ -2044,6 +2043,7 @@ export default {
                             position: "top-right"
                         });
                         this.TraerRecepcion();
+                        this.popUpAgregarFactura = false;
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",
@@ -2088,6 +2088,7 @@ export default {
                             position: "top-right"
                         });
                         this.TraerRecepcion();
+                        this.popUpAgregarRIB = false;
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",
@@ -2133,6 +2134,7 @@ export default {
                             position: "top-right"
                         });
                         this.TraerRecepcion();
+                        this.popUpAgregarCarta = false;
                     } else {
                         this.$vs.notify({
                             title: "Error al subir el documento ",
@@ -2871,11 +2873,8 @@ export default {
         //Este Metodo se comunica con la API interna para guardar los datos del articulo recepcionado en el detalle y asignar N°Interno.
         AgregarArticuloDetalle() {
             try {
-                if (this.validarNInterno) {
-                } else {
-                    this.TraerUltimoNInterno();
-                    this.validarNInterno = true;
-                }
+                this.TraerUltimoNInterno();
+
                 let fechav = moment(this.fechaVencimiento, "DD-MM-YYYY").format(
                     "YYYY-MM-DD"
                 );
@@ -3666,7 +3665,10 @@ export default {
                                                 position: "top-right"
                                             });
                                             this.$router.push({
-                                                name: "ListadoRecepcionCerrada"
+                                                name: "RecepcionCerrada",
+                                                params: {
+                                                    NUMINT: `${this.numint}`
+                                                }
                                             });
                                         } else {
                                             this.$vs.notify({
@@ -3741,7 +3743,10 @@ export default {
                                             position: "top-right"
                                         });
                                         this.$router.push({
-                                            name: "ListadoRecepcionCerrada"
+                                            name: "RecepcionCerrada",
+                                            params: {
+                                                NUMINT: `${this.numint}`
+                                            }
                                         });
                                     }
                                 });

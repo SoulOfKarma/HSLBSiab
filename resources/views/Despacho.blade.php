@@ -1502,7 +1502,7 @@ pre code {
                  $fechaDespacho = $dato['FECDES'];
                  $observacion = $dato['OBS'];
                  $nfolio = $dato['FOLIO'];
-                 $descripcionServicio = $dato['descripcionServicio'];
+                 $descripcionServicio = $dato['NOMSER'];
                  $nlibropedido = $dato['NUMLIBRO'];
               ?>
               @endforeach

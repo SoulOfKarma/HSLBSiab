@@ -114,7 +114,7 @@ class RecepcionesController extends Controller
     public function GetRecepcionIngresadaByCodInterno(Request $request){
         try {
             $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
-            'TIPDOC','FECDOC','DCTO','OBS','CARGO',DB::raw("ROUND(SUBTOTAL,0) as SUBTOTAL"),'AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
+            'TIPDOC','FECDOC','DCTO',DB::raw('fnStripTags(OBS) as OBS'),'CARGO',DB::raw("ROUND(SUBTOTAL,0) as SUBTOTAL"),'AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
             'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','NOMSER','NOMARCH',
             DB::raw("ROUND(SUBTOTAL,0) as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),0) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,0)+AJUSTE+CARGO-DCTO as TOTAL"))
             ->where('NUMINT',$request->NUMINT)
@@ -336,13 +336,22 @@ class RecepcionesController extends Controller
 
     public function GenerarImpresion($NUMINT){
         try {
-            $getDet = recepcionDetalles::where('NUMINT',$NUMINT)
+            $getDet = recepcionDetalles::select('CODART','PRODUCTO','UNIMED','LOTE',DB::raw("DATE_FORMAT(FECVEN,'%d/%m/%Y') as FECVEN"),'CANREC','PREUNI',
+            DB::raw('ROUND(VALTOT,0) as VALTOT'))
+            ->where('NUMINT',$NUMINT)
             ->get();
 
-            $getRec = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMORD','TIPDOC','FECDOC','DCTO',
-            'OBS','CARGO','SUBTOTAL','AJUSTE','USUING','USUMOD','FECSYS','NUMINT','NUMRIB','TIPRECEPCION',
-            DB::raw("SUBTOTAL as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),2) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,2) as TOTAL"))
-            ->where('NUMINT',$NUMINT)
+            $getRec = recepciones::select('FOLIO',DB::raw("DATE_FORMAT(recepciones.FECSYS,'%d/%m/%Y') as FECSYS"),
+            DB::raw("DATE_FORMAT(recepciones.FECDES,'%d/%m/%Y') as FECDES"),'recepciones.RUTPRO','recepciones.NOMPRO',
+            'recepciones.NUMDOC','recepciones.NUMORD','tipo_documentos.descripcionDocumento as TIPDOC',
+            DB::raw("DATE_FORMAT(recepciones.FECDOC,'%d/%m/%Y') as FECDOC"),'recepciones.DCTO',
+            DB::raw('fnStripTags(recepciones.OBS) AS OBS'),'recepciones.CARGO',DB::raw('ROUND(recepciones.SUBTOTAL,0) as SUBTOTAL'),
+            'recepciones.AJUSTE','recepciones.USUING','recepciones.USUMOD','recepciones.NUMINT',
+            'recepciones.NUMRIB','recepciones.TIPRECEPCION',DB::raw("ROUND(recepciones.SUBTOTAL,0) as NETO"),
+            DB::raw("ROUND((recepciones.SUBTOTAL*0.19),0) as IVA"),
+            DB::raw("ROUND((recepciones.SUBTOTAL*0.19) + recepciones.SUBTOTAL,0) as TOTAL"))
+            ->where('recepciones.NUMINT',$NUMINT)
+            ->join('tipo_documentos','recepciones.TIPDOC','=','tipo_documentos.id')
             ->get();
 
             $pdf = App::make("dompdf.wrapper");

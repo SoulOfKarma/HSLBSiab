@@ -3,7 +3,7 @@
         <div class="vx-col md:w-1/1 w-full mb-base">
             <!-- Despacho -->
             <vx-card title="Despacho">
-                <div class="vx-row">
+                <!-- <div class="vx-row">
                     <div
                         class="vx-col w-full mt-5"
                         v-if="listaDespachoArticulos.length > 0"
@@ -15,7 +15,7 @@
                             disabled
                         />
                     </div>
-                </div>
+                </div> -->
                 <div class="vx-row" v-if="seleccionTipoDespacho.id == 1">
                     <div class="vx-col w-1/5 mt-5">
                         <h6>Fecha Sistema</h6>
@@ -138,7 +138,6 @@
                                 class="w-full"
                                 :columns="colDespachoArticulos"
                                 :rows="listaDespachoArticulos"
-                                :pagination-options="PageOptions"
                                 styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
@@ -195,23 +194,19 @@
                             </vue-good-table>
                         </div>
                     </vx-card>
-                    <div class="vx-row"></div>
                 </div>
                 <!-- Observaciones y totales -->
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
                     <vx-card title="">
                         <div class="vx-row">
-                            <div class="vx-col w-full mt-5">
+                            <div class="vx-col w-3/4 mt-5">
                                 <h6>Observaciones</h6>
-                                <quill-editor
-                                    class="w-full"
+                                <vs-input
+                                    class="inputx w-full"
                                     v-model="Observaciones"
-                                    :options="editorOption"
-                                >
-                                    <div id="toolbar" slot="toolbar"></div>
-                                </quill-editor>
+                                />
                             </div>
-                            <div class="vx-col w-full mt-5">
+                            <div class="vx-col w-1/4 mt-5">
                                 <h6>
                                     Total
                                 </h6>
@@ -222,7 +217,6 @@
                                 />
                             </div>
                         </div>
-                        <br /><br />
                     </vx-card>
                 </div>
                 <div class="vx-col md:w-1/1 w-full mb-base mt-5">
