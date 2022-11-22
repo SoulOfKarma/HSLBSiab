@@ -286,7 +286,7 @@ class SiabArticulosController extends Controller
             DB::raw("(CASE WHEN siab_articulo.ACT_FECVEN = 1 THEN 'Si' ELSE 'No' END) as ACT_FECVEN"),
             DB::raw("(CASE WHEN siab_articulo.ACT_LOTE = 1 THEN 'Si' ELSE 'No' END) as ACT_LOTE"),
             'siab_articulo.idEstado','siab_articulo.idBodega','siab_articulo.idZona','siab_articulo.NOMFAM1','siab_articulo.NOMFAM2',
-            'siab_articulo.NOMFAM3','siab_articulo.NOMFAM4','siab_articulo.NOMFAM5','siab_articulo.NOMARCH'
+            'siab_articulo.NOMFAM3','siab_articulo.NOMFAM4','siab_articulo.NOMFAM5','siab_articulo.NOMARCH','siab_articulo.PRECIO_BASE'
             )
            ->leftjoin('auth_estados','siab_articulo.idEstado','=','auth_estados.id')
            ->leftjoin('bodega','siab_articulo.idBodega','=','bodega.id')
@@ -314,8 +314,8 @@ class SiabArticulosController extends Controller
            left join auth_estados on siab_articulo.idEstado = auth_estados.id
            left join bodega on siab_articulo.idBodega = bodega.id
            left join zona on siab_articulo.idZona = zona.id
-           WHERE siab_articulo.CODART LIKE '".$request->DATO."%' || siab_articulo.CODART_BARR LIKE '".$request->DATO."%' || 
-           siab_articulo.NOMBRE LIKE '".$request->DATO."%'");
+           WHERE siab_articulo.CODART LIKE '%".$request->DATO."%' || siab_articulo.CODART_BARR LIKE '%".$request->DATO."%' || 
+           siab_articulo.NOMBRE LIKE '%".$request->DATO."%'");
            
             return $get;
         } catch (\Throwable $th) {

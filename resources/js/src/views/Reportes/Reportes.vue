@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="line-height: 0.8; font-size: 12px;">
         <div class="vx-col md:w-1/1 w-full mb-base">
             <vx-card title="Reportes">
                 <vs-prompt
@@ -35,7 +35,7 @@
                         >
                     </div>
                 </div>
-                <div class="vx-col md:w-1/1 w-full mb-base mt-5">
+                <div class="vx-col md:w-1/1 w-full mb-base mt-2">
                     <div class="vx-col w-full mt-5">
                         <h6>Seleccione Reporte</h6>
                         <br />
@@ -51,21 +51,21 @@
                     </div>
                     <!-- Carga ConsumoXAño -->
                     <div class="vx-row" v-if="consumoanio">
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/2 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
                             />
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/2 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -75,7 +75,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -85,7 +85,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetConsumoAnio"
@@ -98,14 +98,14 @@
                     </div>
                     <!-- Carga Saldo General - Valorizado -->
                     <div class="vx-row" v-if="saldoGeneral">
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>Codigo Inicial</h6>
+                        <div class="vx-col w-1/2 mt-2">
+                            <h6>Ingrese Codigo o Descripcion a Buscar</h6>
                             <vs-input
                                 class="inputx w-full  "
-                                v-model="codini"
+                                v-model="codinisal"
                             />
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/2 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetSaldos"
@@ -115,14 +115,14 @@
                                 >Saldo Productos</vs-button
                             >
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
-                            <h6>Codigo Inicial</h6>
+                        <div class="vx-col w-1/2 mt-2">
+                            <h6>Ingrese Codigo o Descripcion a Buscar</h6>
                             <vs-input
                                 class="inputx w-full  "
-                                v-model="codini"
+                                v-model="codinisalv"
                             />
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/2 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetSaldoValorizado"
@@ -132,24 +132,24 @@
                                 >Saldo Valorizado</vs-button
                             >
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-full mt-2">
                             <h6>Busqueda Recepcion Por Rango</h6>
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -159,7 +159,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -169,7 +169,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetRecepcionesRango"
@@ -182,21 +182,21 @@
                     </div>
                     <!-- Carga ConsumoXMes -->
                     <div class="vx-row" v-if="consumomes">
-                        <div class="vx-col w-1/4 mt-5">
+                        <div class="vx-col w-1/4 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
                             />
                         </div>
-                        <div class="vx-col w-1/4 mt-5">
+                        <div class="vx-col w-1/4 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
                             />
                         </div>
-                        <div class="vx-col w-1/4 mt-5">
+                        <div class="vx-col w-1/4 mt-2">
                             <h6>Seleccione Mes</h6>
                             <v-select
                                 v-model="seleccionMes"
@@ -206,7 +206,7 @@
                                 :options="listadoMes"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/4 mt-5">
+                        <div class="vx-col w-1/4 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetConsumoMes"
@@ -219,21 +219,21 @@
                     </div>
                     <!-- Carga ConsumoXServicio -->
                     <div class="vx-row" v-if="consumomesservicio">
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Seleccione Mes</h6>
                             <v-select
                                 v-model="seleccionMes"
@@ -243,7 +243,7 @@
                                 :options="listadoMes"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Seleccione Servicio</h6>
                             <v-select
                                 v-model="seleccionServicios"
@@ -253,7 +253,7 @@
                                 :options="listadoServicios"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetConsumoMesServicio"
@@ -266,21 +266,21 @@
                     </div>
                     <!-- Carga Fecha Vencimiento/Cenabast-->
                     <div class="vx-row" v-if="fechavencimiento">
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetFechaVencimiento"
@@ -293,7 +293,7 @@
                     </div>
                     <!-- Carga ZGen -->
                     <div class="vx-row" v-if="zgen">
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/2 mt-2">
                             <h6>Seleccione Mes</h6>
                             <v-select
                                 v-model="seleccionMes"
@@ -303,7 +303,7 @@
                                 :options="listadoMes"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/2 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetZGen"
@@ -317,7 +317,7 @@
                     <br />
                     <!-- Carga ZGEN Priorizados -->
                     <div class="vx-row" v-if="zgenpriorizado">
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/2 mt-2">
                             <h6>Seleccione Mes</h6>
                             <v-select
                                 v-model="seleccionMes"
@@ -327,7 +327,7 @@
                                 :options="listadoMes"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/2 mt-5">
+                        <div class="vx-col w-1/2 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetZGenPriozados"
@@ -340,10 +340,10 @@
                     </div>
                     <!-- Carga Saldos PMP -->
                     <div class="vx-row" v-if="saldopmp">
-                        <div class="vx-col w-full mt-5">
-                            <h6>Busqueda Por Farmacia</h6>
+                        <div class="vx-col w-full mt-2">
+                            <h6>Busqueda Por Bodega</h6>
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/4 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -353,7 +353,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/4 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -363,54 +363,30 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/4 mt-2">
+                            <h6>Bodega</h6>
+                            <v-select
+                                v-model="seleccionBodega"
+                                placeholder="Activo"
+                                class="w-full select-large"
+                                label="descripcionBodega"
+                                :options="listaBodega"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/4 mt-2">
                             <h6>.</h6>
                             <vs-button
-                                @click="GetSaldoValorizadoPMPFarmacia"
+                                @click="GetSaldoValorizadoPMPBodega"
                                 color="primary"
                                 type="filled"
                                 class="w-full"
-                                >Buscar Por Farmacia</vs-button
+                                >Buscar</vs-button
                             >
                         </div>
-                        <div class="vx-col w-full mt-5">
-                            <h6>Busqueda Por Economato</h6>
+                        <div class="vx-col w-full mt-2">
+                            <h6>Busqueda Total Por Fecha</h6>
                         </div>
-
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>Fecha Inicio</h6>
-                            <flat-pickr
-                                :config="configFromdateTimePicker"
-                                v-model="fechaInicioE"
-                                placeholder="Fecha Inicio"
-                                @on-change="onFromChange"
-                                class="w-full "
-                            />
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>Fecha Termino</h6>
-                            <flat-pickr
-                                :config="configTodateTimePicker"
-                                v-model="fechaTerminoE"
-                                placeholder="Fecha Termino"
-                                @on-change="onToChange"
-                                class="w-full "
-                            />
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
-                            <h6>.</h6>
-                            <vs-button
-                                @click="GetSaldoValorizadoPMPEconomato"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Buscar Por Economato</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-full mt-5">
-                            <h6>Busqueda Por Fecha Farmacia/Economato</h6>
-                        </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -420,7 +396,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -430,34 +406,34 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetSaldoValorizadoPMPXFechaFE"
                                 color="primary"
                                 type="filled"
                                 class="w-full"
-                                >Buscar Por Fecha Farmacia/Economato</vs-button
+                                >Buscar</vs-button
                             >
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-full mt-2">
                             <h6>Busqueda Por Codigo/Fecha</h6>
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniC"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterC"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -467,7 +443,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -477,7 +453,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetSaldoValorizadoPMPXCodigoFecha"
@@ -490,10 +466,17 @@
                     </div>
                     <!-- Carga Elementos Bincard -->
                     <div class="vx-row" v-if="bincardTipo">
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-full mt-2">
                             <h6>Busqueda Por Bincard General</h6>
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-1/2 mt-2">
+                            <h6>Ingrese Codigo, Descripcion a Buscar</h6>
+                            <vs-input
+                                class="inputx w-full  "
+                                v-model="codbus"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetSaldoArticulos(1)"
@@ -503,24 +486,24 @@
                                 >Carga Bincard</vs-button
                             >
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-full mt-2">
                             <h6>Busqueda Por Codigo/Fecha</h6>
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -530,7 +513,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -540,7 +523,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetSaldoArticulos(2)"
@@ -550,37 +533,24 @@
                                 >Buscar Por Codigo/Fecha</vs-button
                             >
                         </div>
-                        <div class="vx-col w-full mt-5">
-                            <h6>Busqueda Bincard General Fecha Vencimiento</h6>
-                        </div>
-                        <div class="vx-col w-full mt-5">
-                            <h6>.</h6>
-                            <vs-button
-                                @click="GetSaldoArticulos(3)"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Cargar Bincard</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-full mt-2">
                             <h6>Busqueda Por Codigo</h6>
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniC"
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterC"
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetSaldoArticulos(4)"
@@ -590,24 +560,24 @@
                                 >Buscar Por Codigo</vs-button
                             >
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-full mt-2">
                             <h6>Busqueda Por Codigo Covid</h6>
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniCO"
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterCO"
                             />
                         </div>
-                        <div class="vx-col w-1/3 mt-5">
+                        <div class="vx-col w-1/3 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetSaldoArticulos(5)"
@@ -620,21 +590,24 @@
                     </div>
                     <!-- Carga Despacho Servicio -->
                     <div class="vx-row" v-if="despachoxservicio">
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-full mt-2">
+                            <h6>Busqueda Por todos los Servicios</h6>
+                        </div>
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -644,7 +617,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -654,7 +627,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetDespachoxServicio"
@@ -664,21 +637,24 @@
                                 >Buscar</vs-button
                             >
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-full mt-2">
+                            <h6>Busqueda Por Servicio</h6>
+                        </div>
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniC"
                             />
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterC"
                             />
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -688,7 +664,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -698,7 +674,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Seleccione Servicio</h6>
                             <v-select
                                 v-model="seleccionServicios"
@@ -708,7 +684,7 @@
                                 :options="listadoServicios"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetDespachoxServicioI"
@@ -721,24 +697,24 @@
                     </div>
                     <!-- Carga Consolidado Despacho -->
                     <div class="vx-row" v-if="consolidadoDespacho">
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-full mt-2">
                             <h6>Busqueda Consolidado Despacho</h6>
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -748,7 +724,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -758,7 +734,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetConsolidadoDespacho"
@@ -768,24 +744,24 @@
                                 >Busqueda Consolidado</vs-button
                             >
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-full mt-2">
                             <h6>Busqueda Covid 19</h6>
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Inicial</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniCO"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterCO"
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -795,7 +771,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -805,7 +781,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/5 mt-5">
+                        <div class="vx-col w-1/5 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetConsolidadoDespachoCovid"
@@ -815,24 +791,21 @@
                                 >Busqueda Covid</vs-button
                             >
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-full mt-2">
                             <h6>Busqueda Consolidado/Servicio</h6>
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Codigo Inicial</h6>
-                            <vs-input
-                                class="inputx w-full  "
-                                v-model="codiniC"
-                            />
+                            <vs-input class="inputx w-full" v-model="codiniC" />
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterC"
                             />
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Fecha Inicio</h6>
                             <flat-pickr
                                 :config="configFromdateTimePicker"
@@ -842,7 +815,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Fecha Termino</h6>
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -852,7 +825,7 @@
                                 class="w-full "
                             />
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>Seleccione Servicio</h6>
                             <v-select
                                 v-model="seleccionServicios"
@@ -862,7 +835,7 @@
                                 :options="listadoServicios"
                             ></v-select>
                         </div>
-                        <div class="vx-col w-1/6 mt-5">
+                        <div class="vx-col w-1/6 mt-2">
                             <h6>.</h6>
                             <vs-button
                                 @click="GetConsolidadoDespachoS"
@@ -881,7 +854,6 @@
                                 class="w-full"
                                 :columns="column"
                                 :rows="listadoGeneral"
-                                :pagination-options="PageOptions"
                                 styleClass="vgt-table condensed bordered"
                             >
                                 <template slot="table-row" slot-scope="props">
@@ -927,41 +899,39 @@
                             </vue-good-table>
                         </div>
                     </vx-card>
-                    <div class="vx-row"></div>
                 </div>
             </vx-card>
-            <div class="vx-row"></div>
         </div>
         <vs-popup
             classContent="Bincard"
             title="Bincard"
             :active.sync="popUpBincard"
         >
-            <div class="vx-col md:w-1/1 w-full mb-base">
+            <div
+                class="vx-col md:w-1/1 w-full mb-base"
+                style="line-height: 0.8; font-size: 12px;"
+            >
                 <vx-card title="">
-                    <div class="vx-row">
-                        <vue-good-table
-                            :columns="columnBincard"
-                            :rows="listaBincard"
-                            :pagination-options="PageOptions"
-                            styleClass="vgt-table condensed bordered"
-                        >
-                            <template slot="table-row" slot-scope="props">
-                                <!-- Column: Name -->
-                                <span
-                                    v-if="props.column.field === 'fullName'"
-                                    class="text-nowrap"
-                                >
-                                </span>
-                                <!-- Column: Common -->
-                                <span v-else>
-                                    {{ props.formattedRow[props.column.field] }}
-                                </span>
-                            </template>
-                        </vue-good-table>
-                    </div>
+                    <vue-good-table
+                        :columns="columnBincard"
+                        :rows="listaBincard"
+                        :pagination-options="PageOptions"
+                        styleClass="vgt-table condensed bordered"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template>
+                    </vue-good-table>
                 </vx-card>
-                <div class="vx-row"></div>
             </div>
         </vs-popup>
         <vs-popup
@@ -969,31 +939,31 @@
             title="BincardPMP"
             :active.sync="popUpBincardPMP"
         >
-            <div class="vx-col md:w-1/1 w-full mb-base">
+            <div
+                class="vx-col md:w-1/1 w-full mb-base"
+                style="line-height: 0.8; font-size: 12px;"
+            >
                 <vx-card title="">
-                    <div class="vx-row">
-                        <vue-good-table
-                            :columns="columnBincard"
-                            :rows="listaBincard"
-                            :pagination-options="PageOptions"
-                            styleClass="vgt-table condensed bordered"
-                        >
-                            <template slot="table-row" slot-scope="props">
-                                <!-- Column: Name -->
-                                <span
-                                    v-if="props.column.field === 'fullName'"
-                                    class="text-nowrap"
-                                >
-                                </span>
-                                <!-- Column: Common -->
-                                <span v-else>
-                                    {{ props.formattedRow[props.column.field] }}
-                                </span>
-                            </template>
-                        </vue-good-table>
-                    </div>
+                    <vue-good-table
+                        :columns="columnBincard"
+                        :rows="listaBincard"
+                        :pagination-options="PageOptions"
+                        styleClass="vgt-table condensed bordered"
+                    >
+                        <template slot="table-row" slot-scope="props">
+                            <!-- Column: Name -->
+                            <span
+                                v-if="props.column.field === 'fullName'"
+                                class="text-nowrap"
+                            >
+                            </span>
+                            <!-- Column: Common -->
+                            <span v-else>
+                                {{ props.formattedRow[props.column.field] }}
+                            </span>
+                        </template>
+                    </vue-good-table>
                 </vx-card>
-                <div class="vx-row"></div>
             </div>
         </vs-popup>
     </div>
@@ -1071,14 +1041,21 @@ export default {
             fechaTerminoFE: null,
             saldopmp: false,
             saldoGeneral: false,
+            codbus: "",
             codini: "",
             codter: "",
             codiniC: "",
             codterC: "",
             codiniCO: "",
             codterCO: "",
+            codinisal: "",
+            codinisalv: "",
             idActBin: 1,
             idMod: 0,
+            seleccionBodega: {
+                id: 0,
+                descripcionBodega: ""
+            },
             seleccionReporte: {
                 id: 0,
                 descripcionReporte: "Ej. Bincard"
@@ -1112,6 +1089,7 @@ export default {
             listadoGeneral: [],
             listaBincard: [],
             listadoServicios: [],
+            listaBodega: [],
             listadoReportes: store.state.listadoReportes,
             listadoMes: store.state.listadoMes
         };
@@ -1206,18 +1184,19 @@ export default {
                 this.listaActive = true;
                 this.consumoanio = false;
                 this.consumomes = false;
+                this.listadoGeneral = [];
                 this.limpiar();
                 this.columnBincard = [];
                 this.columnBincard = store.state.columnBincardGeneral;
                 if (this.seleccionReporte.id == 1) {
                     this.ListadoVistas();
                     this.saldoGeneral = true;
-                    this.GetSaldos();
+                    //this.GetSaldos();
                 } else if (this.seleccionReporte.id == 3) {
                     this.column = store.state.columnBincardInicial;
-                    this.bincardTipo = true;
                     this.ListadoVistas();
-                    this.GetSaldoArticulos(1);
+                    this.bincardTipo = true;
+                    //this.GetSaldoArticulos(1);
                 } else if (this.seleccionReporte.id == 4) {
                     this.ListadoVistas();
                     this.consumoanio = true;
@@ -1240,7 +1219,7 @@ export default {
                     this.ListadoVistas();
                     this.saldopmp = true;
                     this.column = store.state.columnSaldoPmp;
-                    this.GetSaldoValorizadoPMP();
+                    //this.GetSaldoValorizadoPMP();
                 } else if (this.seleccionReporte.id == 11) {
                     this.ListadoVistas();
                     this.despachoxservicio = true;
@@ -1265,6 +1244,32 @@ export default {
             }
         },
         //Metodos CRUD
+        TraerBodega() {
+            try {
+                axios
+                    .get(this.localVal + "/api/Mantenedor/GetBodega", {
+                        headers: {
+                            Authorization:
+                                `Bearer ` + localStorage.getItem("token")
+                        }
+                    })
+                    .then(res => {
+                        this.listaBodega = res.data;
+                        if (this.listaBodega.length < 0) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No hay datos o no se cargaron los datos de las Bodegas correctamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         TraerServicio() {
             try {
                 axios
@@ -1308,10 +1313,14 @@ export default {
             this.idActBin = idAction;
             try {
                 if (this.idActBin == 1) {
+                    let data = {
+                        CODBUS: this.codbus
+                    };
                     axios
-                        .get(
+                        .post(
                             this.localVal +
                                 "/api/Reportes/GetArticulosSaldoEstado",
+                            data,
                             {
                                 headers: {
                                     Authorization:
@@ -2183,13 +2192,20 @@ export default {
         },
         GetSaldos() {
             try {
+                let data = {
+                    CODSAL: this.codinisal
+                };
                 axios
-                    .get(this.localVal + "/api/Reportes/GetSaldosReporte", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
+                    .post(
+                        this.localVal + "/api/Reportes/GetSaldosReporte",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + localStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         this.listadoGeneral = res.data;
                         this.limpiar();
@@ -2296,7 +2312,7 @@ export default {
                     ),
                     CODINI: this.codiniC,
                     CODTER: this.codterC,
-                    idServicio: this.seleccionServicios.id
+                    NOMSER: this.seleccionServicios.descripcionServicio
                 };
                 axios
                     .post(
@@ -2357,15 +2373,15 @@ export default {
         GetConsolidadoDespachoS() {
             try {
                 let data = {
-                    FECINI: moment(this.fechaInicio, "DD-MM-YYYY").format(
+                    FECINI: moment(this.fechaInicioF, "DD-MM-YYYY").format(
                         "YYYY-MM-DD"
                     ),
-                    FECTER: moment(this.fechaTermino, "DD-MM-YYYY").format(
+                    FECTER: moment(this.fechaTerminoF, "DD-MM-YYYY").format(
                         "YYYY-MM-DD"
                     ),
-                    CODINI: this.codini,
-                    CODTER: this.codter,
-                    idServicio: this.seleccionServicios.id
+                    CODINI: this.codiniC,
+                    CODTER: this.codterC,
+                    NOMSER: this.seleccionServicios.descripcionServicio
                 };
                 axios
                     .post(
@@ -2434,10 +2450,12 @@ export default {
         },
         GetSaldoValorizado() {
             try {
+                let data = { CODSALV: this.codinisalv };
                 axios
-                    .get(
+                    .post(
                         this.localVal +
                             "/api/Reportes/GetSaldosValorizadoReporte",
+                        data,
                         {
                             headers: {
                                 Authorization:
@@ -2547,7 +2565,7 @@ export default {
                 console.log(error);
             }
         },
-        GetSaldoValorizadoPMPFarmacia() {
+        GetSaldoValorizadoPMPBodega() {
             try {
                 let data = {
                     FECINI: moment(this.fechaInicioF, "DD-MM-YYYY").format(
@@ -2555,13 +2573,14 @@ export default {
                     ),
                     FECTER: moment(this.fechaTerminoF, "DD-MM-YYYY").format(
                         "YYYY-MM-DD"
-                    )
+                    ),
+                    BODEGA: this.seleccionBodega.id
                 };
                 axios
                     .all([
                         axios.post(
                             this.localVal +
-                                "/api/Reportes/GetSaldoValorizadoPFarmacia",
+                                "/api/Reportes/GetSaldoValorizadoPBodega",
                             data,
                             {
                                 headers: {
@@ -2573,7 +2592,7 @@ export default {
                         ),
                         axios.post(
                             this.localVal +
-                                "/api/Reportes/GetSaldosValorizadoPMPFarmacia",
+                                "/api/Reportes/GetSaldosValorizadoPMPBodega",
                             data,
                             {
                                 headers: {
@@ -2884,6 +2903,7 @@ export default {
     beforeMount() {
         this.RefreshToken();
         setTimeout(() => {
+            this.TraerBodega();
             this.TraerServicio();
         }, 2000);
     }

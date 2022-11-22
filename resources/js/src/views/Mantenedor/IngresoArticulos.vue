@@ -30,7 +30,6 @@
                             :columns="columns"
                             :rows="rows"
                             :pagination-options="PageOptions"
-                            
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -68,7 +67,8 @@
                                                 props.row.NOMFAM5,
                                                 props.row.idACT_FECVEN,
                                                 props.row.idACTLOTE,
-                                                props.row.NOMARCH
+                                                props.row.NOMARCH,
+                                                props.row.PRECIO_BASE
                                             )
                                         "
                                     ></plus-circle-icon>
@@ -96,7 +96,8 @@
                                                 props.row.NOMFAM4,
                                                 props.row.NOMFAM5,
                                                 props.row.idACT_FECVEN,
-                                                props.row.idACTLOTE
+                                                props.row.idACTLOTE,
+                                                props.row.PRECIO_BASE
                                             )
                                         "
                                     ></plus-circle-icon>
@@ -126,7 +127,6 @@
                             :columns="columnsMed"
                             :rows="rows"
                             :pagination-options="PageOptions"
-                            
                         >
                             <template slot="table-row" slot-scope="props">
                                 <!-- Column: Name -->
@@ -165,7 +165,8 @@
                                                 props.row.CANTXENB,
                                                 props.row.idACT_FECVEN,
                                                 props.row.idACTLOTE,
-                                                props.row.NOMARCH
+                                                props.row.NOMARCH,
+                                                props.row.PRECIO_BASE
                                             )
                                         "
                                     ></plus-circle-icon>
@@ -194,7 +195,8 @@
                                                 props.row.LABORATORIO,
                                                 props.row.CANTXENB,
                                                 props.row.idACT_FECVEN,
-                                                props.row.idACTLOTE
+                                                props.row.idACTLOTE,
+                                                props.row.PRECIO_BASE
                                             )
                                         "
                                     ></plus-circle-icon>
@@ -666,7 +668,7 @@
                                     v-model="ubicacion"
                                 />
                             </div>
-                            <div class="vx-col w-full mt-5">
+                            <div class="vx-col w-1/2 mt-5">
                                 <h6>Activacion Covid 19</h6>
 
                                 <v-select
@@ -820,7 +822,6 @@
                                     :columns="col"
                                     :rows="listaCodNuevo"
                                     :pagination-options="PageOptions"
-                                    
                                 >
                                     <template
                                         slot="table-row"
@@ -1461,7 +1462,6 @@
                                     :columns="colMed"
                                     :rows="listaCodNuevo"
                                     :pagination-options="PageOptions"
-                                    
                                 >
                                     <template
                                         slot="table-row"
@@ -1600,6 +1600,7 @@ export default {
             //Datos Locales - Variables de Entorno
             localVal: process.env.MIX_APP_URL,
             localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
+            externalVal: process.env.MIX_APP_URL_PA,
             editorOption: {
                 modules: {
                     toolbar: [
@@ -1625,28 +1626,28 @@ export default {
             popUpArticuloGeneralMod: false,
             popUpCodArticuloGeneral: false,
             popUpModificarCodigo: false,
-            codigoBarra: "",
-            codigoBarraOriginal: "",
-            codigoOnu: "",
-            codigoTrack: "",
-            codigoArticulo: "",
-            nombre: "",
-            generico: "",
-            categoriaFarmacia: "",
-            laboratorio: "",
-            idEstado: "",
-            concentracion: "",
+            codigoBarra: "-",
+            codigoBarraOriginal: "-",
+            codigoOnu: "-",
+            codigoTrack: "-",
+            codigoArticulo: "-",
+            nombre: "-",
+            generico: "-",
+            categoriaFarmacia: "-",
+            laboratorio: "-",
+            idEstado: "-",
+            concentracion: "-",
             actFechaVencimiento: false,
             actLoteSerie: false,
             medicamento: false,
             articulosgen: false,
-            cantidadEmbalaje: "",
-            idBodega: "",
-            idZona: "",
-            sector: "",
-            ubicacion: "",
+            cantidadEmbalaje: 1,
+            idBodega: "-",
+            idZona: "-",
+            sector: "-",
+            ubicacion: "-",
             hover: "blur",
-            zgen: "",
+            zgen: "-",
             precio_base: 0,
             unidadMedidaBase: "",
             image: null,
@@ -1799,15 +1800,15 @@ export default {
         },
         limpiarCampos() {
             try {
-                this.codigoBarra = "";
-                this.codigoTrack = "";
-                this.codigoOnu = "";
-                this.codigoArticulo = "";
-                this.generico = "";
-                this.categoriaFarmacia = "";
-                this.nombre = "";
-                this.concentracion = "";
-                this.laboratorio = "";
+                this.codigoBarra = "-";
+                this.codigoTrack = "-";
+                this.codigoOnu = "-";
+                this.codigoArticulo = "-";
+                this.generico = "-";
+                this.categoriaFarmacia = "-";
+                this.nombre = "-";
+                this.concentracion = "-";
+                this.laboratorio = "-";
                 this.seleccionEstado = {
                     id: 1,
                     descripcionEstado: "Activo"
@@ -1820,15 +1821,15 @@ export default {
                     id: 1,
                     descripcionLoteSerie: "Si"
                 };
-                this.cantidadEmbalaje = "";
+                this.cantidadEmbalaje = 1;
                 this.idZona = 0;
                 this.seleccionZona = {
                     id: 1,
                     descripcionZonas: "A"
                 };
-                this.sector = "";
-                this.ubicacion = "";
-                this.zgen = "";
+                this.sector = "-";
+                this.ubicacion = "-";
+                this.zgen = "-";
                 this.seleccionFamilia1 = {
                     id: 0,
                     descripcionFamilia: "",
@@ -1854,7 +1855,7 @@ export default {
                     descripcionFamilia: "",
                     idDesFam03: 0
                 };
-                this.unidadMedidaBase = "";
+                this.unidadMedidaBase = "-";
                 this.idMod = 0;
                 this.precio_base = 0;
             } catch (error) {
@@ -2052,7 +2053,8 @@ export default {
             NOMFAM5,
             idACT_FECVEN,
             idACTLOTE,
-            NOMARCH
+            NOMARCH,
+            PRECIO_BASE
         ) {
             try {
                 this.limpiarCampos();
@@ -2064,6 +2066,7 @@ export default {
                 this.nombre = NOMBRE;
                 this.nomarchivo = NOMARCH;
                 let c = this.listaEstado;
+                this.precio_base = PRECIO_BASE;
 
                 c.forEach((value, index) => {
                     if (idEstado == value.id) {
@@ -2206,7 +2209,8 @@ export default {
             NOMFAM4,
             NOMFAM5,
             idACT_FECVEN,
-            idACTLOTE
+            idACTLOTE,
+            PRECIO_BASE
         ) {
             try {
                 this.limpiarCampos();
@@ -2216,6 +2220,7 @@ export default {
                 this.codigoArticulo = CODART;
                 this.nombre = NOMBRE;
                 let c = this.listaEstado;
+                this.precio_base = PRECIO_BASE;
                 c.forEach((value, index) => {
                     if (idEstado == value.id) {
                         this.seleccionEstado.id = value.id;
@@ -2850,6 +2855,116 @@ export default {
                 console.log(error);
             }
         },
+        //Metodos para Agregar Datos
+        AgregarListaPresupuesto(
+            codart,
+            nombre,
+            unimed,
+            precio,
+            idEstado,
+            idBodega
+        ) {
+            try {
+                let data = {
+                    CODART: codart,
+                    NOMBRE: nombre,
+                    UNIMED: unimed,
+                    PRECIO: parseFloat(precio),
+                    PRE_PROM: parseFloat(precio),
+                    idEstado: idEstado,
+                    idBodega: idBodega
+                };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.externalVal + "/api/Mantenedor/PostArticulos",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` +
+                                    localStorage.getItem("token_externo")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text:
+                                    "Articulo Registrado Correctamente En Plan Anual",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        } else {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Error",
+                                text:
+                                    "No fue posible registrar el articulo,intentelo nuevamente",
+                                color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        ModificarArticuloExterno(
+            codart,
+            nombre,
+            unimed,
+            precio,
+            idEstado,
+            idBodega
+        ) {
+            try {
+                let data = {
+                    CODART: codart,
+                    NOMBRE: nombre,
+                    UNIMED: unimed,
+                    PRECIO: parseFloat(precio),
+                    PRE_PROM: parseFloat(precio),
+                    idEstado: idEstado,
+                    idBodega: idBodega
+                };
+
+                const dat = data;
+
+                axios
+                    .post(
+                        this.externalVal +
+                            "/api/Mantenedor/PutArticulosExterno",
+                        dat,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` +
+                                    localStorage.getItem("token_externo")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        if (solicitudServer == true) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Completado",
+                                text: "Articulo Modificado Correctamente En PA",
+                                color: "success",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         AgregarArticulosGenerales() {
             try {
                 if (this.seleccionBodega.id == 0) {
@@ -3008,15 +3123,23 @@ export default {
                                         .then(res => {
                                             const solicitudServer = res.data;
                                             if (solicitudServer == true) {
-                                                this.limpiarCampos();
                                                 this.$vs.notify({
                                                     time: 5000,
                                                     title: "Completado",
                                                     text:
-                                                        "Economato Ingresado Correctamente",
+                                                        "Articulo Ingresado Correctamente",
                                                     color: "success",
                                                     position: "top-right"
                                                 });
+                                                this.AgregarListaPresupuesto(
+                                                    this.codigoArticulo,
+                                                    this.nombre.toUpperCase(),
+                                                    this.unidadMedidaBase.toUpperCase(),
+                                                    this.precio_base,
+                                                    this.seleccionEstado.id,
+                                                    this.seleccionBodega.id
+                                                );
+                                                this.limpiarCampos();
                                                 this.popUpArticuloGeneral = false;
                                                 this.TraerProductos();
                                                 this.cargaItemBodega();
@@ -3084,15 +3207,23 @@ export default {
                             .then(res => {
                                 const solicitudServer = res.data;
                                 if (solicitudServer == true) {
-                                    this.limpiarCampos();
                                     this.$vs.notify({
                                         time: 5000,
                                         title: "Completado",
                                         text:
-                                            "Economato Ingresado Correctamente",
+                                            "Articulo Ingresado Correctamente",
                                         color: "success",
                                         position: "top-right"
                                     });
+                                    this.AgregarListaPresupuesto(
+                                        this.codigoArticulo,
+                                        this.nombre.toUpperCase(),
+                                        this.unidadMedidaBase.toUpperCase(),
+                                        this.precio_base,
+                                        this.seleccionEstado.id,
+                                        this.seleccionBodega.id
+                                    );
+                                    this.limpiarCampos();
                                     this.popUpArticuloGeneral = false;
                                     this.TraerProductos();
                                     this.cargaItemBodega();
@@ -3287,7 +3418,6 @@ export default {
                                         .then(res => {
                                             const solicitudServer = res.data;
                                             if (solicitudServer == true) {
-                                                this.limpiarCampos();
                                                 this.$vs.notify({
                                                     time: 5000,
                                                     title: "Completado",
@@ -3296,6 +3426,15 @@ export default {
                                                     color: "success",
                                                     position: "top-right"
                                                 });
+                                                this.ModificarArticuloExterno(
+                                                    this.codigoArticulo,
+                                                    this.nombre.toUpperCase(),
+                                                    this.unidadMedidaBase.toUpperCase(),
+                                                    this.precio_base,
+                                                    this.seleccionEstado.id,
+                                                    this.seleccionBodega.id
+                                                );
+                                                this.limpiarCampos();
                                                 this.popUpArticuloGeneralMod = false;
                                                 this.TraerProductos();
                                                 this.cargaItemBodega();
@@ -3371,7 +3510,6 @@ export default {
                             .then(res => {
                                 const solicitudServer = res.data;
                                 if (solicitudServer == true) {
-                                    this.limpiarCampos();
                                     this.$vs.notify({
                                         time: 5000,
                                         title: "Completado",
@@ -3380,6 +3518,15 @@ export default {
                                         color: "success",
                                         position: "top-right"
                                     });
+                                    this.ModificarArticuloExterno(
+                                        this.codigoArticulo,
+                                        this.nombre.toUpperCase(),
+                                        this.unidadMedidaBase.toUpperCase(),
+                                        this.precio_base,
+                                        this.seleccionEstado.id,
+                                        this.seleccionBodega.id
+                                    );
+                                    this.limpiarCampos();
                                     this.popUpArticuloGeneral = false;
                                     this.TraerProductos();
                                     this.cargaItemBodega();
@@ -3724,6 +3871,14 @@ export default {
                                                     color: "success",
                                                     position: "top-right"
                                                 });
+                                                this.AgregarListaPresupuesto(
+                                                    this.codigoArticulo,
+                                                    this.nombre.toUpperCase(),
+                                                    this.unidadMedidaBase.toUpperCase(),
+                                                    this.precio_base,
+                                                    this.seleccionEstado.id,
+                                                    this.seleccionBodega.id
+                                                );
                                                 this.popUpMedicamento = false;
                                                 this.TraerProductos();
                                                 setTimeout(() => {
@@ -3809,6 +3964,14 @@ export default {
                                         color: "success",
                                         position: "top-right"
                                     });
+                                    this.AgregarListaPresupuesto(
+                                        this.codigoArticulo,
+                                        this.nombre.toUpperCase(),
+                                        this.unidadMedidaBase.toUpperCase(),
+                                        this.precio_base,
+                                        this.seleccionEstado.id,
+                                        this.seleccionBodega.id
+                                    );
                                     this.popUpMedicamento = false;
                                     this.TraerProductos();
                                     setTimeout(() => {
@@ -3965,6 +4128,14 @@ export default {
                                                     color: "success",
                                                     position: "top-right"
                                                 });
+                                                this.ModificarArticuloExterno(
+                                                    this.codigoArticulo,
+                                                    this.nombre.toUpperCase(),
+                                                    this.unidadMedidaBase.toUpperCase(),
+                                                    this.precio_base,
+                                                    this.seleccionEstado.id,
+                                                    this.seleccionBodega.id
+                                                );
                                                 this.popUpMedicamentoMod = false;
                                                 this.TraerProductos();
                                                 setTimeout(() => {
@@ -4052,6 +4223,14 @@ export default {
                                         color: "success",
                                         position: "top-right"
                                     });
+                                    this.ModificarArticuloExterno(
+                                        this.codigoArticulo,
+                                        this.nombre.toUpperCase(),
+                                        this.unidadMedidaBase.toUpperCase(),
+                                        this.precio_base,
+                                        this.seleccionEstado.id,
+                                        this.seleccionBodega.id
+                                    );
                                     this.popUpMedicamentoMod = false;
                                     this.TraerProductos();
                                     setTimeout(() => {

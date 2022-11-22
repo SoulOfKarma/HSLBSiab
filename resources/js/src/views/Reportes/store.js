@@ -1328,7 +1328,7 @@ export default new Vuex.Store({
             },
             {
                 label: "Servicio",
-                field: "descripcionServicio",
+                field: "NOMSER",
                 filterOptions: {
                     enabled: true
                 }

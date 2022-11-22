@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\App;
 
 class Reportes extends Controller
 {
-    public function GetSaldosReporte(){
+    public function GetSaldosReporte(Request $request){
         try {
-            $get = DB::select('select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN FROM
+            $get = DB::select("select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN FROM
             (
             select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = t.LOTE && 
                         despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
@@ -24,14 +24,14 @@ class Reportes extends Controller
                                      AS saldoCorrecto,
                                                 t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN
                                                     from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
-                                                  COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
+                                                  COALESCE(recepcion_detalles.LOTE,'No tiene LOTE') AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
                                                   from recepcion_detalles 
                                                   group by NOMBRE,LOTE,UNIMED,CODART
                                           
                                                   union all
                                           
                                                   select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
-                                                   COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART                                      
+                                                   COALESCE(saldo_inventario.LOTE,'No tiene LOTE') AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART                                      
                                                   from saldo_inventario 
                                                   group by NOMBRE,LOTE,UNIMED,CODART
                                                   
@@ -40,15 +40,15 @@ class Reportes extends Controller
                                           
                                            UNION ALL 
                                                   
-                                                  SELECT 0 AS saldo,siab_articulo.NOMBRE AS NOMBRE,"No tiene LOTE" AS LOTE,siab_articulo.UNIMEDBASE AS UNIMED,
+                                                  SELECT 0 AS saldo,siab_articulo.NOMBRE AS NOMBRE,'No tiene LOTE' AS LOTE,siab_articulo.UNIMEDBASE AS UNIMED,
             siab_articulo.CODART AS CODART, siab_articulo.ZGEN AS ZGEN
             FROM siab_articulo
             
             ) a
-            
+            WHERE a.CODART LIKE '%".$request->CODSAL."%' || a.NOMBRE LIKE '%".$request->CODSAL."%'
             group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN
             ORDER BY a.CODART ASC
-            ');
+            ");
             return $get;
         } catch (\Throwable $th) {
             log::info($th);
@@ -56,9 +56,9 @@ class Reportes extends Controller
         }    
     }
 
-    public function GetSaldosValorizadoReporte(){
+    public function GetSaldosValorizadoReporte(Request $request){
         try {
-            $get = DB::select('select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.TOTAL FROM
+            $get = DB::select("select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.TOTAL FROM
             (
             select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.NOMART = t.NOMBRE && 
                         despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
@@ -74,7 +74,7 @@ class Reportes extends Controller
                                                             FROM recepcion_detalles LEFT JOIN saldo_inventario ON recepcion_detalles.CODART = saldo_inventario.CODART
                                                             WHERE recepcion_detalles.CODART = t.CODART)),2) AS TOTAL
                                                     from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
-                                                  recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
+                                                  recepcion_detalles.CODBAR AS CODBAR,COALESCE(recepcion_detalles.LOTE,'No tiene LOTE') AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART,
                                                   recepcion_detalles.PREUNI AS PREUNI
                                                   from recepcion_detalles 
                                                   group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI
@@ -82,7 +82,7 @@ class Reportes extends Controller
                                                   union all
                                           
                                                   select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
-                                                   saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
+                                                   saldo_inventario.CODART_BARR AS CODBAR,COALESCE(saldo_inventario.LOTE,'No tiene LOTE') AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART,
                                                    saldo_inventario.PRECIO AS PREUNI
                                                   from saldo_inventario 
                                                   group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI                         
@@ -97,10 +97,10 @@ class Reportes extends Controller
             FROM siab_articulo
             
             ) a
-            
+            WHERE a.CODART LIKE '%".$request->CODSALV."%' || a.NOMBRE LIKE '%".$request->CODSALV."%'
             group by a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.TOTAL
             ORDER BY a.CODART ASC
-            ');
+            ");
             return $get;
         } catch (\Throwable $th) {
             log::info($th);
@@ -416,7 +416,7 @@ class Reportes extends Controller
 
     //Busqueda Farmacia Por Fecha
 
-    public function GetSaldoValorizadoPFarmacia(Request $request){
+    public function GetSaldoValorizadoPBodega(Request $request){
         try {
             $get = DB::select('select a.CODART,a.NOMBRE,a.UNIMED,ROUND(SUM(a.saldoCorrecto),0) AS saldoCorrecto,ROUND(a.ULTPRE,0) AS ULTPRE,ROUND(a.MINPRE,0) AS MINPRE,a.TOTAL AS TOTAL
             FROM
@@ -442,7 +442,7 @@ class Reportes extends Controller
                                                               recepcion_detalles.PREUNI AS PREUNI,
                                                               ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP
                                                               from recepcion_detalles
-                                                              WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'" && recepcion_detalles.idBodega = "'.$request->BODEGA.'"
                                                               group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI
                                                       
                                                               union all
@@ -452,7 +452,7 @@ class Reportes extends Controller
                                                                saldo_inventario.PRECIO AS PREUNI,
                                                                ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP
                                                               from saldo_inventario
-                                                              WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+                                                              WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'" && saldo_inventario.idBodega = "'.$request->BODEGA.'"
                                                               group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,PREUNI                         
                                                               ) t
                                                       group by t.NOMBRE,t.UNIMED,t.CODART,ULTPRE,t.CODBAR
@@ -465,7 +465,7 @@ class Reportes extends Controller
                         FROM siab_articulo
                         
                         ) a
-                        WHERE saldoCorrecto > 0 && a.CODART BETWEEN "2110000" and "3470066"
+                        WHERE saldoCorrecto > 0
                         group by a.NOMBRE,a.UNIMED,a.CODART,a.ULTPRE,a.MINPRE,a.TOTAL
                         ORDER BY a.CODART ASC
             ');
@@ -476,21 +476,20 @@ class Reportes extends Controller
         }    
     }
 
-    public function GetSaldosValorizadoPMPFarmacia(Request $request){
+    public function GetSaldosValorizadoPMPBodega(Request $request){
         try {
             $get = DB::select('select SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0) AS CANTOT,SUM(t.PMP) AS PMP,ROUND((SUM(t.CANTOT)- COALESCE((SELECT SUM(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.CODART = t.CODART),0))*SUM(t.PMP),0) AS VALTOT,t.CODART AS CODART from
             (SELECT ROUND(SUM(recepcion_detalles.CANREC),0) AS CANTOT,
             ROUND(ROUND(SUM(recepcion_detalles.VALTOT),0)/ROUND(SUM(recepcion_detalles.CANREC),0),1) AS PMP,recepcion_detalles.CODART AS CODART FROM recepcion_detalles
-            WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            WHERE recepcion_detalles.FECDES BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'" && recepcion_detalles.idBodega = "'.$request->BODEGA.'"
             GROUP BY CODART
             
             UNION ALL
             
             SELECT ROUND(SUM(saldo_inventario.SALDO),0) AS CANTOT,
             ROUND(ROUND(SUM(saldo_inventario.SALDO*saldo_inventario.PRECIO),0)/ROUND(SUM(saldo_inventario.SALDO),0),1) AS PMP,saldo_inventario.CODART AS CODART FROM saldo_inventario
-            WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'"
+            WHERE saldo_inventario.created_at BETWEEN "'.$request->FECINI.'" AND "'.$request->FECTER.'" && saldo_inventario.idBodega = "'.$request->BODEGA.'"
             GROUP BY CODART) t
-            WHERE t.CODART BETWEEN "2110000" and "3470066"
             GROUP BY t.CODART 
             ');
             return $get;
@@ -664,9 +663,9 @@ class Reportes extends Controller
         }    
     }
 
-    public function GetArticulosSaldoEstado(){
+    public function GetArticulosSaldoEstado(Request $request){
         try {
-            $get = DB::select('select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
+            $get = DB::select("select SUM(a.saldoCorrecto) AS saldoCorrecto,a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
             FROM (select (SUM(t.saldo) - COALESCE((SELECT sum(despacho_detalles.CANTIDAD) FROM despacho_detalles WHERE despacho_detalles.LOTE = t.LOTE && 
                         despacho_detalles.CODMOT IS NULL && despacho_detalles.FOLIO IS NOT NULL
                         GROUP BY despacho_detalles.LOTE),0))
@@ -674,14 +673,14 @@ class Reportes extends Controller
                                                 t.NOMBRE,t.LOTE,t.UNIMED,t.CODART,(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS ZGEN,
                                                 (SELECT auth_estados.descripcionEstado FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id WHERE t.CODART = siab_articulo.CODART LIMIT 1) AS Estado
                                                     from (select SUM(recepcion_detalles.CANREC) as saldo, recepcion_detalles.PRODUCTO AS NOMBRE,
-                                                  COALESCE(recepcion_detalles.LOTE,"No tiene LOTE") AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
+                                                  COALESCE(recepcion_detalles.LOTE,'No tiene LOTE') AS LOTE,recepcion_detalles.UNIMED AS UNIMED,recepcion_detalles.CODART AS CODART
                                                   from recepcion_detalles
                                                   group by NOMBRE,LOTE,UNIMED,CODART
                                           
                                                   union all
                                           
                                                   select SUM(saldo_inventario.SALDO) as saldo, saldo_inventario.NOMBRE AS NOMBRE,
-                                                  COALESCE(saldo_inventario.LOTE,"No tiene LOTE") AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART
+                                                  COALESCE(saldo_inventario.LOTE,'No tiene LOTE') AS LOTE,saldo_inventario.UNIMEDBASE AS UNIMED,saldo_inventario.CODART AS CODART
                                                   from saldo_inventario
                                                   group by NOMBRE,LOTE,UNIMED,CODART                         
                                                   ) t
@@ -689,13 +688,14 @@ class Reportes extends Controller
                                           
                                           UNION ALL 
                                           
-              SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,"No tiene LOTE" AS LOTE,siab_articulo.UNIMEDBASE AS UNIMED,
+              SELECT 0 AS saldoCorrecto,siab_articulo.NOMBRE AS NOMBRE,'No tiene LOTE' AS LOTE,siab_articulo.UNIMEDBASE AS UNIMED,
                siab_articulo.CODART AS CODART,siab_articulo.ZGEN AS ZGEN,auth_estados.descripcionEstado AS Estado
                FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id
             )a 
+            WHERE a.CODART LIKE '%".$request->CODBUS."%' || a.NOMBRE LIKE '%".$request->CODBUS."%'      
             group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
             ORDER BY a.CODART ASC
-            ');
+            ");
             return $get;
         } catch (\Throwable $th) {
             log::info($th);
@@ -867,6 +867,7 @@ class Reportes extends Controller
             'despacho_detalles.NOMSER AS descripcionServicio',DB::raw('(SELECT siab_articulo.ZGEN FROM siab_articulo WHERE siab_articulo.CODART = despacho_detalles.CODART LIMIT 1) as ZGEN'),
             DB::raw('COALESCE(SUM(despacho_detalles.CANTIDAD),0) AS CONSUMO'))
             ->whereRaw('DATE_FORMAT(despacho_detalles.FECDES,"%m") = "'.$request->MES.'"')
+            ->where('despacho_detalles.NOMSER',$request->NOMSER)
             ->whereBetween('despacho_detalles.CODART', [$request->CODINI, $request->CODTER])
             ->groupBy('despacho_detalles.NOMART','despacho_detalles.CODART','despacho_detalles.UNIMED','despacho_detalles.NOMSER')
             ->get();

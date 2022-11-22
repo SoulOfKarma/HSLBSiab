@@ -50,6 +50,7 @@ class CreateRecepcionDetallesTable extends Migration
             $table->string('CODMOT')->nullable();
             $table->string('NOMMOT')->nullable();
             $table->string('CODINT2')->nullable();
+            $table->bigInteger('idBodega')->nullable();
             $table->timestamps();
         });
     }

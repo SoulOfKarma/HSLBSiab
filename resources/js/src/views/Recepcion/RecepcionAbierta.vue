@@ -1820,7 +1820,7 @@ export default {
                 }
 
                 this.cantidadEmbalaje = CANTXENB;
-                this.idBodega = 0;
+                this.idBodega = idBodega;
 
                 c = this.listaBodega;
 
@@ -2477,7 +2477,8 @@ export default {
                                     .descripcionServicio,
                                 NUMLIBPED: this.numeroLibroPedido,
                                 TIPRECEPCION: this.tiporecepcion,
-                                TIPORD: this.seleccionTipoCompra.NOMTIPCOM
+                                TIPORD: this.seleccionTipoCompra.NOMTIPCOM,
+                                idBodega: this.idBodega
                             };
                             const dat = data;
 
@@ -2581,7 +2582,8 @@ export default {
                             NOMSER: this.seleccionServicio.descripcionServicio,
                             NUMLIBPED: this.numeroLibroPedido,
                             TIPRECEPCION: this.tiporecepcion,
-                            TIPORD: this.seleccionTipoCompra.NOMTIPCOM
+                            TIPORD: this.seleccionTipoCompra.NOMTIPCOM,
+                            idBodega: this.idBodega
                         };
                         const dat = data;
 
@@ -2807,6 +2809,7 @@ export default {
         },
         CerrarRecepcion() {
             try {
+                this.TraerUltimoNFolio();
                 this.TraerUltimoNFolioDespacho();
                 this.TraerUltimoNInternoDespacho();
 

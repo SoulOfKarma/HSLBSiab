@@ -36,8 +36,8 @@ class DespachosController extends Controller
                                       from saldo_inventario 
                                       group by NOMBRE,CODBAR,LOTE,UNIMED,CODART,diasVencimiento,fechaVencimiento,PREUNI                          
                                       ) t
-                                      WHERE t.CODART LIKE '".$request->DATO."%' || t.CODBAR LIKE '".$request->DATO."%' || 
-                                      t.NOMBRE LIKE '".$request->DATO."%'        
+                                      WHERE t.CODART LIKE '%".$request->DATO."%' || t.CODBAR LIKE '%".$request->DATO."%' || 
+                                      t.NOMBRE LIKE '%".$request->DATO."%'        
                               group by t.NOMBRE,t.CODBAR,t.LOTE,t.UNIMED,t.CODART,t.diasVencimiento,t.fechaVencimiento,t.PREUNI
                               HAVING saldoCorrecto > 0
             ");

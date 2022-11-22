@@ -11,7 +11,30 @@ class SiabProveedoresController extends Controller
 {
     public function PostProveedor(Request $request){
         try {
-            siab_proveedores::create($request->all());
+            $run = str_replace('.', '', $request->input('RUTPROV'));
+            $run = strtoupper($run);
+            siab_proveedores::create([
+                'RUTPROV' => $run,
+                'NOMRAZSOC' => $request->NOMRAZSOC,
+                'DIRPROV' => $request->DIRPROV,
+                'TELPROV' => $request->TELPROV,
+                'CELPROV' => $request->CELPROV,
+                'EMAILPROV' => $request->EMAILPROV,
+                'NOMVENPROV' => $request->NOMVENPROV,
+                'LLAVEPROVEEDOR' => $request->LLAVEPROVEEDOR,
+                'CODFORMAPAGO' => $request->CODFORMAPAGO,
+                'CODCOM' => $request->CODCOM,
+                'CODCIU' => $request->CODCIU,
+                'CODRUB' => $request->CODRUB,
+                'CODSIT' => $request->CODSIT,
+                'CODEST' => $request->CODEST,
+                'NUMCRE' => $request->NUMCRE,
+                'NOMFAN' => $request->NOMFAN,
+                'CTACTEPROV' => $request->CTACTEPROV,
+                'FAXPROV' => $request->FAXPROV,
+                'CODBAN' => $request->CODBAN,
+                'NOMPERPOD' => $request->NOMPERPOD,
+            ]);
             return true;
         } catch (\Throwable $th) {
             log::info($th);

@@ -198,13 +198,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Recepcion/DestroyDocumentoRecepcionFacturaCarta', ['middleware' => 'cors', 'uses' => 'RecepcionesController@DestroyDocumentoRecepcionFactura']);
 
     //Get Reportes
-    Route::get('/Reportes/GetSaldosReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosReporte']);
-    Route::get('/Reportes/GetSaldosValorizadoReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoReporte']);
     Route::get('/Reportes/GetSaldoValorizadoP', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoP']);
     Route::get('/Reportes/GetSaldosValorizadoPMP', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMP']);
-    Route::get('/Reportes/GetArticulosSaldoEstado', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstado']);
 
     //Post Reportes
+    Route::post('/Reportes/GetSaldosValorizadoReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoReporte']);
+    Route::post('/Reportes/GetSaldosReporte', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosReporte']);
     Route::post('/Reportes/GetBincard', ['middleware' => 'cors', 'uses' => 'Reportes@GetBincard']);
     Route::post('/Reportes/GetBincardFVen', ['middleware' => 'cors', 'uses' => 'Reportes@GetBincardFVen']);
     Route::post('/Reportes/GetConsumoAnio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsumoAnio']);
@@ -217,8 +216,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Reportes/GetSaldosValorizadoPMPCod', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPCod']);
     Route::post('/Reportes/GetSaldoValorizadoPCodFecha', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoPCodFecha']);
     Route::post('/Reportes/GetSaldosValorizadoPMPCodFecha', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPCodFecha']);
-    Route::post('/Reportes/GetSaldoValorizadoPFarmacia', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoPFarmacia']);
-    Route::post('/Reportes/GetSaldosValorizadoPMPFarmacia', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPFarmacia']);
+    Route::post('/Reportes/GetSaldoValorizadoPBodega', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoPBodega']);
+    Route::post('/Reportes/GetSaldosValorizadoPMPBodega', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPBodega']);
     Route::post('/Reportes/GetSaldoValorizadoPEconomato', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldoValorizadoPEconomato']);
     Route::post('/Reportes/GetSaldosValorizadoPMPEconomato', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosValorizadoPMPEconomato']);
     Route::post('/Reportes/GetArticulosSaldoEstadoC', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstadoC']);
@@ -230,6 +229,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/Reportes/GetConsolidadoDespachoServicio', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsolidadoDespachoServicio']);
     Route::post('/Reportes/GetConsolidadoDespachoServicioCovid', ['middleware' => 'cors', 'uses' => 'Reportes@GetConsolidadoDespachoServicioCovid']);
     Route::post('/Reportes/GetSaldosRecepcion', ['middleware' => 'cors', 'uses' => 'Reportes@GetSaldosRecepcion']);
+    Route::post('/Reportes/GetArticulosSaldoEstado', ['middleware' => 'cors', 'uses' => 'Reportes@GetArticulosSaldoEstado']);
 });
 
 //Generar PDF

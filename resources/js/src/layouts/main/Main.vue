@@ -182,7 +182,7 @@ export default {
     },
     data() {
         return {
-            externalVal: process.env.MIX_APP_URL_EXTERNA,
+            externalVal: process.env.MIX_APP_URL_PA,
             footerType: themeConfig.footerType || "static",
             hideScrollToTop: themeConfig.hideScrollToTop,
             isNavbarDark: false,
@@ -294,6 +294,15 @@ export default {
         },
         toggleHideScrollToTop(val) {
             this.hideScrollToTop = val;
+        },
+        cargarTokenExterno() {
+            let objeto = { run: "18499714-2", password: "1849" };
+            axios
+                .post(this.externalVal + "/api/auth/login", objeto)
+                .then(res => {
+                    localStorage.setItem("token_externo", res.data.token);
+                })
+                .catch(error => console.log(error));
         }
     },
     created() {
@@ -773,6 +782,7 @@ export default {
         }
 
         var aux2 = localStorage.getItem("permiso_usuario");
+        this.cargarTokenExterno();
 
         if (aux2 == 1) {
             this.navMenuItems = this.NavA;
