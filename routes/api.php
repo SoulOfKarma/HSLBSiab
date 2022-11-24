@@ -234,6 +234,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
 //Generar PDF
 Route::get('/Recepcion/RecepcionPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GenerarImpresion']);
+Route::get('/Recepcion/RecepcionCIPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GenerarImpresionCI']);
+Route::get('/Recepcion/RecepcionCIECPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'RecepcionesController@GenerarImpresionCIEC']);
 Route::get('/Despacho/DespachoPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'DespachosController@GenerarImpresion']);
 Route::get('/OrdenCompra/OrdenCompraPDF/{NUMINT}', ['middleware' => 'cors', 'uses' => 'OrdenComprasController@GenerarImpresion']);
 Route::post('/Firma/PostUsuarioRecepcionFirma', ['middleware' => 'cors', 'uses' => 'FirmasDigitales@PostUsuarioRecepcionFirma']);

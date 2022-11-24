@@ -590,14 +590,14 @@ class Reportes extends Controller
     public function GetBincard(Request $request){
         try {
             $saldoinv = saldo_inventarios::select(DB::raw("'Saldo Inventario' AS TIPO"), 'saldo_inventario.NOMBRE AS NOMBRE',
-            DB::raw("STR_TO_DATE(DATE_FORMAT(saldo_inventario.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
+            DB::raw("DATE_FORMAT(saldo_inventario.created_at,'%d/%m/%Y') as FECHA"),
             DB::raw("'-' AS FOLDES"),DB::raw("'-' AS FOLREC"),DB::raw("'-' AS NUMORD"),DB::raw("'-' AS PROVEEDOR"),
             'saldo_inventario.CODART AS CODART','saldo_inventario.CODART_BARR AS CODBAR','saldo_inventario.PRECIO AS PRECIO',
             'saldo_inventario.SALDO AS CANTIDAD',DB::raw("'-' AS SERVICIO"),DB::raw("'-' AS NOMMOT"))
             ->where('saldo_inventario.CODART',$request->CODART);
 
             $recepciondet = recepcionDetalles::select(DB::raw("'Recepcion' AS TIPO"), 'recepcion_detalles.PRODUCTO AS NOMBRE',
-            DB::raw("STR_TO_DATE(DATE_FORMAT(recepcion_detalles.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
+            DB::raw("DATE_FORMAT(recepcion_detalles.created_at,'%d/%m/%Y') as FECHA"),
             DB::raw("'-' AS FOLDES"),DB::raw('COALESCE(recepcion_detalles.FOLIO,"-") AS FOLREC'),'recepciones.NUMORD AS NUMORD','recepciones.NOMPRO AS PROVEEDOR',
             'recepcion_detalles.CODART AS CODART','recepcion_detalles.CODBAR AS CODBAR','recepcion_detalles.PREUNI AS PRECIO',
             'recepcion_detalles.CANREC AS CANTIDAD',DB::raw("'-' AS SERVICIO"),DB::raw('COALESCE(recepcion_detalles.NOMMOT,"-") AS NOMMOT'))
@@ -605,7 +605,7 @@ class Reportes extends Controller
             ->where('recepcion_detalles.CODART',$request->CODART);
 
             $despachodet = despachoDetalles::select(DB::raw("'Despacho' AS TIPO"), 'despacho_detalles.NOMART AS NOMBRE',
-            DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
+            DB::raw("DATE_FORMAT(despacho_detalles.created_at,'%d/%m/%Y') as FECHA"),
             DB::raw('COALESCE(despacho_detalles.FOLIO,"-") AS FOLDES'),DB::raw("'-' AS FOLREC"),DB::raw("'-' AS NUMORD"),DB::raw("'-' AS PROVEEDOR"),
             'despacho_detalles.CODART AS CODART','despacho_detalles.CODBAR AS CODBAR','despacho_detalles.PRECIO AS PRECIO',
             'despacho_detalles.CANTIDAD AS CANTIDAD',DB::raw('COALESCE(despacho_detalles.NOMSER,"-") AS SERVICIO'),DB::raw('COALESCE(despacho_detalles.NOMMOT,"-") AS NOMMOT'))
@@ -625,31 +625,31 @@ class Reportes extends Controller
     public function GetBincardFVen(Request $request){
         try {
             $saldoinv = saldo_inventarios::select(DB::raw("'Saldo Inventario' AS TIPO"), 'saldo_inventario.NOMBRE AS NOMBRE',
-            DB::raw("STR_TO_DATE(DATE_FORMAT(saldo_inventario.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
+            DB::raw("DATE_FORMAT(saldo_inventario.created_at,'%d/%m/%Y') as FECHA"),
             DB::raw("'-' AS FOLDES"),DB::raw("'-' AS FOLREC"),DB::raw("'-' AS PROVEEDOR"),
-            DB::raw("COALESCE(STR_TO_DATE(DATE_FORMAT(saldo_inventario.FECVEN,'%d-%m-%Y %H'),'%d-%m-%Y'),'-') AS FECVEN"),
+            DB::raw("COALESCE(DATE_FORMAT(saldo_inventario.FECVEN,'%d/%m/%Y'),'-') AS FECVEN"),
             DB::raw("COALESCE(saldo_inventario.LOTE,'-') AS LOTE"),
             'saldo_inventario.CODART AS CODART','saldo_inventario.CODART_BARR AS CODBAR','saldo_inventario.PRECIO AS PRECIO',
-            'saldo_inventario.SALDO AS CANTIDAD',DB::raw("'-' AS SERVICIO"))
+            'saldo_inventario.SALDO AS CANTIDAD',DB::raw("'-' AS SERVICIO"),DB::raw("'-' AS NOMMOT"))
             ->where('saldo_inventario.CODART',$request->CODART);
 
             $recepciondet = recepcionDetalles::select(DB::raw("'Recepcion' AS TIPO"), 'recepcion_detalles.PRODUCTO AS NOMBRE',
-            DB::raw("STR_TO_DATE(DATE_FORMAT(recepcion_detalles.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
+            DB::raw("DATE_FORMAT(recepcion_detalles.created_at,'%d/%m/%Y') as FECHA"),
             DB::raw("'-' AS FOLDES"),DB::raw('COALESCE(recepcion_detalles.FOLIO,"-") AS FOLREC'),'recepciones.NOMPRO AS PROVEEDOR',            
-            DB::raw("COALESCE(STR_TO_DATE(DATE_FORMAT(recepcion_detalles.FECVEN,'%d-%m-%Y %H'),'%d-%m-%Y'),'-') AS FECVEN"),
+            DB::raw("COALESCE(DATE_FORMAT(recepcion_detalles.FECVEN,'%d/%m/%Y'),'-') AS FECVEN"),
             DB::raw("COALESCE(recepcion_detalles.LOTE,'-') AS LOTE"),
             'recepcion_detalles.CODART AS CODART','recepcion_detalles.CODBAR AS CODBAR','recepcion_detalles.PREUNI AS PRECIO',
-            'recepcion_detalles.CANREC AS CANTIDAD',DB::raw("'-' AS SERVICIO"))
+            'recepcion_detalles.CANREC AS CANTIDAD',DB::raw("'-' AS SERVICIO"),DB::raw('COALESCE(recepcion_detalles.NOMMOT,"-") AS NOMMOT'))
             ->join('recepciones','recepcion_detalles.NUMINT','=','recepciones.NUMINT')
             ->where('recepcion_detalles.CODART',$request->CODART);
 
             $despachodet = despachoDetalles::select(DB::raw("'Despacho' AS TIPO"), 'despacho_detalles.NOMART AS NOMBRE',
-            DB::raw("STR_TO_DATE(DATE_FORMAT(despacho_detalles.created_at,'%d-%m-%Y %H'),'%d-%m-%Y %H') as FECHA"),
+            DB::raw("DATE_FORMAT(despacho_detalles.created_at,'%d/%m/%Y') as FECHA"),
             DB::raw('COALESCE(despacho_detalles.FOLIO,"-") AS FOLDES'),DB::raw("'-' AS FOLREC"),DB::raw("'-' AS PROVEEDOR"),
-            DB::raw("COALESCE(STR_TO_DATE(DATE_FORMAT(despacho_detalles.FECVEN,'%d-%m-%Y %H'),'%d-%m-%Y'),'-') AS FECVEN"),
+            DB::raw("COALESCE(DATE_FORMAT(despacho_detalles.FECVEN,'%d/%m/%Y'),'-') AS FECVEN"),
             DB::raw("COALESCE(despacho_detalles.LOTE,'-') AS LOTE"),
             'despacho_detalles.CODART AS CODART','despacho_detalles.CODBAR AS CODBAR','despacho_detalles.PRECIO AS PRECIO',
-            'despacho_detalles.CANTIDAD AS CANTIDAD',DB::raw('COALESCE(despacho_detalles.NOMSER,"-") AS SERVICIO'))
+            'despacho_detalles.CANTIDAD AS CANTIDAD',DB::raw('COALESCE(despacho_detalles.NOMSER,"-") AS SERVICIO'),DB::raw('COALESCE(despacho_detalles.NOMMOT,"-") AS NOMMOT'))
             ->where('despacho_detalles.CODART',$request->CODART)
             ->union($saldoinv)
             ->union($recepciondet)

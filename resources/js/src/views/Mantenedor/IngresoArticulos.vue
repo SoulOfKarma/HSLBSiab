@@ -41,7 +41,8 @@
                                 <span
                                     v-else-if="props.column.field === 'action'"
                                 >
-                                    <plus-circle-icon
+                                    <edit-icon
+                                        v-if="ModificaArt == 3"
                                         content="Modificar Articulo General"
                                         v-tippy
                                         size="1.5x"
@@ -71,8 +72,8 @@
                                                 props.row.PRECIO_BASE
                                             )
                                         "
-                                    ></plus-circle-icon>
-                                    <plus-circle-icon
+                                    ></edit-icon>
+                                    <file-plus-icon
                                         content="Agregar Codigo Articulo"
                                         v-tippy
                                         size="1.5x"
@@ -100,7 +101,7 @@
                                                 props.row.PRECIO_BASE
                                             )
                                         "
-                                    ></plus-circle-icon>
+                                    ></file-plus-icon>
                                 </span>
                                 <!-- Column: Common -->
                                 <span v-else>
@@ -139,6 +140,7 @@
                                     v-else-if="props.column.field === 'action'"
                                 >
                                     <plus-circle-icon
+                                        v-if="ModificaArt == 3"
                                         content="Modificar Medicamento"
                                         v-tippy
                                         size="1.5x"
@@ -1585,6 +1587,8 @@ import { PlusCircleIcon } from "vue-feather-icons";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
 import storePage from "../ScriptMenus/store.js";
+import { FilePlusIcon } from "vue-feather-icons";
+import { EditIcon } from "vue-feather-icons";
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
 
@@ -1593,7 +1597,9 @@ export default {
         VueGoodTable,
         "v-select": vSelect,
         quillEditor,
-        PlusCircleIcon
+        PlusCircleIcon,
+        FilePlusIcon,
+        EditIcon
     },
     data() {
         return {
@@ -1618,6 +1624,7 @@ export default {
             },
             //Datos Campos
             PageOptions: storePage.state.PageOptions,
+            ModificaArt: localStorage.getItem("permiso_usuario"),
             popUpMedicamento: false,
             popUpMedicamentoMod: false,
             popUpNCMedicamento: false,

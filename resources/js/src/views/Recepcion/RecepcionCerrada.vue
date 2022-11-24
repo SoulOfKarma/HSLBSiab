@@ -1049,11 +1049,35 @@ export default {
         ImprimirDatos() {
             try {
                 if (this.numint != 0 && this.folio != 0) {
-                    const url =
-                        this.localVal +
-                        "/api/Recepcion/RecepcionPDF/" +
-                        this.numint;
-                    window.open(url, "_blank");
+                    console.log(
+                        this.seleccionTipoDocumento.descripcionDocumento
+                    );
+                    if (this.tiporecepcion == "Consumo Inmediato") {
+                        if (
+                            this.seleccionTipoDocumento.descripcionDocumento ==
+                                "Boleta" ||
+                            this.seleccionTipoDocumento.descripcionDocumento ==
+                                "BOLETA"
+                        ) {
+                            const url =
+                                this.localVal +
+                                "/api/Recepcion/RecepcionCIECPDF/" +
+                                this.numint;
+                            window.open(url, "_blank");
+                        } else {
+                            const url =
+                                this.localVal +
+                                "/api/Recepcion/RecepcionCIPDF/" +
+                                this.numint;
+                            window.open(url, "_blank");
+                        }
+                    } else {
+                        const url =
+                            this.localVal +
+                            "/api/Recepcion/RecepcionPDF/" +
+                            this.numint;
+                        window.open(url, "_blank");
+                    }
                 } else {
                     this.$vs.notify({
                         time: 5000,
@@ -1457,6 +1481,7 @@ export default {
                                 this.Observaciones = value.OBS;
                                 nomser = value.NOMSER;
                                 tipord = value.TIPORD;
+                                this.tiporecepcion = value.TIPRECEPCION;
                             });
 
                             c = [];

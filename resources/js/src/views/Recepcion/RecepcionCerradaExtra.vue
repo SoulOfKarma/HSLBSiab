@@ -534,6 +534,7 @@
                             <vs-input
                                 class="inputx w-full"
                                 v-model="datogeneral"
+                                v-on:keydown.enter="TraerArticulosNCB"
                             />
                         </div>
                         <div class="vx-col w-1/4 mt-5">
@@ -2599,7 +2600,7 @@ export default {
                                 NUMLIBPED: this.numeroLibroPedido,
                                 TIPRECEPCION: this.tiporecepcion,
                                 TIPORD: this.seleccionTipoCompra.NOMTIPCOM,
-                                    idBodega: this.idBodega
+                                idBodega: this.idBodega
                             };
                             const dat = data;
 
@@ -2704,7 +2705,7 @@ export default {
                             NUMLIBPED: this.numeroLibroPedido,
                             TIPRECEPCION: this.tiporecepcion,
                             TIPORD: this.seleccionTipoCompra.NOMTIPCOM,
-                                    idBodega: this.idBodega
+                            idBodega: this.idBodega
                         };
                         const dat = data;
 

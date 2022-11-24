@@ -30,6 +30,7 @@
                                     "
                                 ></file-plus-icon>
                                 <edit-icon
+                                    v-if="DesCer == 3"
                                     content="Ir al Despacho Modificable"
                                     v-tippy
                                     size="1.5x"
@@ -79,6 +80,7 @@ export default {
             localVal: process.env.MIX_APP_URL,
             //Datos Campos
             idMod: 0,
+            DesCer: localStorage.getItem("permiso_usuario"),
             PageOptions: store.state.PageOptions,
             //Template Columnas Listado
             columns: [

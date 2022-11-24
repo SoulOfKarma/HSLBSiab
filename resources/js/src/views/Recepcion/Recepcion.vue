@@ -1093,6 +1093,7 @@
                             <vs-input
                                 class="inputx w-full"
                                 v-model="datogeneral"
+                                v-on:keydown.enter="TraerArticulosNCB"
                             />
                         </div>
                         <div class="vx-col w-1/4 mt-5">
@@ -1988,11 +1989,19 @@ export default {
         ImprimirDatos() {
             try {
                 if (this.numint != 0 && this.folio != 0) {
-                    const url =
-                        this.localVal +
-                        "/api/Recepcion/RecepcionPDF/" +
-                        this.numint;
-                    window.open(url, "_blank");
+                    if (this.tiporecepcion == "Consumo Inmediato") {
+                        const url =
+                            this.localVal +
+                            "/api/Recepcion/RecepcionCIPDF/" +
+                            this.numint;
+                        window.open(url, "_blank");
+                    } else {
+                        const url =
+                            this.localVal +
+                            "/api/Recepcion/RecepcionPDF/" +
+                            this.numint;
+                        window.open(url, "_blank");
+                    }
                 } else {
                     this.$vs.notify({
                         time: 5000,
@@ -3012,6 +3021,14 @@ export default {
                         time: 5000,
                         title: "Error",
                         text: "Debe ingresar un precio no menor a 1",
+                        color: "danger",
+                        position: "top-right"
+                    });
+                } else if (this.seleccionTipoDocumento.id == 0) {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text: "Debe Seleccionar un Tipo de Documento",
                         color: "danger",
                         position: "top-right"
                     });

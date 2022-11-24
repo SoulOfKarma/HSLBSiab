@@ -56,6 +56,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-2">
@@ -63,6 +64,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/3 mt-2">
@@ -140,6 +142,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -147,6 +150,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -187,6 +191,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/4 mt-2">
@@ -194,6 +199,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/4 mt-2">
@@ -224,6 +230,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -231,6 +238,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -271,6 +279,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/3 mt-2">
@@ -278,6 +287,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/3 mt-2">
@@ -424,6 +434,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniC"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -431,6 +442,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterC"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -494,6 +506,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -501,6 +514,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -541,6 +555,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniC"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/3 mt-2">
@@ -548,6 +563,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterC"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/3 mt-2">
@@ -568,6 +584,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniCO"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/3 mt-2">
@@ -575,6 +592,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterCO"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/3 mt-2">
@@ -598,6 +616,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -605,6 +624,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -645,6 +665,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniC"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/6 mt-2">
@@ -652,6 +673,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterC"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/6 mt-2">
@@ -705,6 +727,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codini"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -712,6 +735,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codter"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -752,6 +776,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codiniCO"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -759,6 +784,7 @@
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterCO"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -796,13 +822,18 @@
                         </div>
                         <div class="vx-col w-1/6 mt-2">
                             <h6>Codigo Inicial</h6>
-                            <vs-input class="inputx w-full" v-model="codiniC" />
+                            <vs-input
+                                class="inputx w-full"
+                                v-model="codiniC"
+                                :maxlength="7"
+                            />
                         </div>
                         <div class="vx-col w-1/6 mt-2">
                             <h6>Codigo Final</h6>
                             <vs-input
                                 class="inputx w-full  "
                                 v-model="codterC"
+                                :maxlength="7"
                             />
                         </div>
                         <div class="vx-col w-1/6 mt-2">
@@ -874,7 +905,7 @@
                                             size="1.5x"
                                             class="custom-class"
                                             @click="
-                                                GetBincard(props.row.CODART)
+                                                GetBincard(1, props.row.CODART)
                                             "
                                         ></plus-circle-icon>
                                         <plus-circle-icon
@@ -884,6 +915,15 @@
                                             class="custom-class"
                                             @click="
                                                 GetBincardPmp(props.row.CODART)
+                                            "
+                                        ></plus-circle-icon>
+                                        <plus-circle-icon
+                                            content="Bincard Fecha Vencimiento y Lote"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                GetBincard(3, props.row.CODART)
                                             "
                                         ></plus-circle-icon>
                                     </span>
@@ -1188,6 +1228,7 @@ export default {
                 this.limpiar();
                 this.columnBincard = [];
                 this.columnBincard = store.state.columnBincardGeneral;
+                this.cargarHoras();
                 if (this.seleccionReporte.id == 1) {
                     this.ListadoVistas();
                     this.saldoGeneral = true;
@@ -1683,13 +1724,14 @@ export default {
                 console.log(error);
             }
         },
-        GetBincard(codart) {
+        GetBincard(ActBin, codart) {
             try {
                 let data = {
                     CODART: codart
                 };
                 this.columnBincard = [];
                 this.columnBincard = store.state.columnBincardGeneral;
+                this.idActBin = ActBin;
                 if (this.idActBin == 1) {
                     axios
                         .post(
@@ -1855,6 +1897,8 @@ export default {
                             }
                         });
                 } else if (this.idActBin == 3) {
+                    this.columnBincard = [];
+                    this.columnBincard = store.state.columnBincardGeneralFL;
                     axios
                         .post(
                             this.localVal + "/api/Reportes/GetBincardFVen",

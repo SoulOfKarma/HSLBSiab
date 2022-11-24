@@ -632,6 +632,18 @@ export default {
                 icon: "HomeIcon",
                 submenu: [
                     {
+                        url: "/Recepcion/Recepcion",
+                        name: "Recepcion",
+                        slug: "/Recepcion/Recepcion",
+                        icon: "HomeIcon"
+                    },
+                    {
+                        url: "/Recepcion/ListadoRecepcionAbierta",
+                        name: "Rec. Abiertas",
+                        slug: "/Recepcion/ListadoRecepcionAbierta",
+                        icon: "HomeIcon"
+                    },
+                    {
                         url: "/Recepcion/ListadoRecepcionCerrada",
                         name: "Rec. Cerradas",
                         slug: "/Recepcion/ListadoRecepcionCerrada",
@@ -651,6 +663,18 @@ export default {
                 slug: "despacho",
                 icon: "HomeIcon",
                 submenu: [
+                    {
+                        url: "/Despacho/SolicitudPedidos",
+                        name: "Solicitud Pedidos",
+                        slug: "/Despacho/SolicitudPedidos",
+                        icon: "HomeIcon"
+                    },
+                    {
+                        url: "/Despacho/ListadoDespachoAbierto",
+                        name: "Despachos Abiertos",
+                        slug: "/Despacho/ListadoDespachoAbierto",
+                        icon: "HomeIcon"
+                    },
                     {
                         url: "/Despacho/ListadoDespachosCerrados",
                         name: "Despachos Cerrados",

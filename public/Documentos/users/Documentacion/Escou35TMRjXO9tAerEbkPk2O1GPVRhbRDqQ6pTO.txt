@@ -1,0 +1,587 @@
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Versión del servidor:         5.7.33 - MySQL Community Server (GPL)
+-- SO del servidor:              Win64
+-- HeidiSQL Versión:             11.2.0.6213
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+-- Volcando estructura para tabla cbx.articulo
+CREATE TABLE IF NOT EXISTS `articulo` (
+  `codigo` int(7) NOT NULL,
+  `descripcion` varchar(120) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.articulo: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `articulo` DISABLE KEYS */;
+INSERT INTO `articulo` (`codigo`, `descripcion`) VALUES
+	(80000000, 'MANTENCION CORRECTIVA');
+/*!40000 ALTER TABLE `articulo` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.art_prov_contrato
+CREATE TABLE IF NOT EXISTS `art_prov_contrato` (
+  `id_reg` int(3) NOT NULL AUTO_INCREMENT,
+  `id_contrato` varchar(20) NOT NULL,
+  `proveedor` varchar(120) NOT NULL,
+  `codigo` int(7) NOT NULL,
+  `descripcion` varchar(120) NOT NULL,
+  `fecini` date NOT NULL,
+  `fecven` date NOT NULL,
+  `monto` int(10) NOT NULL,
+  `numres_ac` varchar(20) NOT NULL,
+  PRIMARY KEY (`id_reg`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.art_prov_contrato: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `art_prov_contrato` DISABLE KEYS */;
+INSERT INTO `art_prov_contrato` (`id_reg`, `id_contrato`, `proveedor`, `codigo`, `descripcion`, `fecini`, `fecven`, `monto`, `numres_ac`) VALUES
+	(3, '1057496-25-LE21', 'Biomédica Ingeniería Ltda.', 2110000, 'Partacetamo 200gm', '2021-06-02', '2021-06-09', 2000, '1214215');
+/*!40000 ALTER TABLE `art_prov_contrato` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.category
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla cbx.category: ~28 rows (aproximadamente)
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` (`id`, `name`) VALUES
+	(2, 'Antivirus'),
+	(8, 'Cable poder'),
+	(9, 'Cable retractil'),
+	(10, 'Candado'),
+	(11, 'Carpetas'),
+	(12, 'Cable de red'),
+	(13, 'Claves'),
+	(15, 'Correo Electronico'),
+	(17, 'Disco duro Externo'),
+	(21, 'Computador'),
+	(23, 'Escaner'),
+	(27, 'Impresora'),
+	(28, 'Información'),
+	(29, 'Listado'),
+	(31, 'Monitor'),
+	(32, 'Mouse'),
+	(33, 'Navegador de internet'),
+	(34, 'Notebook'),
+	(35, 'Pendrive'),
+	(36, 'Proyector'),
+	(37, 'Punto de Red'),
+	(38, 'Respaldo'),
+	(39, 'Salida a celular'),
+	(40, 'Servidor'),
+	(41, 'Software'),
+	(42, 'Perfil'),
+	(43, 'Inventario'),
+	(44, 'Informática');
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.contrato
+CREATE TABLE IF NOT EXISTS `contrato` (
+  `contrato` varchar(120) DEFAULT NULL,
+  `numcontrato` varchar(20) DEFAULT NULL,
+  `numres_apr` varchar(20) DEFAULT NULL,
+  `numres_adj` varchar(20) DEFAULT NULL,
+  `numres_ac` varchar(20) DEFAULT NULL,
+  `numres_pror` varchar(20) DEFAULT NULL,
+  `numres_aum` varchar(20) DEFAULT NULL,
+  `proveedor` varchar(80) DEFAULT NULL,
+  `rutprov` varchar(10) DEFAULT NULL,
+  `mailprov` varchar(80) DEFAULT NULL,
+  `contacto` varchar(80) DEFAULT NULL,
+  `fono` varchar(20) DEFAULT NULL,
+  `direccion` varchar(120) DEFAULT NULL,
+  `unidad_gc` varchar(30) DEFAULT NULL,
+  `nomsup` varchar(80) DEFAULT NULL,
+  `fonosup` varchar(20) DEFAULT NULL,
+  `mailsup` varchar(80) DEFAULT NULL,
+  `fecini` date DEFAULT NULL,
+  `fecven` date DEFAULT NULL,
+  `fecpro_susc` date DEFAULT NULL,
+  `fecpro_ven` date DEFAULT NULL,
+  `reajuste` varchar(2) DEFAULT NULL,
+  `valor` int(10) DEFAULT NULL,
+  `monto_anual` int(10) DEFAULT NULL,
+  `monto_totcont` int(10) DEFAULT NULL,
+  `monto_totpro` int(10) DEFAULT NULL,
+  `monto_tot30` int(10) DEFAULT NULL,
+  `item_ppto` varchar(20) DEFAULT NULL,
+  `certdisp` varchar(20) DEFAULT NULL,
+  `certdisp_pro` varchar(20) DEFAULT NULL,
+  `certdisp_aum` varchar(20) DEFAULT NULL,
+  `clausula` varchar(2) DEFAULT NULL,
+  `obs` varchar(120) DEFAULT NULL,
+  `nomarch1` varchar(60) DEFAULT NULL,
+  `nomarch2` varchar(60) DEFAULT NULL,
+  `nomarch3` varchar(60) DEFAULT NULL,
+  `nomarch4` varchar(60) DEFAULT NULL,
+  `nomarch5` varchar(60) DEFAULT NULL,
+  `nomarch6` varchar(60) DEFAULT NULL,
+  `nomarch7` varchar(60) DEFAULT NULL,
+  `nomarch8` varchar(60) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.contrato: ~3 rows (aproximadamente)
+/*!40000 ALTER TABLE `contrato` DISABLE KEYS */;
+INSERT INTO `contrato` (`contrato`, `numcontrato`, `numres_apr`, `numres_adj`, `numres_ac`, `numres_pror`, `numres_aum`, `proveedor`, `rutprov`, `mailprov`, `contacto`, `fono`, `direccion`, `unidad_gc`, `nomsup`, `fonosup`, `mailsup`, `fecini`, `fecven`, `fecpro_susc`, `fecpro_ven`, `reajuste`, `valor`, `monto_anual`, `monto_totcont`, `monto_totpro`, `monto_tot30`, `item_ppto`, `certdisp`, `certdisp_pro`, `certdisp_aum`, `clausula`, `obs`, `nomarch1`, `nomarch2`, `nomarch3`, `nomarch4`, `nomarch5`, `nomarch6`, `nomarch7`, `nomarch8`) VALUES
+	('X', 'XXXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXXXX', 'zzzzzzzzzzz', 'XXXXXXXXXXXX', 'Administrador', 'XXXXXXXXXX', 'XXXXXXXXXXX', 'XXXXXXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXXXX', 'XXXXXXX', 'XXXXXXXXXXXX', 'XXXX', 'XXXXXXXXXXXXXX', '2021-01-12', '2021-01-20', '2021-01-20', '2020-12-29', 'X', 333, 333, 333, 3333, 333, 'XXXXX', 'XXX', 'XXXXX', 'XXXXX', 'X', 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	('X', 'XXXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXXXX', 'zzzzzzzzzzz', 'XXXXXXXXXXXX', 'Administrador', 'XXXXXXXXXX', 'XXXXXXXXXXX', 'XXXXXXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXXXX', 'XXXXXXX', 'XXXXXXXXXXXX', 'XXXX', 'XXXXXXXXXXXXXX', '2021-01-12', '2021-01-20', '2021-01-20', '2020-12-29', 'X', 333, 333, 333, 3333, 333, 'XXXXX', 'XXX', 'XXXXX', 'XXXXX', 'X', 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	('X', 'XXXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXXXX', 'zzzzzzzzzzz', 'XXXXXXXXXXXX', 'Administrador', 'XXXXXXXXXX', 'XXXXXXXXXXX', 'XXXXXXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXXXX', 'XXXXXXX', 'XXXXXXXXXXXX', 'XXXX', 'XXXXXXXXXXXXXX', '2021-01-12', '2021-01-20', '2021-01-20', '2020-12-29', 'X', 333, 333, 333, 3333, 333, 'XXXXX', 'XXX', 'XXXXX', 'XXXXX', 'X', 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+/*!40000 ALTER TABLE `contrato` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.contratos
+CREATE TABLE IF NOT EXISTS `contratos` (
+  `id_regis` int(11) NOT NULL AUTO_INCREMENT,
+  `id_contrato` varchar(20) DEFAULT NULL,
+  `contrato` varchar(120) DEFAULT NULL,
+  `numcontrato` varchar(20) DEFAULT NULL,
+  `numres_apr` varchar(20) DEFAULT NULL,
+  `numres_adj` varchar(20) DEFAULT NULL,
+  `numres_ac` varchar(20) DEFAULT NULL,
+  `numres_pror` varchar(20) DEFAULT NULL,
+  `numres_aum` varchar(20) DEFAULT NULL,
+  `proveedor` varchar(80) DEFAULT NULL,
+  `rutprov` varchar(10) DEFAULT NULL,
+  `mailprov` varchar(80) DEFAULT NULL,
+  `contacto` varchar(80) DEFAULT NULL,
+  `fono` varchar(20) DEFAULT NULL,
+  `direccion` varchar(120) DEFAULT NULL,
+  `unidad_gc` varchar(30) DEFAULT NULL,
+  `nomsup` varchar(80) DEFAULT NULL,
+  `fonosup` varchar(20) DEFAULT NULL,
+  `mailsup` varchar(80) DEFAULT NULL,
+  `fecini` date DEFAULT NULL,
+  `fecven` date DEFAULT NULL,
+  `dias_alerta` int(4) DEFAULT NULL,
+  `fecpro_susc` date DEFAULT NULL,
+  `fecpro_ven` date DEFAULT NULL,
+  `reajuste` varchar(2) DEFAULT NULL,
+  `valor` int(10) DEFAULT NULL,
+  `monto_anual` int(10) DEFAULT NULL,
+  `monto_totcont` int(10) DEFAULT NULL,
+  `monto_actual` int(10) DEFAULT NULL,
+  `monto_alerta` int(10) DEFAULT NULL,
+  `monto_totpro` int(10) DEFAULT NULL,
+  `monto_tot30` int(10) DEFAULT NULL,
+  `item_ppto` varchar(20) DEFAULT NULL,
+  `certdisp` varchar(20) DEFAULT NULL,
+  `certdisp_pro` varchar(20) DEFAULT NULL,
+  `certdisp_aum` varchar(20) DEFAULT NULL,
+  `clausula` varchar(2) DEFAULT NULL,
+  `obs` varchar(120) DEFAULT NULL,
+  `F1_RAprov` varchar(60) DEFAULT NULL,
+  `F2_RAdjud` varchar(60) DEFAULT NULL,
+  `F3_RAprub` varchar(60) DEFAULT NULL,
+  `F4_RProrroga` varchar(60) DEFAULT NULL,
+  `F5_RAum30` varchar(60) DEFAULT NULL,
+  `F6_CertDisp` varchar(60) DEFAULT NULL,
+  `F7_CerProrroga` varchar(60) DEFAULT NULL,
+  `F8_CertDisp30` varchar(60) DEFAULT NULL,
+  `tipo_contr` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`id_regis`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.contratos: ~3 rows (aproximadamente)
+/*!40000 ALTER TABLE `contratos` DISABLE KEYS */;
+INSERT INTO `contratos` (`id_regis`, `id_contrato`, `contrato`, `numcontrato`, `numres_apr`, `numres_adj`, `numres_ac`, `numres_pror`, `numres_aum`, `proveedor`, `rutprov`, `mailprov`, `contacto`, `fono`, `direccion`, `unidad_gc`, `nomsup`, `fonosup`, `mailsup`, `fecini`, `fecven`, `dias_alerta`, `fecpro_susc`, `fecpro_ven`, `reajuste`, `valor`, `monto_anual`, `monto_totcont`, `monto_actual`, `monto_alerta`, `monto_totpro`, `monto_tot30`, `item_ppto`, `certdisp`, `certdisp_pro`, `certdisp_aum`, `clausula`, `obs`, `F1_RAprov`, `F2_RAdjud`, `F3_RAprub`, `F4_RProrroga`, `F5_RAum30`, `F6_CertDisp`, `F7_CerProrroga`, `F8_CertDisp30`, `tipo_contr`) VALUES
+	(36, '1057496-25-LE21', 'MANTENIMIENTO PREVENTIVO Y CORRECTIVO DE VENTILADORES MECÏ¿½NICOS', '', '191', '275', '1057496-983-SE21', '', '', 'Biomédica Ingeniería Ltda.', '', '', '', '', '', 'ABASTECIMIENTO', 'ddd', '264756', 'fabian.guajardo@redsalud.gob.cl', '2021-05-14', '2022-05-13', 90, '2022-05-10', '2022-05-24', 'NO', 827050, 0, 30000000, 30000000, 10000000, 0, 0, '2206006001', '388', '', '', 'SI', 'SE DESTINAN 16 MILLONES PARA MANTENCIONES CORRECTIVAS', '36-F1_RAprov.pdf', '36-F2_RAdjud.pdf', '36-F3_RAprub.pdf', '36-F4_RProrroga.pdf', '36-F5_RAum30.pdf', '36-F6_CertDisp.pdf', '36-F7_CerProrroga.pdf', '36-F8_CertDisp30.pdf', 'LICITACIÃ³N'),
+	(37, '1078354-3-LR19', 'SERVICIO DE LAVADO DE ROPA HOSPITALARIA', '', '2259/25-10-2019', '2591/10-12-2019', '', '', '', '', '', '', '', '', '', 'SERVICIOS GENERALES', 'ddd', '264845', 'eduardo.tobar@redsalud.gob.cl', '2019-12-27', '2021-12-26', 120, '0000-00-00', '0000-00-00', 'NO', 713, 150000000, 300000000, 300000000, 60000000, 0, 0, '22-08-001', '852/2019', '', '', 'SI', '', '37-F1_RAprov.pdf', '37-F2_RAdjud.pdf', '37-F3_RAprub.pdf', '37-F4_RProrroga.pdf', '37-F5_RAum30.pdf', '37-F6_CertDisp.pdf', '37-F7_CerProrroga.pdf', '37-F8_CertDisp30.pdf', ''),
+	(49, '1057496-1290-SE21', 'SERVICIO DE DIALISIS DE AGUDO CON EQUIPO', '', '', '', '', '', '', '', '', '', '', '', '', 'MEDICINA', 'GABRIELA HOBON', '264810', 'gabriela.hobon@redsalud.gob.cl', '2021-06-23', '2022-07-22', 0, '0000-00-00', '0000-00-00', 'no', 0, 10000000, 10000000, 10000000, 7000000, 0, 0, '', '', '', '', 'no', 'OJO CON LOS SERVICIOS QUE NO ESTAN CONSIDERADOS', '49-F1_RAprov.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '');
+/*!40000 ALTER TABLE `contratos` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.garantias
+CREATE TABLE IF NOT EXISTS `garantias` (
+  `num_registro` int(5) NOT NULL AUTO_INCREMENT,
+  `id_mercado` varchar(14) DEFAULT NULL,
+  `num_garantia` varchar(9) DEFAULT NULL,
+  `tipo_garantia` varchar(20) DEFAULT NULL,
+  `fecing` date DEFAULT NULL,
+  `proveedor` varchar(60) DEFAULT NULL,
+  `rut_proveedor` varchar(10) DEFAULT NULL,
+  `fecini` date DEFAULT NULL,
+  `fecven` date DEFAULT NULL,
+  `fecresg` date DEFAULT NULL,
+  `fecdevo` date DEFAULT NULL,
+  `monto` int(10) DEFAULT NULL,
+  `institucion` varchar(25) DEFAULT NULL,
+  `id_contrato` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`num_registro`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.garantias: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `garantias` DISABLE KEYS */;
+INSERT INTO `garantias` (`num_registro`, `id_mercado`, `num_garantia`, `tipo_garantia`, `fecing`, `proveedor`, `rut_proveedor`, `fecini`, `fecven`, `fecresg`, `fecdevo`, `monto`, `institucion`, `id_contrato`) VALUES
+	(8, '1057496-25-LE2', 'B0091435', 'Fiel cumplimiento', '2021-05-18', 'Biomédica Ingeniería Ltda.', '', '2021-05-18', '2022-06-30', '2021-05-18', '2022-06-30', 661640, 'MAS AVAL S.A.G.R.', NULL),
+	(10, '1078354-3-LR19', '219101815', 'Fiel cumplimiento', '2019-12-13', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', '', '2019-12-13', '2022-03-13', '2019-12-13', '2022-12-13', 15000, 'INSUR S.A.G.R.', NULL);
+/*!40000 ALTER TABLE `garantias` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.institucion
+CREATE TABLE IF NOT EXISTS `institucion` (
+  `id_reg` int(11) NOT NULL AUTO_INCREMENT,
+  `institucion` varchar(120) NOT NULL,
+  PRIMARY KEY (`id_reg`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.institucion: ~12 rows (aproximadamente)
+/*!40000 ALTER TABLE `institucion` DISABLE KEYS */;
+INSERT INTO `institucion` (`id_reg`, `institucion`) VALUES
+	(5, 'HDI SEGUROS'),
+	(6, 'MAS AVAL S.A.G.R.'),
+	(7, 'MULTI AVAL S.A.G.R.'),
+	(8, 'SCOTIABANK'),
+	(9, 'BANCO DE CHILE'),
+	(10, 'BANCO CRÉDITO INVERSIONES'),
+	(11, 'BANCO ESTADO'),
+	(12, 'BANCO SANTANDER'),
+	(13, 'BANCO ITAU'),
+	(14, 'CORPBANCA'),
+	(15, 'MAXXA S.G.R.'),
+	(17, 'INSUR S.A.G.R.');
+/*!40000 ALTER TABLE `institucion` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.kind
+CREATE TABLE IF NOT EXISTS `kind` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla cbx.kind: ~4 rows (aproximadamente)
+/*!40000 ALTER TABLE `kind` DISABLE KEYS */;
+INSERT INTO `kind` (`id`, `name`) VALUES
+	(1, 'Soporte SIDRA'),
+	(2, 'Soporte Técnico'),
+	(3, 'Soporte Informático'),
+	(4, 'Desarrollo Informático');
+/*!40000 ALTER TABLE `kind` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.multa
+CREATE TABLE IF NOT EXISTS `multa` (
+  `num_regis` int(10) NOT NULL AUTO_INCREMENT,
+  `id_mercado` varchar(15) NOT NULL,
+  `rut_proveedor` varchar(10) DEFAULT NULL,
+  `proveedor` varchar(60) NOT NULL,
+  `causal_multa` varchar(100) NOT NULL,
+  `monto` int(10) NOT NULL,
+  `num_resol` int(10) NOT NULL,
+  `fecmul` date NOT NULL,
+  `fecpag` date NOT NULL,
+  `fecnot` date NOT NULL,
+  `fecape` date NOT NULL,
+  `predesc` varchar(2) NOT NULL,
+  `observacion` varchar(120) NOT NULL,
+  `mail` varchar(120) NOT NULL,
+  PRIMARY KEY (`num_regis`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.multa: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `multa` DISABLE KEYS */;
+INSERT INTO `multa` (`num_regis`, `id_mercado`, `rut_proveedor`, `proveedor`, `causal_multa`, `monto`, `num_resol`, `fecmul`, `fecpag`, `fecnot`, `fecape`, `predesc`, `observacion`, `mail`) VALUES
+	(13, '1078354-3-LR19', '15796585-9', 'HECTOR FUENTES ERAZO', 'POR WN', 200000, 125421, '2022-02-07', '2022-02-07', '2022-02-07', '2022-02-07', 'si', 'POR WN', 'hector@gmail.com'),
+	(14, '1078354-3-LR19', '76010116-8', 'PROAMBIENTAL', 'normas', 3000000, 2512412, '2022-02-07', '2022-02-09', '2022-02-07', '2022-02-08', 'NO', 'incumplimiento de normas iso', 'proambiental@gmail.com');
+/*!40000 ALTER TABLE `multa` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.orden_compra
+CREATE TABLE IF NOT EXISTS `orden_compra` (
+  `id_reg` int(100) NOT NULL AUTO_INCREMENT,
+  `num_ordcomp` varchar(20) NOT NULL,
+  `id_mercado` varchar(20) NOT NULL,
+  `proveedor` varchar(60) NOT NULL,
+  `monto` int(10) NOT NULL,
+  `fecemi` date NOT NULL,
+  PRIMARY KEY (`id_reg`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.orden_compra: ~23 rows (aproximadamente)
+/*!40000 ALTER TABLE `orden_compra` DISABLE KEYS */;
+INSERT INTO `orden_compra` (`id_reg`, `num_ordcomp`, `id_mercado`, `proveedor`, `monto`, `fecemi`) VALUES
+	(11, '1057496-290-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 6537181, '2020-02-05'),
+	(12, '1057496-477-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 6150837, '2020-03-04'),
+	(13, '1057496-622-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 56787957, '2020-04-03'),
+	(14, '1057496-814-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 7254267, '2020-05-08'),
+	(15, '1057496-990-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 6040352, '2020-06-08'),
+	(16, '1057496-1175-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 6612026, '2020-07-06'),
+	(17, '1057496-1327-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 7185125, '2020-08-05'),
+	(18, '1057496-1510-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 7316282, '2020-09-03'),
+	(19, '1057496-1700-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 7967077, '2020-10-06'),
+	(20, '1057496-1908-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 8503823, '2020-11-05'),
+	(21, '1057496-2101-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 7190827, '2020-12-09'),
+	(22, '1057496-2191-SE20', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 7551509, '2020-12-30'),
+	(23, '1057496-267-SE21', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 8090394, '2021-02-09'),
+	(24, '1057496-445-SE21', '1078354-3-LR19', 'COMERCIAL, DISTRIBUCIóN E INVERSIONES BOLOGNA COMPAñíA LIMIT', 7995362, '2021-02-09'),
+	(25, '1057496-633-SE21', '1078354-3-LR19', 'COMERCIAL, DISTRIBUCIóN E INVERSIONES BOLOGNA COMPAñíA LIMIT', 8754963, '2021-04-05'),
+	(26, '1057496-913-SE21', '1078354-3-LR19', 'COMERCIAL, DISTRIBUCIóN E INVERSIONES BOLOGNA COMPAñíA LIMIT', 8340567, '2021-05-04'),
+	(30, '1057496-2433-SE21', '1057496-1290-SE2', 'NEPHROCARE CHILE S.A.', 1600000, '2021-12-29'),
+	(31, '1057496-2431-SE21', '1057496-1290-SE2', 'NEPHROCARE CHILE S.A.', 280000, '2021-12-29'),
+	(33, '1057496-326-SE22', '1057496-1290-SE2', 'NEPHROCARE CHILE S.A.', 2127000, '2022-02-11'),
+	(34, 'HRHE', '1057496-1290-SE2', 'NEPHROCARE CHILE S.A.', 200000, '2022-02-03'),
+	(35, '1057496-2191-SE20', '1078354-3-LR19', 'COMERCIAL, DISTRIBUCIóN E INVERSIONES BOLOGNA COMPAñíA LIMIT', 5000000, '2022-02-16'),
+	(36, '1111', '1057496-1290-SE21', 'REINALDO SPELETA SANTIS', 3000000, '2022-02-21'),
+	(37, '2222', '1057496-1290-SE21', 'HECTOR FUENTES ERAZO', 3000000, '2022-02-22');
+/*!40000 ALTER TABLE `orden_compra` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.orden_compra_art
+CREATE TABLE IF NOT EXISTS `orden_compra_art` (
+  `id_reg` int(10) NOT NULL AUTO_INCREMENT,
+  `num_ordcomp` varchar(20) NOT NULL,
+  `id_mercado` varchar(16) NOT NULL,
+  `proveedor` varchar(60) NOT NULL,
+  `fecemi` date NOT NULL,
+  `codigo` int(7) NOT NULL,
+  `articulo` varchar(120) NOT NULL,
+  `monto` int(10) NOT NULL,
+  PRIMARY KEY (`id_reg`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.orden_compra_art: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `orden_compra_art` DISABLE KEYS */;
+INSERT INTO `orden_compra_art` (`id_reg`, `num_ordcomp`, `id_mercado`, `proveedor`, `fecemi`, `codigo`, `articulo`, `monto`) VALUES
+	(6, '1057496-913-SE21', '1078354-3-LR19', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', '2021-05-04', 80000000, 'MANTENCION CORRECTIVA', 100),
+	(7, '2222', '1057496-1290-SE2', 'HECTOR FUENTES ERAZO', '2022-02-22', 80000000, 'MANTENCION CORRECTIVA', 10000);
+/*!40000 ALTER TABLE `orden_compra_art` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.priority
+CREATE TABLE IF NOT EXISTS `priority` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla cbx.priority: ~3 rows (aproximadamente)
+/*!40000 ALTER TABLE `priority` DISABLE KEYS */;
+INSERT INTO `priority` (`id`, `name`) VALUES
+	(1, 'Alta'),
+	(2, 'Media'),
+	(3, 'Baja');
+/*!40000 ALTER TABLE `priority` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.project
+CREATE TABLE IF NOT EXISTS `project` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) DEFAULT NULL,
+  `description` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla cbx.project: ~11 rows (aproximadamente)
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+INSERT INTO `project` (`id`, `name`, `description`) VALUES
+	(4, 'Configuracion', 'Configuración sistemas, otros'),
+	(5, 'Creación', '.'),
+	(6, 'Desbloqueo', '.'),
+	(7, 'Deshabilitación', '.'),
+	(12, 'Instalación', '.'),
+	(15, 'Mantención', '.'),
+	(18, 'Reparar', '.'),
+	(20, 'Retirar', '.'),
+	(21, 'Revisión', '.'),
+	(22, 'Trasladar', 'Traslado de equipos computaciones'),
+	(23, 'Habilitación', 'Habilitación perfil ');
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.proveedor
+CREATE TABLE IF NOT EXISTS `proveedor` (
+  `id` int(3) NOT NULL,
+  `rut_proveedor` varchar(10) NOT NULL,
+  `razon_social` varchar(60) NOT NULL,
+  `direccion` varchar(120) NOT NULL,
+  `telefono` int(9) NOT NULL,
+  `celular` int(9) NOT NULL,
+  `mail` varchar(120) NOT NULL,
+  `vendedor` varchar(60) DEFAULT NULL,
+  PRIMARY KEY (`rut_proveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.proveedor: ~36 rows (aproximadamente)
+/*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
+INSERT INTO `proveedor` (`id`, `rut_proveedor`, `razon_social`, `direccion`, `telefono`, `celular`, `mail`, `vendedor`) VALUES
+	(0, '12043806-9', 'REINALDO SPELETA SANTIS', 'AV. EYZAGUIRRE 03455, PUENTE ALTO', 999802191, 999802191, 'E.SPELETA@RESMIAN.CL', 'REINALDO SPELETA SANTIS'),
+	(0, '15796585-9', 'HECTOR FUENTES ERAZO', 'DIRIGENTE JOSE DAVID VARGAS REYES 1067, BUIN', 933872543, 933872543, 'FUENTESHECTOR@HOTMAIL.COM', 'HECTOR FUENTES ERAZO'),
+	(0, '6933801-1', 'MARTA REYES VILLANUEVA', 'LAHUAL SUR 1113, MAIPU', 994864515, 994864515, 'INGECA.LTDA@GMAIL.COM', 'RICARDO RIVAS PEREZ'),
+	(0, '7569315-K', 'RICARDO VENEGAS ROJAS', 'LA FONTECILLA PC3, LAMPA', 997159290, 997159290, 'CONTACTO@REMATESVENEGAS.COM', 'RICARDO VENEGAS ROJAS'),
+	(0, '76010116-8', 'PROAMBIENTAL', 'OS COSMONAUTAS 12734', 999923117, 999923117, 'RP.PROAMBIENTAL@GMAIL.COM', 'RODRIGO PALACIOS'),
+	(0, '76011347-6', 'Biomédica Ingeniería Ltda.', 'Av. Colón 2644, Valparaíso', 3243778, 323243778, 'leonardo.chirinos@biomedicaingenieria.cl', 'Leonardo Chirinos'),
+	(0, '76048768-6', 'MAQUINARIAS ARSMTRONG', 'LONGITUDUNAL SUR 0275', 997794132, 997794132, 'A.F.MAQUINARIAS@GMAIL.COM', 'FRANCO PITRONELLO'),
+	(0, '76066002-7', 'INGRAD', 'RAMON SUBERCASEAUX 1268, OFICINA 807', 226668254, 226668254, 'INFO@MMRAD.CL', 'LUIS MENESES'),
+	(0, '76142730-k', 'GEMCO GENERAL MACHINERY S.A.', 'CALLE LOS NIDOS 1212', 978077712, 978077712, 'JJARA@GEMCO.CL', 'JORGE JARA HERNANDEZ'),
+	(0, '76150343-K', 'INDURA S.A.', 'AV. LAS AMERICAS 585, CERRILLOS', 971387633, 971387633, 'AJIMENEZM@INDURA.NET', 'ANYELA JIMENEZ'),
+	(0, '76175151-4', 'RIMALTO SERVICIOS LTDA', 'ALVAREZ DE TOLEDO 606', 999784211, 999784211, 'RODRIGO.ROJAS@RIMALTO.CL', 'RODRIGO ROJAS MALVERDI'),
+	(0, '76207060-K', 'MENDEZ ASOCIADOS LIMITADA', 'FEDERICO GALLARDO 2514, QUINTA NORMAL, SANTIAGO', 227745977, 227745977, 'INFO@ATISCHILE.CL', 'ROBIN MENDEZ'),
+	(0, '76294560-6', 'COMERCIAL LUBRITRUK', 'AV. DIEGO PORTALES N°798', 229968742, 229968742, 'LUBRITRUCK@GMAIL.COM', 'MARIO SALINAS LOPEZ'),
+	(0, '76444998-3', 'PANIFICADORA PEREZ HERMANOS LTDA', 'ARTURO PRAT 354', 28213254, 28213254, 'PANIFICADORA354@GMAIL.COM', 'PEDRO ANTONIO'),
+	(0, '76470635-8', 'MERCSOLUCIONES', 'SAN EUGENIO 2791, MAIPU', 956377659, 956377659, 'CLAUDIOAZUA@GMAIL.COM', 'CLAUDIO AZUA'),
+	(0, '76480317-5', 'GALICIA LTDA', '20 NORTE PASAJE CENTRAL 2204 VIÑA DEL MAR', 2147483647, 989323068, 'RODRIGOARM@GMAIL.COM', 'RODRIGO BERRIOS'),
+	(0, '76581700-5', 'Comercial, Distribución E Inversiones Bologna Compañía Limit', 'Santa Marta 0241', 228588591, 997011336, 'cpiccoli@lavanderiabologna.cl', 'Cristian Piccoli'),
+	(0, '76811235-5', 'AMBULANCIAS EME EMERGENCY', 'AHUMADA 254, OF.806', 933917889, 933917889, 'CONTACTO.EME911@GMAIL.COM', 'JUAN ESPINOSA VEGA'),
+	(0, '76875520-5', 'PS VIAL', 'ONGOLMO 1402, CONCEPCIÓN', 412921104, 412921104, 'PABLO.FUENTES@HIDROVIAL.CL', 'PABLO FUENTES JARA'),
+	(0, '76911637-0', 'MESSER CHILE LTDA', 'PANAMERICANA NORTE KM 18,5', 971410039, 971410039, 'NADYA.TORRES@MESSER-CL.COM', 'NADYA TORRES VELASQUEZ'),
+	(0, '77131668-9', 'ECO PLASTICOS CHILE SPA', 'RUTA 68 1070, LOCAL -1 DUODECIMA 1105, KM 25 CAMINO A STGO', 228949014, 228949014, 'ECOPLASTICOSCHILE@GMAIL.COM', 'CONSTANZA ARAYA'),
+	(0, '77807840-6', 'RECETARIO MAGISTRAL ENDOVENOSO', 'IGNACIO VALDIVIESO 2361', 942088607, 942088607, 'KARIM.HERRERA@FRESENIUS-KABI.COM', 'KARIM HERRERA'),
+	(0, '77808840-1', 'MOBILINK S.A.', 'AV. FCO. BILBAO 2162', 974525620, 974525620, 'ERIC.BUSTAMANTE@MOTOROLASOLUTIONS.COM', 'ERIC BUSTAMANTE'),
+	(0, '78779600-1', 'AROMOS LIMITADA', 'SANTA FLORENCIA 860', 968321375, 968321375, 'FABRIZIOZUNINO12@GMAIL.COM', 'FABRIZIO ZUNINO'),
+	(0, '79895670-1', 'PV EQUIP SA', 'SANTA ELENA DE HUECHURABA 1160', 223677880, 223677880, 'JAVIER.DELGADO@PVEQUIP.CL', 'JAVIER DELGADO'),
+	(0, '81286300-2', 'COTACO', 'CAMINO SAN PEDRO 9650 PUDAHUEL, SANTIAGO', 956285960, 956285960, 'AANDRADE@COTACO.CL', 'ALEJANDRO ANDRADE'),
+	(0, '81378300-2', 'ABBOT LABORATORIES DE CHILE LTDA', 'AV. EL SALTO 5380, HUECHURABA', 988189020, 988189020, 'VERONICA.GUZMAN@ABBOTT.COM', 'VERONICA GUZMAN ROMERO'),
+	(0, '82031800-5', 'HOSPITAL PARROQUIAL SAN BERNARDO', 'OHIGGINS 04, SAN BERNARDO', 223736630, 223736630, 'FMONTES@HPSB.CL', 'FERNANDO MONTES '),
+	(0, '87590600-3', 'COMERCIALIZADORA TERUMO CHILE LTDA.', 'APOQUINDO 2929, PISO 16, LAS CONDES, SANTIAGO', 933717932, 933717932, 'CLAUDIA.CAMACHO@TERUMOMEDICAL.COM', 'CLAUDIA CAMACHO'),
+	(0, '9494185-7', 'RAUL SILVA CARRASOLA', 'RAULI 1509, VILLA EL ALERCE', 990798396, 990798396, 'RAULSILVAC@RISCMEDIC.CL', 'RAUL SILVA CARRASOLA'),
+	(0, '96582310-7', 'GRIFOLS CHILE S.A.', 'LOS MILITARES 5890 PISO 11 OF 1101', 977665241, 977665241, 'SANTIAGO.SERPA@GRIFOLS.COM', 'SANTIAGO SERPA'),
+	(0, '96689310-9', 'TRANSBANK', 'HUERFANOS 770, PISO 10', 992272823, 992272823, 'MLETELIER@TRANSBANK.CL', 'MARIA LETELIER CASTILLO'),
+	(0, '96697710-8', 'PROCESOS SANITARIOS', 'CERRO EL ROBLE 9661', 952081836, 952081836, 'JACQUELINE.ARAYA@STERICYCLE.CL', 'JACQUELINE ARAYA'),
+	(0, '96791730-3', 'ELECNOR CHILE S.A', 'AV. APOQUINDO 4501, PISO 16, OF1602', 942785776, 942785776, 'PEGARCIA@ELECNOR.COM', 'PABLO GARCÍA'),
+	(0, '96986070-8', 'PARACLINICS S.A.', 'CARRIÓN 1398, INDEPENDENCIA', 224727200, 224727200, 'INFO@PARACLINICS.CL', 'ARTURO BESA'),
+	(0, '99507130-4', 'NEPHROCARE CHILE S.A.', 'CONDELL 715, PROVIDENCIA, SANTIAGO, REGION METROPOLITANA', 227275747, 979767231, 'fernando.vargas@fmc-ag.com', 'FERNANDO VARGAS');
+/*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.prov_contrato
+CREATE TABLE IF NOT EXISTS `prov_contrato` (
+  `id_regis` int(11) NOT NULL AUTO_INCREMENT,
+  `rut_proveedor` varchar(10) NOT NULL,
+  `telefono` int(9) NOT NULL,
+  `celular` int(9) NOT NULL,
+  `mail` varchar(120) NOT NULL,
+  `direccion` varchar(120) NOT NULL,
+  `razon_social` varchar(30) NOT NULL,
+  `id_contrato` varchar(20) NOT NULL,
+  `vendedor` varchar(60) NOT NULL,
+  `numres_ac` varchar(20) NOT NULL,
+  PRIMARY KEY (`id_regis`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.prov_contrato: ~4 rows (aproximadamente)
+/*!40000 ALTER TABLE `prov_contrato` DISABLE KEYS */;
+INSERT INTO `prov_contrato` (`id_regis`, `rut_proveedor`, `telefono`, `celular`, `mail`, `direccion`, `razon_social`, `id_contrato`, `vendedor`, `numres_ac`) VALUES
+	(5, '76011347-6', 3243778, 323243778, 'leonardo.chirinos@biomedicaingenieria.cl', 'Av. Colón 2644, Valparaíso', 'Biomédica Ingeniería Ltda.', '1057496-25-LE21', 'Leonardo Chirinos', '1214215'),
+	(6, '76581700-5', 228588591, 997011336, 'cpiccoli@lavanderiabologna.cl', 'Santa Marta 0241', 'Comercial, Distribución E Inve', '1078354-3-LR19', 'Cristian Piccoli', '2776/27-12-2019'),
+	(8, '99507130-4', 227275747, 979767231, 'fernando.vargas@fmc-ag.com', 'CONDELL 715, PROVIDENCIA, SANTIAGO, REGION METROPOLITANA', 'NEPHROCARE CHILE S.A.', '1057496-1290-SE21', 'FERNANDO VARGAS', '327'),
+	(9, '99507130-4', 227275747, 979767231, 'fernando.vargas@fmc-ag.com', 'CONDELL 715, PROVIDENCIA, SANTIAGO, REGION METROPOLITANA', 'NEPHROCARE CHILE S.A.', '1057496-1290-SE21', 'FERNANDO VARGAS', '327');
+/*!40000 ALTER TABLE `prov_contrato` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.servicios
+CREATE TABLE IF NOT EXISTS `servicios` (
+  `codigo` int(5) NOT NULL AUTO_INCREMENT,
+  `centro_costo` varchar(60) NOT NULL,
+  `supervisor` varchar(60) NOT NULL,
+  `fono` int(9) NOT NULL,
+  `correo` varchar(60) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=1300012 DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla cbx.servicios: ~21 rows (aproximadamente)
+/*!40000 ALTER TABLE `servicios` DISABLE KEYS */;
+INSERT INTO `servicios` (`codigo`, `centro_costo`, `supervisor`, `fono`, `correo`) VALUES
+	(0, 'ABASTECIMIENTO', 'FABIAN GUAJARDO', 264756, 'fabian.guajardo@redsalud.gob.cl'),
+	(1, 'INFORMATICA', 'MARCO ROJAS', 264798, 'marco.rojas@redsalud.gov.cl'),
+	(3, 'EQUIPOS MEDICOS', 'CHRISTIAN VARGAS GONZALEZ', 264887, 'chistian.vargas@redsalud.gob.cl'),
+	(4, 'CONTABILIDAD', 'MARIA EUGENIA DíAZ MOLINA', 264774, 'mariae.diaz@redsalud.gov.cl'),
+	(5, 'Servicios Generales', 'Eduardo Tobar Reyes', 264845, 'eduardo.tobar@redsalud.gob.cl'),
+	(6, 'DIRECCION', 'LUZ INES TORRES COTES', 264787, 'luzi.torres@redsalud.gov.cl'),
+	(7, 'KINESIOLOGíA Y REHABILITACIóN', 'CAROLINA MIRANDA SILVA', 264799, 'ileana.escobar@redsalud.gob.cl'),
+	(8, 'GESTOR DE DEMANDA', 'XIMENA RIFFO LOPEZ', 264769, 'ximena.riffo@redsalud.gob.cl'),
+	(9, 'CAPACITACION', 'ADRIáN CONCHA BRANTES', 264766, 'adrian.concha@redsalud.gob.cl'),
+	(10, 'Recursos Humano', 'Rodrigo Díaz Martínez', 264832, 'rodrigof.diaz@redsalud.gob.cl'),
+	(11, 'FARMACIA', 'PAULINA CONCHA ROJAS', 264795, 'paulina.concha@redsalud.gob.cl'),
+	(12, 'ALIMENTACION', 'ANA ARAYA CORTES', 264757, 'anaeugenia.araya@redsalud.gov.cl'),
+	(13, 'Pabellón', 'Marcela Nuñez Duran', 264818, 'marcela.nunezd@redsalud.gob.cl'),
+	(1300003, 'GINECOLOGíA  Y OBSTETRICIA', 'PATRICIA HERMOSILLA', 264808, 'patricia.hermosillav@redsalud.gov.cl'),
+	(1300004, 'OIRS', 'Alina Estrada', 264816, 'alina.estrada@redsalud.gob.cl'),
+	(1300005, 'DENTAL', 'MARTA CASTRO', 264781, 'marta.castro@redsalud.gob.cl'),
+	(1300006, 'CGA', 'ROBERTO SOTO', 264856, 'roberto.soto@redsalud.gob.cl'),
+	(1300007, 'LABORATORIO E IMAGENOLOGíA ', 'GIASNA LEON NAVARRETE', 267180, 'giasna.leon@redsalud.gob.cl'),
+	(1300008, 'BIENESTAR', 'JOSE LUIS GONZALEZ', 264843, 'josel.lopez@redsalud.gob.cl'),
+	(1300010, 'Prevención de Riesgos', 'Silvana Baeza', 264871, 'silvana.baeza@redsalud.gob.cl'),
+	(1300011, 'Medicina', 'Gabriela Hobon', 264810, 'gabriela.hobon@redsalud.gob.cl');
+/*!40000 ALTER TABLE `servicios` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.status
+CREATE TABLE IF NOT EXISTS `status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla cbx.status: ~4 rows (aproximadamente)
+/*!40000 ALTER TABLE `status` DISABLE KEYS */;
+INSERT INTO `status` (`id`, `name`) VALUES
+	(1, 'Pendiente'),
+	(2, 'En Desarrollo'),
+	(3, 'Terminado'),
+	(4, 'Cancelado');
+/*!40000 ALTER TABLE `status` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.ticket
+CREATE TABLE IF NOT EXISTS `ticket` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) DEFAULT NULL,
+  `description` text,
+  `updated_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `kind_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `asigned_id` int(11) DEFAULT NULL,
+  `project_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `priority_id` int(11) NOT NULL DEFAULT '1',
+  `status_id` int(11) NOT NULL DEFAULT '1',
+  `observacion` text NOT NULL,
+  `servicio` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `priority_id` (`priority_id`),
+  KEY `status_id` (`status_id`),
+  KEY `user_id` (`user_id`),
+  KEY `kind_id` (`kind_id`),
+  KEY `category_id` (`category_id`),
+  KEY `project_id` (`project_id`),
+  CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`priority_id`) REFERENCES `priority` (`id`),
+  CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`),
+  CONSTRAINT `ticket_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `ticket_ibfk_4` FOREIGN KEY (`kind_id`) REFERENCES `kind` (`id`),
+  CONSTRAINT `ticket_ibfk_5` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+  CONSTRAINT `ticket_ibfk_6` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla cbx.ticket: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
+
+-- Volcando estructura para tabla cbx.user
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(60) DEFAULT NULL,
+  `servicio` varchar(20) DEFAULT NULL,
+  `Perfil` varchar(15) DEFAULT NULL,
+  `profile_pic` varchar(250) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `kind` int(11) NOT NULL DEFAULT '1',
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla cbx.user: ~8 rows (aproximadamente)
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`id`, `username`, `name`, `email`, `password`, `servicio`, `Perfil`, `profile_pic`, `is_active`, `kind`, `created_at`) VALUES
+	(2, 'MRojas', 'Marco Rojas', 'marco.rojas@redsalud.gov.cl', '10470c3b4b1fed12c3baac014be15fac67c6e815', 'Informática', 'Administrador', '1995545 xx2.png', 1, 1, '2020-10-13 13:07:14'),
+	(11, 'Toño', 'Antonio Care', 'antonio.care@redsalud.gov.cl', '10470c3b4b1fed12c3baac014be15fac67c6e815', 'Informática', 'Administrador', 'user1.png', 1, 1, '2020-10-13 17:36:54'),
+	(15, 'Ignacio', 'Ignacio Lira', 'ignacio.lira@redsalud.gob.cl', '10470c3b4b1fed12c3baac014be15fac67c6e815', 'Abastecimiento', 'Administrador', 'IMG_0985.JPG', 1, 1, '2020-10-18 18:42:00'),
+	(25, NULL, 'Maria Luis  Uribe', 'marialuisa.uribe@redsalud.gov.cl', 'ee1589434504f22b52778a7372dbdf4ace64c4a8', 'Abastecimiento', 'Usuario', 'default.png', 1, 1, '2021-05-17 17:54:09'),
+	(27, NULL, 'Catalina Silva', 'catalina.silva@redsalud.gob.cl', '68b926be123151afde6b3f5ddbaaf3adff093b90', 'Abastecimiento', 'Usuario', 'IMG_0982.JPG', 1, 1, '2021-05-18 15:44:21'),
+	(29, NULL, 'Marlene Olivo', 'marlene.olivo@redsalud.gob.cl', '79182775c2b12cc9216b550271100a51736f06d4', 'Abastecimiento', 'Usuario', 'IMG_0975.JPG', 1, 1, '2021-05-18 15:47:14'),
+	(30, NULL, 'Camila Padilla', 'camila.padilla@redsalud.gob.cl', 'b77bf0ce97b0dea16d95b53ff3c4a9a9c84f1b8c', 'Abastecimiento', 'Usuario', 'default.png', 1, 1, '2021-05-18 15:50:30'),
+	(39, NULL, 'Carolina Campos', 'carolina.campos@redsalud.gov.cl', 'a784db92478151b5d30ffd6f392682687512e6f9', 'Abastecimiento', 'Usuario', 'IMG_0971.JPG', 1, 1, '2021-05-28 19:03:20');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

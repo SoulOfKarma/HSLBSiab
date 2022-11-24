@@ -308,7 +308,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         headerTitleZGen: [
@@ -507,7 +508,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         headerTitleZGenPriorizado: [
@@ -605,7 +607,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         headerTitleConsumoMesXServicio: [
@@ -662,7 +665,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         headerTitleConsumoMes: [
@@ -711,7 +715,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         headerTitleConsumoAnio: [
@@ -830,7 +835,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         columnBincard: [
@@ -1054,6 +1060,113 @@ export default new Vuex.Store({
                 }
             }
         ],
+        columnBincardGeneralFL: [
+            {
+                label: "Tipo",
+                field: "TIPO",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Descripcion",
+                field: "NOMBRE",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Fecha",
+                field: "FECHA",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Folio Recepcion",
+                field: "FOLREC",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Orden de Compra",
+                field: "NUMORD",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Proveedor",
+                field: "PROVEEDOR",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Folio Despacho",
+                field: "FOLDES",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Servicio",
+                field: "SERVICIO",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Codigo Interno",
+                field: "CODART",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Codigo Barra",
+                field: "CODBAR",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Precio",
+                field: "PRECIO",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Cantidad",
+                field: "CANTIDAD",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Saldo",
+                field: "SALDO",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Fecha Vencimiento",
+                field: "FECVEN",
+                filterOptions: {
+                    enabled: true
+                }
+            },
+            {
+                label: "Lote",
+                field: "LOTE",
+                filterOptions: {
+                    enabled: true
+                }
+            }
+        ],
         headerTitleBincardGeneral: [
             "N° Interno",
             "Z-Gen",
@@ -1204,7 +1317,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         columnSaldoPmp: [
@@ -1266,7 +1380,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         columnDespachoXServicio: [
@@ -1335,7 +1450,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         columnConsolidadoDespacho: [
@@ -1390,7 +1506,8 @@ export default new Vuex.Store({
             },
             {
                 label: "Opciones",
-                field: "action"
+                field: "action",
+                width: "120px"
             }
         ],
         columnBincardGetArticulosSaldoEstadoCF: [

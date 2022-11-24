@@ -350,8 +350,8 @@ class RecepcionesController extends Controller
             'recepciones.NUMRIB','recepciones.TIPRECEPCION',DB::raw("ROUND(recepciones.SUBTOTAL,0) as NETO"),
             DB::raw("ROUND((recepciones.SUBTOTAL*0.19),0) as IVA"),
             DB::raw("ROUND((recepciones.SUBTOTAL*0.19) + recepciones.SUBTOTAL,0) as TOTAL"))
-            ->where('recepciones.NUMINT',$NUMINT)
             ->join('tipo_documentos','recepciones.TIPDOC','=','tipo_documentos.id')
+            ->where('recepciones.NUMINT',$NUMINT)
             ->get();
 
             $pdf = App::make("dompdf.wrapper");
@@ -359,6 +359,68 @@ class RecepcionesController extends Controller
             $pdf->setOptions(['isJavascriptEnabled' => true]);
             $pdf->setOptions(['isRemoteEnabled' => true]);
             return $pdf->stream("Recepcion.pdf", array("Attachment" => 0));
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;  
+        }
+    }
+
+    public function GenerarImpresionCI($NUMINT){
+        try {
+            $getDet = recepcionDetalles::select('CODART','PRODUCTO','UNIMED','LOTE',DB::raw("DATE_FORMAT(FECVEN,'%d/%m/%Y') as FECVEN"),'CANREC','PREUNI',
+            DB::raw('ROUND(VALTOT,0) as VALTOT'))
+            ->where('NUMINT',$NUMINT)
+            ->get();
+
+            $getRec = recepciones::select('FOLIO',DB::raw("DATE_FORMAT(recepciones.FECSYS,'%d/%m/%Y') as FECSYS"),
+            DB::raw("DATE_FORMAT(recepciones.FECDES,'%d/%m/%Y') as FECDES"),'recepciones.RUTPRO','recepciones.NOMPRO',
+            'recepciones.NUMDOC','recepciones.NUMORD','tipo_documentos.descripcionDocumento as TIPDOC',
+            DB::raw("DATE_FORMAT(recepciones.FECDOC,'%d/%m/%Y') as FECDOC"),'recepciones.DCTO',
+            DB::raw('fnStripTags(recepciones.OBS) AS OBS'),'recepciones.CARGO',DB::raw('ROUND(recepciones.SUBTOTAL,0) as SUBTOTAL'),
+            'recepciones.AJUSTE','recepciones.USUING','recepciones.USUMOD','recepciones.NUMINT',
+            'recepciones.NUMRIB','recepciones.TIPRECEPCION',DB::raw("ROUND(recepciones.SUBTOTAL,0) as NETO"),
+            DB::raw("ROUND((recepciones.SUBTOTAL*0.19),0) as IVA"),
+            DB::raw("ROUND((recepciones.SUBTOTAL*0.19) + recepciones.SUBTOTAL,0) as TOTAL"))
+            ->join('tipo_documentos','recepciones.TIPDOC','=','tipo_documentos.id')
+            ->where('recepciones.NUMINT',$NUMINT)
+            ->get();
+
+            $pdf = App::make("dompdf.wrapper");
+            $pdf->loadView('RecepcionCI', compact ('getDet','getRec'));
+            $pdf->setOptions(['isJavascriptEnabled' => true]);
+            $pdf->setOptions(['isRemoteEnabled' => true]);
+            return $pdf->stream("RecepcionCI.pdf", array("Attachment" => 0));
+        } catch (\Throwable $th) {
+            log::info($th);
+            return false;  
+        }
+    }
+
+    public function GenerarImpresionCIEC($NUMINT){
+        try {
+            $getDet = recepcionDetalles::select('CODART','PRODUCTO','UNIMED','LOTE',DB::raw("DATE_FORMAT(FECVEN,'%d/%m/%Y') as FECVEN"),'CANREC','PREUNI',
+            DB::raw('ROUND(VALTOT,0) as VALTOT'))
+            ->where('NUMINT',$NUMINT)
+            ->get();
+
+            $getRec = recepciones::select('FOLIO',DB::raw("DATE_FORMAT(recepciones.FECSYS,'%d/%m/%Y') as FECSYS"),
+            DB::raw("DATE_FORMAT(recepciones.FECDES,'%d/%m/%Y') as FECDES"),'recepciones.RUTPRO','recepciones.NOMPRO',
+            'recepciones.NUMDOC','recepciones.NUMORD','tipo_documentos.descripcionDocumento as TIPDOC',
+            DB::raw("DATE_FORMAT(recepciones.FECDOC,'%d/%m/%Y') as FECDOC"),'recepciones.DCTO',
+            DB::raw('fnStripTags(recepciones.OBS) AS OBS'),'recepciones.CARGO',DB::raw('ROUND(recepciones.SUBTOTAL,0) as SUBTOTAL'),
+            'recepciones.AJUSTE','recepciones.USUING','recepciones.USUMOD','recepciones.NUMINT',
+            'recepciones.NUMRIB','recepciones.TIPRECEPCION',DB::raw("ROUND(recepciones.SUBTOTAL,0) as NETO"),
+            DB::raw("ROUND((recepciones.SUBTOTAL*0.19),0) as IVA"),
+            DB::raw("ROUND((recepciones.SUBTOTAL*0.19) + recepciones.SUBTOTAL,0) as TOTAL"))
+            ->join('tipo_documentos','recepciones.TIPDOC','=','tipo_documentos.id')
+            ->where('recepciones.NUMINT',$NUMINT)
+            ->get();
+
+            $pdf = App::make("dompdf.wrapper");
+            $pdf->loadView('RecepcionCIEC', compact ('getDet','getRec'));
+            $pdf->setOptions(['isJavascriptEnabled' => true]);
+            $pdf->setOptions(['isRemoteEnabled' => true]);
+            return $pdf->stream("RecepcionCIEC.pdf", array("Attachment" => 0));
         } catch (\Throwable $th) {
             log::info($th);
             return false;  
