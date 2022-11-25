@@ -696,6 +696,7 @@ export default {
                                 .toString();
                             this.nordencompra = value.NUMORD;
                             this.totalRecepcion = value.TOTAL;
+                            this.anio = value.ANIO;
                         } else {
                             validador = true;
                         }
@@ -823,7 +824,7 @@ export default {
                             let c = this.listaDetalleOrdenCompra;
                             let a = 0;
                             c.forEach((value, index) => {
-                                a = a + parseInt(value.VALTOT);
+                                a = a + parseInt(value.TOTAL);
                             });
                             this.valorTotal = a;
                         }
@@ -1115,7 +1116,8 @@ export default {
                             ).format("YYYY-MM-DD"),
                             TOTAL: parseInt(this.totalRecepcion),
                             FOLREC: this.nfoliorecepcionado,
-                            NOMORD: this.nordencompra
+                            NOMORD: this.nordencompra,
+                            ANIO: this.anio
                         };
                         const dat = data;
 

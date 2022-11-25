@@ -583,7 +583,8 @@ export default {
                                     value.NOMPRO;
                                 this.descripcionProveedor = value.NOMPRO;
                                 this.nsigfe = value.NUMSIGFE;
-                                this.folio = value.FOLIO;
+                                this.nfoliorecepcionado = value.FOLIO;
+                                this.anio = value.ANIO;
                             });
 
                             c = [];

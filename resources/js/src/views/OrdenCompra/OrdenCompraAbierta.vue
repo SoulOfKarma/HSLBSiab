@@ -854,6 +854,7 @@ export default {
                                     value.NOMPRO;
                                 this.descripcionProveedor = value.NOMPRO;
                                 this.nsigfe = value.NUMSIGFE;
+                                this.anio = value.ANIO;
                             });
 
                             c = [];
@@ -896,7 +897,7 @@ export default {
                             let c = this.listaDetalleOrdenCompra;
                             let a = 0;
                             c.forEach((value, index) => {
-                                a = parseInt(a + value.VALTOT);
+                                a = parseInt(a) + parseInt(value.TOTAL);
                             });
                             this.valorTotal = a;
                         }
@@ -1130,7 +1131,8 @@ export default {
                             ).format("YYYY-MM-DD"),
                             TOTAL: parseInt(this.totalRecepcion),
                             FOLREC: this.nfoliorecepcionado,
-                            NOMORD: this.nordencompra
+                            NOMORD: this.nordencompra,
+                            ANIO: this.anio
                         };
                         const dat = data;
 
