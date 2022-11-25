@@ -219,6 +219,35 @@ export default new Vuex.Store({
             "Lote"
         ]
     },
+    methods: {
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 1000);
+        },
+        isNumber: function(evt) {
+            evt = evt ? evt : window.event;
+            var charCode = evt.which ? evt.which : evt.keyCode;
+            if (
+                charCode > 31 &&
+                (charCode < 48 || charCode > 57) &&
+                charCode !== 46
+            ) {
+                evt.preventDefault();
+            } else {
+                return true;
+            }
+        },
+        handleImage(e) {
+            try {
+                this.image = e.target.files[0];
+                this.nombrearchivo = this.image.name;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    },
     mutations: {},
     actions: {}
 });

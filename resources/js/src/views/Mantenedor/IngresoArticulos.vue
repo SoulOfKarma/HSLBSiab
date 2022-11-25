@@ -14,6 +14,11 @@
                 ></v-select>
             </div>
             <br />
+            <div class="vx-col w-full mt-2">
+                <h6>Ingrese Codigo o Descripcion a Buscar</h6>
+                <vs-input class="inputx w-full  " v-model="codbusqueda" />
+            </div>
+            <br />
             <div v-if="articulosgen">
                 <div>
                     <vs-button
@@ -1577,10 +1582,6 @@ import axios from "axios";
 import router from "@/router";
 import store from "./storeArticulos.js";
 import vSelect from "vue-select";
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
@@ -1607,21 +1608,6 @@ export default {
             localVal: process.env.MIX_APP_URL,
             localDoc: process.env.MIX_APP_URL_DOCUMENTOS,
             externalVal: process.env.MIX_APP_URL_PA,
-            editorOption: {
-                modules: {
-                    toolbar: [
-                        ["bold", "italic", "underline", "strike"],
-                        ["blockquote", "code-block"],
-                        [{ header: 1 }, { header: 2 }],
-                        [{ list: "ordered" }, { list: "bullet" }],
-                        [{ indent: "-1" }, { indent: "+1" }],
-                        [{ direction: "rtl" }],
-                        [{ font: [] }],
-                        [{ align: [] }],
-                        ["clean"]
-                    ]
-                }
-            },
             //Datos Campos
             PageOptions: storePage.state.PageOptions,
             ModificaArt: localStorage.getItem("permiso_usuario"),
@@ -1649,6 +1635,7 @@ export default {
             medicamento: false,
             articulosgen: false,
             cantidadEmbalaje: 1,
+            codbusqueda: "",
             idBodega: "-",
             idZona: "-",
             sector: "-",
