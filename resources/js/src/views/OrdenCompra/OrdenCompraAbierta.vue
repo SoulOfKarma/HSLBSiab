@@ -766,7 +766,10 @@ export default {
                                     position: "top-right"
                                 });
                                 this.$router.push({
-                                    name: "ListadoOrdenCompraAbierta"
+                                    name: "OrdenCompraCerrada",
+                                    params: {
+                                        NUMINT: `${this.numint}`
+                                    }
                                 });
                             }
                         });

@@ -962,7 +962,7 @@ export default {
             codigoBarra: "",
             Observaciones: "-",
             nordencompra: "-",
-            nrib: "",
+            nrib: "-",
             codigoTrack: "",
             codigoOnu: "",
             codigoArticulo: "",
@@ -2443,6 +2443,12 @@ export default {
                                     "DD-MM-YYYY"
                                 ).format("YYYY-MM-DD");
                             }
+                            if (this.nordencompra.length < 1) {
+                                this.nordencompra = "-";
+                            }
+                            if (this.nrib.length < 1) {
+                                this.nrib = "-";
+                            }
                             let data = {
                                 NUMINT: this.numint,
                                 FECSYS: moment(
@@ -2549,7 +2555,12 @@ export default {
                             localStorage.getItem("nombre") +
                             " " +
                             localStorage.getItem("apellido");
-
+                        if (this.nordencompra.length < 1) {
+                            this.nordencompra = "-";
+                        }
+                        if (this.nrib.length < 1) {
+                            this.nrib = "-";
+                        }
                         let data = {
                             NUMINT: this.numint,
                             FECSYS: moment(
@@ -2729,6 +2740,12 @@ export default {
                         localStorage.getItem("apellido");
 
                     let data = this.listaDetalleRecepcion;
+                    if (this.nordencompra.length < 1) {
+                        this.nordencompra = "-";
+                    }
+                    if (this.nrib.length < 1) {
+                        this.nrib = "-";
+                    }
                     let dat = {
                         NUMINT: this.numint,
                         SUBTOTAL: subtotal,
@@ -2816,6 +2833,7 @@ export default {
                 console.log(error);
             }
         },
+        //Este Metodo se comunica con la API interna para finalizar el proceso de recepcion y asignar los N°Folio Correspondientes.
         CerrarRecepcion() {
             try {
                 this.TraerUltimoNFolio();
@@ -2824,88 +2842,351 @@ export default {
 
                 setTimeout(() => {
                     if (this.tiporecepcion == "Consumo Inmediato") {
-                        if (this.listaDetalleRecepcion.length < 1) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No existen datos en el detalle de articulos para generar un N° de Folio",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else if (this.folio == 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text: "No se pudo generar un N° de Folio",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else if (
-                            this.nombrearchivo == null ||
-                            this.nombrearchivo.length < 1
+                        if (
+                            localStorage.getItem("permiso_usuario") == 3 ||
+                            localStorage.getItem("permiso_usuario") == "3"
                         ) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "Debe Ingresar la factura para poder cerrar la recepcion",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            if (this.listaDetalleRecepcion.length < 1) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No existen datos en el detalle de articulos para generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.folio == 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text: "No se pudo generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                let data = {
+                                    NUMINT: this.numint,
+                                    FOLIO: this.folio
+                                };
+
+                                let c = this.listaDetalleRecepcion;
+
+                                let d = [];
+
+                                c.forEach((value, index) => {
+                                    value.FOLIO = this.numFolioDespacho;
+                                    value.NUMINT = this.numintDespacho;
+                                    value.idServicio = this.seleccionServicio.id;
+                                    value.NOMSER = this.seleccionServicio.descripcionServicio;
+                                    value.NUMLIBRO = this.numeroLibroPedido;
+                                    value.TIPDESP = this.tiporecepcion;
+                                    d.push(value);
+                                });
+                                const array = d;
+
+                                let nombreUsuario =
+                                    localStorage.getItem("nombre") +
+                                    " " +
+                                    localStorage.getItem("apellido");
+                                if (this.nordencompra.length < 1) {
+                                    this.nordencompra = "-";
+                                }
+                                if (this.nrib.length < 1) {
+                                    this.nrib = "-";
+                                }
+                                let dataDespacho = {
+                                    FOLIO: this.numFolioDespacho,
+                                    NUMINT: this.numintDespacho,
+                                    FECSYS: moment(
+                                        this.fechaSistema,
+                                        "DD-MM-YYYY"
+                                    ).format("YYYY-MM-DD"),
+                                    FECDES: moment(
+                                        this.fechaRecepcion,
+                                        "DD-MM-YYYY"
+                                    ).format("YYYY-MM-DD"),
+                                    TIPDESP: "Solicitud Pedidos",
+                                    NUMORD: this.nordencompra.toUpperCase(),
+                                    NUMRIB: this.nrib,
+                                    PRODUCTO: this.nombre.toUpperCase(),
+                                    CODBAR: this.codigoBarra.toUpperCase(),
+                                    OBS: this.Observaciones.toUpperCase(),
+                                    USUING: nombreUsuario.toUpperCase(),
+                                    idServicio: this.seleccionServicio.id,
+                                    NOMSER: this.seleccionServicio
+                                        .descripcionServicio,
+                                    NUMLIBRO: this.numeroLibroPedido,
+                                    TIPRECEPCION: this.tiporecepcion
+                                };
+
+                                axios
+                                    .all([
+                                        axios.post(
+                                            this.localVal +
+                                                "/api/Mantenedor/PostCerrarRecepcion",
+                                            data,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        localStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        ),
+                                        axios.post(
+                                            this.localVal +
+                                                "/api/Recepcion/PostCerrarRecepcionDespacho",
+                                            array,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        localStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        ),
+                                        axios.post(
+                                            this.localVal +
+                                                "/api/Recepcion/PostCerrarDespacho",
+                                            dataDespacho,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        localStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                    ])
+                                    .then(
+                                        axios.spread((res1, res2, res3) => {
+                                            let resp1 = res1.data;
+                                            let resp2 = res2.data;
+                                            let resp3 = res3.data;
+                                            if (
+                                                resp1 == true &&
+                                                resp2 == true &&
+                                                resp3 == true
+                                            ) {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Completado",
+                                                    text:
+                                                        "Articulos Recepcionado y despachado Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                this.$router.push({
+                                                    name: "RecepcionCerrada",
+                                                    params: {
+                                                        NUMINT: `${this.numint}`
+                                                    }
+                                                });
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "No fue posible cerrar la recepcion y despacho, intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            }
+                                        })
+                                    );
+                            }
                         } else {
-                            let data = {
-                                NUMINT: this.numint,
-                                FOLIO: this.folio
-                            };
+                            if (this.listaDetalleRecepcion.length < 1) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No existen datos en el detalle de articulos para generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.folio == 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text: "No se pudo generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                let data = {
+                                    NUMINT: this.numint,
+                                    FOLIO: this.folio
+                                };
 
-                            let c = this.listaDetalleRecepcion;
+                                let c = this.listaDetalleRecepcion;
 
-                            let d = [];
+                                let d = [];
 
-                            c.forEach((value, index) => {
-                                value.FOLIO = this.numFolioDespacho;
-                                value.NUMINT = this.numintDespacho;
-                                value.idServicio = this.seleccionServicio.id;
-                                value.NOMSER = this.seleccionServicio.descripcionServicio;
-                                value.NUMLIBRO = this.numeroLibroPedido;
-                                value.TIPDESP = this.tiporecepcion;
-                                d.push(value);
-                            });
-                            const array = d;
+                                c.forEach((value, index) => {
+                                    value.FOLIO = this.numFolioDespacho;
+                                    value.NUMINT = this.numintDespacho;
+                                    value.idServicio = this.seleccionServicio.id;
+                                    value.NOMSER = this.seleccionServicio.descripcionServicio;
+                                    value.NUMLIBRO = this.numeroLibroPedido;
+                                    value.TIPDESP = this.tiporecepcion;
+                                    d.push(value);
+                                });
+                                const array = d;
 
-                            let nombreUsuario =
-                                localStorage.getItem("nombre") +
-                                " " +
-                                localStorage.getItem("apellido");
-                            let dataDespacho = {
-                                FOLIO: this.numFolioDespacho,
-                                NUMINT: this.numintDespacho,
-                                FECSYS: moment(
-                                    this.fechaSistema,
-                                    "DD-MM-YYYY"
-                                ).format("YYYY-MM-DD"),
-                                FECDES: moment(
-                                    this.fechaRecepcion,
-                                    "DD-MM-YYYY"
-                                ).format("YYYY-MM-DD"),
-                                TIPDESP: "Solicitud Pedidos",
-                                NUMORD: this.nordencompra.toUpperCase(),
-                                NUMRIB: this.nrib,
-                                PRODUCTO: this.nombre.toUpperCase(),
-                                CODBAR: this.codigoBarra.toUpperCase(),
-                                OBS: this.Observaciones.toUpperCase(),
-                                USUING: nombreUsuario.toUpperCase(),
-                                idServicio: this.seleccionServicio.id,
-                                NOMSER: this.seleccionServicio
-                                    .descripcionServicio,
-                                NUMLIBRO: this.numeroLibroPedido,
-                                TIPRECEPCION: this.tiporecepcion
-                            };
+                                let nombreUsuario =
+                                    localStorage.getItem("nombre") +
+                                    " " +
+                                    localStorage.getItem("apellido");
+                                if (this.nordencompra.length < 1) {
+                                    this.nordencompra = "-";
+                                }
+                                if (this.nrib.length < 1) {
+                                    this.nrib = "-";
+                                }
+                                let dataDespacho = {
+                                    FOLIO: this.numFolioDespacho,
+                                    NUMINT: this.numintDespacho,
+                                    FECSYS: moment(
+                                        this.fechaSistema,
+                                        "DD-MM-YYYY"
+                                    ).format("YYYY-MM-DD"),
+                                    FECDES: moment(
+                                        this.fechaRecepcion,
+                                        "DD-MM-YYYY"
+                                    ).format("YYYY-MM-DD"),
+                                    TIPDESP: "Solicitud Pedidos",
+                                    NUMORD: this.nordencompra.toUpperCase(),
+                                    NUMRIB: this.nrib,
+                                    PRODUCTO: this.nombre.toUpperCase(),
+                                    CODBAR: this.codigoBarra.toUpperCase(),
+                                    OBS: this.Observaciones.toUpperCase(),
+                                    USUING: nombreUsuario.toUpperCase(),
+                                    idServicio: this.seleccionServicio.id,
+                                    NOMSER: this.seleccionServicio
+                                        .descripcionServicio,
+                                    NUMLIBRO: this.numeroLibroPedido,
+                                    TIPRECEPCION: this.tiporecepcion
+                                };
 
-                            axios
-                                .all([
-                                    axios.post(
+                                axios
+                                    .all([
+                                        axios.post(
+                                            this.localVal +
+                                                "/api/Mantenedor/PostCerrarRecepcion",
+                                            data,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        localStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        ),
+                                        axios.post(
+                                            this.localVal +
+                                                "/api/Recepcion/PostCerrarRecepcionDespacho",
+                                            array,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        localStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        ),
+                                        axios.post(
+                                            this.localVal +
+                                                "/api/Recepcion/PostCerrarDespacho",
+                                            dataDespacho,
+                                            {
+                                                headers: {
+                                                    Authorization:
+                                                        `Bearer ` +
+                                                        localStorage.getItem(
+                                                            "token"
+                                                        )
+                                                }
+                                            }
+                                        )
+                                    ])
+                                    .then(
+                                        axios.spread((res1, res2, res3) => {
+                                            let resp1 = res1.data;
+                                            let resp2 = res2.data;
+                                            let resp3 = res3.data;
+                                            if (
+                                                resp1 == true &&
+                                                resp2 == true &&
+                                                resp3 == true
+                                            ) {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Completado",
+                                                    text:
+                                                        "Articulos Recepcionado y despachado Correctamente",
+                                                    color: "success",
+                                                    position: "top-right"
+                                                });
+                                                this.$router.push({
+                                                    name: "RecepcionCerrada",
+                                                    params: {
+                                                        NUMINT: `${this.numint}`
+                                                    }
+                                                });
+                                            } else {
+                                                this.$vs.notify({
+                                                    time: 5000,
+                                                    title: "Error",
+                                                    text:
+                                                        "No fue posible cerrar la recepcion y despacho, intentelo nuevamente",
+                                                    color: "danger",
+                                                    position: "top-right"
+                                                });
+                                            }
+                                        })
+                                    );
+                            }
+                        }
+                    } else {
+                        if (
+                            localStorage.getItem("permiso_usuario") == 3 ||
+                            localStorage.getItem("permiso_usuario") == "3"
+                        ) {
+                            if (this.listaDetalleRecepcion.length < 1) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No existen datos en el detalle de articulos para generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.folio == 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text: "No se pudo generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                let data = {
+                                    NUMINT: this.numint,
+                                    FOLIO: this.folio
+                                };
+                                axios
+                                    .post(
                                         this.localVal +
                                             "/api/Mantenedor/PostCerrarRecepcion",
                                         data,
@@ -2918,25 +3199,67 @@ export default {
                                                     )
                                             }
                                         }
-                                    ),
-                                    axios.post(
-                                        this.localVal +
-                                            "/api/Recepcion/PostCerrarRecepcionDespacho",
-                                        array,
-                                        {
-                                            headers: {
-                                                Authorization:
-                                                    `Bearer ` +
-                                                    localStorage.getItem(
-                                                        "token"
-                                                    )
-                                            }
+                                    )
+                                    .then(res => {
+                                        let data = res.data;
+                                        if (data == true) {
+                                            this.$vs.notify({
+                                                time: 5000,
+                                                title: "Finalizado",
+                                                text:
+                                                    "Recepcion Cerrada, sera redirigido al listado de recepciones cerradas",
+                                                color: "success",
+                                                position: "top-right"
+                                            });
+                                            this.$router.push({
+                                                name: "RecepcionCerrada",
+                                                params: {
+                                                    NUMINT: `${this.numint}`
+                                                }
+                                            });
                                         }
-                                    ),
-                                    axios.post(
+                                    });
+                            }
+                        } else {
+                            if (this.listaDetalleRecepcion.length < 1) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "No existen datos en el detalle de articulos para generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (
+                                this.nombrearchivo == null ||
+                                this.nombrearchivo.length < 1
+                            ) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text:
+                                        "Debe Ingresar la factura para poder cerrar la recepcion",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else if (this.folio == 0) {
+                                this.$vs.notify({
+                                    time: 5000,
+                                    title: "Error",
+                                    text: "No se pudo generar un N° de Folio",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            } else {
+                                let data = {
+                                    NUMINT: this.numint,
+                                    FOLIO: this.folio
+                                };
+                                axios
+                                    .post(
                                         this.localVal +
-                                            "/api/Recepcion/PostCerrarDespacho",
-                                        dataDespacho,
+                                            "/api/Mantenedor/PostCerrarRecepcion",
+                                        data,
                                         {
                                             headers: {
                                                 Authorization:
@@ -2947,22 +3270,14 @@ export default {
                                             }
                                         }
                                     )
-                                ])
-                                .then(
-                                    axios.spread((res1, res2, res3) => {
-                                        let resp1 = res1.data;
-                                        let resp2 = res2.data;
-                                        let resp3 = res3.data;
-                                        if (
-                                            resp1 == true &&
-                                            resp2 == true &&
-                                            resp3 == true
-                                        ) {
+                                    .then(res => {
+                                        let data = res.data;
+                                        if (data == true) {
                                             this.$vs.notify({
                                                 time: 5000,
-                                                title: "Completado",
+                                                title: "Finalizado",
                                                 text:
-                                                    "Articulos Recepcionado y despachado Correctamente",
+                                                    "Recepcion Cerrada, sera redirigido al listado de recepciones cerradas",
                                                 color: "success",
                                                 position: "top-right"
                                             });
@@ -2972,86 +3287,9 @@ export default {
                                                     NUMINT: `${this.numint}`
                                                 }
                                             });
-                                        } else {
-                                            this.$vs.notify({
-                                                time: 5000,
-                                                title: "Error",
-                                                text:
-                                                    "No fue posible cerrar la recepcion y despacho, intentelo nuevamente",
-                                                color: "danger",
-                                                position: "top-right"
-                                            });
                                         }
-                                    })
-                                );
-                        }
-                    } else {
-                        if (this.listaDetalleRecepcion.length < 1) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No existen datos en el detalle de articulos para generar un N° de Folio",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else if (
-                            this.nombrearchivo == null ||
-                            this.nombrearchivo.length < 1
-                        ) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "Debe Ingresar la factura para poder cerrar la recepcion",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else if (this.folio == 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text: "No se pudo generar un N° de Folio",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        } else {
-                            let data = {
-                                NUMINT: this.numint,
-                                FOLIO: this.folio
-                            };
-                            axios
-                                .post(
-                                    this.localVal +
-                                        "/api/Mantenedor/PostCerrarRecepcion",
-                                    data,
-                                    {
-                                        headers: {
-                                            Authorization:
-                                                `Bearer ` +
-                                                localStorage.getItem("token")
-                                        }
-                                    }
-                                )
-                                .then(res => {
-                                    let data = res.data;
-                                    if (data == true) {
-                                        this.$vs.notify({
-                                            time: 5000,
-                                            title: "Finalizado",
-                                            text:
-                                                "Recepcion Cerrada, sera redirigido al listado de recepciones cerradas",
-                                            color: "success",
-                                            position: "top-right"
-                                        });
-                                        this.$router.push({
-                                            name: "RecepcionCerrada",
-                                            params: {
-                                                NUMINT: `${this.numint}`
-                                            }
-                                        });
-                                    }
-                                });
+                                    });
+                            }
                         }
                     }
                 }, 2000);

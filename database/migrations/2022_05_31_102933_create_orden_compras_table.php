@@ -23,6 +23,7 @@ class CreateOrdenComprasTable extends Migration
             $table->string('NUMSIGFE')->nullable();
             $table->date('FECSYS')->nullable();
             $table->string('OBS')->nullable();
+            $table->string('ANIO')->nullable();
             $table->timestamps();
         });
     }

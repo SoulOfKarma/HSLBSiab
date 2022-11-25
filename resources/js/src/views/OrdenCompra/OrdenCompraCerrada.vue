@@ -56,7 +56,6 @@
                         class="w-full select-large"
                         label="RUTPROV"
                         :options="listadoProveedores"
-                        @input="setProveedor"
                         disabled
                     ></v-select>
                 </div>
@@ -76,11 +75,7 @@
                     style="padding: 0 0.2rem; width: 7.3% !important;"
                 >
                     <h6>Sigfe</h6>
-                    <vs-input
-                        class="inputx w-full  "
-                        v-model="nsigfe"
-                        disabled
-                    />
+                    <vs-input class="inputx w-full  " v-model="nsigfe" />
                 </div>
                 <div
                     class="vx-col mt-5"

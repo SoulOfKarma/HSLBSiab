@@ -28,6 +28,7 @@ class CreateOrdenCompraDetallesTable extends Migration
             $table->date('FECSYS')->nullable();
             $table->string('FOLREC')->unique()->nullable();
             $table->string('NOMORD')->nullable();
+            $table->string('ANIO')->nullable();
             $table->timestamps();
         });
     }

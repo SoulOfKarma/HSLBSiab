@@ -113,12 +113,32 @@ class RecepcionesController extends Controller
 
     public function GetRecepcionIngresadaByCodInterno(Request $request){
         try {
-            $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
-            'TIPDOC','FECDOC','DCTO',DB::raw('fnStripTags(OBS) as OBS'),'CARGO',DB::raw("ROUND(SUBTOTAL,0) as SUBTOTAL"),'AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
-            'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','NOMSER','NOMARCH',
-            DB::raw("ROUND(SUBTOTAL,0) as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),0) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,0)+AJUSTE+CARGO-DCTO as TOTAL"))
+
+            $get = [];
+
+            $res = recepciones::select('TIPDOC','TIPRECEPCION')
             ->where('NUMINT',$request->NUMINT)
             ->get();
+
+            $tipdoc = $res[0]->TIPDOC;
+            $tipres = $res[0]->TIPRECEPCION;
+
+            if($tipdoc == '3' || $tipdoc == 3 && $tipres == 'Consumo Inmediato'){
+                $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
+                    'TIPDOC','FECDOC','DCTO',DB::raw('fnStripTags(OBS) as OBS'),'CARGO',DB::raw("0 as SUBTOTAL"),'AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
+                    'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','NOMSER','NOMARCH',
+                    DB::raw("0 as NETO"),DB::raw("0 as IVA"),DB::raw("ROUND(SUBTOTAL,0)+AJUSTE+CARGO-DCTO as TOTAL"))
+                    ->where('NUMINT',$request->NUMINT)
+                    ->get();
+            }else{
+                $get = recepciones::select('FOLIO','FECSYS','FECDES','RUTPRO','NOMPRO','NUMDOC','NUMFAC',
+                    'TIPDOC','FECDOC','DCTO',DB::raw('fnStripTags(OBS) as OBS'),'CARGO',DB::raw("ROUND(SUBTOTAL,0) as SUBTOTAL"),'AJUSTE','FECSYS','USUING','USUMOD','TIPORD',
+                    'FECSYS','NUMINT','NUMRIB','TIPRECEPCION','NUMORD','NUMLIBPED','NOMSER','NOMARCH',
+                    DB::raw("ROUND(SUBTOTAL,0) as NETO"),DB::raw("ROUND((SUBTOTAL*0.19),0) as IVA"),DB::raw("ROUND((SUBTOTAL*0.19) + SUBTOTAL,0)+AJUSTE+CARGO-DCTO as TOTAL"))
+                    ->where('NUMINT',$request->NUMINT)
+                    ->get();
+            }
+            
             return $get;
         } catch (\Throwable $th) {
             log::info($th);
@@ -156,6 +176,7 @@ class RecepcionesController extends Controller
             ->leftjoin('orden_compra_detalles','recepciones.FOLIO','=','orden_compra_detalles.FOLREC')
             ->whereNotNull('recepciones.FOLIO')
             ->whereNull('orden_compra_detalles.FOLREC')
+            ->where('recepciones.TIPORD','=','CENABAST')
             ->get();
             return $get;
         } catch (\Throwable $th) {
@@ -398,7 +419,8 @@ class RecepcionesController extends Controller
 
     public function GenerarImpresionCIEC($NUMINT){
         try {
-            $getDet = recepcionDetalles::select('CODART','PRODUCTO','UNIMED','LOTE',DB::raw("DATE_FORMAT(FECVEN,'%d/%m/%Y') as FECVEN"),'CANREC','PREUNI',
+            $getDet = recepcionDetalles::select('CODART','PRODUCTO','UNIMED','LOTE',DB::raw("DATE_FORMAT(FECVEN,'%d/%m/%Y') as FECVEN"),
+            DB::raw('ROUND(CANREC,0) as CANREC'),DB::raw('ROUND(PREUNI,0) as PREUNI'),
             DB::raw('ROUND(VALTOT,0) as VALTOT'))
             ->where('NUMINT',$NUMINT)
             ->get();
@@ -407,11 +429,11 @@ class RecepcionesController extends Controller
             DB::raw("DATE_FORMAT(recepciones.FECDES,'%d/%m/%Y') as FECDES"),'recepciones.RUTPRO','recepciones.NOMPRO',
             'recepciones.NUMDOC','recepciones.NUMORD','tipo_documentos.descripcionDocumento as TIPDOC',
             DB::raw("DATE_FORMAT(recepciones.FECDOC,'%d/%m/%Y') as FECDOC"),'recepciones.DCTO',
-            DB::raw('fnStripTags(recepciones.OBS) AS OBS'),'recepciones.CARGO',DB::raw('ROUND(recepciones.SUBTOTAL,0) as SUBTOTAL'),
+            DB::raw('fnStripTags(recepciones.OBS) AS OBS'),'recepciones.CARGO',DB::raw('0 as SUBTOTAL'),
             'recepciones.AJUSTE','recepciones.USUING','recepciones.USUMOD','recepciones.NUMINT',
-            'recepciones.NUMRIB','recepciones.TIPRECEPCION',DB::raw("ROUND(recepciones.SUBTOTAL,0) as NETO"),
-            DB::raw("ROUND((recepciones.SUBTOTAL*0.19),0) as IVA"),
-            DB::raw("ROUND((recepciones.SUBTOTAL*0.19) + recepciones.SUBTOTAL,0) as TOTAL"))
+            'recepciones.NUMRIB','recepciones.TIPRECEPCION',DB::raw("0 as NETO"),
+            DB::raw("0 as IVA"),
+            DB::raw("ROUND(recepciones.SUBTOTAL,0) as TOTAL"))
             ->join('tipo_documentos','recepciones.TIPDOC','=','tipo_documentos.id')
             ->where('recepciones.NUMINT',$NUMINT)
             ->get();

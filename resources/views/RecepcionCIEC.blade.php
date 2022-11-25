@@ -1653,7 +1653,7 @@ pre code {
                 <table class="table table-borderless table-sm">
                     <tbody>
                         <tr id="OrdenTabla">
-                            <td style="height: 15.33%" >
+                            <td style="height: 20.33%" >
                                 <h6 class="text-left">Nombre:</h6><br>
                                 <h6 class="text-left">Rut:</h6><br>
                                 <h6 class="text-left">Fecha:</h6><br>

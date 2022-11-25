@@ -1035,7 +1035,7 @@ export default {
             codigoBarra: "",
             Observaciones: "-",
             nordencompra: "-",
-            nrib: "",
+            nrib: "-",
             codigoTrack: "",
             codigoOnu: "",
             codigoArticulo: "",
@@ -2556,6 +2556,12 @@ export default {
                                     "DD-MM-YYYY"
                                 ).format("YYYY-MM-DD");
                             }
+                            if (this.nordencompra.length < 1) {
+                                this.nordencompra = "-";
+                            }
+                            if (this.nrib.length < 1) {
+                                this.nrib = "-";
+                            }
                             let data = {
                                 NUMINT: this.numint,
                                 FECSYS: moment(
@@ -2662,7 +2668,12 @@ export default {
                             localStorage.getItem("nombre") +
                             " " +
                             localStorage.getItem("apellido");
-
+                        if (this.nordencompra.length < 1) {
+                            this.nordencompra = "-";
+                        }
+                        if (this.nrib.length < 1) {
+                            this.nrib = "-";
+                        }
                         let data = {
                             NUMINT: this.numint,
                             FECSYS: moment(
@@ -2846,6 +2857,12 @@ export default {
                         localStorage.getItem("apellido");
 
                     let data = this.listaDetalleRecepcion;
+                    if (this.nordencompra.length < 1) {
+                        this.nordencompra = "-";
+                    }
+                    if (this.nrib.length < 1) {
+                        this.nrib = "-";
+                    }
                     let dat = {
                         NUMINT: this.numint,
                         SUBTOTAL: subtotal,
@@ -2982,6 +2999,12 @@ export default {
                                 localStorage.getItem("nombre") +
                                 " " +
                                 localStorage.getItem("apellido");
+                            if (this.nordencompra.length < 1) {
+                                this.nordencompra = "-";
+                            }
+                            if (this.nrib.length < 1) {
+                                this.nrib = "-";
+                            }
                             let dataDespacho = {
                                 FOLIO: this.numFolioDespacho,
                                 NUMINT: this.numintDespacho,

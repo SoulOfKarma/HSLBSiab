@@ -8,6 +8,6 @@ class ordenCompras extends Model
 {
     protected $fillable = [
         'FOLIO','RUTPRO','NOMPRO','FECORD','NUMINT','NUMSIGFE',
-        'FECSYS','OBS',  
+        'FECSYS','OBS','ANIO'
     ];
 }
