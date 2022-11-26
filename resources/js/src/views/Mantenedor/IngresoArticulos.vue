@@ -1,27 +1,31 @@
 <template>
     <div>
         <vx-card title="Gestionador de Articulos">
-            <div class="vx-col w-full mt-5">
-                <h6>Bodega</h6>
-
-                <v-select
-                    v-model="seleccionBodegaL"
-                    placeholder="Activo"
-                    class="w-full select-large"
-                    label="descripcionBodega"
-                    :options="listaBodegaL"
-                    @input="cargaItemBodega"
-                ></v-select>
-            </div>
-            <br />
-            <div class="vx-col w-full mt-2">
-                <h6>Ingrese Codigo o Descripcion a Buscar</h6>
-                <vs-input class="inputx w-full  " v-model="codbusqueda" />
+            <div class="vx-row">
+                <div class="vx-col w-1/2 mt-2">
+                    <h6>Bodega</h6>
+                    <v-select
+                        v-model="seleccionBodegaL"
+                        placeholder="Activo"
+                        class="w-full select-large"
+                        label="descripcionBodega"
+                        :options="listaBodegaL"
+                    ></v-select>
+                </div>
+                <div class="vx-col w-1/2 mt-2">
+                    <h6>Ingrese Codigo o Descripcion a Buscar</h6>
+                    <vs-input
+                        class="inputx w-full  "
+                        v-model="codbusqueda"
+                        v-on:keydown.enter="cargaItemBodega"
+                    />
+                </div>
             </div>
             <br />
             <div v-if="articulosgen">
                 <div>
                     <vs-button
+                        class="inputx w-full  "
                         color="primary"
                         type="filled"
                         @click="popArticuloGeneral"
@@ -31,95 +35,133 @@
                 <br />
                 <div>
                     <vx-card>
-                        <vue-good-table
-                            :columns="columns"
-                            :rows="rows"
-                            :pagination-options="PageOptions"
-                        >
-                            <template slot="table-row" slot-scope="props">
-                                <!-- Column: Name -->
-                                <span
-                                    v-if="props.column.field === 'fullName'"
-                                    class="text-nowrap"
-                                >
-                                </span>
-                                <span
-                                    v-else-if="props.column.field === 'action'"
-                                >
-                                    <edit-icon
-                                        v-if="ModificaArt == 3"
-                                        content="Modificar Articulo General"
-                                        v-tippy
-                                        size="1.5x"
-                                        class="custom-class"
-                                        @click="
-                                            popArticuloGeneralMod(
-                                                props.row.id,
-                                                props.row.NOMBRE,
-                                                props.row.UNIMEDBASE,
-                                                props.row.CODART_ONU,
-                                                props.row.CODART,
-                                                props.row.CODART_BARR,
-                                                props.row.idEstado,
-                                                props.row.UBICACION,
-                                                props.row.SECTOR,
-                                                props.row.idBodega,
-                                                props.row.idZona,
-                                                props.row.CANTXENB,
-                                                props.row.NOMFAM1,
-                                                props.row.NOMFAM2,
-                                                props.row.NOMFAM3,
-                                                props.row.NOMFAM4,
-                                                props.row.NOMFAM5,
-                                                props.row.idACT_FECVEN,
-                                                props.row.idACTLOTE,
-                                                props.row.NOMARCH,
-                                                props.row.PRECIO_BASE
-                                            )
-                                        "
-                                    ></edit-icon>
-                                    <file-plus-icon
-                                        content="Agregar Codigo Articulo"
-                                        v-tippy
-                                        size="1.5x"
-                                        class="custom-class"
-                                        @click="
-                                            popCodArticuloGeneral(
-                                                props.row.NOMBRE,
-                                                props.row.UNIMEDBASE,
-                                                props.row.CODART_ONU,
-                                                props.row.CODART,
-                                                props.row.CODART_BARR,
-                                                props.row.idEstado,
-                                                props.row.UBICACION,
-                                                props.row.SECTOR,
-                                                props.row.idBodega,
-                                                props.row.idZona,
-                                                props.row.CANTXENB,
-                                                props.row.NOMFAM1,
-                                                props.row.NOMFAM2,
-                                                props.row.NOMFAM3,
-                                                props.row.NOMFAM4,
-                                                props.row.NOMFAM5,
-                                                props.row.idACT_FECVEN,
-                                                props.row.idACTLOTE,
-                                                props.row.PRECIO_BASE
-                                            )
-                                        "
-                                    ></file-plus-icon>
-                                </span>
-                                <!-- Column: Common -->
-                                <span v-else>
-                                    {{ props.formattedRow[props.column.field] }}
-                                </span>
+                        <vs-table max-items="10" search :data="rows">
+                            <template slot="header"> </template>
+                            <template slot="thead">
+                                <vs-th>
+                                    Codigo Barra
+                                </vs-th>
+                                <vs-th>
+                                    Codigo Onu
+                                </vs-th>
+                                <vs-th>
+                                    Codigo Interno
+                                </vs-th>
+                                <vs-th>
+                                    Nombre Articulo
+                                </vs-th>
+                                <vs-th>
+                                    Bodega
+                                </vs-th>
+                                <vs-th>
+                                    Unidad Medida
+                                </vs-th>
+                                <vs-th>
+                                    Opciones
+                                </vs-th>
                             </template>
-                        </vue-good-table>
+
+                            <template slot-scope="{ data }">
+                                <vs-tr
+                                    :key="indextr"
+                                    v-for="(tr, indextr) in data"
+                                >
+                                    <vs-td :data="data[indextr].CODART_BARR">
+                                        {{ data[indextr].CODART_BARR }}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].CODART_ONU">
+                                        {{ data[indextr].CODART_ONU }}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].CODART">
+                                        {{ data[indextr].CODART }}
+                                    </vs-td>
+
+                                    <vs-td :data="data[indextr].NOMBRE">
+                                        {{ data[indextr].NOMBRE }}
+                                    </vs-td>
+
+                                    <vs-td
+                                        :data="data[indextr].descripcionBodega"
+                                    >
+                                        {{ data[indextr].descripcionBodega }}
+                                    </vs-td>
+
+                                    <vs-td :data="data[indextr].UNIMEDBASE">
+                                        {{ data[indextr].UNIMEDBASE }}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].id">
+                                        <edit-icon
+                                            v-if="ModificaArt == 3"
+                                            content="Modificar Articulo General"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                popArticuloGeneralMod(
+                                                    data[indextr].id,
+                                                    data[indextr].NOMBRE,
+                                                    data[indextr].UNIMEDBASE,
+                                                    data[indextr].CODART_ONU,
+                                                    data[indextr].CODART,
+                                                    data[indextr].CODART_BARR,
+                                                    data[indextr].idEstado,
+                                                    data[indextr].UBICACION,
+                                                    data[indextr].SECTOR,
+                                                    data[indextr].idBodega,
+                                                    data[indextr].idZona,
+                                                    data[indextr].CANTXENB,
+                                                    data[indextr].NOMFAM1,
+                                                    data[indextr].NOMFAM2,
+                                                    data[indextr].NOMFAM3,
+                                                    data[indextr].NOMFAM4,
+                                                    data[indextr].NOMFAM5,
+                                                    data[indextr].idACT_FECVEN,
+                                                    data[indextr].idACTLOTE,
+                                                    data[indextr].NOMARCH,
+                                                    data[indextr].PRECIO_BASE
+                                                )
+                                            "
+                                        ></edit-icon>
+                                        <file-plus-icon
+                                            content="Agregar Codigo Articulo"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                popCodArticuloGeneral(
+                                                    data[indextr].NOMBRE,
+                                                    data[indextr].UNIMEDBASE,
+                                                    data[indextr].CODART_ONU,
+                                                    data[indextr].CODART,
+                                                    data[indextr].CODART_BARR,
+                                                    data[indextr].idEstado,
+                                                    data[indextr].UBICACION,
+                                                    data[indextr].SECTOR,
+                                                    data[indextr].idBodega,
+                                                    data[indextr].idZona,
+                                                    data[indextr].CANTXENB,
+                                                    data[indextr].NOMFAM1,
+                                                    data[indextr].NOMFAM2,
+                                                    data[indextr].NOMFAM3,
+                                                    data[indextr].NOMFAM4,
+                                                    data[indextr].NOMFAM5,
+                                                    data[indextr].idACT_FECVEN,
+                                                    data[indextr].idACTLOTE,
+                                                    data[indextr].PRECIO_BASE
+                                                )
+                                            "
+                                        ></file-plus-icon>
+                                    </vs-td>
+                                </vs-tr>
+                            </template>
+                        </vs-table>
                     </vx-card>
                 </div>
             </div>
             <div v-if="medicamento">
                 <div>
                     <vs-button
+                        class="inputx w-full  "
                         color="primary"
                         type="filled"
                         @click="popMedicamento"
@@ -129,91 +171,134 @@
                 <br />
                 <div>
                     <vx-card>
-                        <vue-good-table
-                            :columns="columnsMed"
-                            :rows="rows"
-                            :pagination-options="PageOptions"
-                        >
-                            <template slot="table-row" slot-scope="props">
-                                <!-- Column: Name -->
-                                <span
-                                    v-if="props.column.field === 'fullName'"
-                                    class="text-nowrap"
-                                >
-                                </span>
-                                <span
-                                    v-else-if="props.column.field === 'action'"
-                                >
-                                    <plus-circle-icon
-                                        v-if="ModificaArt == 3"
-                                        content="Modificar Medicamento"
-                                        v-tippy
-                                        size="1.5x"
-                                        class="custom-class"
-                                        @click="
-                                            popModificarMedicamento(
-                                                props.row.id,
-                                                props.row.CODART_TRACK,
-                                                props.row.NOMBRE,
-                                                props.row.GENERICO,
-                                                props.row.CAT_FARMACIA,
-                                                props.row.UNIMEDBASE,
-                                                props.row.CONCENTRACION,
-                                                props.row.CODART_ONU,
-                                                props.row.CODART,
-                                                props.row.CODART_BARR,
-                                                props.row.UBICACION,
-                                                props.row.SECTOR,
-                                                props.row.ZGEN,
-                                                props.row.idBodega,
-                                                props.row.idZona,
-                                                props.row.idEstado,
-                                                props.row.LABORATORIO,
-                                                props.row.CANTXENB,
-                                                props.row.idACT_FECVEN,
-                                                props.row.idACTLOTE,
-                                                props.row.NOMARCH,
-                                                props.row.PRECIO_BASE
-                                            )
-                                        "
-                                    ></plus-circle-icon>
-                                    <plus-circle-icon
-                                        content="Agregar Codigo Nuevo"
-                                        v-tippy
-                                        size="1.5x"
-                                        class="custom-class"
-                                        @click="
-                                            popAgregarCodMedicamento(
-                                                props.row.CODART_TRACK,
-                                                props.row.NOMBRE,
-                                                props.row.GENERICO,
-                                                props.row.CAT_FARMACIA,
-                                                props.row.UNIMEDBASE,
-                                                props.row.CONCENTRACION,
-                                                props.row.CODART_ONU,
-                                                props.row.CODART,
-                                                props.row.CODART_BARR,
-                                                props.row.UBICACION,
-                                                props.row.SECTOR,
-                                                props.row.ZGEN,
-                                                props.row.idBodega,
-                                                props.row.idZona,
-                                                props.row.idEstado,
-                                                props.row.LABORATORIO,
-                                                props.row.CANTXENB,
-                                                props.row.idACT_FECVEN,
-                                                props.row.idACTLOTE,
-                                                props.row.PRECIO_BASE
-                                            )
-                                        "
-                                    ></plus-circle-icon>
-                                </span>
-                                <!-- Column: Common -->
-                                <span v-else>
-                                    {{ props.formattedRow[props.column.field] }}
-                                </span>
+                        <vs-table max-items="10" search :data="rows">
+                            <template slot="header"> </template>
+                            <template slot="thead">
+                                <vs-th>
+                                    Codigo Barra
+                                </vs-th>
+                                <vs-th>
+                                    Codigo Interno
+                                </vs-th>
+                                <vs-th>
+                                    Nombre Articulo
+                                </vs-th>
+                                <vs-th>
+                                    Bodega
+                                </vs-th>
+                                <vs-th>
+                                    Unidad Medida
+                                </vs-th>
+                                <vs-th>
+                                    Laboratorio
+                                </vs-th>
+                                <vs-th>
+                                    Concentracion
+                                </vs-th>
+                                <vs-th>
+                                    Opciones
+                                </vs-th>
                             </template>
-                        </vue-good-table>
+
+                            <template slot-scope="{ data }">
+                                <vs-tr
+                                    :key="indextr"
+                                    v-for="(tr, indextr) in data"
+                                >
+                                    <vs-td :data="data[indextr].CODART_BARR">
+                                        {{ data[indextr].CODART_BARR }}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].CODART">
+                                        {{ data[indextr].CODART }}
+                                    </vs-td>
+
+                                    <vs-td :data="data[indextr].NOMBRE">
+                                        {{ data[indextr].NOMBRE }}
+                                    </vs-td>
+
+                                    <vs-td
+                                        :data="data[indextr].descripcionBodega"
+                                    >
+                                        {{ data[indextr].descripcionBodega }}
+                                    </vs-td>
+
+                                    <vs-td :data="data[indextr].UNIMEDBASE">
+                                        {{ data[indextr].UNIMEDBASE }}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].LABORATORIO">
+                                        {{ data[indextr].LABORATORIO }}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].CONCENTRACION">
+                                        {{ data[indextr].CONCENTRACION }}
+                                    </vs-td>
+                                    <vs-td>
+                                        <plus-circle-icon
+                                            v-if="ModificaArt == 3"
+                                            content="Modificar Medicamento"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                popModificarMedicamento(
+                                                    data[indextr].id,
+                                                    data[indextr].CODART_TRACK,
+                                                    data[indextr].NOMBRE,
+                                                    data[indextr].GENERICO,
+                                                    data[indextr].CAT_FARMACIA,
+                                                    data[indextr].UNIMEDBASE,
+                                                    data[indextr].CONCENTRACION,
+                                                    data[indextr].CODART_ONU,
+                                                    data[indextr].CODART,
+                                                    data[indextr].CODART_BARR,
+                                                    data[indextr].UBICACION,
+                                                    data[indextr].SECTOR,
+                                                    data[indextr].ZGEN,
+                                                    data[indextr].idBodega,
+                                                    data[indextr].idZona,
+                                                    data[indextr].idEstado,
+                                                    data[indextr].LABORATORIO,
+                                                    data[indextr].CANTXENB,
+                                                    data[indextr].idACT_FECVEN,
+                                                    data[indextr].idACTLOTE,
+                                                    data[indextr].NOMARCH,
+                                                    data[indextr].PRECIO_BASE
+                                                )
+                                            "
+                                        ></plus-circle-icon>
+                                        <plus-circle-icon
+                                            content="Agregar Codigo Nuevo"
+                                            v-tippy
+                                            size="1.5x"
+                                            class="custom-class"
+                                            @click="
+                                                popAgregarCodMedicamento(
+                                                    data[indextr].CODART_TRACK,
+                                                    data[indextr].NOMBRE,
+                                                    data[indextr].GENERICO,
+                                                    data[indextr].CAT_FARMACIA,
+                                                    data[indextr].UNIMEDBASE,
+                                                    data[indextr].CONCENTRACION,
+                                                    data[indextr].CODART_ONU,
+                                                    data[indextr].CODART,
+                                                    data[indextr].CODART_BARR,
+                                                    data[indextr].UBICACION,
+                                                    data[indextr].SECTOR,
+                                                    data[indextr].ZGEN,
+                                                    data[indextr].idBodega,
+                                                    data[indextr].idZona,
+                                                    data[indextr].idEstado,
+                                                    data[indextr].LABORATORIO,
+                                                    data[indextr].CANTXENB,
+                                                    data[indextr].idACT_FECVEN,
+                                                    data[indextr].idACTLOTE,
+                                                    data[indextr].PRECIO_BASE
+                                                )
+                                            "
+                                        ></plus-circle-icon>
+                                    </vs-td>
+                                </vs-tr>
+                            </template>
+                        </vs-table>
                     </vx-card>
                 </div>
             </div>
@@ -1586,6 +1671,7 @@ import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
 import Vue from "vue";
+import Vuex from "vuex";
 import VueTippy, { TippyComponent } from "vue-tippy";
 import storePage from "../ScriptMenus/store.js";
 import { FilePlusIcon } from "vue-feather-icons";
@@ -1597,7 +1683,6 @@ export default {
     components: {
         VueGoodTable,
         "v-select": vSelect,
-        quillEditor,
         PlusCircleIcon,
         FilePlusIcon,
         EditIcon
@@ -1876,6 +1961,7 @@ export default {
         },
         cargaItemBodega() {
             try {
+                this.TraerProductos();
                 if (this.seleccionBodegaL.id == 1) {
                     this.medicamento = true;
                     this.articulosgen = false;
@@ -2589,265 +2675,102 @@ export default {
             }
         },
         TraerLaboratorios() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetLaboratorio", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaLaboratorio = res.data;
-                        if (this.listaLaboratorio.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los Laboratorios correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+            store.dispatch("TraerLaboratorios").then(() => {
+                let laboratorios = store.getters.getLaboratorios;
+                this.listaLaboratorio = laboratorios;
+            });
         },
         TraerProductos() {
             try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetAllProductos", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.rowsMed = res.data;
-                        if (this.rowsMed.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
-                                color: "danger",
-                                position: "top-right"
+                this.rows = [];
+                if (this.seleccionBodegaL.id > 0) {
+                    if (this.codbusqueda.length > 0) {
+                        let data = {
+                            idBodega: this.seleccionBodegaL.id,
+                            DATA: this.codbusqueda
+                        };
+
+                        const dat = data;
+
+                        axios
+                            .post(
+                                this.localVal +
+                                    "/api/Mantenedor/GetProductosByBodDes",
+                                dat,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            `Bearer ` +
+                                            localStorage.getItem("token")
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                this.rows = res.data;
                             });
-                        }
+                    }
+                } else {
+                    this.$vs.notify({
+                        time: 5000,
+                        title: "Error",
+                        text:
+                            "Debe seleccionar Bodega o Ingresar alguna referencia para buscar articulos",
+                        color: "danger",
+                        position: "top-right"
                     });
+                }
             } catch (error) {
                 console.log(error);
             }
         },
         TraerEstado() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetAuthEstado", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaEstado = res.data;
-                        if (this.listaEstado.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de Estado correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+            store.dispatch("TraerEstado").then(() => {
+                let estado = store.getters.getEstados;
+                this.listaEstado = estado;
+            });
         },
         TraerBodega() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetBodega", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaBodega = res.data;
-                        this.listaBodegaL = res.data;
-                        if (this.listaBodega.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de las Bodegas correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+            store.dispatch("TraerBodega").then(() => {
+                let bodega = store.getters.getBodegas;
+                this.listaBodega = bodega;
+                this.listaBodegaL = bodega;
+            });
         },
         TraerZona() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetZona", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaZona = res.data;
-                        if (this.listaZona.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de los servicios correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+            store.dispatch("TraerZona").then(() => {
+                let zonas = store.getters.getZonas;
+                this.listaZona = zonas;
+            });
         },
         TraerFamilia1() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetFamilia1", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaTempFamilia1 = res.data;
-                        if (this.listaTempFamilia1.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+            store.dispatch("TraerFamilia1").then(() => {
+                let fam1 = store.getters.getFAM1;
+                this.listaTempFamilia1 = fam1;
+            });
         },
         TraerFamilia2() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetFamilia2", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaTempFamilia2 = res.data;
-                        if (this.listaTempFamilia2.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+            store.dispatch("TraerFamilia2").then(() => {
+                let fam2 = store.getters.getFAM2;
+                this.listaTempFamilia2 = fam2;
+            });
         },
         TraerFamilia3() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetFamilia3", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaTempFamilia3 = res.data;
-                        if (this.listaTempFamilia3.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+            store.dispatch("TraerFamilia3").then(() => {
+                let fam3 = store.getters.getFAM3;
+                this.listaTempFamilia3 = fam3;
+            });
         },
         TraerFamilia4() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetFamilia4", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaTempFamilia4 = res.data;
-                        if (this.listaTempFamilia4.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+            store.dispatch("TraerFamilia4").then(() => {
+                let fam4 = store.getters.getFAM4;
+                this.listaTempFamilia4 = fam4;
+            });
         },
         TraerFamilia5() {
-            try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetFamilia5", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
-                        }
-                    })
-                    .then(res => {
-                        this.listaTempFamilia5 = res.data;
-                        if (this.listaTempFamilia5.length < 0) {
-                            this.$vs.notify({
-                                time: 5000,
-                                title: "Error",
-                                text:
-                                    "No hay datos o no se cargaron los datos de Familias Asociadas correctamente",
-                                color: "danger",
-                                position: "top-right"
-                            });
-                        }
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+            store.dispatch("TraerFamilia5").then(() => {
+                let fam5 = store.getters.getFAM5;
+                this.listaTempFamilia5 = fam5;
+            });
         },
         //Metodos para Agregar Datos
         AgregarListaPresupuesto(
@@ -4455,7 +4378,7 @@ export default {
     },
     beforeMount() {
         setTimeout(() => {
-            this.TraerProductos();
+            //this.TraerProductos();
             this.TraerEstado();
             this.TraerLaboratorios();
             this.TraerBodega();

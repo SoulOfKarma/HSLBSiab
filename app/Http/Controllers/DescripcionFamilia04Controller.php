@@ -11,7 +11,8 @@ class DescripcionFamilia04Controller extends Controller
 {
     public function GetFamilia(){
         try {
-            $get = DescripcionFamilia04::all();
+            $get = DescripcionFamilia04::orderby('descripcionFamilia','ASC')
+            ->get();
             return $get;
         } catch (\Throwable $th) {
             log::info($th);

@@ -1,0 +1,11 @@
+#! /bin/sh
+#
+# Created by configure
+
+'/c/laragon/bin/php/php-7.4.14-src/Configure' \
+'AuthGuard' \
+'build_alias=AuthGuard' \
+'host_alias=AuthGuard' \
+'target_alias=AuthGuard' \
+'PKG_CONFIG_PATH=/mingw64/lib/pkgconfig:/mingw64/share/pkgconfig' \
+"$@"
