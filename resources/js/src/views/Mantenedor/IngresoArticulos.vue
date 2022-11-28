@@ -577,7 +577,6 @@
                         <div class="vx-row">
                             <div class="vx-col w-1/2 mt-5">
                                 <h6>Bodega</h6>
-
                                 <v-select
                                     v-model="seleccionBodega"
                                     placeholder="Activo"
@@ -1768,7 +1767,8 @@ export default {
             seleccionFamilia1: {
                 id: 0,
                 descripcionFamilia: "",
-                idBodega: 0
+                idBodega: 0,
+                CODFAM1: ""
             },
             seleccionFamilia2: {
                 id: 0,
@@ -2209,6 +2209,7 @@ export default {
                     if (NOMFAM1 == value.descripcionFamilia) {
                         this.seleccionFamilia1.id = value.id;
                         this.seleccionFamilia1.idBodega = value.idBodega;
+                        this.seleccionFamilia1.CODFAM1 = value.CODFAM1;
                         this.seleccionFamilia1.descripcionFamilia =
                             value.descripcionFamilia;
                     }
@@ -2224,6 +2225,7 @@ export default {
                         this.seleccionFamilia2.idDesFam = value.idDesFam;
                         this.seleccionFamilia2.descripcionFamilia =
                             value.descripcionFamilia;
+                        this.seleccionFamilia2.CODFAM2 = value.CODFAM2;
                     }
                 });
 
@@ -2237,6 +2239,7 @@ export default {
                         this.seleccionFamilia3.idDesFam01 = value.idDesFam01;
                         this.seleccionFamilia3.descripcionFamilia =
                             value.descripcionFamilia;
+                        this.seleccionFamilia3.CODFAM3 = value.CODFAM3;
                     }
                 });
 
@@ -2250,6 +2253,7 @@ export default {
                         this.seleccionFamilia4.idDesFam02 = value.idDesFam02;
                         this.seleccionFamilia4.descripcionFamilia =
                             value.descripcionFamilia;
+                        this.seleccionFamilia4.CODFAM4 = value.CODFAM4;
                     }
                 });
 
@@ -2263,9 +2267,14 @@ export default {
                         this.seleccionFamilia5.idDesFam03 = value.idDesFam03;
                         this.seleccionFamilia5.descripcionFamilia =
                             value.descripcionFamilia;
+                        this.seleccionFamilia5.CODFAM5 = value.CODFAM5;
                     }
                 });
-
+                this.cargaItemBodegaFamilia();
+                this.cargaItemFamilia1();
+                this.cargaItemFamilia2();
+                this.cargaItemFamilia3();
+                this.cargaItemFamilia4();
                 this.unidadMedidaBase = UNIMEDBASE;
             } catch (error) {
                 console.log(error);

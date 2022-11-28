@@ -1084,6 +1084,7 @@ export default {
                 let c = this.listaTempFamilia2;
                 let b = this.seleccionFamilia1M.CODFAM1;
                 let a = [];
+
                 c.forEach((value, index) => {
                     if (b == value.idDesFam) {
                         a.push(value);
