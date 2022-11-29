@@ -10,6 +10,7 @@
                         class="w-full select-large"
                         label="descripcionBodega"
                         :options="listaBodegaL"
+                        @input="cargaItemBodega"
                     ></v-select>
                 </div>
                 <div class="vx-col w-1/2 mt-2">
@@ -23,7 +24,7 @@
             </div>
             <br />
             <div v-if="articulosgen">
-                <div>
+                <div v-if="ModificaArt == 2 || ModificaArt == 3">
                     <vs-button
                         class="inputx w-full  "
                         color="primary"
@@ -91,7 +92,11 @@
                                     </vs-td>
                                     <vs-td :data="data[indextr].id">
                                         <edit-icon
-                                            v-if="ModificaArt == 3"
+                                            v-if="
+                                                ModificaArt == 1 ||
+                                                    ModificaArt == 2 ||
+                                                    ModificaArt == 3
+                                            "
                                             content="Modificar Articulo General"
                                             v-tippy
                                             size="1.5x"
@@ -159,7 +164,7 @@
                 </div>
             </div>
             <div v-if="medicamento">
-                <div>
+                <div v-if="ModificaArt == 2 || ModificaArt == 3">
                     <vs-button
                         class="inputx w-full  "
                         color="primary"
@@ -233,7 +238,11 @@
                                     </vs-td>
                                     <vs-td>
                                         <plus-circle-icon
-                                            v-if="ModificaArt == 3"
+                                            v-if="
+                                                ModificaArt == 1 ||
+                                                    ModificaArt == 2 ||
+                                                    ModificaArt == 3
+                                            "
                                             content="Modificar Medicamento"
                                             v-tippy
                                             size="1.5x"
