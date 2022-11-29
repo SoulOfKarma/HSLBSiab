@@ -330,7 +330,6 @@
                                     label="descripcionBodega"
                                     :options="listaBodega"
                                     @input="cargaItemBodegaFamilia"
-                                    disabled
                                 ></v-select>
                             </div>
                             <div class="vx-col w-1/2 mt-5">
@@ -1119,7 +1118,6 @@
                                     class="w-full select-large"
                                     label="descripcionBodega"
                                     :options="listaBodega"
-                                    disabled
                                 ></v-select>
                             </div>
                             <div class="vx-col w-1/2 mt-5">
