@@ -732,7 +732,7 @@ class Reportes extends Controller
                siab_articulo.CODART AS CODART,siab_articulo.ZGEN AS ZGEN,auth_estados.descripcionEstado AS Estado
                FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id
             )a 
-            WHERE saldoCorrecto > 0 && a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
+            WHERE a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
             group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
             ORDER BY a.CODART ASC
             ');
@@ -776,7 +776,7 @@ class Reportes extends Controller
                siab_articulo.CODART AS CODART,siab_articulo.ZGEN AS ZGEN,auth_estados.descripcionEstado AS Estado
                FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id
             )a 
-            WHERE saldoCorrecto > 0 && a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
+            WHERE a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
             group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
             ORDER BY a.CODART ASC
             ');
@@ -818,7 +818,7 @@ class Reportes extends Controller
                siab_articulo.CODART AS CODART,siab_articulo.ZGEN AS ZGEN,auth_estados.descripcionEstado AS Estado
                FROM siab_articulo JOIN auth_estados ON siab_articulo.idEstado = auth_estados.id
             )a 
-            WHERE saldoCorrecto > 0 && a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
+            WHERE a.CODART BETWEEN "'.$request->CODINI.'" and "'.$request->CODTER.'"
             group by a.NOMBRE,a.LOTE,a.UNIMED,a.CODART,a.ZGEN,a.Estado
             ORDER BY a.CODART ASC
             ');
