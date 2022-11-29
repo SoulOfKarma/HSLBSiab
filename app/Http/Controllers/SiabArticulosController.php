@@ -310,7 +310,8 @@ class SiabArticulosController extends Controller
            CASE WHEN siab_articulo.ACT_FECVEN = 1 THEN 'Si' ELSE 'No' END as ACT_FECVEN,
            CASE WHEN siab_articulo.ACT_LOTE = 1 THEN 'Si' ELSE 'No' END as ACT_LOTE,
            siab_articulo.idEstado,siab_articulo.idBodega,siab_articulo.idZona,siab_articulo.NOMFAM1,siab_articulo.NOMFAM2,
-           siab_articulo.NOMFAM3,siab_articulo.NOMFAM4,siab_articulo.NOMFAM5,siab_articulo.NOMARCH,siab_articulo.PRECIO_BASE from siab_articulo
+           siab_articulo.NOMFAM3,siab_articulo.NOMFAM4,siab_articulo.NOMFAM5,siab_articulo.NOMARCH,
+           COALESCE(siab_articulo.PRECIO_BASE,0) AS PRECIO_BASE from siab_articulo
            left join auth_estados on siab_articulo.idEstado = auth_estados.id
            left join bodega on siab_articulo.idBodega = bodega.id
            left join zona on siab_articulo.idZona = zona.id

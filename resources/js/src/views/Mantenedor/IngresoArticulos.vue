@@ -1712,24 +1712,24 @@ export default {
             popUpArticuloGeneralMod: false,
             popUpCodArticuloGeneral: false,
             popUpModificarCodigo: false,
-            codigoBarra: "-",
-            codigoBarraOriginal: "-",
-            codigoOnu: "-",
+            codigoBarra: "",
+            codigoBarraOriginal: "",
+            codigoOnu: "",
             codigoTrack: "-",
-            codigoArticulo: "-",
-            nombre: "-",
-            generico: "-",
-            categoriaFarmacia: "-",
-            laboratorio: "-",
-            idEstado: "-",
-            concentracion: "-",
+            codigoArticulo: "",
+            nombre: "",
+            generico: "",
+            categoriaFarmacia: "",
+            laboratorio: "",
+            idEstado: "",
+            concentracion: "",
             actFechaVencimiento: false,
             actLoteSerie: false,
             medicamento: false,
             articulosgen: false,
             cantidadEmbalaje: 1,
             codbusqueda: "",
-            idBodega: "-",
+            idBodega: "",
             idZona: "-",
             sector: "-",
             ubicacion: "-",
@@ -1888,15 +1888,15 @@ export default {
         },
         limpiarCampos() {
             try {
-                this.codigoBarra = "-";
-                this.codigoTrack = "-";
-                this.codigoOnu = "-";
-                this.codigoArticulo = "-";
-                this.generico = "-";
-                this.categoriaFarmacia = "-";
-                this.nombre = "-";
-                this.concentracion = "-";
-                this.laboratorio = "-";
+                this.codigoBarra = "";
+                this.codigoTrack = "";
+                this.codigoOnu = "";
+                this.codigoArticulo = "";
+                this.generico = "";
+                this.categoriaFarmacia = "";
+                this.nombre = "";
+                this.concentracion = "";
+                this.laboratorio = "";
                 this.seleccionEstado = {
                     id: 1,
                     descripcionEstado: "Activo"
@@ -1943,7 +1943,7 @@ export default {
                     descripcionFamilia: "",
                     idDesFam03: 0
                 };
-                this.unidadMedidaBase = "-";
+                this.unidadMedidaBase = "";
                 this.idMod = 0;
                 this.precio_base = 0;
             } catch (error) {
