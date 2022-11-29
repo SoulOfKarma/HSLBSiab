@@ -477,133 +477,167 @@
                         </div>
                     </div>
                     <!-- Carga Elementos Bincard -->
-                    <div class="vx-row" v-if="bincardTipo">
-                        <div class="vx-col w-full mt-2">
-                            <h6>Busqueda Por Bincard General</h6>
+                    <div v-if="bincardTipo">
+                        <div class="vx-row w-full" v-if="bincardTipo">
+                            <div class="vx-col w-full mt-5">
+                                <h6>Seleccione Bincard</h6>
+                                <br />
+                                <v-select
+                                    taggable
+                                    v-model="seleccionBincardTipo"
+                                    placeholder="Ej. Bincard"
+                                    class="w-full select-large"
+                                    label="descripcion"
+                                    :options="listaBincardTipo"
+                                ></v-select>
+                            </div>
                         </div>
-                        <div class="vx-col w-1/2 mt-2">
-                            <h6>Ingrese Codigo, Descripcion a Buscar</h6>
-                            <vs-input
-                                class="inputx w-full  "
-                                v-model="codbus"
-                            />
+                        <div
+                            class="vx-row w-full"
+                            v-if="seleccionBincardTipo.id == 1"
+                        >
+                            <div class="vx-col w-full mt-2">
+                                <h6>Busqueda Por Bincard General</h6>
+                            </div>
+                            <div class="vx-col w-1/2 mt-2">
+                                <h6>Ingrese Codigo, Descripcion a Buscar</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codbus"
+                                />
+                            </div>
+                            <div class="vx-col w-1/2 mt-2">
+                                <h6>.</h6>
+                                <vs-button
+                                    @click="GetSaldoArticulos(1)"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Carga Bincard</vs-button
+                                >
+                            </div>
                         </div>
-                        <div class="vx-col w-1/2 mt-2">
-                            <h6>.</h6>
-                            <vs-button
-                                @click="GetSaldoArticulos(1)"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Carga Bincard</vs-button
-                            >
+                        <div
+                            class="vx-row w-full"
+                            v-if="seleccionBincardTipo.id == 2"
+                        >
+                            <div class="vx-col w-full mt-2">
+                                <h6>Busqueda Por Codigo/Fecha</h6>
+                            </div>
+                            <div class="vx-col w-1/5 mt-2">
+                                <h6>Codigo Inicial</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codini"
+                                    :maxlength="7"
+                                />
+                            </div>
+                            <div class="vx-col w-1/5 mt-2">
+                                <h6>Codigo Final</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codter"
+                                    :maxlength="7"
+                                />
+                            </div>
+                            <div class="vx-col w-1/5 mt-2">
+                                <h6>Fecha Inicio</h6>
+                                <flat-pickr
+                                    :config="configFromdateTimePicker"
+                                    v-model="fechaInicio"
+                                    placeholder="Fecha Inicio"
+                                    @on-change="onFromChange"
+                                    class="w-full "
+                                />
+                            </div>
+                            <div class="vx-col w-1/5 mt-2">
+                                <h6>Fecha Termino</h6>
+                                <flat-pickr
+                                    :config="configTodateTimePicker"
+                                    v-model="fechaTermino"
+                                    placeholder="Fecha Termino"
+                                    @on-change="onToChange"
+                                    class="w-full "
+                                />
+                            </div>
+                            <div class="vx-col w-1/5 mt-2">
+                                <h6>.</h6>
+                                <vs-button
+                                    @click="GetSaldoArticulos(2)"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Buscar Por Codigo/Fecha</vs-button
+                                >
+                            </div>
                         </div>
-                        <div class="vx-col w-full mt-2">
-                            <h6>Busqueda Por Codigo/Fecha</h6>
+                        <div
+                            class="vx-row w-full"
+                            v-if="seleccionBincardTipo.id == 3"
+                        >
+                            <div class="vx-col w-full mt-2">
+                                <h6>Busqueda Por Codigo</h6>
+                            </div>
+                            <div class="vx-col w-1/3 mt-2">
+                                <h6>Codigo Inicial</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codiniC"
+                                    :maxlength="7"
+                                />
+                            </div>
+                            <div class="vx-col w-1/3 mt-2">
+                                <h6>Codigo Final</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codterC"
+                                    :maxlength="7"
+                                />
+                            </div>
+                            <div class="vx-col w-1/3 mt-2">
+                                <h6>.</h6>
+                                <vs-button
+                                    @click="GetSaldoArticulos(4)"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Buscar Por Codigo</vs-button
+                                >
+                            </div>
                         </div>
-                        <div class="vx-col w-1/5 mt-2">
-                            <h6>Codigo Inicial</h6>
-                            <vs-input
-                                class="inputx w-full  "
-                                v-model="codini"
-                                :maxlength="7"
-                            />
-                        </div>
-                        <div class="vx-col w-1/5 mt-2">
-                            <h6>Codigo Final</h6>
-                            <vs-input
-                                class="inputx w-full  "
-                                v-model="codter"
-                                :maxlength="7"
-                            />
-                        </div>
-                        <div class="vx-col w-1/5 mt-2">
-                            <h6>Fecha Inicio</h6>
-                            <flat-pickr
-                                :config="configFromdateTimePicker"
-                                v-model="fechaInicio"
-                                placeholder="Fecha Inicio"
-                                @on-change="onFromChange"
-                                class="w-full "
-                            />
-                        </div>
-                        <div class="vx-col w-1/5 mt-2">
-                            <h6>Fecha Termino</h6>
-                            <flat-pickr
-                                :config="configTodateTimePicker"
-                                v-model="fechaTermino"
-                                placeholder="Fecha Termino"
-                                @on-change="onToChange"
-                                class="w-full "
-                            />
-                        </div>
-                        <div class="vx-col w-1/5 mt-2">
-                            <h6>.</h6>
-                            <vs-button
-                                @click="GetSaldoArticulos(2)"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Buscar Por Codigo/Fecha</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-full mt-2">
-                            <h6>Busqueda Por Codigo</h6>
-                        </div>
-                        <div class="vx-col w-1/3 mt-2">
-                            <h6>Codigo Inicial</h6>
-                            <vs-input
-                                class="inputx w-full  "
-                                v-model="codiniC"
-                                :maxlength="7"
-                            />
-                        </div>
-                        <div class="vx-col w-1/3 mt-2">
-                            <h6>Codigo Final</h6>
-                            <vs-input
-                                class="inputx w-full  "
-                                v-model="codterC"
-                                :maxlength="7"
-                            />
-                        </div>
-                        <div class="vx-col w-1/3 mt-2">
-                            <h6>.</h6>
-                            <vs-button
-                                @click="GetSaldoArticulos(4)"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Buscar Por Codigo</vs-button
-                            >
-                        </div>
-                        <div class="vx-col w-full mt-2">
-                            <h6>Busqueda Por Codigo Covid</h6>
-                        </div>
-                        <div class="vx-col w-1/3 mt-2">
-                            <h6>Codigo Inicial</h6>
-                            <vs-input
-                                class="inputx w-full  "
-                                v-model="codiniCO"
-                                :maxlength="7"
-                            />
-                        </div>
-                        <div class="vx-col w-1/3 mt-2">
-                            <h6>Codigo Final</h6>
-                            <vs-input
-                                class="inputx w-full  "
-                                v-model="codterCO"
-                                :maxlength="7"
-                            />
-                        </div>
-                        <div class="vx-col w-1/3 mt-2">
-                            <h6>.</h6>
-                            <vs-button
-                                @click="GetSaldoArticulos(5)"
-                                color="primary"
-                                type="filled"
-                                class="w-full"
-                                >Buscar Por Codigo/Covid</vs-button
-                            >
+                        <div
+                            class="vx-row w-full"
+                            v-if="seleccionBincardTipo.id == 4"
+                        >
+                            <div class="vx-col w-full mt-2">
+                                <h6>Busqueda Por Codigo Covid</h6>
+                            </div>
+                            <div class="vx-col w-1/3 mt-2">
+                                <h6>Codigo Inicial</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codiniCO"
+                                    :maxlength="7"
+                                />
+                            </div>
+                            <div class="vx-col w-1/3 mt-2">
+                                <h6>Codigo Final</h6>
+                                <vs-input
+                                    class="inputx w-full  "
+                                    v-model="codterCO"
+                                    :maxlength="7"
+                                />
+                            </div>
+                            <div class="vx-col w-1/3 mt-2">
+                                <h6>.</h6>
+                                <vs-button
+                                    @click="GetSaldoArticulos(5)"
+                                    color="primary"
+                                    type="filled"
+                                    class="w-full"
+                                    >Buscar Por Codigo/Covid</vs-button
+                                >
+                            </div>
                         </div>
                     </div>
                     <!-- Carga Despacho Servicio -->
@@ -1108,6 +1142,10 @@ export default {
                 id: 0,
                 descripcionServicio: "Seleccione Servicio"
             },
+            seleccionBincardTipo: {
+                id: 0,
+                descripcion: "Seleccione Tipo Bincard"
+            },
             //Datos para exportar
             fileName: "",
             formats: ["xlsx", "csv", "txt"],
@@ -1131,7 +1169,8 @@ export default {
             listadoServicios: [],
             listaBodega: [],
             listadoReportes: store.state.listadoReportes,
-            listadoMes: store.state.listadoMes
+            listadoMes: store.state.listadoMes,
+            listaBincardTipo: store.state.listaBincardTipo
         };
     },
     methods: {

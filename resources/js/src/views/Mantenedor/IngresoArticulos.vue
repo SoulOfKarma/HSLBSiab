@@ -2,18 +2,7 @@
     <div>
         <vx-card title="Gestionador de Articulos">
             <div class="vx-row">
-                <div class="vx-col w-1/2 mt-2">
-                    <h6>Bodega</h6>
-                    <v-select
-                        v-model="seleccionBodegaL"
-                        placeholder="Activo"
-                        class="w-full select-large"
-                        label="descripcionBodega"
-                        :options="listaBodegaL"
-                        @input="cargaItemBodega"
-                    ></v-select>
-                </div>
-                <div class="vx-col w-1/2 mt-2">
+                <div class="vx-col w-full mt-2">
                     <h6>Ingrese Codigo o Descripcion a Buscar</h6>
                     <vs-input
                         class="inputx w-full  "
@@ -23,15 +12,28 @@
                 </div>
             </div>
             <br />
-            <div v-if="articulosgen">
+            <div>
                 <div v-if="ModificaArt == 2 || ModificaArt == 3">
-                    <vs-button
-                        class="inputx w-full  "
-                        color="primary"
-                        type="filled"
-                        @click="popArticuloGeneral"
-                        >Agregar Articulo</vs-button
-                    >
+                    <div class="vx-row">
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                class="inputx w-full  "
+                                color="primary"
+                                type="filled"
+                                @click="popArticuloGeneral"
+                                >Agregar Articulo</vs-button
+                            >
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-button
+                                class="inputx w-full  "
+                                color="primary"
+                                type="filled"
+                                @click="popMedicamento"
+                                >Agregar Medicamento</vs-button
+                            >
+                        </div>
+                    </div>
                 </div>
                 <br />
                 <div>
@@ -41,9 +43,6 @@
                             <template slot="thead">
                                 <vs-th>
                                     Codigo Barra
-                                </vs-th>
-                                <vs-th>
-                                    Codigo Onu
                                 </vs-th>
                                 <vs-th>
                                     Codigo Interno
@@ -70,9 +69,6 @@
                                     <vs-td :data="data[indextr].CODART_BARR">
                                         {{ data[indextr].CODART_BARR }}
                                     </vs-td>
-                                    <vs-td :data="data[indextr].CODART_ONU">
-                                        {{ data[indextr].CODART_ONU }}
-                                    </vs-td>
                                     <vs-td :data="data[indextr].CODART">
                                         {{ data[indextr].CODART }}
                                     </vs-td>
@@ -95,7 +91,10 @@
                                             v-if="
                                                 ModificaArt == 1 ||
                                                     ModificaArt == 2 ||
-                                                    ModificaArt == 3
+                                                    (ModificaArt == 3 &&
+                                                        data[indextr]
+                                                            .descripcionBodega !=
+                                                            'Medicamentos')
                                             "
                                             content="Modificar Articulo General"
                                             v-tippy
@@ -128,6 +127,14 @@
                                             "
                                         ></edit-icon>
                                         <file-plus-icon
+                                            v-if="
+                                                ModificaArt == 1 ||
+                                                    ModificaArt == 2 ||
+                                                    (ModificaArt == 3 &&
+                                                        data[indextr]
+                                                            .descripcionBodega !=
+                                                            'Medicamentos')
+                                            "
                                             content="Agregar Codigo Articulo"
                                             v-tippy
                                             size="1.5x"
@@ -156,92 +163,14 @@
                                                 )
                                             "
                                         ></file-plus-icon>
-                                    </vs-td>
-                                </vs-tr>
-                            </template>
-                        </vs-table>
-                    </vx-card>
-                </div>
-            </div>
-            <div v-if="medicamento">
-                <div v-if="ModificaArt == 2 || ModificaArt == 3">
-                    <vs-button
-                        class="inputx w-full  "
-                        color="primary"
-                        type="filled"
-                        @click="popMedicamento"
-                        >Agregar Medicamento</vs-button
-                    >
-                </div>
-                <br />
-                <div>
-                    <vx-card>
-                        <vs-table max-items="10" search :data="rows">
-                            <template slot="header"> </template>
-                            <template slot="thead">
-                                <vs-th>
-                                    Codigo Barra
-                                </vs-th>
-                                <vs-th>
-                                    Codigo Interno
-                                </vs-th>
-                                <vs-th>
-                                    Nombre Articulo
-                                </vs-th>
-                                <vs-th>
-                                    Bodega
-                                </vs-th>
-                                <vs-th>
-                                    Unidad Medida
-                                </vs-th>
-                                <vs-th>
-                                    Laboratorio
-                                </vs-th>
-                                <vs-th>
-                                    Concentracion
-                                </vs-th>
-                                <vs-th>
-                                    Opciones
-                                </vs-th>
-                            </template>
-
-                            <template slot-scope="{ data }">
-                                <vs-tr
-                                    :key="indextr"
-                                    v-for="(tr, indextr) in data"
-                                >
-                                    <vs-td :data="data[indextr].CODART_BARR">
-                                        {{ data[indextr].CODART_BARR }}
-                                    </vs-td>
-                                    <vs-td :data="data[indextr].CODART">
-                                        {{ data[indextr].CODART }}
-                                    </vs-td>
-
-                                    <vs-td :data="data[indextr].NOMBRE">
-                                        {{ data[indextr].NOMBRE }}
-                                    </vs-td>
-
-                                    <vs-td
-                                        :data="data[indextr].descripcionBodega"
-                                    >
-                                        {{ data[indextr].descripcionBodega }}
-                                    </vs-td>
-
-                                    <vs-td :data="data[indextr].UNIMEDBASE">
-                                        {{ data[indextr].UNIMEDBASE }}
-                                    </vs-td>
-                                    <vs-td :data="data[indextr].LABORATORIO">
-                                        {{ data[indextr].LABORATORIO }}
-                                    </vs-td>
-                                    <vs-td :data="data[indextr].CONCENTRACION">
-                                        {{ data[indextr].CONCENTRACION }}
-                                    </vs-td>
-                                    <vs-td>
-                                        <plus-circle-icon
+                                        <edit-icon
                                             v-if="
                                                 ModificaArt == 1 ||
                                                     ModificaArt == 2 ||
-                                                    ModificaArt == 3
+                                                    (ModificaArt == 3 &&
+                                                        data[indextr]
+                                                            .descripcionBodega ==
+                                                            'Medicamentos')
                                             "
                                             content="Modificar Medicamento"
                                             v-tippy
@@ -273,8 +202,16 @@
                                                     data[indextr].PRECIO_BASE
                                                 )
                                             "
-                                        ></plus-circle-icon>
-                                        <plus-circle-icon
+                                        ></edit-icon>
+                                        <file-plus-icon
+                                            v-if="
+                                                ModificaArt == 1 ||
+                                                    ModificaArt == 2 ||
+                                                    (ModificaArt == 3 &&
+                                                        data[indextr]
+                                                            .descripcionBodega ==
+                                                            'Medicamentos')
+                                            "
                                             content="Agregar Codigo Nuevo"
                                             v-tippy
                                             size="1.5x"
@@ -303,7 +240,7 @@
                                                     data[indextr].PRECIO_BASE
                                                 )
                                             "
-                                        ></plus-circle-icon>
+                                        ></file-plus-icon>
                                     </vs-td>
                                 </vs-tr>
                             </template>
@@ -1969,14 +1906,6 @@ export default {
         cargaItemBodega() {
             try {
                 this.TraerProductos();
-                if (this.seleccionBodegaL.id == 1) {
-                    this.medicamento = true;
-                    this.articulosgen = false;
-                } else if (this.seleccionBodegaL.id > 1) {
-                    this.medicamento = false;
-                    this.articulosgen = true;
-                }
-
                 this.seleccionBodega = {
                     id: 0,
                     descripcionBodega: ""
@@ -2699,38 +2628,35 @@ export default {
         TraerProductos() {
             try {
                 this.rows = [];
-                if (this.seleccionBodegaL.id > 0) {
-                    if (this.codbusqueda.length > 0) {
-                        let data = {
-                            idBodega: this.seleccionBodegaL.id,
-                            DATA: this.codbusqueda
-                        };
+                if (this.codbusqueda.length > 0) {
+                    let data = {
+                        DATA: this.codbusqueda
+                    };
 
-                        const dat = data;
+                    const dat = data;
 
-                        axios
-                            .post(
-                                this.localVal +
-                                    "/api/Mantenedor/GetProductosByBodDes",
-                                dat,
-                                {
-                                    headers: {
-                                        Authorization:
-                                            `Bearer ` +
-                                            localStorage.getItem("token")
-                                    }
+                    axios
+                        .post(
+                            this.localVal +
+                                "/api/Mantenedor/GetProductosByBodDes",
+                            dat,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ` +
+                                        localStorage.getItem("token")
                                 }
-                            )
-                            .then(res => {
-                                this.rows = res.data;
-                            });
-                    }
+                            }
+                        )
+                        .then(res => {
+                            this.rows = res.data;
+                        });
                 } else {
                     this.$vs.notify({
                         time: 5000,
                         title: "Error",
                         text:
-                            "Debe seleccionar Bodega o Ingresar alguna referencia para buscar articulos",
+                            "Debe Ingresar alguna referencia para buscar articulos",
                         color: "danger",
                         position: "top-right"
                     });
@@ -3012,9 +2938,9 @@ export default {
                                 const url = res.data;
                                 if (url.length > 0) {
                                     let data = {
-                                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                                        CODART: this.codigoArticulo.toUpperCase(),
+                                        CODART_BARR: this.codigoBarra,
+                                        CODART_ONU: this.codigoOnu,
+                                        CODART: this.codigoArticulo,
                                         NOMBRE: this.nombre.toUpperCase(),
                                         idEstado: this.seleccionEstado.id,
                                         ACT_FECVEN: boolFVen,
@@ -3022,8 +2948,8 @@ export default {
                                         CANTXENB: this.cantidadEmbalaje,
                                         idBodega: this.seleccionBodega.id,
                                         idZona: this.seleccionZona.id,
-                                        SECTOR: this.sector.toUpperCase(),
-                                        UBICACION: this.ubicacion.toUpperCase(),
+                                        SECTOR: this.sector,
+                                        UBICACION: this.ubicacion,
                                         NOMFAM1: this.seleccionFamilia1
                                             .descripcionFamilia,
                                         NOMFAM2: this.seleccionFamilia2
@@ -3103,9 +3029,9 @@ export default {
                             });
                     } else {
                         let data = {
-                            CODART_BARR: this.codigoBarra.toUpperCase(),
-                            CODART_ONU: this.codigoOnu.toUpperCase(),
-                            CODART: this.codigoArticulo.toUpperCase(),
+                            CODART_BARR: this.codigoBarra,
+                            CODART_ONU: this.codigoOnu,
+                            CODART: this.codigoArticulo,
                             NOMBRE: this.nombre.toUpperCase(),
                             idEstado: this.seleccionEstado.id,
                             ACT_FECVEN: boolFVen,
@@ -3113,8 +3039,8 @@ export default {
                             CANTXENB: this.cantidadEmbalaje,
                             idBodega: this.seleccionBodega.id,
                             idZona: this.seleccionZona.id,
-                            SECTOR: this.sector.toUpperCase(),
-                            UBICACION: this.ubicacion.toUpperCase(),
+                            SECTOR: this.sector,
+                            UBICACION: this.ubicacion,
                             NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
                             NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
                             NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
@@ -3305,9 +3231,9 @@ export default {
                                     }
                                     let data = {
                                         id: this.idMod,
-                                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                                        CODART: this.codigoArticulo.toUpperCase(),
+                                        CODART_BARR: this.codigoBarra,
+                                        CODART_ONU: this.codigoOnu,
+                                        CODART: this.codigoArticulo,
                                         NOMBRE: this.nombre.toUpperCase(),
                                         idEstado: this.seleccionEstado.id,
                                         ACT_FECVEN: boolFVen,
@@ -3315,8 +3241,8 @@ export default {
                                         CANTXENB: this.cantidadEmbalaje,
                                         idBodega: this.seleccionBodega.id,
                                         idZona: this.seleccionZona.id,
-                                        SECTOR: this.sector.toUpperCase(),
-                                        UBICACION: this.ubicacion.toUpperCase(),
+                                        SECTOR: this.sector,
+                                        UBICACION: this.ubicacion,
                                         NOMFAM1: this.seleccionFamilia1
                                             .descripcionFamilia,
                                         NOMFAM2: this.seleccionFamilia2
@@ -3405,9 +3331,9 @@ export default {
                         }
                         let data = {
                             id: this.idMod,
-                            CODART_BARR: this.codigoBarra.toUpperCase(),
-                            CODART_ONU: this.codigoOnu.toUpperCase(),
-                            CODART: this.codigoArticulo.toUpperCase(),
+                            CODART_BARR: this.codigoBarra,
+                            CODART_ONU: this.codigoOnu,
+                            CODART: this.codigoArticulo,
                             NOMBRE: this.nombre.toUpperCase(),
                             idEstado: this.seleccionEstado.id,
                             ACT_FECVEN: boolFVen,
@@ -3415,8 +3341,8 @@ export default {
                             CANTXENB: this.cantidadEmbalaje,
                             idBodega: this.seleccionBodega.id,
                             idZona: this.seleccionZona.id,
-                            SECTOR: this.sector.toUpperCase(),
-                            UBICACION: this.ubicacion.toUpperCase(),
+                            SECTOR: this.sector,
+                            UBICACION: this.ubicacion,
                             NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
                             NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
                             NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
@@ -3601,9 +3527,9 @@ export default {
                         Acovid = false;
                     }
                     let data = {
-                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                        CODART: this.codigoArticulo.toUpperCase(),
+                        CODART_BARR: this.codigoBarra,
+                        CODART_ONU: this.codigoOnu,
+                        CODART: this.codigoArticulo,
                         NOMBRE: this.nombre.toUpperCase(),
                         idEstado: this.seleccionEstado.id,
                         ACT_FECVEN: boolFVen,
@@ -3611,8 +3537,8 @@ export default {
                         CANTXENB: this.cantidadEmbalaje,
                         idBodega: this.seleccionBodega.id,
                         idZona: this.seleccionZona.id,
-                        SECTOR: this.sector.toUpperCase(),
-                        UBICACION: this.ubicacion.toUpperCase(),
+                        SECTOR: this.sector,
+                        UBICACION: this.ubicacion,
                         NOMFAM1: this.seleccionFamilia1.descripcionFamilia,
                         NOMFAM2: this.seleccionFamilia2.descripcionFamilia,
                         NOMFAM3: this.seleccionFamilia3.descripcionFamilia,
@@ -3751,25 +3677,26 @@ export default {
                                         Acovid = false;
                                     }
                                     let data = {
-                                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                                        CODART_TRACK: this.codigoTrack.toUpperCase(),
-                                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                                        CODART: this.codigoArticulo.toUpperCase(),
+                                        CODART_BARR: this.codigoBarra,
+                                        CODART_TRACK: this.codigoTrack,
+                                        CODART_ONU: this.codigoOnu,
+                                        CODART: this.codigoArticulo,
                                         NOMBRE: this.nombre.toUpperCase(),
-                                        GENERICO: this.generico.toUpperCase(),
-                                        CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                                        GENERICO: this.generico,
+                                        CAT_FARMACIA: this.categoriaFarmacia,
                                         UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                                        CONCENTRACION: this.concentracion.toUpperCase(),
+                                        CONCENTRACION: this.concentracion,
                                         idEstado: this.seleccionEstado.id,
                                         ACT_FECVEN: boolFVen,
                                         ACT_LOTE: boolFLoteSerie,
-                                        LABORATORIO: this.seleccionLaboratorio.LABORATORIO.toUpperCase(),
+                                        LABORATORIO: this.seleccionLaboratorio
+                                            .LABORATORIO,
                                         CANTXENB: this.cantidadEmbalaje,
                                         idBodega: this.seleccionBodega.id,
                                         idZona: this.seleccionZona.id,
-                                        SECTOR: this.sector.toUpperCase(),
-                                        UBICACION: this.ubicacion.toUpperCase(),
-                                        ZGEN: this.zgen.toUpperCase(),
+                                        SECTOR: this.sector,
+                                        UBICACION: this.ubicacion,
+                                        ZGEN: this.zgen,
                                         NOMARCH: url,
                                         COVID: Acovid,
                                         PRECIO_BASE: this.precio_base
@@ -3847,25 +3774,25 @@ export default {
                             Acovid = false;
                         }
                         let data = {
-                            CODART_BARR: this.codigoBarra.toUpperCase(),
-                            CODART_TRACK: this.codigoTrack.toUpperCase(),
-                            CODART_ONU: this.codigoOnu.toUpperCase(),
-                            CODART: this.codigoArticulo.toUpperCase(),
+                            CODART_BARR: this.codigoBarra,
+                            CODART_TRACK: this.codigoTrack,
+                            CODART_ONU: this.codigoOnu,
+                            CODART: this.codigoArticulo,
                             NOMBRE: this.nombre.toUpperCase(),
-                            GENERICO: this.generico.toUpperCase(),
-                            CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                            GENERICO: this.generico,
+                            CAT_FARMACIA: this.categoriaFarmacia,
                             UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                            CONCENTRACION: this.concentracion.toUpperCase(),
+                            CONCENTRACION: this.concentracion,
                             idEstado: this.seleccionEstado.id,
                             ACT_FECVEN: boolFVen,
                             ACT_LOTE: boolFLoteSerie,
-                            LABORATORIO: this.seleccionLaboratorio.LABORATORIO.toUpperCase(),
+                            LABORATORIO: this.seleccionLaboratorio.LABORATORIO,
                             CANTXENB: this.cantidadEmbalaje,
                             idBodega: this.seleccionBodega.id,
                             idZona: this.seleccionZona.id,
-                            SECTOR: this.sector.toUpperCase(),
-                            UBICACION: this.ubicacion.toUpperCase(),
-                            ZGEN: this.zgen.toUpperCase(),
+                            SECTOR: this.sector,
+                            UBICACION: this.ubicacion,
+                            ZGEN: this.zgen,
                             COVID: Acovid,
                             PRECIO_BASE: this.precio_base
                         };
@@ -4008,25 +3935,26 @@ export default {
                                     }
                                     let data = {
                                         id: this.idMod,
-                                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                                        CODART_TRACK: this.codigoTrack.toUpperCase(),
-                                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                                        CODART: this.codigoArticulo.toUpperCase(),
+                                        CODART_BARR: this.codigoBarra,
+                                        CODART_TRACK: this.codigoTrack,
+                                        CODART_ONU: this.codigoOnu,
+                                        CODART: this.codigoArticulo,
                                         NOMBRE: this.nombre.toUpperCase(),
-                                        GENERICO: this.generico.toUpperCase(),
-                                        CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                                        GENERICO: this.generico,
+                                        CAT_FARMACIA: this.categoriaFarmacia,
                                         UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                                        CONCENTRACION: this.concentracion.toUpperCase(),
+                                        CONCENTRACION: this.concentracion,
                                         idEstado: this.seleccionEstado.id,
                                         ACT_FECVEN: boolFVen,
                                         ACT_LOTE: boolFLoteSerie,
-                                        LABORATORIO: this.seleccionLaboratorio.LABORATORIO.toUpperCase(),
+                                        LABORATORIO: this.seleccionLaboratorio
+                                            .LABORATORIO,
                                         CANTXENB: this.cantidadEmbalaje,
                                         idBodega: this.seleccionBodega.id,
                                         idZona: this.seleccionZona.id,
-                                        SECTOR: this.sector.toUpperCase(),
-                                        UBICACION: this.ubicacion.toUpperCase(),
-                                        ZGEN: this.zgen.toUpperCase(),
+                                        SECTOR: this.sector,
+                                        UBICACION: this.ubicacion,
+                                        ZGEN: this.zgen,
                                         NOMARCH: url,
                                         COVID: Acovid,
                                         PRECIO_BASE: this.precio_base
@@ -4105,25 +4033,25 @@ export default {
                         }
                         let data = {
                             id: this.idMod,
-                            CODART_BARR: this.codigoBarra.toUpperCase(),
-                            CODART_TRACK: this.codigoTrack.toUpperCase(),
-                            CODART_ONU: this.codigoOnu.toUpperCase(),
-                            CODART: this.codigoArticulo.toUpperCase(),
+                            CODART_BARR: this.codigoBarra,
+                            CODART_TRACK: this.codigoTrack,
+                            CODART_ONU: this.codigoOnu,
+                            CODART: this.codigoArticulo,
                             NOMBRE: this.nombre.toUpperCase(),
-                            GENERICO: this.generico.toUpperCase(),
-                            CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                            GENERICO: this.generico,
+                            CAT_FARMACIA: this.categoriaFarmacia,
                             UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                            CONCENTRACION: this.concentracion.toUpperCase(),
+                            CONCENTRACION: this.concentracion,
                             idEstado: this.seleccionEstado.id,
                             ACT_FECVEN: boolFVen,
                             ACT_LOTE: boolFLoteSerie,
-                            LABORATORIO: this.seleccionLaboratorio.LABORATORIO.toUpperCase(),
+                            LABORATORIO: this.seleccionLaboratorio.LABORATORIO,
                             CANTXENB: this.cantidadEmbalaje,
                             idBodega: this.seleccionBodega.id,
                             idZona: this.seleccionZona.id,
-                            SECTOR: this.sector.toUpperCase(),
-                            UBICACION: this.ubicacion.toUpperCase(),
-                            ZGEN: this.zgen.toUpperCase(),
+                            SECTOR: this.sector,
+                            UBICACION: this.ubicacion,
+                            ZGEN: this.zgen,
                             NOMARCH: null,
                             COVID: Acovid,
                             PRECIO_BASE: this.precio_base
@@ -4267,25 +4195,25 @@ export default {
                     });
                 } else {
                     let data = {
-                        CODART_BARR: this.codigoBarra.toUpperCase(),
-                        CODART_TRACK: this.codigoTrack.toUpperCase(),
-                        CODART_ONU: this.codigoOnu.toUpperCase(),
-                        CODART: this.codigoArticulo.toUpperCase(),
+                        CODART_BARR: this.codigoBarra,
+                        CODART_TRACK: this.codigoTrack,
+                        CODART_ONU: this.codigoOnu,
+                        CODART: this.codigoArticulo,
                         NOMBRE: this.nombre.toUpperCase(),
-                        GENERICO: this.generico.toUpperCase(),
-                        CAT_FARMACIA: this.categoriaFarmacia.toUpperCase(),
+                        GENERICO: this.generico,
+                        CAT_FARMACIA: this.categoriaFarmacia,
                         UNIMEDBASE: this.unidadMedidaBase.toUpperCase(),
-                        CONCENTRACION: this.concentracion.toUpperCase(),
+                        CONCENTRACION: this.concentracion,
                         idEstado: this.seleccionEstado.id,
                         ACT_FECVEN: boolFVen,
                         ACT_LOTE: boolFLoteSerie,
-                        LABORATORIO: this.seleccionLaboratorio.LABORATORIO.toUpperCase(),
+                        LABORATORIO: this.seleccionLaboratorio.LABORATORIO,
                         CANTXENB: this.cantidadEmbalaje,
                         idBodega: this.seleccionBodega.id,
                         idZona: this.seleccionZona.id,
-                        SECTOR: this.sector.toUpperCase(),
-                        UBICACION: this.ubicacion.toUpperCase(),
-                        ZGEN: this.zgen.toUpperCase(),
+                        SECTOR: this.sector,
+                        UBICACION: this.ubicacion,
+                        ZGEN: this.zgen,
                         COVID: Acovid
                     };
 

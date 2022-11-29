@@ -3,6 +3,24 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
+        listaBincardTipo: [
+            {
+                id: 1,
+                descripcion: "Busqueda Por Bincard General"
+            },
+            {
+                id: 2,
+                descripcion: "Busqueda Por Codigo/Fecha"
+            },
+            {
+                id: 3,
+                descripcion: "Busqueda Por Codigo"
+            },
+            {
+                id: 4,
+                descripcion: "Busqueda Por Codigo Covid"
+            }
+        ],
         listadoReportes: [
             {
                 id: 1,

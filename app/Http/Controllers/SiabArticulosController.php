@@ -315,7 +315,7 @@ class SiabArticulosController extends Controller
            left join auth_estados on siab_articulo.idEstado = auth_estados.id
            left join bodega on siab_articulo.idBodega = bodega.id
            left join zona on siab_articulo.idZona = zona.id
-           WHERE siab_articulo.idBodega = ".$request->idBodega." && siab_articulo.NOMBRE LIKE '%".$request->DATA."%' || siab_articulo.CODART LIKE '%".$request->DATA."%'");
+           WHERE siab_articulo.NOMBRE LIKE '%".$request->DATA."%' || siab_articulo.CODART LIKE '%".$request->DATA."%'");
            
             return $get;
         } catch (\Throwable $th) {
