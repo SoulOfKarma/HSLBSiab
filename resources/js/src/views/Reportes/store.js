@@ -21,6 +21,58 @@ export default new Vuex.Store({
                 descripcion: "Busqueda Por Codigo Covid"
             }
         ],
+        listaSaldoTipo: [
+            {
+                id: 1,
+                descripcion: "Busqueda Por Bodega"
+            },
+            {
+                id: 2,
+                descripcion: "Busqueda Total Por Fecha"
+            },
+            {
+                id: 3,
+                descripcion: "Busqueda Por Codigo/Fecha"
+            }
+        ],
+        listaSaldoGTipo: [
+            {
+                id: 1,
+                descripcion: "Saldo Productos"
+            },
+            {
+                id: 2,
+                descripcion: "Saldo Valorizado"
+            },
+            {
+                id: 3,
+                descripcion: "Busqueda Recepcion Por Rango"
+            }
+        ],
+        listaDespachoServicio: [
+            {
+                id: 1,
+                descripcion: "Busqueda Por todos los Servicios"
+            },
+            {
+                id: 2,
+                descripcion: "Busqueda Por Servicio"
+            }
+        ],
+        listaConsolidadoDespacho: [
+            {
+                id: 1,
+                descripcion: "Busqueda Consolidado Despacho"
+            },
+            {
+                id: 2,
+                descripcion: "Busqueda Covid 19"
+            },
+            {
+                id: 3,
+                descripcion: "Busqueda Consolidado/Servicio"
+            }
+        ],
         listadoReportes: [
             {
                 id: 1,
