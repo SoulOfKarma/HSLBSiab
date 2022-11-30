@@ -244,7 +244,8 @@ class SiabArticulosController extends Controller
             'ACT_LOTE' => $request->ACT_LOTE,'idBodega' => $request->idBodega,'idZona' => $request->idZona,
             'SECTOR' => $request->SECTOR,'UBICACION' => $request->UBICACION,'NOMFAM1' => $request->NOMFAM1,
             'NOMFAM2' => $request->NOMFAM2,'NOMFAM3' => $request->NOMFAM3,'NOMFAM4' => $request->NOMFAM4,'NOMFAM5' => $request->NOMFAM5,
-            'COVID'=> $request->COVID,'UNIMEDBASE' => $request->UNIMEDBASE,'NOMARCH' => $request->NOMARCH,'PRECIO_BASE' => $request->PRECIO_BASE]);
+            'COVID'=> $request->COVID,'UNIMEDBASE' => $request->UNIMEDBASE,'NOMARCH' => $request->NOMARCH,'PRECIO_BASE' => $request->PRECIO_BASE,
+            'CANTXENB' => $request->CANTXENB]);
 
             return true;
         } catch (\Throwable $th) {

@@ -89,12 +89,18 @@
                                     <vs-td :data="data[indextr].id">
                                         <edit-icon
                                             v-if="
-                                                ModificaArt == 1 ||
-                                                    ModificaArt == 2 ||
-                                                    (ModificaArt == 3 &&
-                                                        data[indextr]
-                                                            .descripcionBodega !=
-                                                            'Medicamentos')
+                                                (data[indextr]
+                                                    .descripcionBodega !=
+                                                    'Medicamentos' &&
+                                                    ModificaArt == 1) ||
+                                                    (data[indextr]
+                                                        .descripcionBodega !=
+                                                        'Medicamentos' &&
+                                                        ModificaArt == 2) ||
+                                                    (data[indextr]
+                                                        .descripcionBodega !=
+                                                        'Medicamentos' &&
+                                                        ModificaArt == 3)
                                             "
                                             content="Modificar Articulo General"
                                             v-tippy
@@ -128,12 +134,18 @@
                                         ></edit-icon>
                                         <file-plus-icon
                                             v-if="
-                                                ModificaArt == 1 ||
-                                                    ModificaArt == 2 ||
-                                                    (ModificaArt == 3 &&
-                                                        data[indextr]
-                                                            .descripcionBodega !=
-                                                            'Medicamentos')
+                                                (data[indextr]
+                                                    .descripcionBodega !=
+                                                    'Medicamentos' &&
+                                                    ModificaArt == 1) ||
+                                                    (data[indextr]
+                                                        .descripcionBodega !=
+                                                        'Medicamentos' &&
+                                                        ModificaArt == 2) ||
+                                                    (data[indextr]
+                                                        .descripcionBodega !=
+                                                        'Medicamentos' &&
+                                                        ModificaArt == 3)
                                             "
                                             content="Agregar Codigo Articulo"
                                             v-tippy
@@ -165,12 +177,18 @@
                                         ></file-plus-icon>
                                         <edit-icon
                                             v-if="
-                                                ModificaArt == 1 ||
-                                                    ModificaArt == 2 ||
-                                                    (ModificaArt == 3 &&
-                                                        data[indextr]
-                                                            .descripcionBodega ==
-                                                            'Medicamentos')
+                                                (data[indextr]
+                                                    .descripcionBodega ==
+                                                    'Medicamentos' &&
+                                                    ModificaArt == 1) ||
+                                                    (data[indextr]
+                                                        .descripcionBodega ==
+                                                        'Medicamentos' &&
+                                                        ModificaArt == 2) ||
+                                                    (data[indextr]
+                                                        .descripcionBodega ==
+                                                        'Medicamentos' &&
+                                                        ModificaArt == 3)
                                             "
                                             content="Modificar Medicamento"
                                             v-tippy
@@ -205,12 +223,18 @@
                                         ></edit-icon>
                                         <file-plus-icon
                                             v-if="
-                                                ModificaArt == 1 ||
-                                                    ModificaArt == 2 ||
-                                                    (ModificaArt == 3 &&
-                                                        data[indextr]
-                                                            .descripcionBodega ==
-                                                            'Medicamentos')
+                                                (data[indextr]
+                                                    .descripcionBodega ==
+                                                    'Medicamentos' &&
+                                                    ModificaArt == 1) ||
+                                                    (data[indextr]
+                                                        .descripcionBodega ==
+                                                        'Medicamentos' &&
+                                                        ModificaArt == 2) ||
+                                                    (data[indextr]
+                                                        .descripcionBodega ==
+                                                        'Medicamentos' &&
+                                                        ModificaArt == 3)
                                             "
                                             content="Agregar Codigo Nuevo"
                                             v-tippy

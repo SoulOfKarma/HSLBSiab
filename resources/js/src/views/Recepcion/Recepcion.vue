@@ -1469,6 +1469,7 @@ export default {
             numint: 0,
             valorTotal: 0,
             contador: 0,
+            contadorNInterno: 0,
             idServicio: 0,
             fechaSistema: null,
             fechaRecepcion: null,
@@ -2938,7 +2939,10 @@ export default {
         //Este Metodo se comunica con la API interna para guardar los datos del articulo recepcionado en el detalle y asignar N°Interno.
         AgregarArticuloDetalle() {
             try {
-                this.TraerUltimoNInterno();
+                if (this.contadorNInterno == 0) {
+                    this.TraerUltimoNInterno();
+                    this.contadorNInterno = 1;
+                }
 
                 let fechav = moment(this.fechaVencimiento, "DD-MM-YYYY").format(
                     "YYYY-MM-DD"
@@ -3212,11 +3216,11 @@ export default {
                                 " " +
                                 localStorage.getItem("apellido");
                             if (this.nordencompra.length < 1) {
-                                    this.nordencompra = "-";
-                                }
-                                if (this.nrib.length < 1) {
-                                    this.nrib = "-";
-                                }
+                                this.nordencompra = "-";
+                            }
+                            if (this.nrib.length < 1) {
+                                this.nrib = "-";
+                            }
                             let data = {
                                 NUMINT: this.numint,
                                 FECSYS: moment(
@@ -3514,11 +3518,11 @@ export default {
 
                     let data = this.listaDetalleRecepcion;
                     if (this.nordencompra.length < 1) {
-                                    this.nordencompra = "-";
-                                }
-                                if (this.nrib.length < 1) {
-                                    this.nrib = "-";
-                                }
+                        this.nordencompra = "-";
+                    }
+                    if (this.nrib.length < 1) {
+                        this.nrib = "-";
+                    }
                     let dat = {
                         NUMINT: this.numint,
                         SUBTOTAL: subtotal,
