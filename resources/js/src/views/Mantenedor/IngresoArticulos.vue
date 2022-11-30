@@ -91,15 +91,15 @@
                                             v-if="
                                                 (data[indextr]
                                                     .descripcionBodega !=
-                                                    'Medicamentos' &&
+                                                    'MEDICAMENTOS' &&
                                                     ModificaArt == 1) ||
                                                     (data[indextr]
                                                         .descripcionBodega !=
-                                                        'Medicamentos' &&
+                                                        'MEDICAMENTOS' &&
                                                         ModificaArt == 2) ||
                                                     (data[indextr]
                                                         .descripcionBodega !=
-                                                        'Medicamentos' &&
+                                                        'MEDICAMENTOS' &&
                                                         ModificaArt == 3)
                                             "
                                             content="Modificar Articulo General"
@@ -136,15 +136,15 @@
                                             v-if="
                                                 (data[indextr]
                                                     .descripcionBodega !=
-                                                    'Medicamentos' &&
+                                                    'MEDICAMENTOS' &&
                                                     ModificaArt == 1) ||
                                                     (data[indextr]
                                                         .descripcionBodega !=
-                                                        'Medicamentos' &&
+                                                        'MEDICAMENTOS' &&
                                                         ModificaArt == 2) ||
                                                     (data[indextr]
                                                         .descripcionBodega !=
-                                                        'Medicamentos' &&
+                                                        'MEDICAMENTOS' &&
                                                         ModificaArt == 3)
                                             "
                                             content="Agregar Codigo Articulo"
@@ -179,15 +179,15 @@
                                             v-if="
                                                 (data[indextr]
                                                     .descripcionBodega ==
-                                                    'Medicamentos' &&
+                                                    'MEDICAMENTOS' &&
                                                     ModificaArt == 1) ||
                                                     (data[indextr]
                                                         .descripcionBodega ==
-                                                        'Medicamentos' &&
+                                                        'MEDICAMENTOS' &&
                                                         ModificaArt == 2) ||
                                                     (data[indextr]
                                                         .descripcionBodega ==
-                                                        'Medicamentos' &&
+                                                        'MEDICAMENTOS' &&
                                                         ModificaArt == 3)
                                             "
                                             content="Modificar Medicamento"
@@ -225,15 +225,15 @@
                                             v-if="
                                                 (data[indextr]
                                                     .descripcionBodega ==
-                                                    'Medicamentos' &&
+                                                    'MEDICAMENTOS' &&
                                                     ModificaArt == 1) ||
                                                     (data[indextr]
                                                         .descripcionBodega ==
-                                                        'Medicamentos' &&
+                                                        'MEDICAMENTOS' &&
                                                         ModificaArt == 2) ||
                                                     (data[indextr]
                                                         .descripcionBodega ==
-                                                        'Medicamentos' &&
+                                                        'MEDICAMENTOS' &&
                                                         ModificaArt == 3)
                                             "
                                             content="Agregar Codigo Nuevo"
