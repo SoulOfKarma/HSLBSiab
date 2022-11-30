@@ -85,6 +85,7 @@
                                 placeholder="Fecha Termino"
                                 @on-change="onToChange"
                                 class="w-full "
+                                v-on:keydown.enter="GetConsumoAnio"
                             />
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -123,6 +124,7 @@
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="codinisal"
+                                    v-on:keydown.enter="GetSaldos"
                                 />
                             </div>
                             <div class="vx-col w-1/2 mt-2">
@@ -145,6 +147,7 @@
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="codinisalv"
+                                    v-on:keydown.enter="GetSaldoValorizado"
                                 />
                             </div>
                             <div class="vx-col w-1/2 mt-2">
@@ -199,6 +202,7 @@
                                     placeholder="Fecha Termino"
                                     @on-change="onToChange"
                                     class="w-full "
+                                    v-on:keydown.enter="GetRecepcionesRango"
                                 />
                             </div>
                             <div class="vx-col w-1/5 mt-2">
@@ -239,6 +243,7 @@
                                 class="w-full select-large"
                                 label="descripcionMes"
                                 :options="listadoMes"
+                                @input="GetConsumoMes"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/4 mt-2">
@@ -288,6 +293,7 @@
                                 class="w-full select-large"
                                 label="descripcionServicio"
                                 :options="listadoServicios"
+                                @input="GetConsumoMesServicio"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/5 mt-2">
@@ -317,6 +323,7 @@
                                 class="inputx w-full  "
                                 v-model="codter"
                                 :maxlength="7"
+                                v-on:keydown.enter="GetFechaVencimiento"
                             />
                         </div>
                         <div class="vx-col w-1/3 mt-2">
@@ -340,6 +347,7 @@
                                 class="w-full select-large"
                                 label="descripcionMes"
                                 :options="listadoMes"
+                                @input="GetZGen"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-2">
@@ -364,6 +372,7 @@
                                 class="w-full select-large"
                                 label="descripcionMes"
                                 :options="listadoMes"
+                                @input="GetZGenPriozados"
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-2">
@@ -428,6 +437,7 @@
                                     class="w-full select-large"
                                     label="descripcionBodega"
                                     :options="listaBodega"
+                                    @input="GetSaldoValorizadoPMPBodega"
                                 ></v-select>
                             </div>
                             <div class="vx-col w-1/4 mt-2">
@@ -466,6 +476,9 @@
                                     placeholder="Fecha Termino"
                                     @on-change="onToChange"
                                     class="w-full "
+                                    v-on:keydown.enter="
+                                        GetSaldoValorizadoPMPXFechaFE
+                                    "
                                 />
                             </div>
                             <div class="vx-col w-1/3 mt-2">
@@ -520,6 +533,9 @@
                                     placeholder="Fecha Termino"
                                     @on-change="onToChange"
                                     class="w-full "
+                                    v-on:keydown.enter="
+                                        GetSaldoValorizadoPMPXCodigoFecha
+                                    "
                                 />
                             </div>
                             <div class="vx-col w-1/5 mt-2">
@@ -562,6 +578,7 @@
                                 <vs-input
                                     class="inputx w-full  "
                                     v-model="codbus"
+                                    v-on:keydown.enter="GetSaldoArticulos(1)"
                                 />
                             </div>
                             <div class="vx-col w-1/2 mt-2">
@@ -616,6 +633,7 @@
                                     placeholder="Fecha Termino"
                                     @on-change="onToChange"
                                     class="w-full "
+                                    v-on:keydown.enter="GetSaldoArticulos(2)"
                                 />
                             </div>
                             <div class="vx-col w-1/5 mt-2">
@@ -650,6 +668,7 @@
                                     class="inputx w-full  "
                                     v-model="codterC"
                                     :maxlength="7"
+                                    v-on:keydown.enter="GetSaldoArticulos(4)"
                                 />
                             </div>
                             <div class="vx-col w-1/3 mt-2">
@@ -684,6 +703,7 @@
                                     class="inputx w-full  "
                                     v-model="codterCO"
                                     :maxlength="7"
+                                    v-on:keydown.enter="GetSaldoArticulos(5)"
                                 />
                             </div>
                             <div class="vx-col w-1/3 mt-2">
@@ -755,6 +775,7 @@
                                     placeholder="Fecha Termino"
                                     @on-change="onToChange"
                                     class="w-full "
+                                    v-on:keydown.enter="GetDespachoxServicio"
                                 />
                             </div>
                             <div class="vx-col w-1/5 mt-2">
@@ -819,6 +840,7 @@
                                     class="w-full select-large"
                                     label="descripcionServicio"
                                     :options="listadoServicios"
+                                    @input="GetDespachoxServicioI"
                                 ></v-select>
                             </div>
                             <div class="vx-col w-1/6 mt-2">
@@ -889,6 +911,7 @@
                                     placeholder="Fecha Termino"
                                     @on-change="onToChange"
                                     class="w-full "
+                                    v-on:keydown.enter="GetConsolidadoDespacho"
                                 />
                             </div>
                             <div class="vx-col w-1/5 mt-2">
@@ -943,6 +966,9 @@
                                     placeholder="Fecha Termino"
                                     @on-change="onToChange"
                                     class="w-full "
+                                    v-on:keydown.enter="
+                                        GetConsolidadoDespachoCovid
+                                    "
                                 />
                             </div>
                             <div class="vx-col w-1/5 mt-2">
@@ -1007,6 +1033,7 @@
                                     class="w-full select-large"
                                     label="descripcionServicio"
                                     :options="listadoServicios"
+                                    @input="GetConsolidadoDespachoS"
                                 ></v-select>
                             </div>
                             <div class="vx-col w-1/6 mt-2">
@@ -1043,7 +1070,7 @@
                                             props.column.field === 'action'
                                         "
                                     >
-                                        <plus-circle-icon
+                                        <book-icon
                                             content="Ver Bincard"
                                             v-tippy
                                             size="1.5x"
@@ -1051,8 +1078,8 @@
                                             @click="
                                                 GetBincard(1, props.row.CODART)
                                             "
-                                        ></plus-circle-icon>
-                                        <plus-circle-icon
+                                        ></book-icon>
+                                        <book-open-icon
                                             content="Ver Bincard PMP"
                                             v-tippy
                                             size="1.5x"
@@ -1060,8 +1087,8 @@
                                             @click="
                                                 GetBincardPmp(props.row.CODART)
                                             "
-                                        ></plus-circle-icon>
-                                        <plus-circle-icon
+                                        ></book-open-icon>
+                                        <bookmark-icon
                                             content="Bincard Fecha Vencimiento y Lote"
                                             v-tippy
                                             size="1.5x"
@@ -1069,7 +1096,7 @@
                                             @click="
                                                 GetBincard(3, props.row.CODART)
                                             "
-                                        ></plus-circle-icon>
+                                        ></bookmark-icon>
                                     </span>
                                     <!-- Column: Common -->
                                     <span v-else>
@@ -1103,11 +1130,164 @@
                         styleClass="vgt-table condensed bordered"
                     >
                         <template slot="table-row" slot-scope="props">
-                            <!-- Column: Name -->
                             <span
                                 v-if="props.column.field === 'fullName'"
                                 class="text-nowrap"
                             >
+                            </span>
+                            <span v-else-if="props.column.field === 'TIPO'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.TIPO }}</span
+                                >
+                                <span v-else>{{ props.row.TIPO }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'NOMBRE'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.NOMBRE }}</span
+                                >
+                                <span v-else>{{ props.row.NOMBRE }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'FECHA'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.FECHA }}</span
+                                >
+                                <span v-else>{{ props.row.FECHA }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'FOLREC'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.FOLREC }}</span
+                                >
+                                <span v-else>{{ props.row.FOLREC }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'NUMORD'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.NUMORD }}</span
+                                >
+                                <span v-else>{{ props.row.NUMORD }}</span>
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'PROVEEDOR'"
+                            >
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.PROVEEDOR }}</span
+                                >
+                                <span v-else>{{ props.row.PROVEEDOR }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'FOLDES'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.FOLDES }}</span
+                                >
+                                <span v-else>{{ props.row.FOLDES }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'SERVICIO'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.SERVICIO }}</span
+                                >
+                                <span v-else>{{ props.row.SERVICIO }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'CODART'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.CODART }}</span
+                                >
+                                <span v-else>{{ props.row.CODART }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'CODBAR'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.CODBAR }}</span
+                                >
+                                <span v-else>{{ props.row.CODBAR }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'PRECIO'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.PRECIO }}</span
+                                >
+                                <span v-else>{{ props.row.PRECIO }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'CANTIDAD'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.CANTIDAD }}</span
+                                >
+                                <span v-else>{{ props.row.CANTIDAD }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'SALDO'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.SALDO }}</span
+                                >
+                                <span v-else>{{ props.row.SALDO }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'TOTAL1'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.TOTAL1 }}</span
+                                >
+                                <span v-else>{{ props.row.TOTAL1 }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'TOTAL2'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.TOTAL2 }}</span
+                                >
+                                <span v-else>{{ props.row.TOTAL2 }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'PMP'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.PMP }}</span
+                                >
+                                <span v-else>{{ props.row.PMP }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'NOMMOT'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.NOMMOT }}</span
+                                >
+                                <span v-else>{{ props.row.NOMMOT }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'FECVEN'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.FECVEN }}</span
+                                >
+                                <span v-else>{{ props.row.FECVEN }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'LOTE'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.LOTE }}</span
+                                >
+                                <span v-else>{{ props.row.LOTE }}</span>
                             </span>
                             <!-- Column: Common -->
                             <span v-else>
@@ -1141,6 +1321,144 @@
                                 class="text-nowrap"
                             >
                             </span>
+                            <span v-else-if="props.column.field === 'TIPO'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.TIPO }}</span
+                                >
+                                <span v-else>{{ props.row.TIPO }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'NOMBRE'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.NOMBRE }}</span
+                                >
+                                <span v-else>{{ props.row.NOMBRE }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'FECHA'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.FECHA }}</span
+                                >
+                                <span v-else>{{ props.row.FECHA }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'FOLREC'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.FOLREC }}</span
+                                >
+                                <span v-else>{{ props.row.FOLREC }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'NUMORD'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.NUMORD }}</span
+                                >
+                                <span v-else>{{ props.row.NUMORD }}</span>
+                            </span>
+                            <span
+                                v-else-if="props.column.field === 'PROVEEDOR'"
+                            >
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.PROVEEDOR }}</span
+                                >
+                                <span v-else>{{ props.row.PROVEEDOR }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'FOLDES'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.FOLDES }}</span
+                                >
+                                <span v-else>{{ props.row.FOLDES }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'SERVICIO'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.SERVICIO }}</span
+                                >
+                                <span v-else>{{ props.row.SERVICIO }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'CODART'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.CODART }}</span
+                                >
+                                <span v-else>{{ props.row.CODART }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'CODBAR'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.CODBAR }}</span
+                                >
+                                <span v-else>{{ props.row.CODBAR }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'PRECIO'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.PRECIO }}</span
+                                >
+                                <span v-else>{{ props.row.PRECIO }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'CANTIDAD'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.CANTIDAD }}</span
+                                >
+                                <span v-else>{{ props.row.CANTIDAD }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'SALDO'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.SALDO }}</span
+                                >
+                                <span v-else>{{ props.row.SALDO }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'TOTAL1'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.TOTAL1 }}</span
+                                >
+                                <span v-else>{{ props.row.TOTAL1 }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'TOTAL2'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.TOTAL2 }}</span
+                                >
+                                <span v-else>{{ props.row.TOTAL2 }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'PMP'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.PMP }}</span
+                                >
+                                <span v-else>{{ props.row.PMP }}</span>
+                            </span>
+                            <span v-else-if="props.column.field === 'NOMMOT'">
+                                <span
+                                    v-if="props.row.TIPO == 'Recepcion'"
+                                    style="font-weight: bold; color: red;"
+                                    >{{ props.row.NOMMOT }}</span
+                                >
+                                <span v-else>{{ props.row.NOMMOT }}</span>
+                            </span>
                             <!-- Column: Common -->
                             <span v-else>
                                 {{ props.formattedRow[props.column.field] }}
@@ -1166,20 +1484,31 @@ import { quillEditor } from "vue-quill-editor";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import { PlusCircleIcon } from "vue-feather-icons";
+import { BookOpenIcon } from "vue-feather-icons";
+import { BookIcon } from "vue-feather-icons";
+import { BookmarkIcon } from "vue-feather-icons";
 import store from "./store.js";
 import storePage from "../ScriptMenus/store.js";
 import Vue from "vue";
 import VueTippy, { TippyComponent } from "vue-tippy";
+import VueEnterToTab from "vue-enter-to-tab";
+import { EnterToTabMixin } from "vue-enter-to-tab";
+Vue.use(VueEnterToTab, true);
 Vue.use(VueTippy);
 Vue.component("tippy", TippyComponent);
 
 export default {
+    //Componente Especial Para funcion de boton Enter como Tabulador.
+    mixins: [EnterToTabMixin],
     components: {
         VueGoodTable,
         "v-select": vSelect,
         quillEditor,
         PlusCircleIcon,
-        flatPickr
+        flatPickr,
+        BookOpenIcon,
+        BookIcon,
+        BookmarkIcon
     },
     data() {
         return {

@@ -430,13 +430,16 @@ export default new Vuex.Store({
         },
         async TraerLaboratorios({ commit }) {
             try {
-                axios
-                    .get(this.localVal + "/api/Mantenedor/GetLaboratorio", {
-                        headers: {
-                            Authorization:
-                                `Bearer ` + localStorage.getItem("token")
+                return axios
+                    .get(
+                        this.state.localVal + "/api/Mantenedor/GetLaboratorio",
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + localStorage.getItem("token")
+                            }
                         }
-                    })
+                    )
                     .then(res => {
                         commit("SET_LABORATORIOS", res.data);
                     });
