@@ -161,7 +161,16 @@
         <div class="vx-col md:w-1/1 w-full mb-base mt-5">
             <vx-card title="">
                 <div class="vx-row">
-                    <div class="vx-col w-1/2 mt-5">
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            @click="ActualizarListado"
+                            color="primary"
+                            type="filled"
+                            class="w-full"
+                            >Actualizar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
                         <vs-button
                             @click="volver"
                             color="primary"
@@ -170,7 +179,7 @@
                             >Volver</vs-button
                         >
                     </div>
-                    <div class="vx-col w-1/2 mt-5">
+                    <div class="vx-col w-1/3 mt-5">
                         <vs-button
                             @click="ImprimirOC"
                             color="primary"
@@ -654,6 +663,42 @@ export default {
                                 text:
                                     "No hay datos o no se cargaron los proveedores correctamente",
                                 color: "danger",
+                                position: "top-right"
+                            });
+                        }
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //Funciones Finales Recepcion
+        ActualizarListado() {
+            try {
+                let data = {
+                    NUMINT: this.numint,
+                    NUMSIGFE: this.nsigfe
+                };
+
+                axios
+                    .post(
+                        this.localVal + "/api/Mantenedor/PutOrdenCompras",
+                        data,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ` + localStorage.getItem("token")
+                            }
+                        }
+                    )
+                    .then(res => {
+                        let data = res.data;
+                        if (data == true) {
+                            this.$vs.notify({
+                                time: 5000,
+                                title: "Finalizado",
+                                text:
+                                    "Se han actualizado datos, se recargara la ventana",
+                                color: "success",
                                 position: "top-right"
                             });
                         }

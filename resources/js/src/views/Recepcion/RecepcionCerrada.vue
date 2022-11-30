@@ -989,6 +989,11 @@ export default {
             try {
                 this.barcodeValue = folio;
                 this.popCodigoBarra = true;
+                console.log(producto);
+                console.log(codart);
+                console.log(fecven);
+                console.log(lote);
+                console.log(folio);
             } catch (error) {
                 console.log(error);
             }
